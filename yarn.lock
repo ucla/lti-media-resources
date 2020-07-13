@@ -1057,6 +1057,21 @@
     classnames "^2"
     prop-types "^15"
 
+"@instructure/ui-focusable@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-focusable/-/ui-focusable-7.1.1.tgz#59c110edbfbbcd05077a2b4e278b34119b016e95"
+  integrity sha512-k8tHuL3byG83uTLPJJCXCEDHWyfWixTHe5jUs5yU/N1vBYfBUxkEHHpOzA+Ae2y2Z7zNCILCmcOcPYaWy+lhpg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.1.1"
+    "@instructure/ui-dom-utils" "^7.1.1"
+    "@instructure/ui-react-utils" "^7.1.1"
+    "@instructure/ui-themeable" "^7.1.1"
+    "@instructure/ui-utils" "^7.1.1"
+    "@instructure/ui-view" "^7.1.1"
+    classnames "^2"
+    prop-types "^15"
+
 "@instructure/ui-form-field@^7.1.1":
   version "7.1.1"
   resolved "https://registry.npmjs.org/@instructure/ui-form-field/-/ui-form-field-7.1.1.tgz#e74f1915927a0d2f7d53b3e7afd97684a8f86f57"
@@ -1142,6 +1157,19 @@
     "@instructure/ui-themeable" "^7.1.1"
     "@instructure/ui-view" "^7.1.1"
     classnames "^2"
+    prop-types "^15"
+
+"@instructure/ui-motion@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-7.1.1.tgz#00d58d452a39287863378ee044f73af581abaac0"
+  integrity sha512-WJhW3HINIkUuyF56rvdKSh6LWbL4BVm6zmXC42eTwct48w3dFcOREN3e88C28LJ2RxhpnSc0WLUvzg8soblHtg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/ui-dom-utils" "^7.1.1"
+    "@instructure/ui-react-utils" "^7.1.1"
+    "@instructure/ui-testable" "^7.1.1"
+    "@instructure/ui-themeable" "^7.1.1"
+    "@instructure/ui-utils" "^7.1.1"
     prop-types "^15"
 
 "@instructure/ui-number-input@^7.1.1":
@@ -1345,6 +1373,29 @@
     "@instructure/ui-utils" "^7.1.1"
     "@instructure/ui-view" "^7.1.1"
     classnames "^2"
+    prop-types "^15"
+
+"@instructure/ui-tabs@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-tabs/-/ui-tabs-7.1.1.tgz#77f1451cf5a6ee36fc5daef528e921b328641c75"
+  integrity sha512-t5+OCaCIjc0pmNwtnm1u1y+uioeVd9Hjt9YkryTOxrEgShOvvpEE60VF0avonU/Mzepv2CTFTH0gIRK4Z7jrgA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.1.1"
+    "@instructure/debounce" "^7.1.1"
+    "@instructure/ui-dom-utils" "^7.1.1"
+    "@instructure/ui-focusable" "^7.1.1"
+    "@instructure/ui-i18n" "^7.1.1"
+    "@instructure/ui-motion" "^7.1.1"
+    "@instructure/ui-prop-types" "^7.1.1"
+    "@instructure/ui-react-utils" "^7.1.1"
+    "@instructure/ui-testable" "^7.1.1"
+    "@instructure/ui-themeable" "^7.1.1"
+    "@instructure/ui-utils" "^7.1.1"
+    "@instructure/ui-view" "^7.1.1"
+    "@instructure/uid" "^7.1.1"
+    classnames "^2"
+    keycode "^2"
     prop-types "^15"
 
 "@instructure/ui-tag@^7.1.1":
