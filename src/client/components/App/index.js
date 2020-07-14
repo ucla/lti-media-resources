@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import theme from '@instructure/canvas-high-contrast-theme';
+import '@instructure/canvas-theme';
 import './app.css';
+import ReactJWPlayer from 'react-jw-player';
 
 import { Tabs } from '@instructure/ui-tabs';
+import { View } from '@instructure/ui-view';
+import { CondensedButton } from '@instructure/ui-buttons';
 
 import { Bruincast } from '../Bruincast';
 
@@ -22,18 +25,24 @@ const App = () => {
       title: 'Lecture',
       comments: ['Audio level is low'],
       date: new Date(2020, 1, 6),
+      audios: ['anthro169-1-20191206-16099.mp3'],
+      videos: [''],
     },
     {
       id: 1,
       title: 'Lecture',
       comments: [],
       date: new Date(2020, 1, 17),
+      audios: [''],
+      videos: ['psych115-1-20191206-16104.mp4'],
     },
     {
       id: 2,
       title: 'Lecture',
-      comments: [],
+      comments: ['Comment 1', 'Comment 2'],
       date: new Date(2020, 1, 13),
+      audios: [],
+      videos: ['hist22-1-20191202-15938.mp4'],
     },
   ];
   const sampleCourse = {
@@ -58,7 +67,16 @@ const App = () => {
     {
       id: 1,
       title: 'Placeholder course',
-      casts: [],
+      casts: [
+        {
+          id: 3,
+          title: 'Lecture',
+          comments: ['Audio level is low, again', 'Another comment yay!'],
+          date: new Date(2020, 3, 8),
+          audios: [''],
+          videos: [''],
+        },
+      ],
     },
   ];
 
@@ -74,6 +92,33 @@ const App = () => {
   };
   useEffect(retrieveCasts, []);
 
+  const [selectedMediaURL, setSelectedMediaURL] = React.useState('');
+  const selectMediaURL = () => {
+    setSelectedMediaURL('http://techslides.com/demos/sample-videos/small.mp4');
+    console.log('set!');
+  };
+  const deselectMediaURL = () => {
+    setSelectedMediaURL('');
+  };
+
+  if (selectedMediaURL && selectedMediaURL !== '') {
+    return (
+      <View>
+        <ReactJWPlayer
+          playerId="1"
+          playerScript="https://cdn.jwplayer.com/libraries/q3GUgsN9.js"
+          file={selectedMediaURL}
+        />
+        <CondensedButton
+          onClick={deselectMediaURL}
+          display="block"
+          margin="medium"
+        >
+          {'< Back'}
+        </CondensedButton>
+      </View>
+    );
+  }
   return (
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
@@ -85,6 +130,7 @@ const App = () => {
           course={course}
           coursesWithCasts={coursesWithCasts}
           retrieveCasts={retrieveCasts}
+          selectMediaURL={selectMediaURL}
         />
       </Tabs.Panel>
       <Tabs.Panel

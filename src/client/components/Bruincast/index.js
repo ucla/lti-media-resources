@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import theme from '@instructure/canvas-high-contrast-theme';
 import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
@@ -9,11 +8,19 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
 
-const Bruincast = ({ course, coursesWithCasts, retrieveCasts }) => {
+import { BruincastTable } from './BruincastTable';
+
+export const Bruincast = ({
+  course,
+  coursesWithCasts,
+  retrieveCasts,
+  selectMediaURL,
+}) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     coursesWithCasts: PropTypes.array,
     retrieveCasts: PropTypes.func,
+    selectMediaURL: PropTypes.func,
   };
   useEffect(retrieveCasts, []);
 
@@ -51,12 +58,13 @@ const Bruincast = ({ course, coursesWithCasts, retrieveCasts }) => {
             renderTitle={currCourse.title}
             selected={courseIndex === i}
           >
-            {currCourse.title}
+            <BruincastTable
+              casts={currCourse.casts}
+              selectMediaURL={selectMediaURL}
+            />
           </Tabs.Panel>
         ))}
       </Tabs>
     </View>
   );
 };
-
-export { Bruincast };
