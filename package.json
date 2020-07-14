@@ -17,10 +17,12 @@
   "dependencies": {
     "@instructure/canvas-high-contrast-theme": "^7.1.1",
     "@instructure/canvas-theme": "^7.1.1",
+    "@instructure/ui-alerts": "^7.1.1",
     "@instructure/ui-billboard": "^7.1.1",
     "@instructure/ui-buttons": "^7.1.1",
     "@instructure/ui-heading": "^7.1.1",
     "@instructure/ui-icons": "^7.1.1",
+    "@instructure/ui-link": "^7.1.1",
     "@instructure/ui-number-input": "^7.1.1",
     "@instructure/ui-table": "^7.1.1",
     "@instructure/ui-tabs": "^7.1.1",
@@ -32,6 +34,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.16.3",
     "ltijs": "^4.1.1",
+    "prop-types": "^15.7.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },

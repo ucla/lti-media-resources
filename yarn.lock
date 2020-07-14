@@ -970,6 +970,26 @@
     keycode "^2"
     prop-types "^15"
 
+"@instructure/ui-alerts@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-alerts/-/ui-alerts-7.1.1.tgz#7802a0c77e5be739b2e1db5b63e86af585be4c2b"
+  integrity sha512-cTkIH2bjBFh8IzopuaKHCOBwqgN9A2+0qRsuvrsPAiAovNIz2xZpn4Txq4E2MypUiaHRLbWIG0rGYJQNonf1HQ==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.1.1"
+    "@instructure/ui-a11y-content" "^7.1.1"
+    "@instructure/ui-buttons" "^7.1.1"
+    "@instructure/ui-icons" "^7.1.1"
+    "@instructure/ui-motion" "^7.1.1"
+    "@instructure/ui-react-utils" "^7.1.1"
+    "@instructure/ui-themeable" "^7.1.1"
+    "@instructure/ui-utils" "^7.1.1"
+    "@instructure/ui-view" "^7.1.1"
+    "@instructure/uid" "^7.1.1"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+
 "@instructure/ui-billboard@^7.1.1":
   version "7.1.1"
   resolved "https://registry.npmjs.org/@instructure/ui-billboard/-/ui-billboard-7.1.1.tgz#6f54b69683d91748ee57c3e13fbd885370f828e9"
@@ -1152,6 +1172,25 @@
     "@babel/runtime" "^7.9.2"
     "@instructure/console" "^7.1.1"
     "@instructure/ui-dom-utils" "^7.1.1"
+    "@instructure/ui-react-utils" "^7.1.1"
+    "@instructure/ui-testable" "^7.1.1"
+    "@instructure/ui-themeable" "^7.1.1"
+    "@instructure/ui-view" "^7.1.1"
+    classnames "^2"
+    prop-types "^15"
+
+"@instructure/ui-link@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-link/-/ui-link-7.1.1.tgz#d24b1cac47c1559279942f22be7f8afc33f460ae"
+  integrity sha512-hpDHIeHxEd/7pfyigacRQb/TW2jpY3zAJtR/pIm3MIK4gpOhmbucwcmLcP9EeWRFz+6wePv2W+ch6yuzyf5mIg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.1.1"
+    "@instructure/ui-a11y-utils" "^7.1.1"
+    "@instructure/ui-color-utils" "^7.1.1"
+    "@instructure/ui-dom-utils" "^7.1.1"
+    "@instructure/ui-icons" "^7.1.1"
+    "@instructure/ui-prop-types" "^7.1.1"
     "@instructure/ui-react-utils" "^7.1.1"
     "@instructure/ui-testable" "^7.1.1"
     "@instructure/ui-themeable" "^7.1.1"
