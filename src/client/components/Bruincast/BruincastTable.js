@@ -6,10 +6,11 @@ import { Table } from '@instructure/ui-table';
 import { TitleCommentBlock } from './TitleCommentBlock';
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
-export const BruincastTable = ({ casts, selectMediaURL }) => {
+export const BruincastTable = ({ casts, selectMedia, course }) => {
   BruincastTable.propTypes = {
     casts: PropTypes.array,
-    selectMediaURL: PropTypes.func,
+    selectMedia: PropTypes.func,
+    course: PropTypes.object,
   };
 
   return (
@@ -35,7 +36,8 @@ export const BruincastTable = ({ casts, selectMediaURL }) => {
               <PlayButtonGroup
                 audios={cast.audios}
                 videos={cast.videos}
-                selectMediaURL={selectMediaURL}
+                selectMedia={selectMedia}
+                course={course}
               />
             </Table.Cell>
             <Table.Cell>
