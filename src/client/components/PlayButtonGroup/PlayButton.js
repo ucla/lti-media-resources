@@ -1,14 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import { Button } from '@instructure/ui-buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
 
-export const PlayButton = ({ type, selectMediaURL }) => {
+import { ltikPromise } from '../../services/ltik';
+
+export const PlayButton = ({ type, selectMedia, src, course }) => {
   PlayButton.propTypes = {
     type: PropTypes.string,
-    selectMediaURL: PropTypes.func,
+    selectMedia: PropTypes.func,
+    src: PropTypes.string,
+    course: PropTypes.object,
+  };
+  const generateSetMedia = () => {
+    ltikPromise.then(ltik => {
+      axios
+        .get(`/api/medias/url?ltik=${ltik}`, {
+          params: {
+            type: type.charAt(0),
+            src,
+            quarter: course.quarter,
+          },
+        })
+        .then(res => {
+          selectMedia({
+            type,
+            url: res.data,
+          });
+        });
+    });
   };
   let playIcon = null;
   if (type === 'audio') {
@@ -22,7 +45,7 @@ export const PlayButton = ({ type, selectMediaURL }) => {
       color="primary"
       margin="xxx-small"
       size="medium"
-      onClick={selectMediaURL}
+      onClick={generateSetMedia}
     >
       Play
     </Button>

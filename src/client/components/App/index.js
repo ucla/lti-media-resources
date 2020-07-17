@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import '@instructure/canvas-theme';
+import { theme } from '@instructure/canvas-theme';
 import './app.css';
-import ReactJWPlayer from 'react-jw-player';
 
 import { Tabs } from '@instructure/ui-tabs';
 import { View } from '@instructure/ui-view';
 import { CondensedButton } from '@instructure/ui-buttons';
 
 import { Bruincast } from '../Bruincast';
+import { MediaPlayer } from '../MediaPlayer';
 
-import { ltikPromise } from '../../services/ltik';
 import * as constants from '../../constants';
+
+theme.use();
 
 const App = () => {
   const [tabSelectedIndex, selectTabIndex] = useState(constants.TAB_BRUINCAST);
@@ -22,33 +23,34 @@ const App = () => {
   const sampleCasts = [
     {
       id: 0,
-      title: 'Lecture',
-      comments: ['Audio level is low'],
-      date: new Date(2020, 1, 6),
-      audios: ['anthro169-1-20191206-16099.mp3'],
-      videos: [''],
+      title: 'Sample',
+      comments: ['Sample'],
+      date: new Date(2020, 2, 14),
+      audios: [''],
+      videos: ['eeb162-1-20200331-18431.mp4'],
     },
     {
       id: 1,
-      title: 'Lecture',
-      comments: [],
-      date: new Date(2020, 1, 17),
+      title: 'Content is from CS 32 (Winter 2012)',
+      comments: ['Date of lecture: 3/7/2012'],
+      date: new Date(2020, 2, 7),
       audios: [''],
-      videos: ['psych115-1-20191206-16104.mp4'],
+      videos: ['cs32-1-20200506-18379.mp4'],
     },
     {
       id: 2,
-      title: 'Lecture',
-      comments: ['Comment 1', 'Comment 2'],
-      date: new Date(2020, 1, 13),
+      title: 'Content is from CS 32 (Winter 2012)',
+      comments: ['Date of lecture: 3/5/2012'],
+      date: new Date(2020, 2, 5),
       audios: [],
-      videos: ['hist22-1-20191202-15938.mp4'],
+      videos: ['cs32-1-20200504-18378.mp4'],
     },
   ];
   const sampleCourse = {
-    id: 0,
-    title: 'Sample Course',
+    srs: 0,
+    title: 'CS 32',
     casts: sampleCasts,
+    quarter: 'Spring 2020',
   };
   const retrieveCourse = () => {
     // HTTP request here
@@ -65,15 +67,16 @@ const App = () => {
   const sampleCoursesWithCasts = [
     sampleCourse,
     {
-      id: 1,
+      srs: 1,
       title: 'Placeholder course',
+      quarter: 'Winter 2019',
       casts: [
         {
           id: 3,
           title: 'Lecture',
           comments: ['Audio level is low, again', 'Another comment yay!'],
           date: new Date(2020, 3, 8),
-          audios: [''],
+          audios: ['just a fake audio name'],
           videos: [''],
         },
       ],
@@ -92,25 +95,26 @@ const App = () => {
   };
   useEffect(retrieveCasts, []);
 
-  const [selectedMediaURL, setSelectedMediaURL] = React.useState('');
-  const selectMediaURL = () => {
-    setSelectedMediaURL('http://techslides.com/demos/sample-videos/small.mp4');
-    console.log('set!');
+  const [selectedMedia, setSelectedMedia] = React.useState({});
+  const selectMedia = obj => {
+    setSelectedMedia(obj);
   };
-  const deselectMediaURL = () => {
-    setSelectedMediaURL('');
+  const deselectMedia = () => {
+    setSelectedMedia({});
   };
 
-  if (selectedMediaURL && selectedMediaURL !== '') {
+  if (
+    selectedMedia.url &&
+    selectedMedia.url !== '' &&
+    selectedMedia.type &&
+    selectedMedia.type !== ''
+  ) {
     return (
       <View>
-        <ReactJWPlayer
-          playerId="1"
-          playerScript="https://cdn.jwplayer.com/libraries/q3GUgsN9.js"
-          file={selectedMediaURL}
-        />
+        <View>{selectedMedia.url}</View>
+        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
         <CondensedButton
-          onClick={deselectMediaURL}
+          onClick={deselectMedia}
           display="block"
           margin="medium"
         >
@@ -130,7 +134,7 @@ const App = () => {
           course={course}
           coursesWithCasts={coursesWithCasts}
           retrieveCasts={retrieveCasts}
-          selectMediaURL={selectMediaURL}
+          selectMedia={selectMedia}
         />
       </Tabs.Panel>
       <Tabs.Panel

@@ -14,13 +14,13 @@ export const Bruincast = ({
   course,
   coursesWithCasts,
   retrieveCasts,
-  selectMediaURL,
+  selectMedia,
 }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     coursesWithCasts: PropTypes.array,
     retrieveCasts: PropTypes.func,
-    selectMediaURL: PropTypes.func,
+    selectMedia: PropTypes.func,
   };
   useEffect(retrieveCasts, []);
 
@@ -60,7 +60,8 @@ export const Bruincast = ({
           >
             <BruincastTable
               casts={currCourse.casts}
-              selectMediaURL={selectMediaURL}
+              selectMedia={selectMedia}
+              course={currCourse}
             />
           </Tabs.Panel>
         ))}

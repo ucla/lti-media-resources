@@ -4,6 +4,8 @@ const path = require('path');
 // Requiring LTIJS provider
 const Lti = require('ltijs').Provider;
 
+const services = require('./services');
+
 // Creating a provider instance
 let options = {};
 if (process.env.MODE === 'production') {
@@ -30,7 +32,7 @@ lti.onConnect((token, req, res) => {
   return lti.redirect(res, 'http://localhost:3000');
 });
 
-// Routes.
+// Routes
 
 // Names and Roles route.
 lti.app.get('/api/members', (req, res) => {
@@ -60,6 +62,32 @@ lti.app.post('/api/grades', (req, res) => {
     console.log(err);
     return res.status(400).send(err);
   }
+});
+
+lti.app.get('/api/medias/url', async (req, res) => {
+  const { quarter, type, src } = req.query;
+  if (!quarter || !type || !src) {
+    return res.status(500);
+  }
+  const { VALIDITY } = process.env;
+  // During development, find out your IP and put it here.
+  // After production, use req.ip
+  // const clientIP = req.ip;
+  const clientIP = '172.91.84.123';
+  // eslint-disable-next-line prettier/prettier
+  const stream = `${quarter.slice(-4)}${quarter.charAt(0).toLowerCase()}-${type}/${path.extname(src).substr(1)}:${src}`;
+  const now = new Date();
+  const start = Math.round(now.getTime() / 1000);
+  const end = start + parseInt(VALIDITY);
+
+  const resultURL = services.generateMediaURL(
+    clientIP,
+    stream,
+    start.toString(),
+    end.toString()
+  );
+  console.log(resultURL);
+  res.send('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3');
 });
 
 async function setup() {
