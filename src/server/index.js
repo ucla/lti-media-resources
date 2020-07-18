@@ -69,9 +69,10 @@ lti.app.get('/api/medias/url', async (req, res) => {
   if (!quarter || !type || !src) {
     return res.status(500);
   }
-  const { VALIDITY } = process.env;
+  const { HOST, VALIDITY, SECRET } = process.env;
   // During development, find out your IP and put it here.
   // After production, use req.ip
+  // When testing, replace with your own external ip
   // const clientIP = req.ip;
   const clientIP = '172.91.84.123';
   // eslint-disable-next-line prettier/prettier
@@ -81,8 +82,10 @@ lti.app.get('/api/medias/url', async (req, res) => {
   const end = start + parseInt(VALIDITY);
 
   const resultURL = services.generateMediaURL(
-    clientIP,
+    HOST,
     stream,
+    clientIP,
+    SECRET,
     start.toString(),
     end.toString()
   );

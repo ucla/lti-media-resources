@@ -8,33 +8,41 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
 
+import { CondensedButton } from '@instructure/ui-buttons';
 import { BruincastTable } from './BruincastTable';
+import { MediaPlayer } from '../MediaPlayer';
 
 export const Bruincast = ({
   course,
   coursesWithCasts,
   retrieveCasts,
-  selectMedia,
+  warning,
+  retrieveWarning,
 }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     coursesWithCasts: PropTypes.array,
     retrieveCasts: PropTypes.func,
-    selectMedia: PropTypes.func,
+    warning: PropTypes.string,
+    retrieveWarning: PropTypes.func,
   };
   useEffect(retrieveCasts, []);
 
-  const [warning, setWarning] = useState('');
-  const retrieveWarning = () => {
-    // Some warning logics here
-    setWarning('PC users: Audio files will not play in internet explorer');
+  const [selectedMedia, setSelectedMedia] = React.useState({});
+  const selectMedia = obj => {
+    setSelectedMedia(obj);
   };
+  const deselectMedia = () => {
+    setSelectedMedia({});
+  };
+
   useEffect(retrieveWarning, []);
+
   let warningElement = null;
   if (warning && warning !== '') {
     warningElement = (
       <Alert variant="warning" renderCloseButtonLabel="Close">
-        {warning}
+        <div dangerouslySetInnerHTML={{ __html: warning }} />
       </Alert>
     );
   }
@@ -43,6 +51,27 @@ export const Bruincast = ({
   const handleCourseChange = (event, { index }) => {
     setCourseIndex(index);
   };
+
+  if (
+    selectedMedia.url &&
+    selectedMedia.url !== '' &&
+    selectedMedia.type &&
+    selectedMedia.type !== ''
+  ) {
+    return (
+      <View>
+        <View>{selectedMedia.url}</View>
+        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
+        <CondensedButton
+          onClick={deselectMedia}
+          display="block"
+          margin="medium"
+        >
+          {'< Back'}
+        </CondensedButton>
+      </View>
+    );
+  }
   return (
     <View>
       <Heading>{`Bruincast: ${course.title}`}</Heading>

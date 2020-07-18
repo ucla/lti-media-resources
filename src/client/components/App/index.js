@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from '@instructure/canvas-theme';
 import './app.css';
+import dompurify from 'dompurify';
 
 import { Tabs } from '@instructure/ui-tabs';
-import { View } from '@instructure/ui-view';
-import { CondensedButton } from '@instructure/ui-buttons';
 
 import { Bruincast } from '../Bruincast';
-import { MediaPlayer } from '../MediaPlayer';
+import { AdminPanel } from '../AdminPanel';
 
 import * as constants from '../../constants';
 
@@ -15,7 +14,9 @@ theme.use();
 
 const App = () => {
   const [tabSelectedIndex, selectTabIndex] = useState(constants.TAB_BRUINCAST);
+  const [lastIndex, setLastIndex] = useState(constants.TAB_BRUINCAST);
   const handleTabChange = (event, { index }) => {
+    setLastIndex(tabSelectedIndex);
     selectTabIndex(index);
   };
 
@@ -60,6 +61,7 @@ const App = () => {
   useEffect(retrieveCourse, []);
 
   const [coursesWithCasts, setCoursesWithCasts] = useState([]);
+  // Add in more nums states for video/audio reserves
   const [numCasts, setNumCasts] = useState(0);
   const [videoReserves, setVideoReserves] = useState([]);
   const [audioReserves, setAudioReserves] = useState([]);
@@ -95,34 +97,46 @@ const App = () => {
   };
   useEffect(retrieveCasts, []);
 
-  const [selectedMedia, setSelectedMedia] = React.useState({});
-  const selectMedia = obj => {
-    setSelectedMedia(obj);
-  };
-  const deselectMedia = () => {
-    setSelectedMedia({});
+  const [warning, setWarning] = useState('');
+  // Bool that prevents retrieving warning from db every loads.
+  const [retrievedWarning, setRetrievedWarning] = useState(false);
+  const retrieveWarning = () => {
+    // Already allowing hot notice update in front-end after submitting new notice in admin panel.
+    // Hot notice update is faster than going to db so we only go to db once when there's no notice.
+    if (!retrievedWarning) {
+      // Some backend logics here.
+      const res = '<p>A default notice</p>';
+      setWarning(dompurify.sanitize(res));
+      setRetrievedWarning(true);
+    }
   };
 
-  if (
-    selectedMedia.url &&
-    selectedMedia.url !== '' &&
-    selectedMedia.type &&
-    selectedMedia.type !== ''
-  ) {
-    return (
-      <View>
-        <View>{selectedMedia.url}</View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
-        <CondensedButton
-          onClick={deselectMedia}
-          display="block"
-          margin="medium"
-        >
-          {'< Back'}
-        </CondensedButton>
-      </View>
+  const [role, setRole] = useState('');
+  const retrieveRole = () => {
+    // Backend logic here
+    const res = 'admin';
+    setRole(res);
+  };
+  useEffect(retrieveRole, []);
+
+  let adminPanel = null;
+  if (role && role === 'admin') {
+    adminPanel = (
+      <Tabs.Panel
+        id="adminPanel"
+        renderTitle="Admin Panel"
+        isSelected={tabSelectedIndex === constants.TAB_ADMIN_PANEL}
+      >
+        <AdminPanel
+          warning={warning}
+          setWarning={setWarning}
+          selectTabIndex={selectTabIndex}
+          lastIndex={lastIndex}
+        />
+      </Tabs.Panel>
     );
   }
+
   return (
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
@@ -134,7 +148,8 @@ const App = () => {
           course={course}
           coursesWithCasts={coursesWithCasts}
           retrieveCasts={retrieveCasts}
-          selectMedia={selectMedia}
+          warning={warning}
+          retrieveWarning={retrieveWarning}
         />
       </Tabs.Panel>
       <Tabs.Panel
@@ -158,6 +173,7 @@ const App = () => {
       >
         Media Gallery
       </Tabs.Panel>
+      {adminPanel}
     </Tabs>
   );
 };
