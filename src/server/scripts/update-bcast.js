@@ -9,9 +9,8 @@ const url = `mongodb://localhost:27017/${process.env.DB_DATABASE}`;
 // Converts the term format for passing into BruinCast API
 // For example, 20S would be converted to spring-2020
 function convertTerm(term) {
-  const termChars = Array.from(term);
-  let formattedTerm = `20${termChars[0]}${termChars[1]}`;
-  switch (termChars[2]) {
+  let formattedTerm = `20${term.charAt(0)}${term.charAt(1)}`;
+  switch (term.charAt(2)) {
     case 'F':
       formattedTerm = `fall-${formattedTerm}`;
       break;
@@ -103,6 +102,18 @@ async function insertMediaEntry(client, entry) {
     });
 }
 
+async function insertMediaEntries(client, entries) {
+  // console.log(entries);
+  await client
+    .db(process.env.DB_DATABASE)
+    .collection('bruincastmedia')
+    .insertMany(entries, function(err, res) {
+      if (err) {
+        console.error(err);
+      }
+    });
+}
+
 async function main() {
   // Log in to BruinCast API and store cookie
   await loginBruinCast();
@@ -113,7 +124,7 @@ async function main() {
   const client = new MongoClient(url, { useUnifiedTopology: true });
   try {
     await client.connect();
-    console.log('Connected!');
+    // console.log('Connected!');
 
     await getCourses(formattedTerm, async function processCourses(
       coursesResponse
@@ -121,18 +132,17 @@ async function main() {
       const courses = JSON.parse(coursesResponse);
 
       for await (const course of courses) {
-        console.log(course['srs #']);
+        // console.log(course['srs #']);
 
         await getMedia(
           formattedTerm,
           course['srs #'],
           async function processMedia(mediaResponse) {
             const mediaEntries = JSON.parse(mediaResponse);
+            const mediaDocuments = [];
 
-            for await (const mediaEntry of mediaEntries) {
-              // console.log(mediaEntry);
-
-              await insertMediaEntry(client, {
+            for (const mediaEntry of mediaEntries) {
+              mediaDocuments.push({
                 classShortname: '20S-MATH33B-1',
                 classID: course['srs #'],
                 term: currentTerm,
@@ -143,6 +153,8 @@ async function main() {
                 comments: mediaEntry.comments,
               });
             }
+
+            await insertMediaEntries(client, mediaDocuments);
           }
         );
       }
