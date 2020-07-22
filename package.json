@@ -45,7 +45,8 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-jw-player": "^1.19.1",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
