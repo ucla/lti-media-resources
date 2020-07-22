@@ -1,12 +1,13 @@
 require('dotenv').config();
-const services = require('../services');
+require('babel-polyfill');
 
-test('Test Token Generation', done => {
-  const { TEST_SECRET } = process.env;
-  const generatedToken = services.generateMediaToken(
+const BruincastServices = require('../BruincastServices');
+
+test('Test Token Generation', async done => {
+  const generatedToken = await BruincastServices.generateMediaToken(
     '2020s-v/mp4:eeb162-1-20200331-18431.mp4',
     '172.18.0.1',
-    TEST_SECRET,
+    'afakesecret69420',
     '1595275679',
     '1595365679'
   );
@@ -15,13 +16,12 @@ test('Test Token Generation', done => {
   done();
 });
 
-test('Test URL Generation', done => {
-  const { TEST_SECRET } = process.env;
-  const generatedURL = services.generateMediaURL(
+test('Test URL Generation', async done => {
+  const generatedURL = await BruincastServices.generateMediaURL(
     '566f31ddb176b.streamlock.net',
     '2020s-v/mp4:eeb162-1-20200331-18431.mp4',
     '172.18.0.1',
-    TEST_SECRET,
+    'afakesecret69420',
     '1595275679',
     '1595365679'
   );

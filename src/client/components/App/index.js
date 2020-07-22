@@ -26,18 +26,18 @@ const App = () => {
   // Declare states
   const [course, setCourse] = useState({});
   // Add in more nums states for video/audio reserves
-  const [numCasts, setNumCasts] = useState(0);
-  const [numVideos, setNumVideos] = useState(0);
-  const [numAudios, setNumAudios] = useState(0);
+  const [bruincastCount, setBruincastCount] = useState(0);
+  const [videoReserveCount, setVideoReserveCount] = useState(0);
+  const [audioReserveCount, setAudioReserveCount] = useState(0);
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
     ltikPromise.then(ltik => {
       axios.get(`/api/medias/counts?ltik=${ltik}`).then(res => {
         const { bruincasts, videos, audios } = res.data;
-        setNumCasts(bruincasts);
-        setNumVideos(videos);
-        setNumAudios(audios);
+        setBruincastCount(bruincasts);
+        setVideoReserveCount(videos);
+        setAudioReserveCount(audios);
       });
     });
   };
@@ -81,7 +81,6 @@ const App = () => {
     // Already allowing hot notice update in front-end after submitting new notice in admin panel.
     // Hot notice update is faster than going to db so we only go to db once when there's no notice.
     if (!retrievedWarning) {
-      // Some backend logics here.
       ltikPromise.then(ltik => {
         axios.get(`/api/medias/bruincast/notice?ltik=${ltik}`).then(res => {
           setWarning(dompurify.sanitize(res.data));
@@ -127,7 +126,7 @@ const App = () => {
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
         id="bruincast"
-        renderTitle={`Bruincasts (${numCasts})`}
+        renderTitle={`Bruincasts (${bruincastCount})`}
         selected={tabSelectedIndex === constants.TAB_BRUINCAST}
       >
         <Bruincast
@@ -140,14 +139,14 @@ const App = () => {
       </Tabs.Panel>
       <Tabs.Panel
         id="videoReserves"
-        renderTitle={`Video reserves (${numVideos})`}
+        renderTitle={`Video reserves (${videoReserveCount})`}
         selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
       >
         Video Reserves
       </Tabs.Panel>
       <Tabs.Panel
         id="audioReserves"
-        renderTitle={`Digital audio reserves (${numAudios})`}
+        renderTitle={`Digital audio reserves (${audioReserveCount})`}
         isSelected={tabSelectedIndex === constants.TAB_DIGITAL_AUDIO_RESERVES}
       >
         Digital Audio Reserves
