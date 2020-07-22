@@ -15,10 +15,10 @@ export const PlayButton = ({ type, selectMedia, src, course }) => {
     src: PropTypes.string,
     course: PropTypes.object,
   };
-  const generateSetMedia = () => {
+  const generateAndSelectMedia = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/url?ltik=${ltik}`, {
+        .get(`/api/medias/bruincast/url?ltik=${ltik}`, {
           params: {
             type: type.charAt(0),
             src,
@@ -45,7 +45,7 @@ export const PlayButton = ({ type, selectMedia, src, course }) => {
       color="primary"
       margin="xxx-small"
       size="medium"
-      onClick={generateSetMedia}
+      onClick={generateAndSelectMedia}
     >
       Play
     </Button>

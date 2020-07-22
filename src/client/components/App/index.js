@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { theme } from '@instructure/canvas-theme';
 import './app.css';
 import dompurify from 'dompurify';
+import axios from 'axios';
 
 import { Tabs } from '@instructure/ui-tabs';
 
@@ -9,10 +10,12 @@ import { Bruincast } from '../Bruincast';
 import { AdminPanel } from '../AdminPanel';
 
 import * as constants from '../../constants';
+import { ltikPromise } from '../../services/ltik';
 
 theme.use();
 
 const App = () => {
+  // Logic of changing tabs
   const [tabSelectedIndex, selectTabIndex] = useState(constants.TAB_BRUINCAST);
   const [lastIndex, setLastIndex] = useState(constants.TAB_BRUINCAST);
   const handleTabChange = (event, { index }) => {
@@ -20,83 +23,57 @@ const App = () => {
     selectTabIndex(index);
   };
 
+  // Declare states
   const [course, setCourse] = useState({});
-  const sampleCasts = [
-    {
-      id: 0,
-      title: 'Sample',
-      comments: ['Sample'],
-      date: new Date(2020, 2, 14),
-      audios: [''],
-      videos: ['eeb162-1-20200331-18431.mp4'],
-    },
-    {
-      id: 1,
-      title: 'Content is from CS 32 (Winter 2012)',
-      comments: ['Date of lecture: 3/7/2012'],
-      date: new Date(2020, 2, 7),
-      audios: [''],
-      videos: ['cs32-1-20200506-18379.mp4'],
-    },
-    {
-      id: 2,
-      title: 'Content is from CS 32 (Winter 2012)',
-      comments: ['Date of lecture: 3/5/2012'],
-      date: new Date(2020, 2, 5),
-      audios: [],
-      videos: ['cs32-1-20200504-18378.mp4'],
-    },
-  ];
-  const sampleCourse = {
-    srs: 0,
-    title: 'CS 32',
-    casts: sampleCasts,
-    quarter: 'Spring 2020',
-  };
-  const retrieveCourse = () => {
-    // HTTP request here
-    setCourse(sampleCourse);
-  };
-
-  useEffect(retrieveCourse, []);
-
-  const [coursesWithCasts, setCoursesWithCasts] = useState([]);
   // Add in more nums states for video/audio reserves
   const [numCasts, setNumCasts] = useState(0);
-  const [videoReserves, setVideoReserves] = useState([]);
-  const [audioReserves, setAudioReserves] = useState([]);
+  const [numVideos, setNumVideos] = useState(0);
+  const [numAudios, setNumAudios] = useState(0);
 
-  const sampleCoursesWithCasts = [
-    sampleCourse,
-    {
-      srs: 1,
-      title: 'Placeholder course',
-      quarter: 'Winter 2019',
-      casts: [
-        {
-          id: 3,
-          title: 'Lecture',
-          comments: ['Audio level is low, again', 'Another comment yay!'],
-          date: new Date(2020, 3, 8),
-          audios: ['just a fake audio name'],
-          videos: [''],
-        },
-      ],
-    },
-  ];
-
-  const retrieveCasts = () => {
-    // Do HTTP requests & some logics here
-    let count = 0;
-    for (const currCourse of sampleCoursesWithCasts) {
-      currCourse.casts.sort((a, b) => a.date - b.date);
-      count += currCourse.casts.length;
-    }
-    setCoursesWithCasts(sampleCoursesWithCasts);
-    setNumCasts(count);
+  // Get the number of medias for each tab
+  const retrieveNums = () => {
+    ltikPromise.then(ltik => {
+      axios.get(`/api/medias/counts?ltik=${ltik}`).then(res => {
+        const { bruincasts, videos, audios } = res.data;
+        setNumCasts(bruincasts);
+        setNumVideos(videos);
+        setNumAudios(audios);
+      });
+    });
   };
-  useEffect(retrieveCasts, []);
+  useEffect(retrieveNums, []);
 
+  // Get the current course from backend
+  const retrieveCourse = () => {
+    ltikPromise.then(ltik => {
+      axios.get(`/api/course?ltik=${ltik}`).then(res => {
+        setCourse(res.data);
+      });
+    });
+  };
+  useEffect(retrieveCourse, []);
+
+  // Get all crosslisted courses of the current course
+  // Declaring function only; called in Bruincast component
+  const [crosslist, setCrosslist] = useState([]);
+  const retrieveCrosslist = () => {
+    if (course.label) {
+      ltikPromise.then(ltik => {
+        axios
+          .get(`/api/medias/bruincast/crosslist?ltik=${ltik}`, {
+            params: {
+              courseLabel: course.label,
+            },
+          })
+          .then(res => {
+            setCrosslist(res.data);
+          });
+      });
+    }
+  };
+
+  // Get notice from backend
+  // Declaring function only; called in Bruincast component
   const [warning, setWarning] = useState('');
   // Bool that prevents retrieving warning from db every loads.
   const [retrievedWarning, setRetrievedWarning] = useState(false);
@@ -105,22 +82,29 @@ const App = () => {
     // Hot notice update is faster than going to db so we only go to db once when there's no notice.
     if (!retrievedWarning) {
       // Some backend logics here.
-      const res = '<p>A default notice</p>';
-      setWarning(dompurify.sanitize(res));
-      setRetrievedWarning(true);
+      ltikPromise.then(ltik => {
+        axios.get(`/api/medias/bruincast/notice?ltik=${ltik}`).then(res => {
+          setWarning(dompurify.sanitize(res.data));
+          setRetrievedWarning(true);
+        });
+      });
     }
   };
 
-  const [role, setRole] = useState('');
+  // Get the role of the current user
+  const [roles, setRoles] = useState([]);
   const retrieveRole = () => {
-    // Backend logic here
-    const res = 'admin';
-    setRole(res);
+    ltikPromise.then(ltik => {
+      axios.get(`/api/roles?ltik=${ltik}`).then(res => {
+        setRoles(res.data);
+      });
+    });
   };
   useEffect(retrieveRole, []);
 
+  // Display admin tab only when 'roles' contains 'admin'
   let adminPanel = null;
-  if (role && role === 'admin') {
+  if (roles && (roles.includes('admin') || roles.includes('administrator'))) {
     adminPanel = (
       <Tabs.Panel
         id="adminPanel"
@@ -132,11 +116,13 @@ const App = () => {
           setWarning={setWarning}
           selectTabIndex={selectTabIndex}
           lastIndex={lastIndex}
+          crosslist={crosslist}
         />
       </Tabs.Panel>
     );
   }
 
+  // JSX
   return (
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
@@ -146,22 +132,22 @@ const App = () => {
       >
         <Bruincast
           course={course}
-          coursesWithCasts={coursesWithCasts}
-          retrieveCasts={retrieveCasts}
           warning={warning}
           retrieveWarning={retrieveWarning}
+          crosslist={crosslist}
+          retrieveCrosslist={retrieveCrosslist}
         />
       </Tabs.Panel>
       <Tabs.Panel
         id="videoReserves"
-        renderTitle={`Video reserves (${videoReserves.length})`}
+        renderTitle={`Video reserves (${numVideos})`}
         selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
       >
         Video Reserves
       </Tabs.Panel>
       <Tabs.Panel
         id="audioReserves"
-        renderTitle={`Digital audio reserves (${audioReserves.length})`}
+        renderTitle={`Digital audio reserves (${numAudios})`}
         isSelected={tabSelectedIndex === constants.TAB_DIGITAL_AUDIO_RESERVES}
       >
         Digital Audio Reserves
