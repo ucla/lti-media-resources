@@ -4,6 +4,9 @@ const path = require('path');
 // Requiring LTIJS provider
 const Lti = require('ltijs').Provider;
 
+// Routes
+const apiRouter = require('./api');
+
 // Creating a provider instance
 let options = {};
 if (process.env.MODE === 'production') {
@@ -30,8 +33,10 @@ lti.onConnect((token, req, res) => {
   return lti.redirect(res, 'http://localhost:3000');
 });
 
-// Routes.
+// Routes
+lti.app.use('/api', apiRouter);
 
+// LTI services
 // Names and Roles route.
 lti.app.get('/api/members', (req, res) => {
   lti.NamesAndRoles.getMembers(res.locals.token)
