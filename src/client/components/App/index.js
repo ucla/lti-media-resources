@@ -25,23 +25,11 @@ const App = () => {
 
   // Declare states
   const [course, setCourse] = useState({});
-  // Add in more nums states for video/audio reserves
+  const [crosslist, setCrosslist] = useState([]);
+  const [crosslistChanged, setCrosslistChanged] = useState(false);
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
-
-  // Get the number of medias for each tab
-  const retrieveNums = () => {
-    ltikPromise.then(ltik => {
-      axios.get(`/api/medias/counts?ltik=${ltik}`).then(res => {
-        const { bruincasts, videos, audios } = res.data;
-        setBruincastCount(bruincasts);
-        setVideoReserveCount(videos);
-        setAudioReserveCount(audios);
-      });
-    });
-  };
-  useEffect(retrieveNums, []);
 
   // Get the current course from backend
   const retrieveCourse = () => {
@@ -54,8 +42,6 @@ const App = () => {
   useEffect(retrieveCourse, []);
 
   // Get all crosslisted courses of the current course
-  // Declaring function only; called in Bruincast component
-  const [crosslist, setCrosslist] = useState([]);
   const retrieveCrosslist = () => {
     if (course.label) {
       ltikPromise.then(ltik => {
@@ -71,6 +57,32 @@ const App = () => {
       });
     }
   };
+  useEffect(retrieveCrosslist, [course, crosslistChanged]);
+
+  const changeCrosslistStatus = () => {
+    setCrosslistChanged(!crosslistChanged);
+  };
+
+  // Get the number of medias for each tab
+  const retrieveNums = () => {
+    if (crosslist.length !== 0) {
+      ltikPromise.then(ltik => {
+        axios
+          .get(`/api/medias/counts?ltik=${ltik}`, {
+            params: {
+              crosslist,
+            },
+          })
+          .then(res => {
+            const { bruincasts, videos, audios } = res.data;
+            setBruincastCount(bruincasts);
+            setVideoReserveCount(videos);
+            setAudioReserveCount(audios);
+          });
+      });
+    }
+  };
+  useEffect(retrieveNums, [crosslist]);
 
   // Get notice from backend
   // Declaring function only; called in Bruincast component
@@ -116,6 +128,7 @@ const App = () => {
           selectTabIndex={selectTabIndex}
           lastIndex={lastIndex}
           crosslist={crosslist}
+          changeCrosslistStatus={changeCrosslistStatus}
         />
       </Tabs.Panel>
     );
@@ -134,7 +147,6 @@ const App = () => {
           warning={warning}
           retrieveWarning={retrieveWarning}
           crosslist={crosslist}
-          retrieveCrosslist={retrieveCrosslist}
         />
       </Tabs.Panel>
       <Tabs.Panel

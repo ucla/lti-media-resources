@@ -8,6 +8,9 @@ import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
+
+import { ltikPromise } from '../../services/ltik';
 
 export const AdminPanel = ({
   warning,
@@ -15,6 +18,7 @@ export const AdminPanel = ({
   selectTabIndex,
   lastIndex,
   crosslist,
+  changeCrosslistStatus,
 }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
@@ -22,6 +26,7 @@ export const AdminPanel = ({
     selectTabIndex: PropTypes.func,
     lastIndex: PropTypes.number,
     crosslist: PropTypes.array,
+    changeCrosslistStatus: PropTypes.func,
   };
 
   const goBack = () => {
@@ -51,8 +56,17 @@ export const AdminPanel = ({
   const submitEverything = () => {
     const warningToBeSubmitted = dompurify.sanitize(currWarning);
     // Submit to backend here
-    setWarning(warningToBeSubmitted);
-    goBack();
+    ltikPromise.then(ltik => {
+      axios
+        .post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
+          notice: warningToBeSubmitted,
+        })
+        .then(() => {
+          setWarning(warningToBeSubmitted);
+          changeCrosslistStatus();
+          goBack();
+        });
+    });
   };
 
   // JSX

@@ -10,8 +10,8 @@ router.get('/notice', (req, res) => {
 });
 
 router.post('/notice', (req, res) => {
-  // Update notice in db here
-  res.send('Notice updated!');
+  const { notice } = req.body;
+  BruincastServices.setNotice(notice).then(ret => res.send(ret));
 });
 
 router.get('/crosslist', (req, res) => {
@@ -26,9 +26,9 @@ router.get('/crosslist', (req, res) => {
     context,
     {
       id: 69420,
-      label: '20S-CS32',
+      label: '20S-MATH33B-1',
       quarter: '20S',
-      title: 'CS 32',
+      title: 'Differential Equations',
     },
   ];
   return res.send(courseList);

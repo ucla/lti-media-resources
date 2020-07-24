@@ -15,23 +15,13 @@ import { MediaPlayer } from '../MediaPlayer';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const Bruincast = ({
-  course,
-  warning,
-  retrieveWarning,
-  crosslist,
-  retrieveCrosslist,
-}) => {
+export const Bruincast = ({ course, warning, retrieveWarning, crosslist }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     crosslist: PropTypes.array,
-    retrieveCrosslist: PropTypes.func,
   };
-
-  // Get all crosslisted courses of the current course
-  useEffect(retrieveCrosslist, [course]);
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);

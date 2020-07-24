@@ -8,7 +8,8 @@ const bruincastRoute = require('./bruincast');
 router.use('/bruincast', bruincastRoute);
 
 router.get('/counts', (req, res) => {
-  MediaResourceServices.getCounts().then(counts => res.send(counts));
+  const { crosslist } = req.query;
+  MediaResourceServices.getCounts(crosslist).then(counts => res.send(counts));
 });
 
 module.exports = router;
