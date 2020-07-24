@@ -15,43 +15,23 @@ import { MediaPlayer } from '../MediaPlayer';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const Bruincast = ({ course, warning, retrieveWarning, crosslist }) => {
+export const Bruincast = ({ course, warning, retrieveWarning }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
-    crosslist: PropTypes.array,
   };
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
-    if (crosslist && crosslist.length !== 0) {
-      ltikPromise.then(async ltik => {
-        const tmpCastsByCourses = [];
-        for (const currCourse of crosslist) {
-          const res = await axios.get(
-            `/api/medias/bruincast/casts?ltik=${ltik}`,
-            {
-              params: {
-                courseLabel: currCourse.label,
-              },
-            }
-          );
-          const medias = res.data;
-          for (const media of medias) {
-            media.date = new Date(media.date);
-          }
-          tmpCastsByCourses.push({
-            course: currCourse,
-            casts: medias,
-          });
-        }
-        setCasts(tmpCastsByCourses);
+    ltikPromise.then(async ltik => {
+      axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
+        setCasts(res.data);
       });
-    }
+    });
   };
-  useEffect(retrieveCasts, [crosslist]);
+  useEffect(retrieveCasts, []);
 
   // Logic when a media is selected and to be played
   // Declaring functions only

@@ -22,3 +22,7 @@ module.exports.setNotice = async notice => {
   const ret = await noticeCollection.updateOne({}, { $set: { notice } });
   return ret.result;
 };
+
+// Write queries for crosslists here
+// module.exports.getCrosslists
+// module.exports.setCrosslists

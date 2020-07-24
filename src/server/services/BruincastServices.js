@@ -19,16 +19,41 @@ class BruincastServices {
     return ret;
   }
 
-  static async getCasts(courseLabel) {
-    const docs = await MediaQuery.getCastsByCourse(courseLabel);
-    for (const doc of docs) {
-      doc.date = new Date(doc.date);
-      doc.videos = [doc.video];
-      doc.audios = [doc.audio];
-      doc.comments = dompurify.sanitize(doc.comments);
+  static async getAllCrosslists() {
+    return [
+      ['131A-ART133-1', '20S-MATH33B-1'],
+      ['a', 'b', 'c'],
+    ];
+  }
+
+  static async getCasts(course) {
+    // First, get all crosslists
+    const courseList = [
+      course,
+      {
+        id: 69420,
+        label: '20S-MATH33B-1',
+        quarter: '20S',
+        title: 'Differential Equations',
+      },
+    ];
+
+    const castsByCourses = [];
+    for (const c of courseList) {
+      const docs = await MediaQuery.getCastsByCourse(c.label);
+      for (const doc of docs) {
+        doc.date = new Date(doc.date);
+        doc.videos = [doc.video];
+        doc.audios = [doc.audio];
+        doc.comments = dompurify.sanitize(doc.comments);
+      }
+      docs.sort((a, b) => a.date - b.date);
+      castsByCourses.push({
+        course: c,
+        casts: docs,
+      });
     }
-    docs.sort((a, b) => a.date - b.date);
-    return docs;
+    return castsByCourses;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {
