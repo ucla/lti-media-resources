@@ -19,7 +19,7 @@ const lti = new Lti(
   process.env.LTI_KEY,
   // Setting up database configurations
   {
-    url: `mongodb://${process.env.DB_HOST}/${process.env.DB_DATABASE}`,
+    url: `mongodb://${process.env.DB_HOST}/${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`,
     connection: { user: process.env.DB_USER, pass: process.env.DB_PASS },
   },
   options
