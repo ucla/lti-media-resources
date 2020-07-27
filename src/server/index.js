@@ -4,6 +4,18 @@ const path = require('path');
 // Requiring LTIJS provider
 const Lti = require('ltijs').Provider;
 
+// Connect to db on start
+const client = require('./models/db');
+
+const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}`;
+client.connect(dbURL, err => {
+  if (err) {
+    console.log('Unable to connect to Mongo.');
+    process.exit(1);
+  }
+  console.log('Mongo connected');
+});
+
 // Routes
 const apiRouter = require('./api');
 
