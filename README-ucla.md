@@ -76,7 +76,8 @@ You should only need to do this configuration once. (The following steps were te
 
 2. Start MongoDB by running `mongod --port 27017 --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --replSet rs0 --bind_ip localhost`
 
-   - The paths for `--dbpath` and `--logpath` might vary depending your system (the `--dbpath` might be `/data/db` on other OSes)
+   - The paths for `--dbpath` and `--logpath` might vary depending your system
+      - Look for the paths in the [MongoDB configuration file](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file)
    - The `--dbpath` must be specified as such on Catalina or newer because Catalina has made the root volume read-only, so the default `/data/db` path does not work
    - The argument after `--replSet` should match the `DB_REPLSET` .env variable
 
@@ -87,6 +88,7 @@ You should only need to do this configuration once. (The following steps were te
 ### References
 
 - [MongoDB Replication Sets - BogoToBogo](https://www.bogotobogo.com/DevOps/MongoDB/MongoDB_Replication_Replica_Set.php)
+- [Configuration File Options - MongoDB Docs](https://docs.mongodb.com/manual/reference/configuration-options/)
 - [Convert Standalone to Replica Set - MongoDB Docs](https://docs.mongodb.com/manual/tutorial/convert-standalone-to-replica-set/)
 - Stack Overflow
   - [stackoverflow.com/questions/51087833/how-to-find-the-replica-set-name](https://stackoverflow.com/questions/51087833/how-to-find-the-replica-set-name)
