@@ -8,24 +8,14 @@ import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
 
-export const AdminPanel = ({
-  warning,
-  setWarning,
-  selectTabIndex,
-  lastIndex,
-  crosslist,
-}) => {
+import { ltikPromise } from '../../services/ltik';
+
+export const AdminPanel = ({ warning, setWarning }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
-    selectTabIndex: PropTypes.func,
-    lastIndex: PropTypes.number,
-    crosslist: PropTypes.array,
-  };
-
-  const goBack = () => {
-    selectTabIndex(lastIndex);
   };
 
   // Controlled state of 'Bruincast notice' input
@@ -33,26 +23,74 @@ export const AdminPanel = ({
 
   // Controlled state of 'Bruincast crosslists' input
   const [currCrosslist, setCurrCrosslist] = useState('');
-  const initializeCrosslist = () => {
-    let clStr = '';
-    for (const course of crosslist) {
-      clStr = `${clStr}\n${course.label}`;
-    }
-    clStr = clStr.substr(1, clStr.length);
-    setCurrCrosslist(clStr);
+
+  const retrieveAllCrosslists = () => {
+    ltikPromise.then(ltik => {
+      axios.get(`/api/medias/bruincast/crosslists?ltik=${ltik}`).then(res => {
+        const lists = res.data;
+        let crosslistStr = '';
+        for (const list of lists) {
+          for (const label of list) {
+            crosslistStr += `${label}=`;
+          }
+          crosslistStr = `${crosslistStr.substr(0, crosslistStr.length - 1)}\n`;
+        }
+        crosslistStr = crosslistStr.substr(0, crosslistStr.length - 1);
+        setCurrCrosslist(crosslistStr);
+      });
+    });
   };
-  useEffect(initializeCrosslist, []);
+  useEffect(retrieveAllCrosslists, []);
 
   const handleCrosslistChange = e => {
     setCurrCrosslist(e.target.value);
   };
 
   // Submit logic
-  const submitEverything = () => {
+  const submitWarning = async () => {
     const warningToBeSubmitted = dompurify.sanitize(currWarning);
     // Submit to backend here
-    setWarning(warningToBeSubmitted);
-    goBack();
+    ltikPromise.then(ltik => {
+      axios
+        .post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
+          notice: warningToBeSubmitted,
+        })
+        .then(() => {
+          setWarning(warningToBeSubmitted);
+          return warningToBeSubmitted;
+        });
+    });
+  };
+
+  const submitCrosslist = async () => {
+    let strToBeSubmitted = currCrosslist;
+    if (strToBeSubmitted.charAt(strToBeSubmitted.length - 1) === '\n') {
+      strToBeSubmitted = strToBeSubmitted.substr(
+        0,
+        strToBeSubmitted.length - 1
+      );
+    }
+    const listOfStrs = strToBeSubmitted.split('\n');
+    const listOfArr = [];
+    for (let str of listOfStrs) {
+      if (str.charAt(str.length - 1) === '=') {
+        str = str.substr(0, str.length - 1);
+      }
+      const arr = str.split('=');
+      listOfArr.push(arr);
+    }
+    // Post to back-end here
+    return listOfArr;
+  };
+
+  const submitEverything = async () => {
+    try {
+      await submitWarning();
+      await submitCrosslist();
+      alert('Submission successful!');
+    } catch (e) {
+      alert('Something went wrong...');
+    }
   };
 
   // JSX
@@ -76,9 +114,6 @@ export const AdminPanel = ({
       <View display="block" padding="auto" textAlign="center">
         <Button color="primary" onClick={submitEverything} margin="small">
           Submit
-        </Button>
-        <Button onClick={goBack} margin="small">
-          Cancel
         </Button>
       </View>
     </View>

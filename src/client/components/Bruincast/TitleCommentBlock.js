@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import dompurify from 'dompurify';
 import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
-import { Text } from '@instructure/ui-text';
 
 export const TitleCommentBlock = ({ title, comments }) => {
   TitleCommentBlock.propTypes = {
     title: PropTypes.string.isRequired,
-    comments: PropTypes.array,
+    comments: PropTypes.string,
   };
-  if (!comments || comments.length === 0 || comments[0] === '') {
+
+  const [sanitizedComments, setSanitizedComments] = useState('');
+  const sanitizeComments = () => {
+    const inlineComments = dompurify
+      .sanitize(comments)
+      .replace(/<p>/g, '<span>')
+      .replace(/<\/p>/g, '</span>')
+      .replace(/ ... /g, '</span><br><span>');
+    setSanitizedComments(`<strong>Comments: </strong>${inlineComments}`);
+  };
+  useEffect(sanitizeComments, []);
+
+  if (
+    !comments ||
+    comments === '' ||
+    comments === '<p></p>' ||
+    comments === '<p><br></p>'
+  ) {
     return (
       <View display="block">
         <strong>Title: </strong>
@@ -18,23 +35,12 @@ export const TitleCommentBlock = ({ title, comments }) => {
     );
   }
   return (
-    <View display="block">
-      <View display="block">
+    <div>
+      <div>
         <strong>Title: </strong>
         {title}
-      </View>
-      <Text>
-        <strong>Comments: </strong>
-        {comments[0]}
-      </Text>
-      {comments
-        .filter((comment, index) => index !== 0)
-        .map(comment => (
-          <View>
-            <br />
-            <Text>{comment}</Text>
-          </View>
-        ))}
-    </View>
+      </div>
+      <span dangerouslySetInnerHTML={{ __html: sanitizedComments }} />
+    </div>
   );
 };

@@ -10,33 +10,18 @@ router.get('/notice', (req, res) => {
 });
 
 router.post('/notice', (req, res) => {
-  // Update notice in db here
-  res.send('Notice updated!');
+  const { notice } = req.body;
+  BruincastServices.setNotice(notice).then(ret => res.send(ret));
 });
 
-router.get('/crosslist', (req, res) => {
-  const { courseLabel } = req.query;
-  // Get a list of all crosslist course labels
-  const labelList = [courseLabel, '20S-CS32'];
-  // Get course object for each label
-  // Code below is just a sample. Replace with db queries.
-  const { context } = res.locals.context;
-  context.quarter = context.label.substr(0, context.label.indexOf('-'));
-  const courseList = [
-    context,
-    {
-      id: 69420,
-      label: '20S-CS32',
-      quarter: '20S',
-      title: 'CS 32',
-    },
-  ];
-  return res.send(courseList);
+router.get('/crosslists', (req, res) => {
+  BruincastServices.getAllCrosslists().then(list => res.send(list));
 });
 
 router.get('/casts', (req, res) => {
-  const { courseLabel } = req.query;
-  BruincastServices.getCasts(courseLabel).then(casts => res.send(casts));
+  const { context } = res.locals.context;
+  context.quarter = context.label.substr(0, context.label.indexOf('-'));
+  BruincastServices.getCasts(context).then(casts => res.send(casts));
 });
 
 router.get('/url', (req, res) => {
