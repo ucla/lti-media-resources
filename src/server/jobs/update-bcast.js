@@ -2,6 +2,7 @@ const axios = require('axios');
 const qs = require('qs');
 const { MongoClient } = require('mongodb');
 const winston = require('winston');
+const registrar = require('../services/registrar');
 require('dotenv').config();
 
 // Global variable to store the cookie after logging into BruinCast API
@@ -33,8 +34,9 @@ const logger = winston.createLogger({
 
 /**
  * Converts the term from 20S to spring-2020, etc.
- * @param  {String} term Term in the YYQ format where YY is year and Q is quarter
- * @return {String}      Term with spelled out quarter and full year
+ *
+ * @param  {string} term Term in the YYQ format where YY is year and Q is quarter
+ * @returns {string}      Term with spelled out quarter and full year
  */
 function convertTerm(term) {
   let formattedTerm = `20${term.charAt(0)}${term.charAt(1)}`;
@@ -85,8 +87,9 @@ async function loginBruinCast() {
 
 /**
  * Sends GET request to BruinCast API to get Class IDs with available media for given term.
- * @param  {String} term Term with spelled out quarter and full year
- * @param  {String} callback Name of callback function
+ *
+ * @param  {string} term Term with spelled out quarter and full year
+ * @param  {string} callback Name of callback function
  */
 async function getCourses(term, callback) {
   const config = {
@@ -108,9 +111,10 @@ async function getCourses(term, callback) {
 
 /**
  * Sends GET request to BruinCast API to get media for given term and Class ID.
- * @param  {String} term Term with spelled out quarter and full year
- * @param  {String} classID Nine-digit Class ID (a.k.a. SRS number)
- * @param  {String} callback Name of callback function
+ *
+ * @param  {string} term Term with spelled out quarter and full year
+ * @param  {string} classID Nine-digit Class ID (a.k.a. SRS number)
+ * @param  {string} callback Name of callback function
  */
 async function getMedia(term, classID, callback) {
   const config = {
@@ -132,13 +136,13 @@ async function getMedia(term, classID, callback) {
 
 /**
  * Inserts an array of JSON-formatted entries into database's BruinCast collection.
+ *
  * @param  {MongoClient} client A connected MongoClient
  * @param  {ClientSession} session A session started by client
- * @param  {[Object]} entries An array of JSON-formatted objects for media entries
- * @return {int} Number of records inserted into the collection
+ * @param  {Array} entries An array of JSON-formatted objects for media entries
+ * @returns {number} Number of records inserted into the collection
  */
 async function insertMediaEntries(client, session, entries) {
-  // logger.info(entries);
   const result = await client
     .db(process.env.DB_DATABASE)
     .collection('bruincastmedia')
@@ -148,11 +152,12 @@ async function insertMediaEntries(client, session, entries) {
 
 /**
  * Deletes all media entries for a given term and Class ID
+ *
  * @param  {MongoClient} client A connected MongoClient
  * @param  {ClientSession} session A session started by client
- * @param  {String} classTerm A class term formatted as YYQ
- * @param  {String} classIDnum A 9-digit Class ID
- * @return {int} Number of records deleted in the collection
+ * @param  {string} classTerm A class term formatted as YYQ
+ * @param  {string} classIDnum A 9-digit Class ID
+ * @returns {number} Number of records deleted in the collection
  */
 async function deleteMediaEntriesForClass(
   client,
@@ -173,10 +178,11 @@ async function deleteMediaEntriesForClass(
 
 /**
  * For a given term and Class ID, delete all records and insert new entries
+ *
  * @param  {MongoClient} client A connected MongoClient
- * @param  {String} classTerm A class term formatted as YYQ
- * @param  {String} classIDnum A 9-digit Class ID
- * @param  {[Object]} entries An array of JSON-formatted objects for media entries
+ * @param  {string} classTerm A class term formatted as YYQ
+ * @param  {string} classIDnum A 9-digit Class ID
+ * @param  {Array} entries An array of JSON-formatted objects for media entries
  */
 async function updateRecordsForClass(client, classTerm, classIDnum, entries) {
   const session = client.startSession();
@@ -192,11 +198,11 @@ async function updateRecordsForClass(client, classTerm, classIDnum, entries) {
     await session.commitTransaction();
     session.endSession();
     if (numDeleted === numInserted) {
-      logger.log('verbose', 'No records added/deleted.');
+      logger.log('verbose', 'No records added/deleted');
     } else if (numDeleted < numInserted) {
-      logger.info(`Added ${numInserted - numDeleted} record(s).`);
+      logger.info(`Added ${numInserted - numDeleted} record(s)`);
     } else {
-      logger.info(`Deleted ${numDeleted - numInserted} record(s).`);
+      logger.info(`Deleted ${numDeleted - numInserted} record(s)`);
     }
   } catch (err) {
     await session.abortTransaction();
@@ -205,6 +211,9 @@ async function updateRecordsForClass(client, classTerm, classIDnum, entries) {
   }
 }
 
+/**
+ * Runs the script's main logic of updating BruinCast media database records
+ */
 async function main() {
   // Log in to BruinCast API and store cookie
   await loginBruinCast();
@@ -235,7 +244,10 @@ async function main() {
       // For each term and Class ID, get the associated media and update records
       for await (const course of courses) {
         const currentClassID = course['srs #'];
-        const currentClassShortname = '20S-MATH33B-1';
+        const currentClassShortname = await registrar.getShortname(
+          currentTerm,
+          currentClassID
+        );
         logger.info(
           `Updating records for ${currentClassShortname} (Class ID: ${currentClassID})`
         );
