@@ -39,6 +39,7 @@
     "crypto-js": "^4.0.0",
     "dompurify": "^2.0.12",
     "dotenv": "^8.2.0",
+    "eslint-plugin-jsdoc": "^30.0.3",
     "express": "^4.16.3",
     "immutable": "^4.0.0-rc.12",
     "jsdom": "^16.3.0",
