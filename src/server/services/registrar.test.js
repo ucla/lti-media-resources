@@ -1,27 +1,36 @@
-/**
- * @jest-environment node
- */
-
 // https://github.com/axios/axios/issues/1754
 // https://dev.to/zaklaughton/the-only-3-steps-you-need-to-mock-an-api-call-in-jest-39mb
-// to run: yarn run test
+// To run: yarn run test
 
-require('regenerator-runtime/runtime');
-const axios = require('axios');
-const registrar = require('./registrar');
+import { mockImplementation } from 'axios';
+import registrar from './registrar';
+
 require('dotenv').config();
 
 jest.mock('axios');
 
 /**
- * @param config
+ * Mocks getToken call.
+ *
+ * @param {object} config   Parameters being passed to axios.
+ * @returns {string}        On valid response, returns good token
+ * @throws Exception for HTTP error codes.
  */
 async function axiosMock(config) {
-  if (config.url === `${process.env.REGISTRAR_API_URL}bad url`) {
+  /* eslint-disable no-throw-literal */
+  if (config.url === '/badurl') {
+    // 400 response
+    throw {
+      response: {
+        status: 400,
+      },
+    };
+  } else if (config.url === '/emptyurl') {
     // 404 response
     throw {
       response: {
         status: 404,
+        data: null,
       },
     };
   } else if (process.env.reg_token === 'bad token') {
@@ -38,25 +47,31 @@ async function axiosMock(config) {
       data: 'good response',
     };
   }
+  /* eslint-enable no-throw-literal */
 }
-axios.mockImplementation(axiosMock);
+mockImplementation(axiosMock);
 registrar.getToken = jest.fn().mockResolvedValue('good token');
 
 // Call good link, should return correct values
-test('1. Normal token retrieval', async () => {
-  const response = await registrar.call({ url: 'good url' });
+test('Normal token retrieval', async () => {
+  const response = await registrar.call({ url: '/goodurl' });
   expect(response).toEqual('good response');
 });
 
 // Set token to garbage, call good link, should return correct values
-test('2. Bad token handling', async () => {
+test('Bad token handling', async () => {
   process.env.reg_token = 'bad token';
-  const response = await registrar.call({ url: 'good url' });
+  const response = await registrar.call({ url: '/goodurl' });
   expect(response).toEqual('good response');
 });
 
-// Given a garbage link, should log 404 and return null
-test('3. Bad endpoint handling', async () => {
-  const response = await registrar.call({ url: 'bad url' });
+// Given a garbage link, should log 400 and return exception
+test('Bad endpoint handling', async () => {
+  await expect(registrar.call({ url: '/badurl' })).rejects.toThrow();
+});
+
+// Given a empty records it should return null
+test('Empty results handling', async () => {
+  const response = await registrar.call({ url: '/emptyurl' });
   expect(response).toEqual(null);
 });
