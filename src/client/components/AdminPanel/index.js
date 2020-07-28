@@ -6,16 +6,23 @@ import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
+import { Tabs } from '@instructure/ui-tabs';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
+import { BruinCastListings } from './BruinCastListings';
 import { ltikPromise } from '../../services/ltik';
 
 export const AdminPanel = ({ warning, setWarning }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
+  };
+
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const handleTabChange = (event, { index }) => {
+    setSelectedTabIndex(index);
   };
 
   // Controlled state of 'Bruincast notice' input
@@ -96,26 +103,39 @@ export const AdminPanel = ({ warning, setWarning }) => {
   // JSX
   return (
     <View>
-      <View>
-        <Text weight="bold">Bruincast notice</Text>
-        <ReactQuill
-          theme="snow"
-          value={currWarning}
-          onChange={setCurrWarning}
-        />
-      </View>
-      <View margin="small">
-        <TextArea
-          label="Bruincast crosslists"
-          value={currCrosslist}
-          onChange={handleCrosslistChange}
-        />
-      </View>
-      <View display="block" padding="auto" textAlign="center">
-        <Button color="primary" onClick={submitEverything} margin="small">
-          Submit
-        </Button>
-      </View>
+      <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
+        <Tabs.Panel
+          renderTitle="BruinCast Settings"
+          isSelected={selectedTabIndex === 0}
+        >
+          <View>
+            <Text weight="bold">Bruincast notice</Text>
+            <ReactQuill
+              theme="snow"
+              value={currWarning}
+              onChange={setCurrWarning}
+            />
+          </View>
+          <View margin="small">
+            <TextArea
+              label="Bruincast crosslists"
+              value={currCrosslist}
+              onChange={handleCrosslistChange}
+            />
+          </View>
+          <View display="block" padding="auto" textAlign="center">
+            <Button color="primary" onClick={submitEverything} margin="small">
+              Submit
+            </Button>
+          </View>
+        </Tabs.Panel>
+        <Tabs.Panel
+          renderTitle="BruinCast Listings"
+          isSelected={selectedTabIndex === 1}
+        >
+          <BruinCastListings />
+        </Tabs.Panel>
+      </Tabs>
     </View>
   );
 };

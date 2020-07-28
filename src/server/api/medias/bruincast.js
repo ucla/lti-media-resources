@@ -24,6 +24,15 @@ router.get('/casts', (req, res) => {
   BruincastServices.getCasts(context).then(casts => res.send(casts));
 });
 
+router.get('/castsbyterm', (req, res) => {
+  const { term } = req.query;
+  BruincastServices.getCastListingsForTerm(term).then(casts => res.send(casts));
+});
+
+router.get('/allcasts', (req, res) => {
+  BruincastServices.getAllCastListings().then(media => res.send(media));
+});
+
 router.get('/url', (req, res) => {
   const { quarter, type, src } = req.query;
   if (!quarter || !type || !src) {

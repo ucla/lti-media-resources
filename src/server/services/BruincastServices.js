@@ -27,6 +27,7 @@ class BruincastServices {
   }
 
   static async getCasts(course) {
+    // Console.log(course);
     // First, get all crosslists
     const courseList = [
       course,
@@ -54,6 +55,75 @@ class BruincastServices {
       });
     }
     return castsByCourses;
+  }
+
+  static formatCastListings(castEntries) {
+    const formattedArray = [];
+    let currentShortname = '';
+    let currentListings = [];
+    for (const [i, entry] of castEntries.entries()) {
+      const entryClassShortname = entry.classShortname;
+
+      let filetype = 'Audio/Video';
+      let file = '';
+      if (entry.video === '' && entry.audio === '') {
+        filetype = 'None';
+      } else if (entry.video === '') {
+        filetype = 'Audio';
+        file = entry.audio;
+      } else if (entry.audio === '') {
+        filetype = 'Video';
+        file = entry.video;
+      } else {
+        file = `${entry.audio}, ${entry.video}`;
+      }
+
+      const formattedEntry = {
+        term: entry.term,
+        classID: entry.classID,
+        date: entry.date,
+        title: entry.title,
+        comments: dompurify.sanitize(entry.comments),
+        type: filetype,
+        filename: file,
+      };
+
+      if (i === 0) {
+        currentShortname = entryClassShortname;
+      }
+
+      if (entryClassShortname !== currentShortname) {
+        formattedArray.push({
+          courseShortname: currentShortname,
+          courseListings: currentListings,
+        });
+        currentListings = [];
+        currentShortname = entryClassShortname;
+      }
+
+      currentListings.push(formattedEntry);
+
+      if (i === castEntries.length - 1) {
+        formattedArray.push({
+          courseShortname: currentShortname,
+          courseListings: currentListings,
+        });
+      }
+    }
+
+    return formattedArray;
+  }
+
+  static async getCastListingsForTerm(term) {
+    const castsForTerm = await MediaQuery.getCastsByTerm(term);
+    const formattedArray = this.formatCastListings(castsForTerm);
+    return formattedArray;
+  }
+
+  static async getAllCastListings() {
+    const allMediaArray = await MediaQuery.getAllBruinCastMedia();
+    const formattedArray = this.formatCastListings(allMediaArray);
+    return formattedArray;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {
