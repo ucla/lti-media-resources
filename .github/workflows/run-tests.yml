@@ -17,6 +17,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install modules
         run: yarn install --frozen-lockfile
+      - name: Copy .env file
+        uses: canastro/copy-file-action@master
+        with:
+          source: '.env.dist'
+          target: '.env'
       # Run tests and provide coverage diff
       - name: TestCoverage
         id: testCoverage
