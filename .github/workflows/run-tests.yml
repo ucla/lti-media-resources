@@ -1,0 +1,30 @@
+# Performs automated tests on pull requests and pushes to master/develop.
+
+name: Automated testing
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install --frozen-lockfile
+      - name: Copy .env file
+        uses: canastro/copy-file-action@master
+        with:
+          source: '.env.dist'
+          target: '.env'
+      # Run tests and provide coverage diff
+      - name: TestCoverage
+        id: testCoverage
+        uses: anuraag016/Jest-Coverage-Diff@master
+        with:
+          fullCoverageDiff: false
