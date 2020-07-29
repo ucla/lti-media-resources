@@ -9,9 +9,14 @@ class MediaResourceServices {
     for (const label of labelList) {
       bruincastCount += await MediaQuery.getCastCountByCourse(label);
     }
+
+    const videoresCount = await MediaQuery.getVideoResCountByCourse(
+      courseLabel
+    );
+
     return {
       bruincasts: bruincastCount,
-      videos: 69,
+      videos: videoresCount,
       audios: 420,
     };
   }
