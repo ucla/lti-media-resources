@@ -164,8 +164,61 @@ async function getShortname(offeredTermCode, classSectionID) {
   }
 }
 
+/**
+ * Gets the week number, given an academic term and a date
+ *
+ * @param {string} term Academic term, formatted as YYQ (e.g. 20S)
+ * @param {string} date Date string formatted as MM/DD/YYYY
+ * @returns {?string} Returns week number if date is valid in term
+ */
+async function getWeekNumber(term, date) {
+  try {
+    const response = await registrar.call({
+      url: `sis/api/v1/Dictionary/TermSessionsByWeek?SessionTermCode=${term}&SessionCode=RG&PageSize=12`,
+    });
+    if (response === null) return null;
+    const {
+      termSessionsByWeek: [{ termSessionCollection: weeksArray }],
+    } = response;
+
+    // Splits the date parameter into an array: [0] MM, [1] DD, [2] YYYY
+    const dateElements = date.split('/');
+    const dateToCheck = new Date(
+      dateElements[2], // Year
+      dateElements[0] - 1, // Month - 1, because the month is 0-indexed
+      dateElements[1] // Date
+    );
+
+    for (const week of weeksArray) {
+      // The sessionWeekStartDate and sessionWeekEndDate are formatted as YYYY-MM-DD
+      // Split start and end dates into elements array: [0] YYYY, [1] MM, [2] DD
+      const startDateElements = week.sessionWeekStartDate.split('-');
+      const lastDateElements = week.sessionWeekLastDate.split('-');
+      const startDate = new Date(
+        startDateElements[0],
+        startDateElements[1] - 1,
+        startDateElements[2]
+      );
+      const lastDate = new Date(
+        lastDateElements[0],
+        lastDateElements[1] - 1,
+        lastDateElements[2]
+      );
+
+      if (startDate <= dateToCheck && dateToCheck <= lastDate) {
+        return week.sessionWeekNumber;
+      }
+    }
+    return '';
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 registrar = {
   getShortname,
+  getWeekNumber,
   call,
   getToken,
   cacheToken,
