@@ -27,6 +27,7 @@ class BruincastServices {
   }
 
   static async getCasts(course) {
+    // Console.log(course);
     // First, get all crosslists
     const courseList = [
       course,
