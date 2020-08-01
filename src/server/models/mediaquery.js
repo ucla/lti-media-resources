@@ -16,22 +16,18 @@ module.exports.getCastCountByCourse = async courseLabel => {
   return arrayOfCasts.length;
 };
 
-module.exports.getCastsByTerm = async academicTerm => {
+module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
+  let query = {};
+  if (academicTerm !== '') {
+    query = { term: academicTerm };
+  }
+
   const recordsForTerm = await client
     .db(DB_DATABASE)
-    .collection('bruincastmedia')
-    .find({ term: academicTerm })
+    .collection(dbCollection)
+    .find(query)
     .toArray();
   return recordsForTerm;
-};
-
-module.exports.getAllBruinCastMedia = async function() {
-  const allRecords = await client
-    .db(DB_DATABASE)
-    .collection('bruincastmedia')
-    .find({})
-    .toArray();
-  return allRecords;
 };
 
 module.exports.getNotice = async () => {

@@ -24,13 +24,21 @@ router.get('/casts', (req, res) => {
   BruincastServices.getCasts(context).then(casts => res.send(casts));
 });
 
-router.get('/castsbyterm', (req, res) => {
+router.get('/castlistings', (req, res) => {
   const { term } = req.query;
-  BruincastServices.getCastListingsForTerm(term).then(casts => res.send(casts));
-});
-
-router.get('/allcasts', (req, res) => {
-  BruincastServices.getAllCastListings().then(media => res.send(media));
+  const { roles } = res.locals.token;
+  let authorized = false;
+  for (const role of roles) {
+    if (
+      role.toLowerCase().includes('administrator') ||
+      role.toLowerCase().includes('admin')
+    ) {
+      authorized = true;
+      break;
+    }
+  }
+  if (!authorized) return res.status(400).send(new Error('Unauthorized role'));
+  BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 
 router.get('/url', (req, res) => {

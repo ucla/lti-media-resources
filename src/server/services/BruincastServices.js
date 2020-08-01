@@ -27,7 +27,6 @@ class BruincastServices {
   }
 
   static async getCasts(course) {
-    // Console.log(course);
     // First, get all crosslists
     const courseList = [
       course,
@@ -114,15 +113,9 @@ class BruincastServices {
     return formattedArray;
   }
 
-  static async getCastListingsForTerm(term) {
-    const castsForTerm = await MediaQuery.getCastsByTerm(term);
-    const formattedArray = this.formatCastListings(castsForTerm);
-    return formattedArray;
-  }
-
-  static async getAllCastListings() {
-    const allMediaArray = await MediaQuery.getAllBruinCastMedia();
-    const formattedArray = this.formatCastListings(allMediaArray);
+  static async getCastListings(term) {
+    const media = await MediaQuery.getCastsByTerm('bruincastmedia', term);
+    const formattedArray = this.formatCastListings(media);
     return formattedArray;
   }
 

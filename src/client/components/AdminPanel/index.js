@@ -11,7 +11,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
-import { BruinCastListings } from './BruinCastListings';
+import { BruincastListings } from './BruincastListings';
+import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
 export const AdminPanel = ({ warning, setWarning }) => {
@@ -20,7 +21,10 @@ export const AdminPanel = ({ warning, setWarning }) => {
     setWarning: PropTypes.func,
   };
 
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  // Tab change logic
+  const [selectedTabIndex, setSelectedTabIndex] = useState(
+    constants.TAB_ADMIN_PANEL_SETTINGS
+  );
   const handleTabChange = (event, { index }) => {
     setSelectedTabIndex(index);
   };
@@ -105,8 +109,9 @@ export const AdminPanel = ({ warning, setWarning }) => {
     <View>
       <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
         <Tabs.Panel
-          renderTitle="BruinCast Settings"
-          isSelected={selectedTabIndex === 0}
+          id="adminPanelSettings"
+          renderTitle="Bruincast Settings"
+          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_SETTINGS}
         >
           <View>
             <Text weight="bold">Bruincast notice</Text>
@@ -130,10 +135,11 @@ export const AdminPanel = ({ warning, setWarning }) => {
           </View>
         </Tabs.Panel>
         <Tabs.Panel
-          renderTitle="BruinCast Listings"
-          isSelected={selectedTabIndex === 1}
+          id="adminPanelListings"
+          renderTitle="Bruincast Listings"
+          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS}
         >
-          <BruinCastListings />
+          <BruincastListings />
         </Tabs.Panel>
       </Tabs>
     </View>

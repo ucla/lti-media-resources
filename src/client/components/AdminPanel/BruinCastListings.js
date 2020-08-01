@@ -8,47 +8,30 @@ import { TextInput } from '@instructure/ui-text-input';
 import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import axios from 'axios';
 
-import { BruinCastListingsToggle } from './BruinCastListingsToggle';
+import { BruincastListingsToggle } from './BruincastListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
-export const BruinCastListings = () => {
+export const BruincastListings = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [mediaListings, setMediaListings] = useState([]);
-
-  console.log(mediaListings);
 
   const handleTermInput = event => {
     setSearchTerm(event.target.value);
   };
 
-  const retrieveAllBruinCasts = () => {
+  const retrieveCastListings = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/bruincast/allcasts?ltik=${ltik}`)
-        .then(res => setMediaListings(res.data));
-    });
-  };
-  useEffect(retrieveAllBruinCasts, []);
-
-  const retrieveBruinCastsWithSearchTerms = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(`/api/medias/bruincast/castsbyterm?ltik=${ltik}`, {
+        .get(`/api/medias/bruincast/castlistings?ltik=${ltik}`, {
           params: { term: searchTerm },
         })
         .then(res => setMediaListings(res.data));
     });
   };
-  useEffect(retrieveBruinCastsWithSearchTerms, []);
+  useEffect(retrieveCastListings, []);
 
   const searchWithTerms = async () => {
-    console.log(`searchTerm: ${searchTerm}`);
-    if (searchTerm === '') {
-      retrieveAllBruinCasts();
-    } else {
-      retrieveBruinCastsWithSearchTerms();
-    }
-    console.log(mediaListings);
+    retrieveCastListings();
   };
 
   return (
@@ -81,15 +64,6 @@ export const BruinCastListings = () => {
           </Grid.Col>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Col>
-            <div>
-              <Text>
-                <strong>Subject area</strong>
-              </Text>
-            </div>
-          </Grid.Col>
-        </Grid.Row>
-        <Grid.Row>
           <Grid.Col width="auto">
             <Button color="primary" onClick={searchWithTerms}>
               Go
@@ -101,7 +75,7 @@ export const BruinCastListings = () => {
       <View>
         {mediaListings.map(course => (
           <View>
-            <BruinCastListingsToggle
+            <BruincastListingsToggle
               shortname={course.courseShortname}
               term={course.courseTerm}
               listings={course.courseListings}
