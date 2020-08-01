@@ -7,8 +7,8 @@ import { ToggleGroup } from '@instructure/ui-toggle-details';
 
 import { Comment } from '../Comment';
 
-export const BruincastListingsToggle = ({ shortname, listings }) => {
-  BruincastListingsToggle.propTypes = {
+export const BruincastAdminListingsToggle = ({ shortname, listings }) => {
+  BruincastAdminListingsToggle.propTypes = {
     shortname: PropTypes.string,
     listings: PropTypes.array,
   };

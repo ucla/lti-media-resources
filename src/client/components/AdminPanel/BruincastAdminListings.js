@@ -8,10 +8,10 @@ import { TextInput } from '@instructure/ui-text-input';
 import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import axios from 'axios';
 
-import { BruincastListingsToggle } from './BruincastListingsToggle';
+import { BruincastAdminListingsToggle } from './BruincastAdminListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
-export const BruincastListings = () => {
+export const BruincastAdminListings = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [mediaListings, setMediaListings] = useState([]);
 
@@ -75,7 +75,7 @@ export const BruincastListings = () => {
       <View>
         {mediaListings.map(course => (
           <View>
-            <BruincastListingsToggle
+            <BruincastAdminListingsToggle
               shortname={course.courseShortname}
               term={course.courseTerm}
               listings={course.courseListings}
