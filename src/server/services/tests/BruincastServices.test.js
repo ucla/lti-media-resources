@@ -91,8 +91,7 @@ test('Test formatting cast listings', async done => {
       video: 'eeb162-1-20200602-18599.mp4',
       audio: '',
       title: 'Past Lectures',
-      comments:
-        '<p>Video recording is from Spring 2017 (date of lecture: 6/6/2017) ... No audio recording from Spring 2018 (6/5/2018)</p>\n',
+      comments: '<svg><g/onload=alert(2)//<p>',
       timestamp: 1596157102195,
     },
   ];
@@ -148,8 +147,7 @@ test('Test formatting cast listings', async done => {
           classID: '128672200',
           date: '06/02/2020',
           title: 'Past Lectures',
-          comments:
-            '<p>Video recording is from Spring 2017 (date of lecture: 6/6/2017) ... No audio&nbsp;recording&nbsp;from Spring 2018 (6/5/2018)</p>\n',
+          comments: '<svg><g></g></svg>',
           type: 'Video',
           filename: 'eeb162-1-20200602-18599.mp4',
         },

@@ -95,15 +95,21 @@ test('Test getCastsByTerm', async done => {
     .collection(testCollectionName)
     .insertMany(testData);
 
+  // Expect the returned casts to all have term 20S
   const castsFor20S = await getCastsByTerm(testCollectionName, '20S');
   for (const cast of castsFor20S) {
     expect(cast.term).toEqual('20S');
   }
 
-  const termsFor201 = await getCastsByTerm(testCollectionName, '201');
-  for (const cast of termsFor201) {
+  // Expect the returned casts to all have term 201
+  const castsFor201 = await getCastsByTerm(testCollectionName, '201');
+  for (const cast of castsFor201) {
     expect(cast.term).toEqual('201');
   }
+
+  // Expect all casts to be returned
+  const castsForAllTerms = await getCastsByTerm(testCollectionName, '');
+  expect(castsForAllTerms.length).toEqual(6);
 
   done();
 });
