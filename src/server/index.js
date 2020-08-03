@@ -7,14 +7,8 @@ const Lti = require('ltijs').Provider;
 // Connect to db on start
 const client = require('./models/db');
 
-const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}`;
-client.connect(dbURL, err => {
-  if (err) {
-    console.log('Unable to connect to Mongo.');
-    process.exit(1);
-  }
-  console.log('Mongo connected');
-});
+const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
+client.connect(dbURL);
 
 // Routes
 const apiRouter = require('./api');
@@ -79,6 +73,9 @@ lti.app.post('/api/grades', (req, res) => {
   }
 });
 
+/**
+ * Set up everything
+ */
 async function setup() {
   // Deploying provider, connecting to the database and starting express server.
   await lti.deploy({ port: 8080 });
