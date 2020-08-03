@@ -31,7 +31,7 @@ export const BruincastTable = ({ casts, selectMedia, course }) => {
       <Table.Body>
         {casts.map(cast => (
           <Table.Row>
-            <Table.Cell>{cast.date}</Table.Cell>
+            <Table.Cell>{cast.date.toDateString()}</Table.Cell>
             <Table.Cell>
               <PlayButtonGroup
                 audios={cast.audios}

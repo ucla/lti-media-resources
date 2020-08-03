@@ -30,6 +30,19 @@ module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
   return recordsForTerm;
 };
 
+module.exports.getVideoResByCourse = async courseLabel => {
+  const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
+  const toBeReturned = await videoResCollection
+    .find({ classShortname: courseLabel })
+    .toArray();
+  return toBeReturned;
+};
+
+module.exports.getVideoResCountByCourse = async courseLabel => {
+  const arrayOfVideoRes = await this.getVideoResByCourse(courseLabel);
+  return arrayOfVideoRes.length;
+};
+
 module.exports.getNotice = async () => {
   const noticeCollection = client.db(DB_DATABASE).collection('notice');
   const noticeArray = await noticeCollection.find({}).toArray();

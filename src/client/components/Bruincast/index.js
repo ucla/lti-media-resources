@@ -27,7 +27,13 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   const retrieveCasts = () => {
     ltikPromise.then(async ltik => {
       axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
-        setCasts(res.data);
+        const tmpCastsByCourses = res.data;
+        for (const tmpCourse of tmpCastsByCourses) {
+          for (const tmpCast of tmpCourse.casts) {
+            tmpCast.date = new Date(tmpCast.date);
+          }
+        }
+        setCasts(tmpCastsByCourses);
       });
     });
   };

@@ -1,0 +1,11 @@
+	Updated:	7/24/20	3:36pm								
+term	srs	start_date	stop_date	class	instructor	video_title	video_url	filename	subtitle	height	width
+201	4220019107/24/23	8/12/25	AA Studies 1	Pizza	"Race"		201-AFAR1-1/ID6783_TheDiffeenUs.mp4		480	720
+201kk	422041980	6/25/40	3/12/50	A Studies 1	Pizza	"Race"		201-AFA1-1/ID67ryWeTell.mp4		480	720
+201	41z001510	6/17/24	9/22/20	AStudies 1	Pizza	"Race"		201-AFAM1/ID6783_ouseWeLiveIn.mp4		480	720
+201	423001510	8/1a/24	10/22/40	AStudies 1	Pizza	"Palaalante"		201-AF-1/ID21lante.mp4		480	720
+201	423001510	9/30/60	9/12/p0	AStudies 1	Pizza	The Lat Supp		2011/VC13416_TheLer.mp4	480	720
+201	123517120	7/13/28	7/15/20	Ay 133	Kimmm	"Food, In"		201A-AN1/ID6dInc.mp4		480	720 giao
+201	123451110	2/25/20	4/27/90	Asn Studies 50W	Neblah	Saving F		201A-AW-1/ID384gF.mp4		480	720         funny
+201	234567810	6/15/20	9/12/20	"Fvision 146, lec. 1"	Charles Boyle	Incept		201A-FI-1/ID7n.mp4		48o	720
+201	234567810	6/15/20	9/12/20	"Fvision 146, lec. 1"	Charles Boyle	Phenom		201A-FI1/ID79on.mp4		480	72o
