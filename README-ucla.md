@@ -56,6 +56,12 @@
 3. Paste your key into the Public key field
 4. Click "Save changes"
 
+## Mongo Migration
+1. If you don't have migrate-mongo package installed globally, run `npm install -g migrate-mongo`
+2. Inside project directory, run `migrate-mongo up`
+3. To revert any changes, run `migrate-mongo down`
+4. To create or modify migration script, see documentations at https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
+
 ## Test it out
 
 1. Go to a course site
