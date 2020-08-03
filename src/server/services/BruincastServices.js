@@ -32,9 +32,9 @@ class BruincastServices {
       course,
       {
         id: 69420,
-        label: '20S-MATH33B-1',
-        quarter: '20S',
-        title: 'Differential Equations',
+        label: '201-COMSCI32-1',
+        quarter: '201',
+        title: 'Introduction to Computer Science II',
       },
     ];
 

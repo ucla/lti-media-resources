@@ -3,7 +3,7 @@
 // To run: yarn run test
 
 import { mockImplementation } from 'axios';
-import registrar from './registrar';
+import registrar from '../registrar';
 
 require('dotenv').config();
 

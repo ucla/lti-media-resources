@@ -43,6 +43,7 @@
     "dotenv": "^8.2.0",
     "eslint-plugin-jsdoc": "^30.0.3",
     "express": "^4.16.3",
+    "ftp": "^0.3.10",
     "immutable": "^4.0.0-rc.12",
     "jsdom": "^16.3.0",
     "ltijs": "^4.1.1",

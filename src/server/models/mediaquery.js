@@ -5,12 +5,28 @@ const { DB_DATABASE } = process.env;
 
 module.exports.getCastsByCourse = async courseLabel => {
   const castCollection = client.db(DB_DATABASE).collection('bruincastmedia');
-  castCollection.find({ classShortname: courseLabel }).toArray();
+  const toBeReturned = await castCollection
+    .find({ classShortname: courseLabel })
+    .toArray();
+  return toBeReturned;
 };
 
 module.exports.getCastCountByCourse = async courseLabel => {
   const arrayOfCasts = await this.getCastsByCourse(courseLabel);
   return arrayOfCasts.length;
+};
+
+module.exports.getVideoResByCourse = async courseLabel => {
+  const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
+  const toBeReturned = await videoResCollection
+    .find({ classShortname: courseLabel })
+    .toArray();
+  return toBeReturned;
+};
+
+module.exports.getVideoResCountByCourse = async courseLabel => {
+  const arrayOfVideoRes = await this.getVideoResByCourse(courseLabel);
+  return arrayOfVideoRes.length;
 };
 
 module.exports.getNotice = async () => {
