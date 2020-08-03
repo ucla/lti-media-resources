@@ -7,12 +7,10 @@ const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${proc
 const testCollectionName = 'mediaquerytests';
 
 beforeAll(async done => {
+  jest.setTimeout(30000);
   client.connect(dbURL, function() {});
   await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
-  done();
-});
 
-test('Test getCastsByTerm', async done => {
   const testData = [
     {
       classShortname: '201-COMSCI32-1',
@@ -89,33 +87,53 @@ test('Test getCastsByTerm', async done => {
       timestamp: 1596157112438,
     },
   ];
-
   await client
     .db(process.env.DB_DATABASE)
     .collection(testCollectionName)
     .insertMany(testData);
 
-  // Expect the returned casts to all have term 20S
-  const castsFor20S = await getCastsByTerm(testCollectionName, '20S');
-  for (const cast of castsFor20S) {
-    expect(cast.term).toEqual('20S');
-  }
-
-  // Expect the returned casts to all have term 201
-  const castsFor201 = await getCastsByTerm(testCollectionName, '201');
-  for (const cast of castsFor201) {
-    expect(cast.term).toEqual('201');
-  }
-
-  // Expect all casts to be returned
-  const castsForAllTerms = await getCastsByTerm(testCollectionName, '');
-  expect(castsForAllTerms.length).toEqual(6);
-
   done();
+});
+
+test('Test getCastsByTerm 20S', async done => {
+  // Expect the returned casts to all have term 20S
+  try {
+    const castsFor20S = await getCastsByTerm(testCollectionName, '20S');
+    for (const cast of castsFor20S) {
+      expect(cast.term).toEqual('20S');
+    }
+    done();
+  } catch (error) {
+    done(error);
+  }
+});
+
+test('Test getCastsByTerm 201', async done => {
+  // Expect the returned casts to all have term 201
+  try {
+    const castsFor201 = await getCastsByTerm(testCollectionName, '201');
+    for (const cast of castsFor201) {
+      expect(cast.term).toEqual('201');
+    }
+    done();
+  } catch (error) {
+    done(error);
+  }
+});
+
+test('Test getCastsByTerm All', async done => {
+  try {
+    // Expect all casts to be returned
+    const castsForAllTerms = await getCastsByTerm(testCollectionName, '');
+    expect(castsForAllTerms.length).toEqual(6);
+    done();
+  } catch (error) {
+    done(error);
+  }
 });
 
 afterAll(async done => {
   await client.db(process.env.DB_DATABASE).dropCollection(testCollectionName);
-  await client.close();
+  client.close();
   done();
 });
