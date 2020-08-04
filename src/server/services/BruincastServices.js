@@ -26,6 +26,39 @@ class BruincastServices {
     ];
   }
 
+  // Given an array of casts sorted by date, return an array of objects with the casts grouped by week number
+  static groupCastsByWeek(casts) {
+    const docsByWeek = [];
+    let currentWeekNum = '';
+    let currentWeekDocs = [];
+    for (const [i, cast] of casts.entries()) {
+      const docWeek = cast.week;
+      if (i === 0) {
+        currentWeekNum = docWeek;
+      }
+
+      if (docWeek !== currentWeekNum) {
+        docsByWeek.push({
+          week: currentWeekNum,
+          listings: currentWeekDocs,
+        });
+        currentWeekDocs = [];
+        currentWeekNum = docWeek;
+      }
+
+      currentWeekDocs.push(cast);
+
+      if (i === casts.length - 1) {
+        docsByWeek.push({
+          week: currentWeekNum,
+          listings: currentWeekDocs,
+        });
+      }
+    }
+
+    return docsByWeek;
+  }
+
   static async getCasts(course) {
     // First, get all crosslists
     const courseList = [
@@ -49,33 +82,7 @@ class BruincastServices {
       }
       docs.sort((a, b) => a.date - b.date);
 
-      const docsByWeek = [];
-      let currentWeekNum = '';
-      let currentWeekDocs = [];
-      for (const [i, doc] of docs.entries()) {
-        const docWeek = doc.week;
-        if (i === 0) {
-          currentWeekNum = docWeek;
-        }
-
-        if (docWeek !== currentWeekNum) {
-          docsByWeek.push({
-            week: currentWeekNum,
-            listings: currentWeekDocs,
-          });
-          currentWeekDocs = [];
-          currentWeekNum = docWeek;
-        }
-
-        currentWeekDocs.push(doc);
-
-        if (i === docs.length - 1) {
-          docsByWeek.push({
-            week: currentWeekNum,
-            listings: currentWeekDocs,
-          });
-        }
-      }
+      const docsByWeek = this.groupCastsByWeek(docs);
 
       castsByCourses.push({
         course: c,

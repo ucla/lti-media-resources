@@ -2,22 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Table } from '@instructure/ui-table';
-import { ToggleGroup } from '@instructure/ui-toggle-details';
+import { ToggleDetails } from '@instructure/ui-toggle-details';
 
 import { TitleCommentBlock } from './TitleCommentBlock';
 import { PlayButtonGroup } from '../PlayButtonGroup';
-
-const useSemiPersistentState = (key, initialState) => {
-  const [value, setValue] = React.useState(
-    localStorage.getItem(key) || initialState
-  );
-
-  React.useEffect(() => {
-    localStorage.setItem(key, value);
-  }, [value, key]);
-
-  return [value, setValue];
-};
 
 export const BruincastTableWeekToggle = ({
   weekNum,
@@ -33,24 +21,12 @@ export const BruincastTableWeekToggle = ({
     course: PropTypes.object,
     shortname: PropTypes.string,
   };
-
-  const [toggled, setToggled] = useSemiPersistentState(
-    `toggled_${shortname}_Week${weekNum}`,
-    false
-  );
-
-  const handleToggling = (event, expanded) => {
-    setToggled(expanded);
-  };
-
   return (
-    <ToggleGroup
+    <ToggleDetails
       id={`${shortname}_week${weekNum}`}
-      toggleLabel={`Week ${weekNum}`}
       summary={`Week ${weekNum}`}
-      background="default"
-      toggled={toggled === true}
-      onToggle={handleToggling}
+      variant="filled"
+      defaultExpanded
     >
       <Table
         id={`${shortname}_tableWeek${weekNum}`}
@@ -72,10 +48,11 @@ export const BruincastTableWeekToggle = ({
         </Table.Head>
         <Table.Body>
           {weekCasts.map(cast => (
-            <Table.Row key={`listing${cast.date}`}>
+            <Table.Row key={`${cast.date}`}>
               <Table.Cell>{cast.date}</Table.Cell>
               <Table.Cell>
                 <PlayButtonGroup
+                  key={cast.audios[0] || cast.videos[0]}
                   audios={cast.audios}
                   videos={cast.videos}
                   selectMedia={selectMedia}
@@ -92,6 +69,6 @@ export const BruincastTableWeekToggle = ({
           ))}
         </Table.Body>
       </Table>
-    </ToggleGroup>
+    </ToggleDetails>
   );
 };

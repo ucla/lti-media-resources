@@ -19,6 +19,7 @@ export const PlayButtonGroup = ({ audios, videos, selectMedia, course }) => {
       .filter(audio => audio !== '')
       .map(audio => (
         <PlayButton
+          key={audio}
           type="audio"
           selectMedia={selectMedia}
           src={audio}
@@ -33,6 +34,7 @@ export const PlayButtonGroup = ({ audios, videos, selectMedia, course }) => {
       .filter(video => video !== '')
       .map(video => (
         <PlayButton
+          key={video}
           type="video"
           selectMedia={selectMedia}
           src={video}
