@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Text } from '@instructure/ui-text';
 import { Table } from '@instructure/ui-table';
-import { ToggleGroup } from '@instructure/ui-toggle-details';
+import { ToggleDetails } from '@instructure/ui-toggle-details';
 
 import { Comment } from '../Comment';
 
@@ -14,11 +14,10 @@ export const BruincastAdminListingsToggle = ({ shortname, listings }) => {
   };
 
   return (
-    <ToggleGroup
-      id={`toggleGroup${shortname}`}
-      toggleLabel={`Listings for ${shortname}`}
+    <ToggleDetails
+      id={shortname}
       summary={`${shortname} · ${listings.length} listings`}
-      background="default"
+      variant="filled"
     >
       <Table id={`table${shortname}`} hover layout="fixed">
         <Table.Head>
@@ -51,7 +50,7 @@ export const BruincastAdminListingsToggle = ({ shortname, listings }) => {
         </Table.Head>
         <Table.Body>
           {listings.map(listing => (
-            <Table.Row>
+            <Table.Row key={`${shortname}_${listing.filename}`}>
               <Table.Cell>{listing.term}</Table.Cell>
               <Table.Cell>{listing.classID}</Table.Cell>
               <Table.Cell>1</Table.Cell>
@@ -68,6 +67,6 @@ export const BruincastAdminListingsToggle = ({ shortname, listings }) => {
           ))}
         </Table.Body>
       </Table>
-    </ToggleGroup>
+    </ToggleDetails>
   );
 };
