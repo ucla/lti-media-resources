@@ -30,10 +30,6 @@ export const BruincastAdminListings = () => {
   };
   useEffect(retrieveCastListings, []);
 
-  const searchWithTerms = async () => {
-    retrieveCastListings();
-  };
-
   return (
     <View>
       <Grid
@@ -65,7 +61,7 @@ export const BruincastAdminListings = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Col width="auto">
-            <Button color="primary" onClick={searchWithTerms}>
+            <Button color="primary" onClick={retrieveCastListings}>
               Go
             </Button>
           </Grid.Col>
