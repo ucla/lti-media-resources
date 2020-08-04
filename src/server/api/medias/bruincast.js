@@ -18,6 +18,12 @@ router.get('/crosslists', (req, res) => {
   BruincastServices.getAllCrosslists().then(list => res.send(list));
 });
 
+router.post('/crosslists', (req, res) => {
+  BruincastServices.updateCrosslists(req.body.crosslists).then(numDiff =>
+    res.send(numDiff)
+  );
+});
+
 router.get('/casts', (req, res) => {
   const { context } = res.locals.context;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));

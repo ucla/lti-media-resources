@@ -86,17 +86,6 @@ async function main() {
       }
     }
 
-    // Check if collection already exists; if not, create the collection
-    const collectionList = await dbclient
-      .db(process.env.DB_DATABASE)
-      .listCollections()
-      .toArray();
-    if (!collectionList.map(col => col.name).includes('videoreserves')) {
-      await dbclient
-        .db(process.env.DB_DATABASE)
-        .createCollection('videoreserves');
-    }
-
     // For each course, update its records
     for (const srsPair of srsShortnameMap) {
       await UpdateVideoResServices.updateRecordsForClass(
