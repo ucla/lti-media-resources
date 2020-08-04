@@ -51,6 +51,7 @@
     "immutable": "^4.0.0-rc.12",
     "jsdom": "^16.3.0",
     "ltijs": "^4.1.1",
+    "migrate-mongo": "^8.1.1",
     "mongodb": "^3.5.9",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",

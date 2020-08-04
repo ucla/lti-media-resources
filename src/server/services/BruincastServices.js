@@ -20,23 +20,25 @@ class BruincastServices {
   }
 
   static async getAllCrosslists() {
-    return [
-      ['131A-ART133-1', '20S-MATH33B-1'],
-      ['a', 'b', 'c'],
-    ];
+    const toBeReturned = await MediaQuery.getAllCrosslists();
+    return toBeReturned;
+  }
+
+  static async updateCrosslists(crosslists) {
+    const numDiff = await MediaQuery.setCrosslists(crosslists);
+    return numDiff;
   }
 
   static async getCasts(course) {
-    // First, get all crosslists
-    const courseList = [
-      course,
-      {
-        id: 69420,
-        label: '201-COMSCI32-1',
-        quarter: '201',
-        title: 'Introduction to Computer Science II',
-      },
-    ];
+    const labelList = await MediaQuery.getCrosslistByCourse(course.label);
+    const courseList = [course];
+
+    for (const label of labelList) {
+      courseList.push({
+        label,
+        quarter: label.split('-')[0],
+      });
+    }
 
     const castsByCourses = [];
     for (const c of courseList) {

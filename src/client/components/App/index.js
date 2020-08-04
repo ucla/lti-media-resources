@@ -84,7 +84,11 @@ const App = () => {
         renderTitle="Admin Panel"
         isSelected={tabSelectedIndex === constants.TAB_ADMIN_PANEL}
       >
-        <AdminPanel warning={warning} setWarning={setWarning} />
+        <AdminPanel
+          warning={warning}
+          setWarning={setWarning}
+          retrieveNums={retrieveNums}
+        />
       </Tabs.Panel>
     );
   }

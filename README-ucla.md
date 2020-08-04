@@ -56,6 +56,13 @@
 3. Paste your key into the Public key field
 4. Click "Save changes"
 
+## Mongo Migration
+
+1. If you don't have migrate-mongo package installed globally, run `yarn global add migrate-mongo`
+2. Inside project directory, run `migrate-mongo up`
+3. To revert any changes, run `migrate-mongo down`
+4. To create or modify migration script, see documentations at https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
+
 ## Test it out
 
 1. Go to a course site
@@ -77,7 +84,7 @@ You should only need to do this configuration once. (The following steps were te
 2. Start MongoDB by running `mongod --port 27017 --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --replSet rs0 --bind_ip localhost`
 
    - The paths for `--dbpath` and `--logpath` might vary depending your system
-      - Look for the paths in the [MongoDB configuration file](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file)
+     - Look for the paths in the [MongoDB configuration file](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file)
    - The `--dbpath` must be specified as such on Catalina or newer because Catalina has made the root volume read-only, so the default `/data/db` path does not work
    - The argument after `--replSet` should match the `DB_REPLSET` .env variable
 
