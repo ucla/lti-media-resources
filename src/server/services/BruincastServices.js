@@ -48,9 +48,39 @@ class BruincastServices {
         doc.comments = dompurify.sanitize(doc.comments);
       }
       docs.sort((a, b) => a.date - b.date);
+
+      const docsByWeek = [];
+      let currentWeekNum = '';
+      let currentWeekDocs = [];
+      for (const [i, doc] of docs.entries()) {
+        const docWeek = doc.week;
+        if (i === 0) {
+          currentWeekNum = docWeek;
+        }
+
+        if (docWeek !== currentWeekNum) {
+          docsByWeek.push({
+            week: currentWeekNum,
+            listings: currentWeekDocs,
+          });
+          currentWeekDocs = [];
+          currentWeekNum = docWeek;
+        }
+
+        currentWeekDocs.push(doc);
+
+        if (i === docs.length - 1) {
+          docsByWeek.push({
+            week: currentWeekNum,
+            listings: currentWeekDocs,
+          });
+        }
+      }
+
       castsByCourses.push({
         course: c,
-        casts: docs,
+        shortname: c.label,
+        casts: docsByWeek,
       });
     }
     return castsByCourses;

@@ -33,6 +33,7 @@
     "@instructure/ui-tabs": "^7.1.1",
     "@instructure/ui-text": "^7.1.1",
     "@instructure/ui-text-area": "^7.1.1",
+    "@instructure/ui-toggle-details": "^7.1.2",
     "@instructure/ui-view": "^7.1.1",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",

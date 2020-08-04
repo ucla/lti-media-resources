@@ -104,6 +104,7 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
               casts={currCourse.casts}
               selectMedia={selectMedia}
               course={currCourse.course}
+              shortname={currCourse.shortname}
             />
           </Tabs.Panel>
         ))}

@@ -5,7 +5,10 @@ const { DB_DATABASE } = process.env;
 
 module.exports.getCastsByCourse = async courseLabel => {
   const castCollection = client.db(DB_DATABASE).collection('bruincastmedia');
-  castCollection.find({ classShortname: courseLabel }).toArray();
+  const toBeReturned = await castCollection
+    .find({ classShortname: courseLabel })
+    .toArray();
+  return toBeReturned;
 };
 
 module.exports.getCastCountByCourse = async courseLabel => {
