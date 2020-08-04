@@ -1,0 +1,13 @@
+name: 'Commit Message Check'
+on: push
+
+jobs:
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: 'CANVAS-[0-9]+\ -\ .{5,}'
+          error: 'Commit message needs to match CANVAS-<TICKET NUMBER> - <Description>, where Description is at least 5 characters'
