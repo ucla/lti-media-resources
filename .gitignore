@@ -4,3 +4,6 @@ dist
 *.log
 .env
 .DS_Store
+# Server certificates and keys
+src/server/locals/*.cer
+src/server/locals/*.key

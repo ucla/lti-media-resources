@@ -6,16 +6,18 @@ import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
+import { Alert } from '@instructure/ui-alerts';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const AdminPanel = ({ warning, setWarning }) => {
+export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
+    retrieveNums: PropTypes.func,
   };
 
   // Controlled state of 'Bruincast notice' input
@@ -42,27 +44,32 @@ export const AdminPanel = ({ warning, setWarning }) => {
   };
   useEffect(retrieveAllCrosslists, []);
 
+  const [crosslistChanged, setCrosslistChanged] = useState(false);
   const handleCrosslistChange = e => {
     setCurrCrosslist(e.target.value);
+    setCrosslistChanged(true);
   };
+
+  const [alert, setAlert] = useState(null);
 
   // Submit logic
   const submitWarning = async () => {
     const warningToBeSubmitted = dompurify.sanitize(currWarning);
-    // Submit to backend here
-    ltikPromise.then(ltik => {
-      axios
-        .post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
-          notice: warningToBeSubmitted,
-        })
-        .then(() => {
-          setWarning(warningToBeSubmitted);
-          return warningToBeSubmitted;
-        });
-    });
+    if (warningToBeSubmitted !== warning) {
+      const ltik = await ltikPromise;
+      await axios.post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
+        notice: warningToBeSubmitted,
+      });
+      setWarning(warningToBeSubmitted);
+      return true;
+    }
+    return false;
   };
 
   const submitCrosslist = async () => {
+    if (!crosslistChanged) {
+      return { insertedCount: 0, deletedCount: 0, updated: false };
+    }
     let strToBeSubmitted = currCrosslist;
     if (strToBeSubmitted.charAt(strToBeSubmitted.length - 1) === '\n') {
       strToBeSubmitted = strToBeSubmitted.substr(
@@ -79,23 +86,43 @@ export const AdminPanel = ({ warning, setWarning }) => {
       const arr = str.split('=');
       listOfArr.push(arr);
     }
-    // Post to back-end here
-    return listOfArr;
+    const ltik = await ltikPromise;
+    const res = await axios.post(
+      `/api/medias/bruincast/crosslists?ltik=${ltik}`,
+      {
+        crosslists: listOfArr,
+      }
+    );
+    setCrosslistChanged(false);
+    retrieveNums();
+    return res.data;
   };
 
   const submitEverything = async () => {
     try {
-      await submitWarning();
-      await submitCrosslist();
-      alert('Submission successful!');
+      const noticeUpdateStatus = await submitWarning();
+      const { insertedCount, deletedCount, updated } = await submitCrosslist();
+      const noticeUpdatedStr = noticeUpdateStatus
+        ? 'Notice updated.'
+        : 'Notice unchanged.';
+      const listUpdatedStr = updated
+        ? `Crosslists updated with ${deletedCount} deletions then ${insertedCount} insertions.`
+        : 'Crosslists unchanged.';
+      setAlert(
+        <Alert variant="success">
+          <p>{noticeUpdatedStr}</p>
+          <p>{listUpdatedStr}</p>
+        </Alert>
+      );
     } catch (e) {
-      alert('Something went wrong...');
+      setAlert(<Alert variant="error">Something went wrong...</Alert>);
     }
   };
 
   // JSX
   return (
     <View>
+      {alert}
       <View>
         <Text weight="bold">Bruincast notice</Text>
         <ReactQuill

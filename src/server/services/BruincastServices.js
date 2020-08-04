@@ -20,10 +20,13 @@ class BruincastServices {
   }
 
   static async getAllCrosslists() {
-    return [
-      ['131A-ART133-1', '20S-MATH33B-1'],
-      ['a', 'b', 'c'],
-    ];
+    const toBeReturned = await MediaQuery.getAllCrosslists();
+    return toBeReturned;
+  }
+
+  static async updateCrosslists(crosslists) {
+    const numDiff = await MediaQuery.setCrosslists(crosslists);
+    return numDiff;
   }
 
   // Given an array of casts sorted by date, return an array of objects with the casts grouped by week number
@@ -60,16 +63,15 @@ class BruincastServices {
   }
 
   static async getCasts(course) {
-    // First, get all crosslists
-    const courseList = [
-      course,
-      {
-        id: 69420,
-        label: '20S-MATH33B-1',
-        quarter: '20S',
-        title: 'Differential Equations',
-      },
-    ];
+    const labelList = await MediaQuery.getCrosslistByCourse(course.label);
+    const courseList = [course];
+
+    for (const label of labelList) {
+      courseList.push({
+        label,
+        quarter: label.split('-')[0],
+      });
+    }
 
     const castsByCourses = [];
     for (const c of courseList) {
