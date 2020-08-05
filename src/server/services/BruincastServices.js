@@ -19,18 +19,29 @@ class BruincastServices {
     return ret;
   }
 
-  static async getAllCrosslists() {
-    const toBeReturned = await MediaQuery.getAllCrosslists();
+  static async getAllCrosslists(collectionName) {
+    const toBeReturned = await MediaQuery.getAllCrosslists(collectionName);
     return toBeReturned;
   }
 
-  static async updateCrosslists(crosslists) {
-    const numDiff = await MediaQuery.setCrosslists(crosslists);
+  static async updateCrosslists(crosslists, collectionName) {
+    const numDiff = await MediaQuery.setCrosslists(crosslists, collectionName);
     return numDiff;
   }
 
+  static async getCrosslistByCourse(courseLabel, collectionName) {
+    const toBeReturned = await MediaQuery.getCrosslistByCourse(
+      courseLabel,
+      collectionName
+    );
+    return toBeReturned;
+  }
+
   static async getCasts(course) {
-    const labelList = await MediaQuery.getCrosslistByCourse(course.label);
+    const labelList = await this.getCrosslistByCourse(
+      course.label,
+      'crosslists'
+    );
     const courseList = [course];
 
     for (const label of labelList) {

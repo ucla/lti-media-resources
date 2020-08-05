@@ -3,21 +3,20 @@ const { MongoClient } = require('mongodb');
 module.exports.client = null;
 
 // Create a connection to url and call callback()
-module.exports.connect = function(url, callback) {
+module.exports.connect = async function(url) {
   if (this.client) {
     // Connection has already been established
-    callback();
+    return;
   }
   // Create a new connection
   this.client = new MongoClient(url, { useUnifiedTopology: true });
-  this.client.connect(function(err) {
-    if (err) {
-      this.client = null;
-      callback(err);
-    } else {
-      callback();
-    }
-  });
+  try {
+    await this.client.connect();
+    return this.client;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 };
 
 // Get database using pre-established connection
@@ -26,9 +25,9 @@ module.exports.db = function(dbName) {
 };
 
 // Close open connection
-module.exports.close = function() {
+module.exports.close = async function() {
   if (this.client) {
-    this.client.close();
+    await this.client.close();
     this.client = null;
   }
 };

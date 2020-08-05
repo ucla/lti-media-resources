@@ -15,7 +15,14 @@ router.post('/notice', (req, res) => {
 });
 
 router.get('/crosslists', (req, res) => {
-  BruincastServices.getAllCrosslists().then(list => res.send(list));
+  BruincastServices.getAllCrosslists('crosslists').then(list => res.send(list));
+});
+
+router.post('/crosslists', (req, res) => {
+  BruincastServices.updateCrosslists(
+    req.body.crosslists,
+    'crosslists'
+  ).then(numDiff => res.send(numDiff));
 });
 
 router.post('/crosslists', (req, res) => {
