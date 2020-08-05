@@ -32,6 +32,17 @@ router.post('/crosslists', (req, res) => {
 });
 
 router.get('/casts', (req, res) => {
+  const roles = res.locals.token.roles.map(role =>
+    role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
+  );
+  if (
+    !roles.includes('learner') &&
+    !roles.includes('teacher') &&
+    !roles.includes('instructor') &&
+    !roles.includes('administrator')
+  ) {
+    return res.status(400);
+  }
   const { context } = res.locals.context;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));
   BruincastServices.getCasts(context).then(casts => res.send(casts));

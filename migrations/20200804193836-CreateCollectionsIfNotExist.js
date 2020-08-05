@@ -10,9 +10,6 @@ module.exports = {
     if (!collectionList.map(col => col.name).includes('videoreserves')) {
       await db.createCollection('videoreserves');
     }
-    if (!collectionList.map(col => col.name).includes('musicreserves')) {
-      await db.createCollection('musicreserves');
-    }
   },
 
   async down() {
