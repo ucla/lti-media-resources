@@ -1,4 +1,4 @@
-class UpdateVideoResServices {
+class UpdateReserveServices {
   /**
    * Inserts an array of JSON-formatted entries into database's BruinCast collection.
    *
@@ -171,4 +171,4 @@ class UpdateVideoResServices {
   }
 }
 
-module.exports = UpdateVideoResServices;
+module.exports = UpdateReserveServices;

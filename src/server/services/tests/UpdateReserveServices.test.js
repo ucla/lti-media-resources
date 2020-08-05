@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const fs = require('fs');
 require('dotenv').config();
 require('babel-polyfill');
-const UpdateVideoresServices = require('../UpdateVideoResServices');
+const UpdateReserveServices = require('../UpdateReserveServices');
 
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
@@ -34,7 +34,7 @@ test('Generate video fields from bad file', done => {
     ) {
       str = str.substr(0, str.length - 1);
     }
-    const result = UpdateVideoresServices.readStrIntoFields(str, mockLogger);
+    const result = UpdateReserveServices.readStrIntoFields(str, mockLogger);
     expect(warn.mock.calls.length).toBe(9);
     expect(result.length).toBe(9);
   });
@@ -60,7 +60,7 @@ test('Generate video fields from good file', done => {
     ) {
       str = str.substr(0, str.length - 1);
     }
-    const result = UpdateVideoresServices.readStrIntoFields(str, mockLogger);
+    const result = UpdateReserveServices.readStrIntoFields(str, mockLogger);
     expect(warn.mock.calls.length).toBe(0);
     expect(result.length).toBe(3);
   });
@@ -100,7 +100,7 @@ test('Update records for class', async done => {
       classShortname: '99F-FILMTV122D-1',
     },
   ];
-  const numDiff1 = await UpdateVideoresServices.updateRecordsForClass(
+  const numDiff1 = await UpdateReserveServices.updateRecordsForClass(
     dbclient,
     'videoreservestests',
     '99F',
@@ -127,7 +127,7 @@ test('Update records for class', async done => {
       classShortname: '99F-FILMTV122D-1',
     },
   ];
-  const numDiff2 = await UpdateVideoresServices.updateRecordsForClass(
+  const numDiff2 = await UpdateReserveServices.updateRecordsForClass(
     dbclient,
     'videoreservestests',
     '99F',

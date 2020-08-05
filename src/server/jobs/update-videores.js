@@ -3,7 +3,7 @@ const winston = require('winston');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');
-const UpdateVideoResServices = require('../services/UpdateVideoResServices');
+const UpdateVideoResServices = require('../services/UpdateReserveServices');
 
 // Global variable for current date and time
 const currentTimestamp = new Date();
@@ -70,7 +70,7 @@ async function main() {
           media.term,
           media.srs
         );
-        if (shortName === null) {
+        if (!shortName) {
           logger.warn(`${media.term}-${media.srs} does not have shortname`);
         } else if (!media.filename.includes(shortName)) {
           logger.warn(
