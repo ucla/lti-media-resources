@@ -19,14 +19,22 @@ class BruincastServices {
     return ret;
   }
 
-  static async getAllCrosslists() {
-    const toBeReturned = await MediaQuery.getAllCrosslists();
+  static async getAllCrosslists(collectionName) {
+    const toBeReturned = await MediaQuery.getAllCrosslists(collectionName);
     return toBeReturned;
   }
 
-  static async updateCrosslists(crosslists) {
-    const numDiff = await MediaQuery.setCrosslists(crosslists);
+  static async updateCrosslists(crosslists, collectionName) {
+    const numDiff = await MediaQuery.setCrosslists(crosslists, collectionName);
     return numDiff;
+  }
+
+  static async getCrosslistByCourse(courseLabel, collectionName) {
+    const toBeReturned = await MediaQuery.getCrosslistByCourse(
+      courseLabel,
+      collectionName
+    );
+    return toBeReturned;
   }
 
   // Given an array of casts sorted by date, return an array of objects with the casts grouped by week number
@@ -63,7 +71,10 @@ class BruincastServices {
   }
 
   static async getCasts(course) {
-    const labelList = await MediaQuery.getCrosslistByCourse(course.label);
+    const labelList = await this.getCrosslistByCourse(
+      course.label,
+      'crosslists'
+    );
     const courseList = [course];
 
     for (const label of labelList) {
@@ -92,6 +103,69 @@ class BruincastServices {
       });
     }
     return castsByCourses;
+  }
+
+  static formatCastListings(castEntries) {
+    const formattedArray = [];
+    let currentShortname = '';
+    let currentListings = [];
+    for (const [i, entry] of castEntries.entries()) {
+      const entryClassShortname = entry.classShortname;
+
+      let filetype = 'Audio/Video';
+      let file = '';
+      if (entry.video === '' && entry.audio === '') {
+        filetype = 'None';
+      } else if (entry.video === '') {
+        filetype = 'Audio';
+        file = entry.audio;
+      } else if (entry.audio === '') {
+        filetype = 'Video';
+        file = entry.video;
+      } else {
+        file = `${entry.audio}, ${entry.video}`;
+      }
+
+      const formattedEntry = {
+        term: entry.term,
+        classID: entry.classID,
+        date: entry.date,
+        title: entry.title,
+        comments: dompurify.sanitize(entry.comments),
+        type: filetype,
+        filename: file,
+      };
+
+      if (i === 0) {
+        currentShortname = entryClassShortname;
+      }
+
+      if (entryClassShortname !== currentShortname) {
+        formattedArray.push({
+          courseShortname: currentShortname,
+          courseListings: currentListings,
+        });
+        currentListings = [];
+        currentShortname = entryClassShortname;
+      }
+
+      currentListings.push(formattedEntry);
+
+      if (i === castEntries.length - 1) {
+        formattedArray.push({
+          courseShortname: currentShortname,
+          courseListings: currentListings,
+        });
+      }
+    }
+
+    return formattedArray;
+  }
+
+  static async getCastListings(term) {
+    const media = await MediaQuery.getCastsByTerm('bruincastmedia', term);
+    const formattedArray = this.formatCastListings(media);
+    return formattedArray;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {
