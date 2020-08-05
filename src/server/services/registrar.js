@@ -174,7 +174,12 @@ async function getShortname(offeredTermCode, classSectionID) {
 async function getWeekNumber(term, date) {
   try {
     const response = await registrar.call({
-      url: `sis/api/v1/Dictionary/TermSessionsByWeek?SessionTermCode=${term}&SessionCode=RG&PageSize=12`,
+      url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
+      params: {
+        SessionTermCode: term,
+        SessionCode: 'RG',
+        PageSize: 12,
+      },
     });
     if (response === null) return null;
     const {

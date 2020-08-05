@@ -2,6 +2,7 @@ const axios = require('axios');
 const qs = require('qs');
 const { MongoClient } = require('mongodb');
 const winston = require('winston');
+const NodeCache = require('node-cache');
 const registrar = require('../services/registrar');
 require('dotenv').config();
 
@@ -235,6 +236,8 @@ async function main() {
     const formattedTerm = convertTerm(currentTerm);
     let numTotalRecords = 0;
 
+    const weekNumCache = new NodeCache();
+
     logger.info(`Updating records for term: ${currentTerm}`);
 
     // From the API, get Class IDs with available media for the given term
@@ -262,15 +265,26 @@ async function main() {
 
           // For each listing, push new database record into array
           for (const mediaEntry of mediaEntries) {
-            const weekNum = await registrar.getWeekNumber(
-              currentTerm,
-              mediaEntry['date for recording(s)']
-            );
+            const mediaEntryDate = mediaEntry['date for recording(s)'];
+            let weekNum = weekNumCache.get(mediaEntryDate);
+            if (weekNum === undefined) {
+              weekNum = await registrar.getWeekNumber(
+                currentTerm,
+                mediaEntryDate
+              );
+              if (weekNum === null) {
+                logger.warn(
+                  `Null response when getting week number from registrar for ${mediaEntryDate}`
+                );
+              }
+              weekNumCache.set(mediaEntryDate, weekNum);
+            }
+
             mediaRecords.push({
               classShortname: currentClassShortname,
               classID: currentClassID,
               term: currentTerm,
-              date: mediaEntry['date for recording(s)'],
+              date: mediaEntryDate,
               week: weekNum,
               video: mediaEntry.video,
               audio: mediaEntry.audio,
@@ -292,6 +306,7 @@ async function main() {
         numTotalRecords += numCourseRecords;
       }
     });
+    weekNumCache.close();
     logger.info(`Processed ${numTotalRecords} records`);
   } catch (e) {
     logger.error(e.message);
