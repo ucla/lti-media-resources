@@ -2,7 +2,10 @@ const MediaQuery = require('../models/mediaquery');
 
 class MediaResourceServices {
   static async getCounts(courseLabel) {
-    let labelList = await MediaQuery.getCrosslistByCourse(courseLabel);
+    let labelList = await MediaQuery.getCrosslistByCourse(
+      courseLabel,
+      'crosslists'
+    );
     labelList = [courseLabel, ...labelList];
 
     let bruincastCount = 0;

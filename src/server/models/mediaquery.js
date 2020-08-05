@@ -55,8 +55,8 @@ module.exports.setNotice = async notice => {
   return ret.result;
 };
 
-module.exports.getAllCrosslists = async () => {
-  const crosslistCollection = client.db(DB_DATABASE).collection('crosslists');
+module.exports.getAllCrosslists = async collectionName => {
+  const crosslistCollection = client.db(DB_DATABASE).collection(collectionName);
   const raw = await crosslistCollection.find({}).toArray();
   const toBeReturned = [];
   for (const obj of raw) {
@@ -67,8 +67,8 @@ module.exports.getAllCrosslists = async () => {
   return toBeReturned;
 };
 
-module.exports.getCrosslistByCourse = async courseLabel => {
-  const arrayOfLists = await this.getAllCrosslists();
+module.exports.getCrosslistByCourse = async (courseLabel, collectionName) => {
+  const arrayOfLists = await module.exports.getAllCrosslists(collectionName);
   let toBeReturned = [];
   for (const list of arrayOfLists) {
     if (list && Array.isArray(list) && list.includes(courseLabel)) {
@@ -79,8 +79,8 @@ module.exports.getCrosslistByCourse = async courseLabel => {
   return toBeReturned;
 };
 
-module.exports.setCrosslists = async crosslists => {
-  const crosslistCollection = client.db(DB_DATABASE).collection('crosslists');
+module.exports.setCrosslists = async (crosslists, collectionName) => {
+  const crosslistCollection = client.db(DB_DATABASE).collection(collectionName);
   const session = client.client.startSession();
   session.startTransaction();
   try {
