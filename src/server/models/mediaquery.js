@@ -43,6 +43,19 @@ module.exports.getVideoResCountByCourse = async courseLabel => {
   return arrayOfVideoRes.length;
 };
 
+module.exports.getMusicResByCourse = async courseLabel => {
+  const musicResCollection = client.db(DB_DATABASE).collection('musicreserves');
+  const toBeReturned = await musicResCollection
+    .find({ classShortname: courseLabel })
+    .toArray();
+  return toBeReturned;
+};
+
+module.exports.getMusicResCountByCourse = async courseLabel => {
+  const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
+  return arrayOfMusicRes.length;
+};
+
 module.exports.getNotice = async () => {
   const noticeCollection = client.db(DB_DATABASE).collection('notice');
   const noticeArray = await noticeCollection.find({}).toArray();

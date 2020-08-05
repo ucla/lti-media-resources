@@ -8,7 +8,7 @@ const UpdateMusicResServices = require('../services/UpdateReserveServices');
 // Global variable for current date and time
 const currentTimestamp = new Date();
 
-// Global logger that outputs log messages to console and update-videores_YEAR-MONTH-DAY_HOUR-MIN.log
+// Global logger that outputs log messages to console and update-musicres_YEAR-MONTH-DAY_HOUR-MIN.log
 // The file receives any log messages designated at least at 'info' level or higher priority
 const logger = winston.createLogger({
   level: 'info',
@@ -22,7 +22,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({
-      filename: `logs/update-videores_${currentTimestamp.getFullYear()}-${currentTimestamp.getMonth() +
+      filename: `logs/update-musicres_${currentTimestamp.getFullYear()}-${currentTimestamp.getMonth() +
         1}-${currentTimestamp.getDate()}_${currentTimestamp.getHours()}-${currentTimestamp.getMinutes()}.log`,
       level: 'debug',
     }),
@@ -47,6 +47,11 @@ async function main() {
       const shortName = await RegistrarService.getShortname(term, srs);
       if (!shortName) {
         logger.warn(`${course.term}-${course.srs} does not have shortname`);
+      }
+      for (const work of works) {
+        work.term = term;
+        work.srs = srs;
+        work.classShortname = shortName;
       }
       await UpdateMusicResServices.updateRecordsForClass(
         dbclient,
