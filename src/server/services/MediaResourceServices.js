@@ -17,10 +17,14 @@ class MediaResourceServices {
       courseLabel
     );
 
+    const musicresCount = await MediaQuery.getMusicResCountByCourse(
+      courseLabel
+    );
+
     return {
       bruincasts: bruincastCount,
       videos: videoresCount,
-      audios: 420,
+      audios: musicresCount,
     };
   }
 }
