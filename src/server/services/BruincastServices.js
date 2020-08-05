@@ -88,7 +88,6 @@ class BruincastServices {
 
       castsByCourses.push({
         course: c,
-        shortname: c.label,
         casts: docsByWeek,
       });
     }

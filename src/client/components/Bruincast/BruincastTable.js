@@ -14,7 +14,7 @@ export const BruincastTable = ({ casts, selectMedia, course, shortname }) => {
   return casts.map(weekCasts => (
     <BruincastTableWeekToggle
       id={`toggleWeek${weekCasts.week}`}
-      key={`week${weekCasts.week}`}
+      key={`${shortname}_week${weekCasts.week}`}
       weekNum={weekCasts.week}
       weekCasts={weekCasts.listings}
       selectMedia={selectMedia}
