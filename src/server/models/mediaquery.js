@@ -16,6 +16,20 @@ module.exports.getCastCountByCourse = async courseLabel => {
   return arrayOfCasts.length;
 };
 
+module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
+  let query = {};
+  if (academicTerm !== '') {
+    query = { term: academicTerm };
+  }
+
+  const recordsForTerm = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .find(query)
+    .toArray();
+  return recordsForTerm;
+};
+
 module.exports.getVideoResByCourse = async courseLabel => {
   const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
   const toBeReturned = await videoResCollection

@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import dompurify from 'dompurify';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
+
+import { Comment } from '../Comment';
 
 export const TitleCommentBlock = ({ title, comments }) => {
   TitleCommentBlock.propTypes = {
     title: PropTypes.string.isRequired,
     comments: PropTypes.string,
   };
-
-  const [sanitizedComments, setSanitizedComments] = useState('');
-  const sanitizeComments = () => {
-    const inlineComments = dompurify
-      .sanitize(comments)
-      .replace(/<p>/g, '<span>')
-      .replace(/<\/p>/g, '</span>')
-      .replace(/ ... /g, '</span><br><span>');
-    setSanitizedComments(`<strong>Comments: </strong>${inlineComments}`);
-  };
-  useEffect(sanitizeComments, []);
 
   if (
     !comments ||
@@ -40,7 +30,10 @@ export const TitleCommentBlock = ({ title, comments }) => {
         <strong>Title: </strong>
         {title}
       </div>
-      <span dangerouslySetInnerHTML={{ __html: sanitizedComments }} />
+      <span>
+        <strong>Comments: </strong>
+        <Comment commentText={comments} />
+      </span>
     </div>
   );
 };

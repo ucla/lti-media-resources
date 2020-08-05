@@ -6,11 +6,14 @@ import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
+import { Tabs } from '@instructure/ui-tabs';
 import { Alert } from '@instructure/ui-alerts';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
+import { BruincastAdminListings } from './BruincastAdminListings';
+import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
 export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
@@ -18,6 +21,14 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
     retrieveNums: PropTypes.func,
+  };
+
+  // Tab change logic
+  const [selectedTabIndex, setSelectedTabIndex] = useState(
+    constants.TAB_ADMIN_PANEL_SETTINGS
+  );
+  const handleTabChange = (event, { index }) => {
+    setSelectedTabIndex(index);
   };
 
   // Controlled state of 'Bruincast notice' input
@@ -122,27 +133,42 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
   // JSX
   return (
     <View>
-      {alert}
-      <View>
-        <Text weight="bold">Bruincast notice</Text>
-        <ReactQuill
-          theme="snow"
-          value={currWarning}
-          onChange={setCurrWarning}
-        />
-      </View>
-      <View margin="small">
-        <TextArea
-          label="Bruincast crosslists"
-          value={currCrosslist}
-          onChange={handleCrosslistChange}
-        />
-      </View>
-      <View display="block" padding="auto" textAlign="center">
-        <Button color="primary" onClick={submitEverything} margin="small">
-          Submit
-        </Button>
-      </View>
+      <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
+        <Tabs.Panel
+          id="adminPanelSettings"
+          renderTitle="Bruincast Settings"
+          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_SETTINGS}
+        >
+          {alert}
+          <View>
+            <Text weight="bold">Bruincast notice</Text>
+            <ReactQuill
+              theme="snow"
+              value={currWarning}
+              onChange={setCurrWarning}
+            />
+          </View>
+          <View margin="small">
+            <TextArea
+              label="Bruincast crosslists"
+              value={currCrosslist}
+              onChange={handleCrosslistChange}
+            />
+          </View>
+          <View display="block" padding="auto" textAlign="center">
+            <Button color="primary" onClick={submitEverything} margin="small">
+              Submit
+            </Button>
+          </View>
+        </Tabs.Panel>
+        <Tabs.Panel
+          id="adminPanelListings"
+          renderTitle="Bruincast Listings"
+          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS}
+        >
+          <BruincastAdminListings />
+        </Tabs.Panel>
+      </Tabs>
     </View>
   );
 };

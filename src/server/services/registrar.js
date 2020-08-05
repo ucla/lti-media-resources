@@ -153,10 +153,10 @@ async function getShortname(offeredTermCode, classSectionID) {
         },
       ],
     } = response;
-    const shortname = `${'201'}-${subArea.replace(/\s|&/g, '')}${catNum.replace(
-      /\s|^0+/g,
+    const shortname = `${offeredTermCode}-${subArea.replace(
+      /\s|&/g,
       ''
-    )}-${secNum.replace(/^0+/g, '')}`;
+    )}${catNum.replace(/\s|^0+/g, '')}-${secNum.replace(/^0+/g, '')}`;
     return shortname;
   } catch (error) {
     console.log(error);
