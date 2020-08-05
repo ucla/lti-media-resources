@@ -7,7 +7,6 @@ const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${proc
 const testCollectionName = 'mediaquerytests';
 
 beforeAll(async done => {
-  jest.setTimeout(30000);
   client.connect(dbURL, function() {});
   await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
 
