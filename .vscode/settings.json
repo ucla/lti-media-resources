@@ -1,0 +1,18 @@
+{
+    "editor.tabSize": 2,
+    // From: https://github.com/wesbos/eslint-config-wesbos#with-vs-code
+    "editor.formatOnSave": true,
+    // Turn it off for JS and JSX, we will do this via eslint
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": false
+    },
+    // Tell the ESLint plugin to run on save
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    // Optional BUT IMPORTANT: If you have the prettier extension enabled for other languages like CSS and HTML, turn it off for JS since we are doing it through Eslint already
+    "prettier.disableLanguages": ["javascript", "javascriptreact"],
+}

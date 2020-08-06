@@ -1,5 +1,11 @@
 # UCLA notes
 
+## Setup VS Code
+
+1. Download and install VS Code: https://code.visualstudio.com/
+2. Install ESlint package: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+3. Install ESlint rules: npx install-peerdeps --global eslint-config-wesbos
+
 ## Set up LTI tool
 
 1. Startup your local Moodle on Docker

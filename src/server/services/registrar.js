@@ -135,11 +135,18 @@ async function call(params) {
  * @returns {?string}   Returns shortname if CourseClassIdentifiers were found.
  */
 async function getShortname(offeredTermCode, classSectionID) {
+  registrarDebug(
+    `getShortname: called with ${offeredTermCode}|${classSectionID}`
+  );
+  let term = offeredTermCode;
   try {
-    const response = await registrar.call({
+    let response = await registrar.call({
       url: `/sis/api/v1/Dictionary/${offeredTermCode}/${classSectionID}/CourseClassIdentifiers`,
     });
-    if (response === null) return null;
+    if (response === null) {
+      registrarDebug('getShortname: CourseClassIdentifiers is null');
+      return null;
+    }
     const {
       courseClassIdentifiers: [
         {
@@ -153,10 +160,42 @@ async function getShortname(offeredTermCode, classSectionID) {
         },
       ],
     } = response;
-    const shortname = `${offeredTermCode}-${subArea.replace(
-      /\s|&/g,
+
+    // Check if course is summer sessions.
+    if (offeredTermCode.slice(-1) === '1') {
+      registrarDebug('getShortname: Handling Summer session');
+      // Get session group.
+      response = await registrar.call({
+        url: `/sis/api/v1/Classes/${offeredTermCode}`,
+        params: {
+          subjectAreaCode: subArea,
+          courseCatalogNumber: catNum,
+          classNumber: secNum,
+        },
+      });
+
+      if (response === null) {
+        registrarDebug('getShortname: Classes is null');
+        return null;
+      }
+      const {
+        classes: [
+          {
+            termSessionGroupCollection: [
+              { termsessionGroupCode: sessionGroup },
+            ],
+          },
+        ],
+      } = response;
+      term += sessionGroup;
+    }
+
+    const shortname = `${term}-${subArea.replace(/\s|&/g, '')}${catNum.replace(
+      /\s|^0+/g,
       ''
-    )}${catNum.replace(/\s|^0+/g, '')}-${secNum.replace(/^0+/g, '')}`;
+    )}-${secNum.replace(/^0+/g, '')}`;
+
+    registrarDebug(`getShortname: returning ${shortname}`);
     return shortname;
   } catch (error) {
     console.log(error);
