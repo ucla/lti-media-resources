@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Tabs } from '@instructure/ui-tabs';
 
 import { Bruincast } from '../Bruincast';
+import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
 
 import * as constants from '../../constants';
@@ -119,7 +120,7 @@ const App = () => {
         renderTitle={`Digital audio reserves (${audioReserveCount})`}
         isSelected={tabSelectedIndex === constants.TAB_DIGITAL_AUDIO_RESERVES}
       >
-        Digital Audio Reserves
+        <MusicReserve />
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"

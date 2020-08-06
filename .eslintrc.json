@@ -1,5 +1,8 @@
 {
-  "extends": ["plugin:jsdoc/recommended", "wesbos"],
+  "extends": [
+    "plugin:jsdoc/recommended",
+    "wesbos"
+  ],
   "rules": {
     "capitalized-comments": [
       "error",
@@ -8,6 +11,7 @@
         "ignoreConsecutiveComments": true
       }
     ],
-    "no-console": "warn"
+    "no-console": "warn",
+    "react/no-danger": "off"
   }
 }

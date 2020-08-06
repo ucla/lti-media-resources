@@ -1296,7 +1296,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-link@^7.1.1":
+"@instructure/ui-link@^7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@instructure/ui-link/-/ui-link-7.1.2.tgz#2a7b18525de1b68110b68b370eaef4c4dfe41e85"
   integrity sha512-XiQn1abdjRSBImUHjHcj46OO9amqA0Ns95z7cHpkbkLqHGPScevQJyarLvg4BMpdx0dvQE8T59JmHjrwqMARzA==

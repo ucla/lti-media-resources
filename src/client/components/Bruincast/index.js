@@ -77,7 +77,6 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   ) {
     return (
       <View>
-        <View>{selectedMedia.url}</View>
         <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
         <CondensedButton
           onClick={deselectMedia}
