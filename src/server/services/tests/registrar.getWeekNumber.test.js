@@ -1,7 +1,11 @@
 import registrar from '../registrar';
 
+const NodeCache = require('node-cache');
+
+const cache = new NodeCache();
+
 it('Returns correct week number', async () => {
-  registrar.call = jest.fn().mockResolvedValue({
+  cache.set(`TermSessionsByWeek_20S`, {
     termSessionsByWeek: [
       {
         sessionTermCode: '20S',
@@ -72,6 +76,12 @@ it('Returns correct week number', async () => {
             sessionWeekStartDate: '2020-05-30',
             sessionWeekLastDate: '2020-06-05',
           },
+          {
+            sessionCode: 'RG',
+            sessionWeekNumber: '88',
+            sessionWeekStartDate: '2020-06-06',
+            sessionWeekLastDate: '2020-06-12',
+          },
         ],
       },
     ],
@@ -88,4 +98,10 @@ it('Returns correct week number', async () => {
 
   const responseForJune5 = await registrar.getWeekNumber('20S', '06/05/2020');
   expect(responseForJune5).toEqual('10');
+
+  const responseForJune10 = await registrar.getWeekNumber('20S', '06/10/2020');
+  expect(responseForJune10).toEqual('Finals');
+
+  const responseForJuly22 = await registrar.getWeekNumber('20S', '07/22/2020');
+  expect(responseForJuly22).toEqual(null);
 });

@@ -37,39 +37,6 @@ class BruincastServices {
     return toBeReturned;
   }
 
-  // Given an array of casts sorted by date, return an array of objects with the casts grouped by week number
-  static groupCastsByWeek(casts) {
-    const docsByWeek = [];
-    let currentWeekNum = '';
-    let currentWeekDocs = [];
-    for (const [i, cast] of casts.entries()) {
-      const docWeek = cast.week;
-      if (i === 0) {
-        currentWeekNum = docWeek;
-      }
-
-      if (docWeek !== currentWeekNum) {
-        docsByWeek.push({
-          week: currentWeekNum,
-          listings: currentWeekDocs,
-        });
-        currentWeekDocs = [];
-        currentWeekNum = docWeek;
-      }
-
-      currentWeekDocs.push(cast);
-
-      if (i === casts.length - 1) {
-        docsByWeek.push({
-          week: currentWeekNum,
-          listings: currentWeekDocs,
-        });
-      }
-    }
-
-    return docsByWeek;
-  }
-
   static async getCasts(course) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
@@ -86,20 +53,28 @@ class BruincastServices {
 
     const castsByCourses = [];
     for (const c of courseList) {
-      const docs = await MediaQuery.getCastsByCourse(c.label);
-      for (const doc of docs) {
-        doc.date = new Date(doc.date);
-        doc.videos = [doc.video];
-        doc.audios = [doc.audio];
-        doc.comments = dompurify.sanitize(doc.comments);
-      }
-      docs.sort((a, b) => a.date - b.date);
+      const courseCasts = await MediaQuery.getCastsByCourse(
+        'bruincastmedia',
+        c.label
+      );
 
-      const docsByWeek = this.groupCastsByWeek(docs);
+      // Week 10 casts are sorted after Week 1 casts because '10' is less than '2', '3', etc., so we need to pop Week 10 casts and push them to the back of the array
+      // Find if there are Week 10 casts
+      let week10CastsIndex = -1;
+      for (const [i, weekCast] of courseCasts.entries()) {
+        if (weekCast._id === '10') {
+          week10CastsIndex = i;
+          break;
+        }
+      }
+      // If there are Week 10 casts, splice from current index and push to back
+      if (week10CastsIndex !== -1) {
+        courseCasts.push(courseCasts.splice(week10CastsIndex, 1)[0]);
+      }
 
       castsByCourses.push({
         course: c,
-        casts: docsByWeek,
+        casts: courseCasts,
       });
     }
     return castsByCourses;

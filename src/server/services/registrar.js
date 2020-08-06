@@ -1,8 +1,11 @@
 const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
+const NodeCache = require('node-cache');
 const registrarDebug = require('debug')('registrar:api');
 require('dotenv').config();
+
+const cache = new NodeCache();
 
 let registrar = {};
 
@@ -173,15 +176,29 @@ async function getShortname(offeredTermCode, classSectionID) {
  */
 async function getWeekNumber(term, date) {
   try {
-    const response = await registrar.call({
-      url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
-      params: {
-        SessionTermCode: term,
-        SessionCode: 'RG',
-        PageSize: 12,
-      },
-    });
+    // If Week Number for date is already cached, return that
+    if (cache.has(`WeekNumber_${date}`)) {
+      const weekNumber = cache.get(`WeekNumber_${date}`);
+      return weekNumber;
+    }
+
+    let response = cache.get(`TermSessionsByWeek_${term}`);
+    if (response === undefined) {
+      // If TermSessionsByWeek for term isn't cached, fetch it
+      response = await registrar.call({
+        url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
+        params: {
+          SessionTermCode: term,
+          SessionCode: 'RG',
+          PageSize: 12,
+        },
+      });
+      if (response === null) return null;
+      cache.set(`TermSessionsByWeek_${term}`, response);
+    }
+
     if (response === null) return null;
+
     const {
       termSessionsByWeek: [{ termSessionCollection: weeksArray }],
     } = response;
@@ -211,10 +228,15 @@ async function getWeekNumber(term, date) {
       );
 
       if (startDate <= dateToCheck && dateToCheck <= lastDate) {
-        return week.sessionWeekNumber;
+        const weekNumber =
+          week.sessionWeekNumber === '88' ? 'Finals' : week.sessionWeekNumber;
+
+        cache.set(`WeekNumber_${date}`, weekNumber);
+
+        return weekNumber;
       }
     }
-    return '';
+    return null;
   } catch (error) {
     console.error(error);
     return null;

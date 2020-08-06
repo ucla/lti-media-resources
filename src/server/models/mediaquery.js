@@ -3,17 +3,78 @@ const client = require('./db');
 
 const { DB_DATABASE } = process.env;
 
-module.exports.getCastsByCourse = async courseLabel => {
-  const castCollection = client.db(DB_DATABASE).collection('bruincastmedia');
-  const toBeReturned = await castCollection
-    .find({ classShortname: courseLabel })
+module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
+  /*
+   * Aggregation Steps:
+   * 1. Match by courseLabel
+   * 2. Sort course records by date
+   * 3. Group buckets of records by 'week' field
+   *
+   * Due to the way MongoDB aggregation works in how it buckets these items,
+   * there needs to be another boundary after 'Finals' in order for 'Finals'
+   * items to be grouped together
+   */
+  const aggregation = [
+    {
+      $match: {
+        classShortname: courseLabel,
+      },
+    },
+    {
+      $sort: {
+        date: 1,
+      },
+    },
+    {
+      $bucket: {
+        groupBy: '$week',
+        boundaries: [
+          '0',
+          '1',
+          '10',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          'Finals',
+          'More',
+        ],
+        default: 'Other',
+        output: {
+          listings: {
+            $push: {
+              date: '$date',
+              video: '$video',
+              audio: '$audio',
+              title: '$title',
+              comments: '$comments',
+            },
+          },
+        },
+      },
+    },
+  ];
+
+  const courseCasts = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .aggregate(aggregation)
     .toArray();
-  return toBeReturned;
+
+  return courseCasts;
 };
 
-module.exports.getCastCountByCourse = async courseLabel => {
-  const arrayOfCasts = await this.getCastsByCourse(courseLabel);
-  return arrayOfCasts.length;
+module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
+  const castCount = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .find({ classShortname: courseLabel })
+    .count();
+  return castCount;
 };
 
 module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
@@ -39,8 +100,12 @@ module.exports.getVideoResByCourse = async courseLabel => {
 };
 
 module.exports.getVideoResCountByCourse = async courseLabel => {
-  const arrayOfVideoRes = await this.getVideoResByCourse(courseLabel);
-  return arrayOfVideoRes.length;
+  const resCount = await client
+    .db(DB_DATABASE)
+    .collection('videoreserves')
+    .find({ classShortname: courseLabel })
+    .count();
+  return resCount;
 };
 
 module.exports.getNotice = async () => {

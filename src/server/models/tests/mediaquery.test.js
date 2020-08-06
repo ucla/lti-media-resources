@@ -1,7 +1,11 @@
 require('dotenv').config();
 require('babel-polyfill');
 const client = require('../db');
-const { getCastsByTerm } = require('../mediaquery');
+const {
+  getCastsByCourse,
+  getCastCountByCourse,
+  getCastsByTerm,
+} = require('../mediaquery');
 
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const testCollectionName = 'mediaquerytests';
@@ -11,6 +15,18 @@ beforeAll(async done => {
   await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
 
   const testData = [
+    {
+      classShortname: '201-COMSCI32-1',
+      classID: '187096200',
+      term: '20S',
+      date: '06/02/2020',
+      week: '10',
+      video: 'cs32-1-20200511-18380.mp4',
+      audio: '',
+      title: 'Content is from CS 32 (Winter 2012)',
+      comments: '<p>Date of lecture: 3/14/2012</p>\n',
+      timestamp: 1596157098921,
+    },
     {
       classShortname: '201-COMSCI32-1',
       classID: '187096200',
@@ -94,6 +110,80 @@ beforeAll(async done => {
   done();
 });
 
+test('Test getCastsByCourse', async done => {
+  // Expect the returned casts to be bucketed by week
+  try {
+    const castsFor201CS32 = await getCastsByCourse(
+      testCollectionName,
+      '201-COMSCI32-1'
+    );
+
+    const expectedCasts = [
+      {
+        _id: '10',
+        listings: [
+          {
+            date: '06/02/2020',
+            video: 'cs32-1-20200511-18380.mp4',
+            audio: '',
+            title: 'Content is from CS 32 (Winter 2012)',
+            comments: '<p>Date of lecture: 3/14/2012</p>\n',
+          },
+        ],
+      },
+      {
+        _id: '6',
+        listings: [
+          {
+            date: '05/06/2020',
+            video: 'cs32-1-20200506-18379.mp4',
+            audio: '',
+            title: 'Content is from CS 32 (Winter 2012)',
+            comments: '<p>Date of lecture: 3/7/2012</p>\n',
+          },
+        ],
+      },
+      {
+        _id: '7',
+        listings: [
+          {
+            date: '05/11/2020',
+            video: 'cs32-1-20200511-18380.mp4',
+            audio: '',
+            title: 'Content is from CS 32 (Winter 2012)',
+            comments: '<p>Date of lecture: 3/14/2012</p>\n',
+          },
+        ],
+      },
+    ];
+
+    expect(castsFor201CS32).toEqual(expectedCasts);
+    done();
+  } catch (error) {
+    done(error);
+  }
+});
+
+test('Test getCastCountByCourse', async done => {
+  try {
+    const castCountFor201CS32 = await getCastCountByCourse(
+      testCollectionName,
+      '201-COMSCI32-1'
+    );
+    expect(castCountFor201CS32).toEqual(3);
+
+    const castCountFor201EEBIOL162 = await getCastCountByCourse(
+      testCollectionName,
+      '201C-EEBIOL162-1'
+    );
+    expect(castCountFor201EEBIOL162).toEqual(2);
+
+    done();
+  } catch (error) {
+    done(error);
+  }
+});
+
 test('Test getCastsByTerm 20S', async done => {
   // Expect the returned casts to all have term 20S
   try {
@@ -124,7 +214,7 @@ test('Test getCastsByTerm All', async done => {
   try {
     // Expect all casts to be returned
     const castsForAllTerms = await getCastsByTerm(testCollectionName, '');
-    expect(castsForAllTerms.length).toEqual(6);
+    expect(castsForAllTerms.length).toEqual(7);
     done();
   } catch (error) {
     done(error);
