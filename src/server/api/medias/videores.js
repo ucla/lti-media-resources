@@ -3,18 +3,11 @@ const express = require('express');
 const router = express.Router();
 
 const VideoresServices = require('../../services/VideoresServices');
+const CheckRoleServices = require('../../services/CheckRole');
 
 router.get('/', (req, res) => {
-  const roles = res.locals.token.roles.map(role =>
-    role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
-  );
-  if (
-    !roles.includes('learner') &&
-    !roles.includes('teacher') &&
-    !roles.includes('instructor') &&
-    !roles.includes('administrator')
-  ) {
-    return res.status(400);
+  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
   VideoresServices.getVideores(label).then(list => res.send(list));

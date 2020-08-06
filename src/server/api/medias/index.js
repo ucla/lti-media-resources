@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const MediaResourceServices = require('../../services/MediaResourceServices');
+const CheckRoleServices = require('../../services/CheckRole');
 const bruincastRoute = require('./bruincast');
 const videoresRoute = require('./videores');
 const musicresRoute = require('./musicres');
@@ -12,16 +13,8 @@ router.use('/videores', videoresRoute);
 router.use('/musicres', musicresRoute);
 
 router.get('/counts', (req, res) => {
-  const roles = res.locals.token.roles.map(role =>
-    role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
-  );
-  if (
-    !roles.includes('learner') &&
-    !roles.includes('teacher') &&
-    !roles.includes('instructor') &&
-    !roles.includes('administrator')
-  ) {
-    return res.status(400);
+  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
   MediaResourceServices.getCounts(label).then(counts => res.send(counts));

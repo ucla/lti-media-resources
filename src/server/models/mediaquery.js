@@ -34,6 +34,7 @@ module.exports.getVideoResByCourse = async courseLabel => {
   const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
   const toBeReturned = await videoResCollection
     .find({ classShortname: courseLabel })
+    .sort({ videoTitle: 1 })
     .toArray();
   return toBeReturned;
 };
@@ -47,6 +48,7 @@ module.exports.getMusicResByCourse = async courseLabel => {
   const musicResCollection = client.db(DB_DATABASE).collection('musicreserves');
   const toBeReturned = await musicResCollection
     .find({ classShortname: courseLabel })
+    .sort({ title: 1 })
     .toArray();
   return toBeReturned;
 };
