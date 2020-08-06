@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const VideoresServices = require('../../services/VideoresServices');
+const MusicresServices = require('../../services/MusicresServices');
 const CheckRoleServices = require('../../services/CheckRole');
 
 router.get('/', (req, res) => {
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
-  VideoresServices.getVideores(label).then(list => res.send(list));
+  MusicresServices.getMusicres(label).then(list => res.send(list));
 });
 
 module.exports = router;

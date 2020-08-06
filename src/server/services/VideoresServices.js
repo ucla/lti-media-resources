@@ -18,7 +18,7 @@ class VideoresServices {
         doc.expired = true;
       }
     }
-    return docs.sort((a, b) => a.videoTitle - b.videoTitle);
+    return docs;
   }
 }
 

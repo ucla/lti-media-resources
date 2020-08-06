@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const BruincastServices = require('../../services/BruincastServices');
+const CheckRoleServices = require('../../services/CheckRole');
 
 const router = express.Router();
 
@@ -32,6 +33,9 @@ router.post('/crosslists', (req, res) => {
 });
 
 router.get('/casts', (req, res) => {
+  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
   const { context } = res.locals.context;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));
   BruincastServices.getCasts(context).then(casts => res.send(casts));
@@ -39,18 +43,9 @@ router.get('/casts', (req, res) => {
 
 router.get('/castlistings', (req, res) => {
   const { term } = req.query;
-  const { roles } = res.locals.token;
-  let authorized = false;
-  for (const role of roles) {
-    if (
-      role.toLowerCase().includes('administrator') ||
-      role.toLowerCase().includes('admin')
-    ) {
-      authorized = true;
-      break;
-    }
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
   }
-  if (!authorized) return res.status(400).send(new Error('Unauthorized role'));
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 

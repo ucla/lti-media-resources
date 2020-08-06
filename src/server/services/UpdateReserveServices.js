@@ -1,4 +1,4 @@
-class UpdateVideoResServices {
+class UpdateReserveServices {
   /**
    * Inserts an array of JSON-formatted entries into database's BruinCast collection.
    *
@@ -8,7 +8,7 @@ class UpdateVideoResServices {
    * @param  {Array} entries An array of JSON-formatted objects for media entries
    * @returns {number} Number of records inserted into the collection
    */
-  static async insertVideoResEntries(client, session, collection, entries) {
+  static async insertResEntries(client, session, collection, entries) {
     const result = await client
       .db(process.env.DB_DATABASE)
       .collection(collection)
@@ -26,7 +26,7 @@ class UpdateVideoResServices {
    * @param  {string} srs A 9-digit Class ID
    * @returns {number} Number of records deleted in the collection
    */
-  static async deleteVideoResEntriesForClass(
+  static async deleteResEntriesForClass(
     client,
     session,
     collection,
@@ -66,14 +66,14 @@ class UpdateVideoResServices {
     const session = client.startSession();
     session.startTransaction();
     try {
-      const numDeleted = await this.deleteVideoResEntriesForClass(
+      const numDeleted = await this.deleteResEntriesForClass(
         client,
         session,
         collection,
         term,
         srs
       );
-      const numInserted = await this.insertVideoResEntries(
+      const numInserted = await this.insertResEntries(
         client,
         session,
         collection,
@@ -171,4 +171,4 @@ class UpdateVideoResServices {
   }
 }
 
-module.exports = UpdateVideoResServices;
+module.exports = UpdateReserveServices;
