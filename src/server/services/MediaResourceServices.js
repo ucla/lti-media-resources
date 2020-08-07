@@ -18,7 +18,7 @@ class MediaResourceServices {
     );
 
     const musicresCount = await MediaQuery.getMusicResCountByCourse(
-      '201-MSCIND55-1'
+      courseLabel
     );
 
     return {

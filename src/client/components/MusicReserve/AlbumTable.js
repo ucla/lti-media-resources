@@ -17,13 +17,13 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
       <Table.Head>
         <Table.Row>
           <Table.ColHeader id="title">Title</Table.ColHeader>
-          <Table.ColHeader id="count">Number of tracks</Table.ColHeader>
+          <Table.ColHeader id="count"># of tracks</Table.ColHeader>
           <Table.ColHeader id="meta">Descriptions</Table.ColHeader>
         </Table.Row>
       </Table.Head>
       <Table.Body>
         {allAlbums.map(album => (
-          <Table.Row>
+          <Table.Row key={album._id}>
             <Table.RowHeader>
               <CondensedButton onClick={handleClick}>
                 {album.title}

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { View } from '@instructure/ui-view';
-import { CondensedButton } from '@instructure/ui-buttons';
+import { Button } from '@instructure/ui-buttons';
 import { Breadcrumb } from '@instructure/ui-breadcrumb';
+import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaPlayer } from '../MediaPlayer';
@@ -63,20 +64,21 @@ export const MusicReserve = () => {
   if (selectedMusic && selectedAlbum) {
     return (
       <View>
-        <Breadcrumb size="large">
+        <Breadcrumb size="large" label="Album navigation">
           <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link onClick={deselectTrack}>
             {selectedAlbum.title}
           </Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <CondensedButton
+        <Button
           onClick={deselectTrack}
-          display="block"
+          color="primary"
           margin="medium"
+          renderIcon={IconArrowOpenStartSolid}
         >
-          {'< Back'}
-        </CondensedButton>
+          Back
+        </Button>
         <MediaPlayer
           mediaURL={selectedMusic.httpURL}
           type={selectedMusic.type}
@@ -87,17 +89,18 @@ export const MusicReserve = () => {
   if (selectedMusic) {
     return (
       <View>
-        <Breadcrumb size="large">
-          <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+        <Breadcrumb size="large" label="Album navigation">
+          <Breadcrumb.Link onClick={deselectTrack}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <CondensedButton
+        <Button
           onClick={deselectTrack}
-          display="block"
+          color="primary"
           margin="medium"
+          renderIcon={IconArrowOpenStartSolid}
         >
-          {'< Back'}
-        </CondensedButton>
+          Back
+        </Button>
         <MediaPlayer
           mediaURL={selectedMusic.httpURL}
           type={selectedMusic.type}
@@ -108,21 +111,25 @@ export const MusicReserve = () => {
   if (selectedAlbum) {
     return (
       <View>
-        <Breadcrumb size="large">
-          <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+        <Breadcrumb size="large" label="Album navigation">
+          <Breadcrumb.Link onClick={deselectAlbum}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedAlbum.title}</Breadcrumb.Link>
         </Breadcrumb>
-        <TrackTable
-          album={selectedAlbum}
-          handleClick={handleTrackClick}
-          goBack={deselectAlbum}
-        />
+        <Button
+          onClick={deselectAlbum}
+          color="primary"
+          margin="medium"
+          renderIcon={IconArrowOpenStartSolid}
+        >
+          Back
+        </Button>
+        <TrackTable album={selectedAlbum} handleClick={handleTrackClick} />
       </View>
     );
   }
   return (
     <View>
-      <Breadcrumb size="large">
+      <Breadcrumb size="large" label="Album navigation">
         <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
       </Breadcrumb>
       <AlbumTable allAlbums={allAlbums} handleClick={handleAlbumClick} />
