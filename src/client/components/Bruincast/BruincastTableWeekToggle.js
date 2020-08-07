@@ -21,10 +21,16 @@ export const BruincastTableWeekToggle = ({
     course: PropTypes.object,
     shortname: PropTypes.string,
   };
+
+  let toggleSummary = `Week ${weekNum}`;
+  if (weekNum === 88) {
+    toggleSummary = 'Finals Week';
+  }
+
   return (
     <ToggleDetails
       id={`${shortname}_week${weekNum}`}
-      summary={`Week ${weekNum}`}
+      summary={toggleSummary}
       variant="filled"
       defaultExpanded
     >

@@ -20,7 +20,7 @@ beforeAll(async done => {
       classID: '187096200',
       term: '20S',
       date: '06/02/2020',
-      week: '10',
+      week: 10,
       video: 'cs32-1-20200511-18380.mp4',
       audio: '',
       title: 'Content is from CS 32 (Winter 2012)',
@@ -32,7 +32,7 @@ beforeAll(async done => {
       classID: '187096200',
       term: '20S',
       date: '05/11/2020',
-      week: '7',
+      week: 7,
       video: 'cs32-1-20200511-18380.mp4',
       audio: '',
       title: 'Content is from CS 32 (Winter 2012)',
@@ -44,7 +44,7 @@ beforeAll(async done => {
       classID: '187096200',
       term: '20S',
       date: '05/06/2020',
-      week: '6',
+      week: 6,
       video: 'cs32-1-20200506-18379.mp4',
       audio: '',
       title: 'Content is from CS 32 (Winter 2012)',
@@ -56,7 +56,7 @@ beforeAll(async done => {
       classID: '128672200',
       term: '201',
       date: '06/04/2020',
-      week: '10',
+      week: 10,
       video: 'eeb162-1-20200604-18600.mp4',
       audio: '',
       title: 'Past Lectures',
@@ -69,7 +69,7 @@ beforeAll(async done => {
       classID: '128672200',
       term: '201',
       date: '06/02/2020',
-      week: '10',
+      week: 10,
       video: 'eeb162-1-20200602-18599.mp4',
       audio: '',
       title: 'Past Lectures',
@@ -82,7 +82,7 @@ beforeAll(async done => {
       classID: '387576200',
       term: '20S',
       date: '06/04/2020',
-      week: '10',
+      week: 10,
       video: '',
       audio: 'physci146-1-20200604-18567.mp3',
       title: 'Content is from Spring 2019',
@@ -94,7 +94,7 @@ beforeAll(async done => {
       classID: '142638200',
       term: '20S',
       date: '06/05/2020',
-      week: '10',
+      week: 10,
       video: 'chem153b-1-20200605-18664.mp4',
       audio: '',
       title: 'Content is from Spring 2019',
@@ -120,19 +120,7 @@ test('Test getCastsByCourse', async done => {
 
     const expectedCasts = [
       {
-        _id: '10',
-        listings: [
-          {
-            date: '06/02/2020',
-            video: 'cs32-1-20200511-18380.mp4',
-            audio: '',
-            title: 'Content is from CS 32 (Winter 2012)',
-            comments: '<p>Date of lecture: 3/14/2012</p>\n',
-          },
-        ],
-      },
-      {
-        _id: '6',
+        _id: 6,
         listings: [
           {
             date: '05/06/2020',
@@ -144,10 +132,22 @@ test('Test getCastsByCourse', async done => {
         ],
       },
       {
-        _id: '7',
+        _id: 7,
         listings: [
           {
             date: '05/11/2020',
+            video: 'cs32-1-20200511-18380.mp4',
+            audio: '',
+            title: 'Content is from CS 32 (Winter 2012)',
+            comments: '<p>Date of lecture: 3/14/2012</p>\n',
+          },
+        ],
+      },
+      {
+        _id: 10,
+        listings: [
+          {
+            date: '06/02/2020',
             video: 'cs32-1-20200511-18380.mp4',
             audio: '',
             title: 'Content is from CS 32 (Winter 2012)',

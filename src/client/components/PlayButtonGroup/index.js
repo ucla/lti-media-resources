@@ -7,8 +7,8 @@ import { PlayButton } from './PlayButton';
 
 export const PlayButtonGroup = ({ audio, video, selectMedia, course }) => {
   PlayButtonGroup.propTypes = {
-    audio: PropTypes.array,
-    video: PropTypes.array,
+    audio: PropTypes.string,
+    video: PropTypes.string,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
   };

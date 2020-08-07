@@ -262,7 +262,7 @@ async function main() {
 
           // For each listing, push new database record into array
           for (const mediaEntry of mediaEntries) {
-            const weekNum = registrar.getWeekNumber(
+            const weekNum = await registrar.getWeekNumber(
               currentTerm,
               mediaEntry['date for recording(s)']
             );

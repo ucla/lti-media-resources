@@ -7,12 +7,14 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
   /*
    * Aggregation Steps:
    * 1. Match by courseLabel
-   * 2. Sort course records by date
+   * 2. Sort course records by date in ascending order
    * 3. Group buckets of records by 'week' field
    *
-   * Due to the way MongoDB aggregation works in how it buckets these items,
-   * there needs to be another boundary after 'Finals' in order for 'Finals'
-   * items to be grouped together
+   * The boundaries have an inclusive lowerbound and exclusive upperbound,
+   * so 89 is needed in the boundaries so that casts with week 88 can be
+   * grouped properly in [88, 89).
+   *
+   * Reference: https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#examples
    */
   const aggregation = [
     {
@@ -28,22 +30,8 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
     {
       $bucket: {
         groupBy: '$week',
-        boundaries: [
-          '0',
-          '1',
-          '10',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          'Finals',
-          'More',
-        ],
-        default: 'Other',
+        boundaries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 88, 89],
+        default: 99,
         output: {
           listings: {
             $push: {

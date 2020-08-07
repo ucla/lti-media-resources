@@ -1,8 +1,6 @@
 import registrar from '../registrar';
 
-const NodeCache = require('node-cache');
-
-const cache = new NodeCache();
+const cache = require('../cache');
 
 it('Returns correct week number', async () => {
   cache.set(`TermSessionsByWeek_20S`, {
@@ -88,19 +86,19 @@ it('Returns correct week number', async () => {
   });
 
   const responseForApril7 = await registrar.getWeekNumber('20S', '04/07/2020');
-  expect(responseForApril7).toEqual('2');
+  expect(responseForApril7).toEqual(2);
 
   const responseForMay22 = await registrar.getWeekNumber('20S', '05/22/2020');
-  expect(responseForMay22).toEqual('8');
+  expect(responseForMay22).toEqual(8);
 
   const responseForMay23 = await registrar.getWeekNumber('20S', '05/23/2020');
-  expect(responseForMay23).toEqual('9');
+  expect(responseForMay23).toEqual(9);
 
   const responseForJune5 = await registrar.getWeekNumber('20S', '06/05/2020');
-  expect(responseForJune5).toEqual('10');
+  expect(responseForJune5).toEqual(10);
 
-  const responseForJune10 = await registrar.getWeekNumber('20S', '06/10/2020');
-  expect(responseForJune10).toEqual('Finals');
+  const responseForJune12 = await registrar.getWeekNumber('20S', '06/12/2020');
+  expect(responseForJune12).toEqual(88);
 
   const responseForJuly22 = await registrar.getWeekNumber('20S', '07/22/2020');
   expect(responseForJuly22).toEqual(null);
