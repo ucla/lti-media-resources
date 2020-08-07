@@ -53,7 +53,7 @@ export const BruincastAdminListingsToggle = ({ shortname, listings }) => {
             <Table.Row key={`${shortname}_${listing.filename}`}>
               <Table.Cell>{listing.term}</Table.Cell>
               <Table.Cell>{listing.classID}</Table.Cell>
-              <Table.Cell>1</Table.Cell>
+              <Table.Cell>{listing.week}</Table.Cell>
               <Table.Cell>{listing.date}</Table.Cell>
               <Table.Cell>
                 <Text wrap="break-word">{listing.filename}</Text>

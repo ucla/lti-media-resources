@@ -90,6 +90,7 @@ class BruincastServices {
       const formattedEntry = {
         term: entry.term,
         classID: entry.classID,
+        week: entry.week,
         date: entry.date,
         title: entry.title,
         comments: dompurify.sanitize(entry.comments),
