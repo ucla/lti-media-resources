@@ -20,7 +20,9 @@ export const TrackTable = ({ album, handleClick }) => {
       </Table.Head>
       <Table.Body>
         {album.items.map(track => (
-          <Table.Row key={track.trackTitle}>
+          <Table.Row
+            key={`${track.volume}-${track.disc}-${track.side}-${track.trackNumber}`}
+          >
             <Table.RowHeader>
               <CondensedButton onClick={handleClick}>
                 {track.trackTitle}
