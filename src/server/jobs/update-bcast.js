@@ -266,6 +266,12 @@ async function main() {
               currentTerm,
               mediaEntry['date for recording(s)']
             );
+            if (weekNum === null) {
+              logger.log({
+                level: 'warning',
+                message: `Null response from getWeekNumber for ${mediaEntry['date for recording(s)']}`,
+              });
+            }
 
             mediaRecords.push({
               classShortname: currentClassShortname,
