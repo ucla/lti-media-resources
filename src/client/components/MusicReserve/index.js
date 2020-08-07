@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { View } from '@instructure/ui-view';
 import { CondensedButton } from '@instructure/ui-buttons';
+import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaPlayer } from '../MediaPlayer';
@@ -28,8 +29,16 @@ export const MusicReserve = () => {
     )[0];
     const { items } = clickedAlbum;
     if (items.length === 1) {
-      items[0].type = clickedAlbum.isVideo ? 'video' : 'audio';
-      setSelectedMusic(items[0]);
+      const musicToBeSet = items[0];
+      musicToBeSet.type = clickedAlbum.isVideo ? 'video' : 'audio';
+      if (
+        !musicToBeSet.trackTitle ||
+        musicToBeSet.trackTitle === '' ||
+        musicToBeSet.trackTitle === 'N/A'
+      ) {
+        musicToBeSet.trackTitle = clickedAlbum.title;
+      }
+      setSelectedMusic(musicToBeSet);
     } else {
       setSelectedAlbum(clickedAlbum);
     }
@@ -43,14 +52,47 @@ export const MusicReserve = () => {
   const deselectAlbum = () => {
     setSelectedAlbum(null);
   };
+  const deselectTrack = () => {
+    setSelectedMusic(null);
+  };
+  const deselectBoth = () => {
+    deselectTrack();
+    deselectAlbum();
+  };
 
+  if (selectedMusic && selectedAlbum) {
+    return (
+      <View>
+        <Breadcrumb size="large">
+          <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+          <Breadcrumb.Link onClick={deselectTrack}>
+            {selectedAlbum.title}
+          </Breadcrumb.Link>
+          <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
+        </Breadcrumb>
+        <CondensedButton
+          onClick={deselectTrack}
+          display="block"
+          margin="medium"
+        >
+          {'< Back'}
+        </CondensedButton>
+        <MediaPlayer
+          mediaURL={selectedMusic.httpURL}
+          type={selectedMusic.type}
+        />
+      </View>
+    );
+  }
   if (selectedMusic) {
     return (
       <View>
+        <Breadcrumb size="large">
+          <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+          <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
+        </Breadcrumb>
         <CondensedButton
-          onClick={() => {
-            setSelectedMusic(null);
-          }}
+          onClick={deselectTrack}
           display="block"
           margin="medium"
         >
@@ -66,6 +108,10 @@ export const MusicReserve = () => {
   if (selectedAlbum) {
     return (
       <View>
+        <Breadcrumb size="large">
+          <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+          <Breadcrumb.Link>{selectedAlbum.title}</Breadcrumb.Link>
+        </Breadcrumb>
         <TrackTable
           album={selectedAlbum}
           handleClick={handleTrackClick}
@@ -76,6 +122,9 @@ export const MusicReserve = () => {
   }
   return (
     <View>
+      <Breadcrumb size="large">
+        <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
+      </Breadcrumb>
       <AlbumTable allAlbums={allAlbums} handleClick={handleAlbumClick} />
     </View>
   );

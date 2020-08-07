@@ -25,6 +25,7 @@
     "@instructure/ui-a11y-content": "^7.1.2",
     "@instructure/ui-alerts": "^7.1.1",
     "@instructure/ui-billboard": "^7.1.1",
+    "@instructure/ui-breadcrumb": "^7.1.2",
     "@instructure/ui-buttons": "^7.1.1",
     "@instructure/ui-grid": "^7.1.2",
     "@instructure/ui-heading": "^7.1.1",

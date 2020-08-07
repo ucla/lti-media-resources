@@ -1108,6 +1108,24 @@
     classnames "^2"
     prop-types "^15"
 
+"@instructure/ui-breadcrumb@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-breadcrumb/-/ui-breadcrumb-7.1.2.tgz#f909df5dafccc4c779dff6204b76a830c6b793a7"
+  integrity sha512-BwjOnJBLO7yxMB7hcg871mU6+BWpju64i1ONzRCl8CFUtR/BhKyPhKxyD993wPnsOYm/6xTMv+mGVVjbMHfRGA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/ui-icons" "^7.1.2"
+    "@instructure/ui-link" "^7.1.2"
+    "@instructure/ui-prop-types" "^7.1.2"
+    "@instructure/ui-react-utils" "^7.1.2"
+    "@instructure/ui-testable" "^7.1.2"
+    "@instructure/ui-themeable" "^7.1.2"
+    "@instructure/ui-truncate-text" "^7.1.2"
+    "@instructure/ui-utils" "^7.1.2"
+    "@instructure/ui-view" "^7.1.2"
+    classnames "^2"
+    prop-types "^15"
+
 "@instructure/ui-buttons@^7.1.1", "@instructure/ui-buttons@^7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-7.1.2.tgz#a6538a5a57b05409e11ff260a1d9c0653bed2191"
@@ -1711,6 +1729,23 @@
     "@instructure/ui-testable" "^7.1.2"
     "@instructure/ui-themeable" "^7.1.2"
     "@instructure/uid" "^7.1.2"
+    prop-types "^15"
+
+"@instructure/ui-truncate-text@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-truncate-text/-/ui-truncate-text-7.1.2.tgz#93c3d30cf8728d54b315a3183209b325a0e3396f"
+  integrity sha512-J7er7qpBsmASzY7V4125HJa8zfrdbPRrT4wgRx4ibk3TtaRB9ALaDFg8FtzO76J2VVh5bfjI/niqcVLhXbrgeg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.1.2"
+    "@instructure/debounce" "^7.1.2"
+    "@instructure/ui-dom-utils" "^7.1.2"
+    "@instructure/ui-react-utils" "^7.1.2"
+    "@instructure/ui-testable" "^7.1.2"
+    "@instructure/ui-themeable" "^7.1.2"
+    "@instructure/ui-utils" "^7.1.2"
+    classnames "^2"
+    escape-html "^1"
     prop-types "^15"
 
 "@instructure/ui-utils@^7.1.2":
@@ -4995,7 +5030,7 @@ escape-goat@^2.0.0:
   resolved "https://registry.yarnpkg.com/escape-goat/-/escape-goat-2.1.1.tgz#1b2dc77003676c457ec760b2dc68edb648188675"
   integrity sha512-8/uIhbG12Csjy2JEW7D9pHbreaVaS/OpN3ycnyvElTdwM5n6GY6W6e2IPemfvGZeUMqZ9A/3GqIZMgKnBhAw/Q==
 
-escape-html@~1.0.3:
+escape-html@^1, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
