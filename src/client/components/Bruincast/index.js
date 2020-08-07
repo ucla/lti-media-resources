@@ -103,13 +103,16 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
         {castsByCourses.map((currCourse, i) => (
           <Tabs.Panel
             id={currCourse.course.label}
+            key={currCourse.course.label}
             renderTitle={currCourse.course.label}
             selected={courseIndex === i}
           >
             <BruincastTable
+              key={currCourse.course.label}
               casts={currCourse.casts}
               selectMedia={selectMedia}
               course={currCourse.course}
+              shortname={currCourse.course.label}
             />
           </Tabs.Panel>
         ))}

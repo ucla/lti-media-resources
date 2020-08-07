@@ -4,6 +4,8 @@ const fs = require('fs');
 const registrarDebug = require('debug')('registrar:api');
 require('dotenv').config();
 
+const cache = require('./cache');
+
 let registrar = {};
 
 /**
@@ -203,8 +205,83 @@ async function getShortname(offeredTermCode, classSectionID) {
   }
 }
 
+/**
+ * Gets the week number, given an academic term and a date
+ *
+ * @param {string} term Academic term, formatted as YYQ (e.g. 20S)
+ * @param {string} date Date string formatted as MM/DD/YYYY
+ * @returns {?number} Returns week number if date is valid in term
+ */
+async function getWeekNumber(term, date) {
+  try {
+    let response = cache.get(`TermSessionsByWeek_${term}`);
+    if (response === undefined) {
+      // If TermSessionsByWeek for term isn't cached, fetch it
+      response = await registrar.call({
+        url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
+        params: {
+          SessionTermCode: term,
+          SessionCode: 'RG',
+          PageSize: 12,
+        },
+      });
+      if (response === null) return null;
+      cache.set(`TermSessionsByWeek_${term}`, response);
+    }
+
+    if (response === null) return null;
+
+    const {
+      termSessionsByWeek: [{ termSessionCollection: weeksArray }],
+    } = response;
+
+    // Splits the date parameter into an array: [0] MM, [1] DD, [2] YYYY
+    const dateElements = date.split('/');
+    const dateToCheck = new Date(
+      dateElements[2], // Year
+      dateElements[0] - 1, // Month - 1, because the month is 0-indexed
+      dateElements[1] // Date
+    );
+
+    for (const week of weeksArray) {
+      // The sessionWeekStartDate and sessionWeekLastDate are formatted as YYYY-MM-DD
+      // Split start and end dates into elements array: [0] YYYY, [1] MM, [2] DD
+      let startDate = cache.get(`Date_${week.sessionWeekStartDate}`);
+      if (startDate === undefined) {
+        const startDateElements = week.sessionWeekStartDate.split('-');
+        startDate = new Date(
+          startDateElements[0],
+          startDateElements[1] - 1,
+          startDateElements[2]
+        );
+        cache.set(`Date_${week.sessionWeekStartDate}`, startDate);
+      }
+
+      let lastDate = cache.get(`Date_${week.sessionWeekLastDate}`);
+      if (lastDate === undefined) {
+        const lastDateElements = week.sessionWeekLastDate.split('-');
+        lastDate = new Date(
+          lastDateElements[0],
+          lastDateElements[1] - 1,
+          lastDateElements[2]
+        );
+        cache.set(`Date_${week.sessionWeekLastDate}`, lastDate);
+      }
+
+      if (startDate <= dateToCheck && dateToCheck <= lastDate) {
+        return parseInt(week.sessionWeekNumber);
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 registrar = {
   getShortname,
+  getWeekNumber,
   call,
   getToken,
   cacheToken,

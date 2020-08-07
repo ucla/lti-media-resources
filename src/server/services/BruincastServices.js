@@ -53,17 +53,14 @@ class BruincastServices {
 
     const castsByCourses = [];
     for (const c of courseList) {
-      const docs = await MediaQuery.getCastsByCourse(c.label);
-      for (const doc of docs) {
-        doc.date = new Date(doc.date);
-        doc.videos = [doc.video];
-        doc.audios = [doc.audio];
-        doc.comments = dompurify.sanitize(doc.comments);
-      }
-      docs.sort((a, b) => a.date - b.date);
+      const courseCasts = await MediaQuery.getCastsByCourse(
+        'bruincastmedia',
+        c.label
+      );
+
       castsByCourses.push({
         course: c,
-        casts: docs,
+        casts: courseCasts,
       });
     }
     return castsByCourses;
