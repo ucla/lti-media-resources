@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const BruincastServices = require('../../services/BruincastServices');
+const MediaResourceServices = require('../../services/MediaResourceServices');
 const CheckRoleServices = require('../../services/CheckRole');
 
 const router = express.Router();
@@ -55,10 +56,10 @@ router.get('/url', (req, res) => {
     return res.status(500);
   }
   const { HOST, VALIDITY, SECRET } = process.env;
-  const clientIP = req.ip;
+  // Const clientIP = req.ip;
   // When testing during development,
   // use the following line and replace with your external ip
-  // const clientIP = '172.91.84.123';
+  const clientIP = '172.91.84.123';
   let stream = '';
   if (/^[0-9]{2,3}(f|w|s|a|c)$/i.test(quarter)) {
     const yearqt = quarter.substr(0, 3).toLowerCase();
@@ -71,7 +72,8 @@ router.get('/url', (req, res) => {
   const start = Math.round(now.getTime() / 1000);
   const end = start + parseInt(VALIDITY);
 
-  BruincastServices.generateMediaURL(
+  MediaResourceServices.generateMediaURL(
+    'bruincast',
     HOST,
     stream,
     clientIP,
