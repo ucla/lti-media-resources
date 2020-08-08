@@ -36,18 +36,12 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                   <strong>Performers:</strong> {album.performers}
                 </Text>
               )}
-              {album.noteOne !== '' && (
+              {album.notes && album.notes !== '' && (
                 <View>
                   <br />
                   <Text>
-                    <strong>Notes:</strong> {album.noteOne}
+                    <strong>Notes:</strong> {album.notes}
                   </Text>
-                </View>
-              )}
-              {album.noteTwo !== '' && (
-                <View>
-                  <br />
-                  <Text>{album.noteOne}</Text>
                 </View>
               )}
             </Table.Cell>
