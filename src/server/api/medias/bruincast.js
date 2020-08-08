@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const BruincastServices = require('../../services/BruincastServices');
+const MediaResourceServices = require('../../services/MediaResourceServices');
 const CheckRoleServices = require('../../services/CheckRole');
 
 const router = express.Router();
@@ -71,7 +72,8 @@ router.get('/url', (req, res) => {
   const start = Math.round(now.getTime() / 1000);
   const end = start + parseInt(VALIDITY);
 
-  BruincastServices.generateMediaURL(
+  MediaResourceServices.generateMediaURL(
+    'bruincast',
     HOST,
     stream,
     clientIP,
