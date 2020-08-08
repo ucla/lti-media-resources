@@ -5,9 +5,9 @@ class VideoresServices {
     const docs = await MediaQuery.getVideoResByCourse(label);
     const now = new Date();
     for (const doc of docs) {
-      doc.startDate = new Date(doc.startDate);
-      doc.stopDate = new Date(doc.stopDate);
-      if (doc.startDate < now && doc.stopDate > now) {
+      const startDate = new Date(doc.startDate);
+      const stopDate = new Date(doc.stopDate);
+      if (startDate < now && stopDate > now) {
         doc.expired = false;
       } else {
         delete doc.videoUrl;
