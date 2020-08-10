@@ -108,7 +108,13 @@ module.exports.getMusicResByCourse = async courseLabel => {
 
 module.exports.getMusicResCountByCourse = async courseLabel => {
   const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
-  return arrayOfMusicRes.length;
+  let totalItemCount = 0;
+  for (const album of arrayOfMusicRes) {
+    if (album.items && Array.isArray(album.items)) {
+      totalItemCount += album.items.length;
+    }
+  }
+  return totalItemCount;
 };
 
 module.exports.getNotice = async () => {
