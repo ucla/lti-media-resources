@@ -39,20 +39,17 @@ export const VideoReserve = ({ course }) => {
   if (
     selectedMedia.url &&
     selectedMedia.url !== '' &&
-    selectedMedia.type &&
-    selectedMedia.type !== ''
+    selectedMedia.format &&
+    selectedMedia.format !== ''
   ) {
     return (
       <View>
-        <View>{selectedMedia.url}</View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
-        <Button
-          onClick={deselectMedia}
-          margin="medium"
-          renderIcon={IconArrowOpenStartLine}
-        >
+        <Button onClick={deselectMedia} renderIcon={IconArrowOpenStartLine}>
           Back
         </Button>
+        <br />
+        <br />
+        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.format} />
       </View>
     );
   }
@@ -82,9 +79,10 @@ export const VideoReserve = ({ course }) => {
               <Table.Cell>
                 {!vid.expired && (
                   <PlayButton
-                    type="video"
+                    media="videores"
+                    format="video"
                     selectMedia={selectMedia}
-                    src={vid.filename}
+                    file={vid.filename}
                     course={course}
                   />
                 )}

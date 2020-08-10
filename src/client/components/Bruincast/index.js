@@ -73,12 +73,12 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   if (
     selectedMedia.url &&
     selectedMedia.url !== '' &&
-    selectedMedia.type &&
-    selectedMedia.type !== ''
+    selectedMedia.format &&
+    selectedMedia.format !== ''
   ) {
     return (
       <View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
+        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.format} />
         <CondensedButton
           onClick={deselectMedia}
           display="block"

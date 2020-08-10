@@ -59,6 +59,7 @@ export const BruincastTableWeekToggle = ({
               <Table.Cell>
                 <PlayButtonGroup
                   key={cast.audio || cast.video}
+                  media="bruincast"
                   audio={cast.audio}
                   video={cast.video}
                   selectMedia={selectMedia}
