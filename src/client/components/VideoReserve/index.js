@@ -11,9 +11,10 @@ import { ltikPromise } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';
 
-export const VideoReserve = ({ course }) => {
+export const VideoReserve = ({ course, onCampus }) => {
   VideoReserve.propTypes = {
     course: PropTypes.object,
+    onCampus: PropTypes.bool,
   };
 
   const [vidReserves, setVidReserves] = React.useState([]);
@@ -25,16 +26,6 @@ export const VideoReserve = ({ course }) => {
     });
   };
   React.useEffect(getVideoRes, []);
-
-  const [isOnCampusIP, setIsOnCampusIP] = React.useState(false);
-  const getOnCampusStatus = () => {
-    ltikPromise.then(ltik => {
-      axios.get(`/api/isoncampus?ltik=${ltik}`).then(res => {
-        setIsOnCampusIP(res.data);
-      });
-    });
-  };
-  React.useEffect(getOnCampusStatus);
 
   const [selectedMedia, setSelectedMedia] = React.useState({});
   const selectMedia = obj => {
@@ -65,7 +56,7 @@ export const VideoReserve = ({ course }) => {
     <View>
       <Heading>{`Video reserves: ${course.title}`}</Heading>
       <br />
-      {!isOnCampusIP && (
+      {!onCampus && (
         <Alert variant="warning">
           You are accessing this content from off-campus. If the content does
           not load, you will need to use the UCLA VPN to obtain an on-campus

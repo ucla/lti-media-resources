@@ -26,6 +26,7 @@ const App = () => {
   // Declare states
   const [course, setCourse] = useState({});
   const [roles, setRoles] = useState([]);
+  const [onCampusStatus, setOnCampusStatus] = useState(true);
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
@@ -34,9 +35,10 @@ const App = () => {
   const retrieveContext = () => {
     ltikPromise.then(ltik => {
       axios.get(`/api/context?ltik=${ltik}`).then(res => {
-        const { course: c, roles: r } = res.data;
+        const { course: c, roles: r, onCampus: oc } = res.data;
         setCourse(c);
         setRoles(r);
+        setOnCampusStatus(oc);
       });
     });
   };
@@ -115,7 +117,7 @@ const App = () => {
         selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
         isDisabled={videoReserveCount === 0}
       >
-        <VideoReserve course={course} />
+        <VideoReserve course={course} onCampus={onCampusStatus} />
       </Tabs.Panel>
       <Tabs.Panel
         id="audioReserves"
