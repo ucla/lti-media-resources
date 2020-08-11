@@ -34,6 +34,19 @@ class MediaResourceServices {
     };
   }
 
+  static async updatePlayback(userid, media, tab, time) {
+    const timeInt = Math.round(time);
+    const totalMinutes = Math.floor(timeInt / 60);
+    const hour = Math.floor(totalMinutes / 60);
+    const min = totalMinutes - hour * 60;
+    const sec = timeInt % 60;
+    const numDiff = await MediaQuery.updatePlayback(
+      { userid, media, tab, time, hour, min, sec },
+      'playbacks'
+    );
+    return numDiff;
+  }
+
   static async generateMediaToken(stream, clientIP, secret, start, end) {
     const { TOKEN_NAME } = process.env;
     const params = [

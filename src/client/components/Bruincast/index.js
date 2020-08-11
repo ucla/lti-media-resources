@@ -9,18 +9,20 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
-
-import { CondensedButton } from '@instructure/ui-buttons';
+import { Button } from '@instructure/ui-buttons';
+import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { BruincastTable } from './BruincastTable';
 import { MediaPlayer } from '../MediaPlayer';
 
+import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
-export const Bruincast = ({ course, warning, retrieveWarning }) => {
+export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
+    userid: PropTypes.number,
   };
 
   // Get bruincast medias for all crosslisted courses
@@ -78,14 +80,19 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   ) {
     return (
       <View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
-        <CondensedButton
+        <Button
           onClick={deselectMedia}
-          display="block"
+          color="primary"
           margin="medium"
+          renderIcon={IconArrowOpenStartSolid}
         >
-          {'< Back'}
-        </CondensedButton>
+          Back
+        </Button>
+        <MediaPlayer
+          media={selectedMedia}
+          userid={userid}
+          tab={constants.TAB_BRUINCAST}
+        />
       </View>
     );
   }

@@ -1,5 +1,4 @@
 const axios = require('axios');
-// Const winston = require('winston');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');

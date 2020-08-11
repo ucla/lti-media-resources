@@ -20,4 +20,14 @@ router.get('/counts', (req, res) => {
   MediaResourceServices.getCounts(label).then(counts => res.send(counts));
 });
 
+router.post('/playback', (req, res) => {
+  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { userid, media, tab, time } = req.body;
+  MediaResourceServices.updatePlayback(userid, media, tab, time).then(numDiff =>
+    res.send({ numDiff })
+  );
+});
+
 module.exports = router;

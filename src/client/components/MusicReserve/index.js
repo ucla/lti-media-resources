@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
@@ -9,9 +10,14 @@ import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaPlayer } from '../MediaPlayer';
 
+import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
-export const MusicReserve = () => {
+export const MusicReserve = ({ userid }) => {
+  MusicReserve.propTypes = {
+    userid: PropTypes.number.isRequired,
+  };
+
   const [allAlbums, setAllAlbums] = useState([]);
   const retrieveMusicRes = () => {
     ltikPromise.then(ltik => {
@@ -39,6 +45,12 @@ export const MusicReserve = () => {
       ) {
         musicToBeSet.trackTitle = clickedAlbum.title;
       }
+      if (!musicToBeSet.url) {
+        musicToBeSet.url = musicToBeSet.httpURL;
+        delete musicToBeSet.httpURL;
+        delete musicToBeSet.rtmpURL;
+      }
+      musicToBeSet._id = clickedAlbum._id;
       setSelectedMusic(musicToBeSet);
     } else {
       setSelectedAlbum(clickedAlbum);
@@ -48,6 +60,9 @@ export const MusicReserve = () => {
     const clickedMusic = selectedAlbum.items.filter(
       item => item.trackTitle.trim() === event.target.innerText.trim()
     )[0];
+    clickedMusic.url = clickedMusic.httpURL;
+    clickedMusic.type = selectedAlbum.isVideo ? 'video' : 'audio';
+    clickedMusic._id = selectedAlbum._id;
     setSelectedMusic(clickedMusic);
   };
   const deselectAlbum = () => {
@@ -80,8 +95,9 @@ export const MusicReserve = () => {
           Back
         </Button>
         <MediaPlayer
-          mediaURL={selectedMusic.httpURL}
-          type={selectedMusic.type}
+          media={selectedMusic}
+          userid={userid}
+          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
         />
       </View>
     );
@@ -102,8 +118,9 @@ export const MusicReserve = () => {
           Back
         </Button>
         <MediaPlayer
-          mediaURL={selectedMusic.httpURL}
-          type={selectedMusic.type}
+          media={selectedMusic}
+          userid={userid}
+          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
         />
       </View>
     );

@@ -63,6 +63,7 @@ export const BruincastTableWeekToggle = ({
                   video={cast.video}
                   selectMedia={selectMedia}
                   course={course}
+                  _id={cast._id}
                 />
               </Table.Cell>
               <Table.Cell>

@@ -8,12 +8,13 @@ import { faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const PlayButton = ({ type, selectMedia, src, course }) => {
+export const PlayButton = ({ type, selectMedia, src, course, _id }) => {
   PlayButton.propTypes = {
     type: PropTypes.string,
     selectMedia: PropTypes.func,
     src: PropTypes.string,
     course: PropTypes.object,
+    _id: PropTypes.string,
   };
   const generateAndSelectMedia = () => {
     ltikPromise.then(ltik => {
@@ -29,6 +30,7 @@ export const PlayButton = ({ type, selectMedia, src, course }) => {
           selectMedia({
             type,
             url: res.data,
+            _id,
           });
         });
     });

@@ -8,6 +8,7 @@ router.use('/medias', mediasRoute);
 
 // Names and Roles route.
 router.get('/context', (req, res) => {
+  const userid = parseInt(res.locals.token.user);
   const roles = res.locals.token.roles.map(role =>
     role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
   );
@@ -17,6 +18,7 @@ router.get('/context', (req, res) => {
     return res.send({
       course: context,
       roles,
+      userid,
     });
   }
   return res.status(400).send(new Error('Context not found'));

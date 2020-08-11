@@ -35,6 +35,7 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
         output: {
           listings: {
             $push: {
+              _id: '$_id',
               date: '$date',
               video: '$video',
               audio: '$audio',
@@ -170,6 +171,39 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
     await session.commitTransaction();
     session.endSession();
     return { deletedCount, insertedCount, updated: true };
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    throw err;
+  }
+};
+
+module.exports.updatePlayback = async (obj, collectionName) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const session = client.client.startSession();
+  session.startTransaction();
+  try {
+    const { userid, tab, media } = obj;
+    const query = {
+      userid,
+      tab,
+      media,
+    };
+    const deleteResult = await playbackCollection.deleteMany(query, {
+      session,
+    });
+    const { deletedCount } = deleteResult;
+    const insertResult = await playbackCollection.insertMany([obj], {
+      session,
+    });
+    const { insertedCount } = insertResult;
+    await session.commitTransaction();
+    session.endSession();
+    const numDiff = insertedCount - deletedCount;
+    if (numDiff !== 0 && numDiff !== 1) {
+      throw new Error('Something went wrong when updating playback');
+    }
+    return numDiff;
   } catch (err) {
     await session.abortTransaction();
     session.endSession();
