@@ -30,6 +30,7 @@ export const PlayButtonGroup = ({
         selectMedia={selectMedia}
         file={audio}
         course={course}
+        disabled={false}
       />
     );
   }
@@ -44,6 +45,7 @@ export const PlayButtonGroup = ({
         selectMedia={selectMedia}
         file={video}
         course={course}
+        disabled={false}
       />
     );
   }

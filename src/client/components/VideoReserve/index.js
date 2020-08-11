@@ -6,6 +6,8 @@ import { View } from '@instructure/ui-view';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
+import { Button } from '@instructure/ui-buttons';
+import { IconVideoSolid } from '@instructure/ui-icons';
 
 import { ltikPromise } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
@@ -59,8 +61,8 @@ export const VideoReserve = ({ course, onCampus }) => {
       {!onCampus && (
         <Alert variant="warning">
           You are accessing this content from off-campus. If the content does
-          not load, you will need to use the UCLA VPN to obtain an on-campus
-          internet address.
+          not load, you will need to use the UCLA VPN to access it via an
+          on-campus internet address.
           <br />
           <br />
           VPN instructions:{' '}
@@ -76,13 +78,13 @@ export const VideoReserve = ({ course, onCampus }) => {
       <Table hover id="videoreserves" caption="Video Reserves">
         <Table.Head>
           <Table.Row>
-            <Table.ColHeader id="play" width="15%">
+            <Table.ColHeader id="play" width="20%">
               Play
             </Table.ColHeader>
             <Table.ColHeader id="title" width="40%">
               Title
             </Table.ColHeader>
-            <Table.ColHeader id="availability" width="45%">
+            <Table.ColHeader id="availability" width="40%">
               Availability
             </Table.ColHeader>
           </Table.Row>
@@ -91,15 +93,14 @@ export const VideoReserve = ({ course, onCampus }) => {
           {vidReserves.map(vid => (
             <Table.Row key={vid.videoTitle}>
               <Table.Cell>
-                {!vid.expired && (
-                  <PlayButton
-                    media="videores"
-                    format="video"
-                    selectMedia={selectMedia}
-                    file={vid.filename}
-                    course={course}
-                  />
-                )}
+                <PlayButton
+                  media="videores"
+                  format="video"
+                  selectMedia={selectMedia}
+                  file={vid.filename}
+                  course={course}
+                  disabled={vid.expired}
+                />
               </Table.Cell>
               <Table.Cell>{vid.videoTitle}</Table.Cell>
               <Table.Cell>{`${vid.startDate} – ${vid.stopDate}`}</Table.Cell>

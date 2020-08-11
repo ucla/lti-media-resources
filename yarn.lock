@@ -995,20 +995,6 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.30"
 
-"@fortawesome/free-solid-svg-icons@^5.13.1":
-  version "5.14.0"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.14.0.tgz#970453f5e8c4915ad57856c3a0252ac63f6fec18"
-  integrity sha512-M933RDM8cecaKMWDSk3FRYdnzWGW7kBBlGNGfvqLVwcwhUPNj9gcw+xZMrqBdRqxnSXdl3zWzTCNNGEtFUq67Q==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.30"
-
-"@fortawesome/react-fontawesome@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.11.tgz#c1a95a2bdb6a18fa97b355a563832e248bf6ef4a"
-  integrity sha512-sClfojasRifQKI0OPqTy8Ln8iIhnxR/Pv/hukBhWnBz9kQRmqi6JSH3nghlhAY7SUeIIM7B5/D2G8WjX0iepVg==
-  dependencies:
-    prop-types "^15.7.2"
-
 "@instructure/canvas-high-contrast-theme@^7.1.1":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@instructure/canvas-high-contrast-theme/-/canvas-high-contrast-theme-7.1.2.tgz#2ac301233fc06752c634b90c6d92e0b4421f92eb"

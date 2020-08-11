@@ -47,6 +47,8 @@ const App = () => {
   // Functions that determine roles
   const userIsAdmin = () =>
     roles && (roles.includes('admin') || roles.includes('administrator'));
+  const userIsInstructor = () =>
+    roles && (roles.includes('teacher') || roles.includes('instructor'));
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
@@ -111,25 +113,33 @@ const App = () => {
           retrieveWarning={retrieveWarning}
         />
       </Tabs.Panel>
-      <Tabs.Panel
-        id="videoReserves"
-        renderTitle={`Video reserves (${videoReserveCount})`}
-        selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
-        isDisabled={videoReserveCount === 0}
-      >
-        <VideoReserve course={course} onCampus={onCampusStatus} />
-      </Tabs.Panel>
+      {(videoReserveCount > 0 || userIsInstructor() || userIsAdmin()) && (
+        <Tabs.Panel
+          id="videoReserves"
+          renderTitle={`Video reserves (${videoReserveCount})`}
+          selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+        >
+          <VideoReserve course={course} onCampus={onCampusStatus} />
+        </Tabs.Panel>
+      )}
       <Tabs.Panel
         id="audioReserves"
         renderTitle={`Digital audio reserves (${audioReserveCount})`}
-        isSelected={tabSelectedIndex === constants.TAB_DIGITAL_AUDIO_RESERVES}
+        isSelected={
+          tabSelectedIndex ===
+          constants.TAB_DIGITAL_AUDIO_RESERVES -
+            (videoReserveCount === 0 ? 1 : 0) // Reindex if VideoReserve tab is hidden
+        }
       >
         <MusicReserve />
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"
         renderTitle="Media gallery"
-        isSelected={tabSelectedIndex === constants.TAB_MEDIA_GALLERY}
+        isSelected={
+          tabSelectedIndex ===
+          constants.TAB_MEDIA_GALLERY - (videoReserveCount === 0 ? 1 : 0) // Reindex if VideoReserve tab is hidden
+        }
       >
         Media Gallery
       </Tabs.Panel>

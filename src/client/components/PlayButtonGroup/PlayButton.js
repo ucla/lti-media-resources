@@ -3,18 +3,25 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Button } from '@instructure/ui-buttons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { IconVideoSolid, IconMicSolid } from '@instructure/ui-icons';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const PlayButton = ({ media, format, selectMedia, file, course }) => {
+export const PlayButton = ({
+  media,
+  format,
+  selectMedia,
+  file,
+  course,
+  disabled,
+}) => {
   PlayButton.propTypes = {
     media: PropTypes.string,
     format: PropTypes.string,
     selectMedia: PropTypes.func,
     file: PropTypes.string,
     course: PropTypes.object,
+    disabled: PropTypes.bool,
   };
   const generateAndSelectMedia = () => {
     ltikPromise.then(ltik => {
@@ -37,9 +44,9 @@ export const PlayButton = ({ media, format, selectMedia, file, course }) => {
   };
   let playIcon = null;
   if (format === 'audio') {
-    playIcon = <FontAwesomeIcon icon={faMicrophone} />;
+    playIcon = IconMicSolid;
   } else if (format === 'video') {
-    playIcon = <FontAwesomeIcon icon={faVideo} />;
+    playIcon = IconVideoSolid;
   }
   return (
     <Button
@@ -48,8 +55,9 @@ export const PlayButton = ({ media, format, selectMedia, file, course }) => {
       margin="xxx-small"
       size="medium"
       onClick={generateAndSelectMedia}
+      interaction={disabled ? 'disabled' : 'enabled'}
     >
-      Play
+      {disabled ? 'Unavailable' : 'Play'}
     </Button>
   );
 };
