@@ -4,13 +4,12 @@ import axios from 'axios';
 
 import { View } from '@instructure/ui-view';
 import { Heading } from '@instructure/ui-heading';
+import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
-import { Button } from '@instructure/ui-buttons';
-import { IconArrowOpenStartLine } from '@instructure/ui-icons';
 
 import { ltikPromise } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 export const VideoReserve = ({ course }) => {
   VideoReserve.propTypes = {
@@ -26,6 +25,16 @@ export const VideoReserve = ({ course }) => {
     });
   };
   React.useEffect(getVideoRes, []);
+
+  const [isOnCampusIP, setIsOnCampusIP] = React.useState(false);
+  const getOnCampusStatus = () => {
+    ltikPromise.then(ltik => {
+      axios.get(`/api/isoncampus?ltik=${ltik}`).then(res => {
+        setIsOnCampusIP(res.data);
+      });
+    });
+  };
+  React.useEffect(getOnCampusStatus);
 
   const [selectedMedia, setSelectedMedia] = React.useState({});
   const selectMedia = obj => {
@@ -43,14 +52,11 @@ export const VideoReserve = ({ course }) => {
     selectedMedia.format !== ''
   ) {
     return (
-      <View>
-        <Button onClick={deselectMedia} renderIcon={IconArrowOpenStartLine}>
-          Back
-        </Button>
-        <br />
-        <br />
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.format} />
-      </View>
+      <MediaView
+        mediaURL={selectedMedia.url}
+        mediaFormat={selectedMedia.format}
+        deSelectMedia={deselectMedia}
+      />
     );
   }
 
@@ -59,6 +65,23 @@ export const VideoReserve = ({ course }) => {
     <View>
       <Heading>{`Video reserves: ${course.title}`}</Heading>
       <br />
+      {!isOnCampusIP && (
+        <Alert variant="warning">
+          You are accessing this content from off-campus. If the content does
+          not load, you will need to use the UCLA VPN to obtain an on-campus
+          internet address.
+          <br />
+          <br />
+          VPN instructions:{' '}
+          <a
+            href="https://www.it.ucla.edu/it-support-center/services/virtual-private-network-vpn-clients"
+            target="_blank"
+            rel="noreferrer"
+          >
+            it.ucla.edu/it-support-center/services/virtual-private-network-vpn-clients
+          </a>
+        </Alert>
+      )}
       <Table hover id="videoreserves" caption="Video Reserves">
         <Table.Head>
           <Table.Row>

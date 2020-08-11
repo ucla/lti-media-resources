@@ -35,9 +35,7 @@ router.get('/url', (req, res) => {
     VIDEORES_TOKEN_SECRET,
   } = process.env;
 
-  // When testing during development, use the following line and replace with your external ip
-  // const clientIP = '172.91.84.123';
-  // const clientIP = '128.97.255.62';
+  // When testing during development, replace with your external IP
   const clientIP = req.ip;
 
   let stream = '';

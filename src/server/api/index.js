@@ -6,6 +6,8 @@ const mediasRoute = require('./medias');
 
 router.use('/medias', mediasRoute);
 
+const { isOnCampusIP } = require('../services/IPServices');
+
 // Names and Roles route.
 router.get('/context', (req, res) => {
   const roles = res.locals.token.roles.map(role =>
@@ -20,6 +22,11 @@ router.get('/context', (req, res) => {
     });
   }
   return res.status(400).send(new Error('Context not found'));
+});
+
+router.get('/isoncampus', (req, res) => {
+  const isOnCampus = isOnCampusIP(req.ip);
+  res.send(isOnCampus);
 });
 
 module.exports = router;

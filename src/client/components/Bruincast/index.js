@@ -10,9 +10,8 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
 
-import { CondensedButton } from '@instructure/ui-buttons';
 import { BruincastTable } from './BruincastTable';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
@@ -77,16 +76,11 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
     selectedMedia.format !== ''
   ) {
     return (
-      <View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.format} />
-        <CondensedButton
-          onClick={deselectMedia}
-          display="block"
-          margin="medium"
-        >
-          {'< Back'}
-        </CondensedButton>
-      </View>
+      <MediaView
+        mediaURL={selectedMedia.url}
+        mediaFormat={selectedMedia.format}
+        deSelectMedia={deselectMedia}
+      />
     );
   }
 

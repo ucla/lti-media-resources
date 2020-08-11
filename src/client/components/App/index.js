@@ -113,6 +113,7 @@ const App = () => {
         id="videoReserves"
         renderTitle={`Video reserves (${videoReserveCount})`}
         selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+        isDisabled={videoReserveCount === 0}
       >
         <VideoReserve course={course} />
       </Tabs.Panel>
