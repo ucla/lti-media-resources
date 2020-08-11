@@ -81,6 +81,9 @@ const App = () => {
     }
   };
 
+  const videoReservesTabEnabled = () =>
+    videoReserveCount > 0 || userIsInstructor() || userIsAdmin();
+
   // Display admin tab only when 'roles' contains 'admin'
   let adminPanel = null;
   if (userIsAdmin()) {
@@ -113,7 +116,7 @@ const App = () => {
           retrieveWarning={retrieveWarning}
         />
       </Tabs.Panel>
-      {(videoReserveCount > 0 || userIsInstructor() || userIsAdmin()) && (
+      {videoReservesTabEnabled() && (
         <Tabs.Panel
           id="videoReserves"
           renderTitle={`Video reserves (${videoReserveCount})`}
@@ -128,7 +131,7 @@ const App = () => {
         isSelected={
           tabSelectedIndex ===
           constants.TAB_DIGITAL_AUDIO_RESERVES -
-            (videoReserveCount === 0 ? 1 : 0) // Reindex if VideoReserve tab is hidden
+            (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
         }
       >
         <MusicReserve />
@@ -138,7 +141,7 @@ const App = () => {
         renderTitle="Media gallery"
         isSelected={
           tabSelectedIndex ===
-          constants.TAB_MEDIA_GALLERY - (videoReserveCount === 0 ? 1 : 0) // Reindex if VideoReserve tab is hidden
+          constants.TAB_MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
         }
       >
         Media Gallery
