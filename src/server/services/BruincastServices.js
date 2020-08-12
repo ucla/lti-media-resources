@@ -63,68 +63,38 @@ class BruincastServices {
     return castsByCourses;
   }
 
-  static formatCastListings(castEntries) {
-    const formattedArray = [];
-    let currentShortname = '';
-    let currentListings = [];
-    for (const [i, entry] of castEntries.entries()) {
-      const entryClassShortname = entry.classShortname;
+  static formatTermCasts(media) {
+    for (const courseMedia of media) {
+      for (const entry of courseMedia.listings) {
+        let filetype = 'Audio/Video';
+        let file = '';
+        if (entry.video === '' && entry.audio === '') {
+          filetype = 'None';
+        } else if (entry.video === '') {
+          filetype = 'Audio';
+          file = entry.audio;
+        } else if (entry.audio === '') {
+          filetype = 'Video';
+          file = entry.video;
+        } else {
+          file = `${entry.audio}, ${entry.video}`;
+        }
 
-      let filetype = 'Audio/Video';
-      let file = '';
-      if (entry.video === '' && entry.audio === '') {
-        filetype = 'None';
-      } else if (entry.video === '') {
-        filetype = 'Audio';
-        file = entry.audio;
-      } else if (entry.audio === '') {
-        filetype = 'Video';
-        file = entry.video;
-      } else {
-        file = `${entry.audio}, ${entry.video}`;
-      }
-
-      const formattedEntry = {
-        term: entry.term,
-        classID: entry.classID,
-        week: entry.week,
-        date: entry.date,
-        title: entry.title,
-        comments: dompurify.sanitize(entry.comments),
-        type: filetype,
-        filename: file,
-      };
-
-      if (i === 0) {
-        currentShortname = entryClassShortname;
-      }
-
-      if (entryClassShortname !== currentShortname) {
-        formattedArray.push({
-          courseShortname: currentShortname,
-          courseListings: currentListings,
-        });
-        currentListings = [];
-        currentShortname = entryClassShortname;
-      }
-
-      currentListings.push(formattedEntry);
-
-      if (i === castEntries.length - 1) {
-        formattedArray.push({
-          courseShortname: currentShortname,
-          courseListings: currentListings,
-        });
+        entry.type = filetype;
+        entry.filename = file;
+        entry.comments = dompurify.sanitize(entry.comments);
+        delete entry._id;
+        delete entry.timestamp;
       }
     }
 
-    return formattedArray;
+    return media;
   }
 
   static async getCastListings(term) {
-    const media = await MediaQuery.getCastsByTerm('bruincastmedia', term);
-    const formattedArray = this.formatCastListings(media);
-    return formattedArray;
+    const termMedia = await MediaQuery.getMediaForTerm('bruincastmedia', term);
+    const formattedMedia = this.formatTermCasts(termMedia);
+    return formattedMedia;
   }
 }
 

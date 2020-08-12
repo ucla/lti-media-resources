@@ -79,6 +79,40 @@ module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
   return recordsForTerm;
 };
 
+module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
+  const aggregation = [];
+  if (academicTerm !== '') {
+    aggregation.push({
+      $match: {
+        term: academicTerm,
+      },
+    });
+  }
+
+  aggregation.push(
+    {
+      $group: {
+        _id: '$classShortname',
+        listings: {
+          $push: '$$ROOT',
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    }
+  );
+
+  const termMedia = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .aggregate(aggregation)
+    .toArray();
+  return termMedia;
+};
+
 module.exports.getVideoResByCourse = async courseLabel => {
   const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
   const toBeReturned = await videoResCollection

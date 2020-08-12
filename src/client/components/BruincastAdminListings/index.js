@@ -92,10 +92,9 @@ export const BruincastAdminListings = () => {
         )}
         {mediaListings.map(course => (
           <BruincastAdminListingsToggle
-            key={course.courseShortname}
-            shortname={course.courseShortname}
-            term={course.courseTerm}
-            listings={course.courseListings}
+            key={course._id}
+            shortname={course._id}
+            listings={course.listings}
           />
         ))}
       </View>

@@ -12,7 +12,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
-import { BruincastAdminListings } from './BruincastAdminListings';
+import { BruincastAdminListings } from '../BruincastAdminListings';
 import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
@@ -162,9 +162,21 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
           </View>
         </Tabs.Panel>
         <Tabs.Panel
-          id="adminPanelListings"
+          id="adminPanelListingsBruincast"
           renderTitle="Bruincast Listings"
-          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS}
+          isSelected={
+            selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_BRUINCAST
+          }
+        >
+          <BruincastAdminListings />
+        </Tabs.Panel>
+        <Tabs.Panel
+          id="adminPanelListingsVideoReserves"
+          renderTitle="Video Reserves Listings"
+          isSelected={
+            selectedTabIndex ===
+            constants.TAB_ADMIN_PANEL_LISTINGS_VIDEORESERVES
+          }
         >
           <BruincastAdminListings />
         </Tabs.Panel>
