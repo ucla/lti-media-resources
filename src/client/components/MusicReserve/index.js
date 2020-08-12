@@ -47,10 +47,14 @@ export const MusicReserve = ({ userid }) => {
       }
       if (!musicToBeSet.url) {
         musicToBeSet.url = musicToBeSet.httpURL;
-        delete musicToBeSet.httpURL;
-        delete musicToBeSet.rtmpURL;
       }
+      musicToBeSet.file = musicToBeSet.url;
+      musicToBeSet.classShortname = clickedAlbum.classShortname;
       musicToBeSet._id = clickedAlbum._id;
+      musicToBeSet.albumTitle = clickedAlbum.title;
+      if (event.playback !== undefined && event.playback !== null) {
+        musicToBeSet.playback = event.playback;
+      }
       setSelectedMusic(musicToBeSet);
     } else {
       setSelectedAlbum(clickedAlbum);
@@ -60,9 +64,17 @@ export const MusicReserve = ({ userid }) => {
     const clickedMusic = selectedAlbum.items.filter(
       item => item.trackTitle.trim() === event.target.innerText.trim()
     )[0];
-    clickedMusic.url = clickedMusic.httpURL;
+    if (!clickedMusic.url) {
+      clickedMusic.url = clickedMusic.httpURL;
+    }
+    clickedMusic.file = clickedMusic.url;
+    clickedMusic.classShortname = selectedAlbum.classShortname;
     clickedMusic.type = selectedAlbum.isVideo ? 'video' : 'audio';
     clickedMusic._id = selectedAlbum._id;
+    clickedMusic.albumTitle = selectedAlbum.title;
+    if (event.playback !== undefined && event.playback !== null) {
+      clickedMusic.playback = event.playback;
+    }
     setSelectedMusic(clickedMusic);
   };
   const deselectAlbum = () => {
@@ -74,6 +86,17 @@ export const MusicReserve = ({ userid }) => {
   const deselectBoth = () => {
     deselectTrack();
     deselectAlbum();
+  };
+
+  const hotReloadPlayback = (albumTitle, trackFile, playback) => {
+    const albumsToBeSet = allAlbums;
+    const itemToBeSet = albumsToBeSet
+      .filter(album => album.title === albumTitle)[0]
+      .items.filter(item => item.httpURL === trackFile)[0];
+    itemToBeSet.playback = playback;
+    // Change object referenced by state to trigger component reload
+    setAllAlbums([]);
+    setAllAlbums(albumsToBeSet);
   };
 
   if (selectedMusic && selectedAlbum) {
@@ -98,6 +121,7 @@ export const MusicReserve = ({ userid }) => {
           media={selectedMusic}
           userid={userid}
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          hotReloadPlayback={hotReloadPlayback}
         />
       </View>
     );
@@ -121,6 +145,7 @@ export const MusicReserve = ({ userid }) => {
           media={selectedMusic}
           userid={userid}
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          hotReloadPlayback={hotReloadPlayback}
         />
       </View>
     );

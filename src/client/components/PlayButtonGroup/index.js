@@ -5,47 +5,124 @@ import { View } from '@instructure/ui-view';
 
 import { PlayButton } from './PlayButton';
 
-export const PlayButtonGroup = ({ audio, video, selectMedia, course, _id }) => {
+export const PlayButtonGroup = ({
+  audio,
+  video,
+  selectMedia,
+  course,
+  tab,
+  eventMediaTitle,
+  playbackMap,
+}) => {
   PlayButtonGroup.propTypes = {
     audio: PropTypes.string,
     video: PropTypes.string,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
-    _id: PropTypes.string,
+    tab: PropTypes.number,
+    eventMediaTitle: PropTypes.object,
+    playbackMap: PropTypes.object,
   };
 
-  let audioButton = null;
+  const audioArray = [];
   if (audio && audio.length !== 0 && audio !== '') {
-    audioButton = (
-      <PlayButton
-        key={audio}
-        type="audio"
-        selectMedia={selectMedia}
-        src={audio}
-        course={course}
-        _id={_id}
-      />
-    );
+    const audioStrs = audio.split(',');
+    for (const audioStr of audioStrs) {
+      if (playbackMap && playbackMap.has(audioStr)) {
+        audioArray.push({
+          src: audioStr,
+          playback: playbackMap.get(audioStr),
+        });
+      } else {
+        audioArray.push({
+          src: audioStr,
+          playback: null,
+        });
+      }
+    }
   }
-
-  let videoButton = null;
+  const videoArray = [];
   if (video && video.length !== 0 && video !== '') {
-    videoButton = (
-      <PlayButton
-        key={video}
-        type="video"
-        selectMedia={selectMedia}
-        src={video}
-        course={course}
-        _id={_id}
-      />
-    );
+    const videoStrs = video.split(',');
+    for (const videoStr of videoStrs) {
+      if (playbackMap && playbackMap.has(videoStr)) {
+        videoArray.push({
+          src: videoStr,
+          playback: playbackMap.get(videoStr),
+        });
+      } else {
+        videoArray.push({
+          src: videoStr,
+          playback: null,
+        });
+      }
+    }
   }
 
   return (
     <View>
-      {audioButton}
-      {videoButton}
+      {audioArray &&
+        Array.isArray(audioArray) &&
+        audioArray.length !== 0 &&
+        audioArray.map(currAudio => (
+          <View key={currAudio.src}>
+            <PlayButton
+              key={currAudio.src}
+              type="audio"
+              selectMedia={selectMedia}
+              src={currAudio.src}
+              course={course}
+              file={currAudio.src}
+              tab={tab}
+              eventMediaTitle={eventMediaTitle}
+              playback={0}
+            />
+            {currAudio.playback && (
+              <PlayButton
+                key={`${currAudio.src}${currAudio.playback}`}
+                type="audio"
+                selectMedia={selectMedia}
+                src={currAudio.src}
+                course={course}
+                file={currAudio.src}
+                tab={tab}
+                eventMediaTitle={eventMediaTitle}
+                playback={currAudio.playback}
+              />
+            )}
+          </View>
+        ))}
+      {videoArray &&
+        Array.isArray(videoArray) &&
+        videoArray.length !== 0 &&
+        videoArray.map(currVideo => (
+          <View key={currVideo.src}>
+            <PlayButton
+              key={currVideo.src}
+              type="video"
+              selectMedia={selectMedia}
+              src={currVideo.src}
+              course={course}
+              file={currVideo.src}
+              tab={tab}
+              eventMediaTitle={eventMediaTitle}
+              playback={0}
+            />
+            {currVideo.playback && (
+              <PlayButton
+                key={`${currVideo.src}${currVideo.playback}`}
+                type="video"
+                selectMedia={selectMedia}
+                src={currVideo.src}
+                course={course}
+                file={currVideo.src}
+                tab={tab}
+                eventMediaTitle={eventMediaTitle}
+                playback={currVideo.playback}
+              />
+            )}
+          </View>
+        ))}
     </View>
   );
 };

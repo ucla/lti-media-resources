@@ -183,11 +183,12 @@ module.exports.updatePlayback = async (obj, collectionName) => {
   const session = client.client.startSession();
   session.startTransaction();
   try {
-    const { userid, tab, media } = obj;
+    const { userid, tab, file, classShortname } = obj;
     const query = {
       userid,
       tab,
-      media,
+      file,
+      classShortname,
     };
     const deleteResult = await playbackCollection.deleteMany(query, {
       session,
@@ -209,4 +210,16 @@ module.exports.updatePlayback = async (obj, collectionName) => {
     session.endSession();
     throw err;
   }
+};
+
+module.exports.getPlaybacks = async (
+  tab,
+  userid,
+  courseLabel,
+  collectionName
+) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const query = { tab, userid, classShortname: courseLabel };
+  const toBeReturned = await playbackCollection.find(query).toArray();
+  return toBeReturned;
 };

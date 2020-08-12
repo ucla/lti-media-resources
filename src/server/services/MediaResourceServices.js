@@ -34,14 +34,9 @@ class MediaResourceServices {
     };
   }
 
-  static async updatePlayback(userid, media, tab, time) {
-    const timeInt = Math.round(time);
-    const totalMinutes = Math.floor(timeInt / 60);
-    const hour = Math.floor(totalMinutes / 60);
-    const min = totalMinutes - hour * 60;
-    const sec = timeInt % 60;
+  static async updatePlayback(userid, file, tab, classShortname, time) {
     const numDiff = await MediaQuery.updatePlayback(
-      { userid, media, tab, time, hour, min, sec },
+      { userid, file, tab, classShortname, time },
       'playbacks'
     );
     return numDiff;

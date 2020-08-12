@@ -3,6 +3,7 @@ import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
 
 export class MediaPlayer extends Component {
@@ -19,34 +20,25 @@ export class MediaPlayer extends Component {
 
   componentWillUnmount() {
     const { playbackPos } = this.state;
-    const { userid, media, tab } = this.props;
+    const { userid, media, tab, hotReloadPlayback } = this.props;
     ltikPromise.then(ltik => {
-      const mediaIdentifiers = {
-        _id: media._id,
-      };
-      if (media.trackTitle) {
-        mediaIdentifiers.trackTitle = media.trackTitle;
-        mediaIdentifiers.volume = media.volume;
-        mediaIdentifiers.disc = media.disc;
-        mediaIdentifiers.side = media.side;
-        mediaIdentifiers.trackNumber = media.trackNumber;
-      }
       axios
         .post(`/api/medias/playback?ltik=${ltik}`, {
           userid,
-          media: mediaIdentifiers,
+          file: media.file,
           tab,
+          classShortname: media.classShortname,
           time: playbackPos,
+        })
+        .then(() => {
+          if (tab === constants.TAB_DIGITAL_AUDIO_RESERVES) {
+            hotReloadPlayback(media.albumTitle, media.file, playbackPos);
+          }
         })
         .catch(err => {
           console.log(err);
         });
     });
-  }
-
-  onReady() {
-    const player = window.jwplayer(this.playerId);
-    player.seek(60);
   }
 
   render() {
@@ -63,7 +55,12 @@ export class MediaPlayer extends Component {
         playerScript="https://cdn.jwplayer.com/libraries/q3GUgsN9.js"
         file={url}
         image={imageURL}
-        onReady={this.onReady}
+        onReady={() => {
+          if (media.playback && media.playback !== 0) {
+            const player = window.jwplayer(media._id);
+            player.seek(media.playback);
+          }
+        }}
         onTime={event => {
           this.state.playbackPos = event.position;
         }}
@@ -76,4 +73,5 @@ MediaPlayer.propTypes = {
   media: PropTypes.object.isRequired,
   userid: PropTypes.number.isRequired,
   tab: PropTypes.number.isRequired,
+  hotReloadPlayback: PropTypes.func,
 };

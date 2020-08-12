@@ -32,8 +32,14 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
       axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
         const tmpCastsByCourses = res.data;
         for (const tmpCourse of tmpCastsByCourses) {
-          for (const tmpCast of tmpCourse.casts) {
-            tmpCast.date = new Date(tmpCast.date);
+          for (const listObj of tmpCourse.casts) {
+            for (const tmpCast of listObj.listings) {
+              const playbackMap = new Map();
+              for (const tmpPlayback of tmpCast.playbackArr) {
+                playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+              }
+              tmpCast.playbackMap = playbackMap;
+            }
           }
         }
         setCasts(tmpCastsByCourses);
