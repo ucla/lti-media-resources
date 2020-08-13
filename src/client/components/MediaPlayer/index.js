@@ -10,7 +10,7 @@ const constants = require('../../../../constants');
 export class MediaPlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { playbackPos: 0 };
+    this.state = { playbackPos: 0, finished: false };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -20,8 +20,12 @@ export class MediaPlayer extends Component {
   }
 
   componentWillUnmount() {
-    const { playbackPos } = this.state;
+    const { playbackPos, finished } = this.state;
     const { userid, media, tab, hotReloadPlayback } = this.props;
+    let time = playbackPos;
+    if (finished) {
+      time = 0;
+    }
     ltikPromise.then(ltik => {
       axios
         .post(`/api/medias/playback?ltik=${ltik}`, {
@@ -29,7 +33,8 @@ export class MediaPlayer extends Component {
           file: media.file,
           tab,
           classShortname: media.classShortname,
-          time: playbackPos,
+          time,
+          finished,
         })
         .then(() => {
           if (tab === constants.TAB_DIGITAL_AUDIO_RESERVES) {
@@ -64,6 +69,9 @@ export class MediaPlayer extends Component {
         }}
         onTime={event => {
           this.state.playbackPos = event.position;
+        }}
+        onNinetyFivePercent={() => {
+          this.state.finished = true;
         }}
       />
     );
