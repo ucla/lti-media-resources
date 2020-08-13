@@ -65,22 +65,9 @@ module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
   return castCount;
 };
 
-module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
-  let query = {};
-  if (academicTerm !== '') {
-    query = { term: academicTerm };
-  }
-
-  const recordsForTerm = await client
-    .db(DB_DATABASE)
-    .collection(dbCollection)
-    .find(query)
-    .toArray();
-  return recordsForTerm;
-};
-
 module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
   const aggregation = [];
+  // If academicTerm isn't empty, add an aggregation stage to match by term first
   if (academicTerm !== '') {
     aggregation.push({
       $match: {
@@ -89,6 +76,7 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     });
   }
 
+  // Add aggregation stages to group by classShortname, and then sort those groups in alphabetical order by _id
   aggregation.push(
     {
       $group: {

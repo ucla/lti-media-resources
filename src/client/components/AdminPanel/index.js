@@ -132,55 +132,52 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
 
   // JSX
   return (
-    <View>
-      <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
-        <Tabs.Panel
-          id="adminPanelSettings"
-          renderTitle="Bruincast Settings"
-          isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_SETTINGS}
-        >
-          {alert}
-          <View>
-            <Text weight="bold">Bruincast notice</Text>
-            <ReactQuill
-              theme="snow"
-              value={currWarning}
-              onChange={setCurrWarning}
-            />
-          </View>
-          <View margin="small">
-            <TextArea
-              label="Bruincast crosslists"
-              value={currCrosslist}
-              onChange={handleCrosslistChange}
-            />
-          </View>
-          <View display="block" padding="auto" textAlign="center">
-            <Button color="primary" onClick={submitEverything} margin="small">
-              Submit
-            </Button>
-          </View>
-        </Tabs.Panel>
-        <Tabs.Panel
-          id="adminPanelListingsBruincast"
-          renderTitle="Bruincast Listings"
-          isSelected={
-            selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_BRUINCAST
-          }
-        >
-          <AdminListings contentType="bruincast" />
-        </Tabs.Panel>
-        <Tabs.Panel
-          id="adminPanelListingsVideoReserves"
-          renderTitle="Video Reserves Listings"
-          isSelected={
-            selectedTabIndex ===
-            constants.TAB_ADMIN_PANEL_LISTINGS_VIDEORESERVES
-          }
-        >
-          <AdminListings contentType="videores" />
-        </Tabs.Panel>
-      </Tabs>
-    </View>
+    <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
+      <Tabs.Panel
+        id="adminPanelSettings"
+        renderTitle="Bruincast Settings"
+        isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_SETTINGS}
+      >
+        {alert}
+        <View>
+          <Text weight="bold">Bruincast notice</Text>
+          <ReactQuill
+            theme="snow"
+            value={currWarning}
+            onChange={setCurrWarning}
+          />
+        </View>
+        <View margin="small">
+          <TextArea
+            label="Bruincast crosslists"
+            value={currCrosslist}
+            onChange={handleCrosslistChange}
+          />
+        </View>
+        <View display="block" padding="auto" textAlign="center">
+          <Button color="primary" onClick={submitEverything} margin="small">
+            Submit
+          </Button>
+        </View>
+      </Tabs.Panel>
+      <Tabs.Panel
+        id="adminPanelListingsBruincast"
+        renderTitle="Bruincast Listings"
+        isSelected={
+          selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_BRUINCAST
+        }
+      >
+        <AdminListings contentType="bruincast" />
+      </Tabs.Panel>
+      <Tabs.Panel
+        id="adminPanelListingsVideoReserves"
+        renderTitle="Video Reserves Listings"
+        isSelected={
+          selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_VIDEORESERVES
+        }
+      >
+        <AdminListings contentType="videores" />
+      </Tabs.Panel>
+    </Tabs>
   );
 };
