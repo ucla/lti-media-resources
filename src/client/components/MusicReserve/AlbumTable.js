@@ -5,6 +5,7 @@ import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Button, CondensedButton } from '@instructure/ui-buttons';
 import { Table } from '@instructure/ui-table';
+import { Tag } from '@instructure/ui-tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,6 +36,12 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
               <CondensedButton onClick={handleClick}>
                 {album.title}
               </CondensedButton>
+              {album.items.length === 1 && album.items[0].finished && (
+                <View>
+                  <br />
+                  <Tag text="Watched" />
+                </View>
+              )}
             </Table.RowHeader>
             <Table.Cell>{album.items.length}</Table.Cell>
             <Table.Cell>
@@ -47,7 +54,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                   tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
                   eventMediaTitle={{ target: { innerText: album.title } }}
                   playbackMap={
-                    album.items[0].playback && album.items[0].playback !== 0
+                    album.items[0].playback
                       ? new Map([
                           [album.items[0].httpURL, album.items[0].playback],
                         ])

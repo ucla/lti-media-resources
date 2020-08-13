@@ -24,13 +24,14 @@ router.post('/playback', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.token.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { userid, file, tab, classShortname, time } = req.body;
+  const { userid, file, tab, classShortname, time, finished } = req.body;
   MediaResourceServices.updatePlayback(
     userid,
     file,
     tab,
     classShortname,
-    time
+    time,
+    finished
   ).then(numDiff => res.send({ numDiff }));
 });
 

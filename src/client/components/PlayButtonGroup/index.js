@@ -28,34 +28,28 @@ export const PlayButtonGroup = ({
   if (audio && audio.length !== 0 && audio !== '') {
     const audioStrs = audio.split(',');
     for (const audioStr of audioStrs) {
+      let currPlayback = null;
       if (playbackMap && playbackMap.has(audioStr)) {
-        audioArray.push({
-          src: audioStr,
-          playback: playbackMap.get(audioStr),
-        });
-      } else {
-        audioArray.push({
-          src: audioStr,
-          playback: null,
-        });
+        currPlayback = playbackMap.get(audioStr);
       }
+      audioArray.push({
+        src: audioStr,
+        playback: currPlayback,
+      });
     }
   }
   const videoArray = [];
   if (video && video.length !== 0 && video !== '') {
     const videoStrs = video.split(',');
     for (const videoStr of videoStrs) {
+      let currPlayback = null;
       if (playbackMap && playbackMap.has(videoStr)) {
-        videoArray.push({
-          src: videoStr,
-          playback: playbackMap.get(videoStr),
-        });
-      } else {
-        videoArray.push({
-          src: videoStr,
-          playback: null,
-        });
+        currPlayback = playbackMap.get(videoStr);
       }
+      videoArray.push({
+        src: videoStr,
+        playback: currPlayback,
+      });
     }
   }
 

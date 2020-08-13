@@ -89,12 +89,19 @@ export const MusicReserve = ({ userid }) => {
     deselectAlbum();
   };
 
-  const hotReloadPlayback = (albumTitle, trackFile, playback) => {
+  const hotReloadPlayback = (albumTitle, trackFile, playback, finished) => {
     const albumsToBeSet = allAlbums;
     const itemToBeSet = albumsToBeSet
       .filter(album => album.title === albumTitle)[0]
       .items.filter(item => item.httpURL === trackFile)[0];
     itemToBeSet.playback = playback;
+    if (finished) {
+      if (itemToBeSet.finished) {
+        itemToBeSet.finished += 1;
+      } else {
+        itemToBeSet.finished = 1;
+      }
+    }
     // Change object referenced by state to trigger component reload
     setAllAlbums([]);
     setAllAlbums(albumsToBeSet);

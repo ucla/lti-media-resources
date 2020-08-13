@@ -180,36 +180,23 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
 
 module.exports.updatePlayback = async (obj, collectionName) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const session = client.client.startSession();
-  session.startTransaction();
-  try {
-    const { userid, tab, file, classShortname } = obj;
-    const query = {
-      userid,
-      tab,
-      file,
-      classShortname,
-    };
-    const deleteResult = await playbackCollection.deleteMany(query, {
-      session,
-    });
-    const { deletedCount } = deleteResult;
-    const insertResult = await playbackCollection.insertMany([obj], {
-      session,
-    });
-    const { insertedCount } = insertResult;
-    await session.commitTransaction();
-    session.endSession();
-    const numDiff = insertedCount - deletedCount;
-    if (numDiff !== 0 && numDiff !== 1) {
-      throw new Error('Something went wrong when updating playback');
-    }
-    return numDiff;
-  } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
-    throw err;
+  const { userid, tab, file, classShortname, time, finished } = obj;
+  const filter = {
+    userid,
+    tab,
+    file,
+    classShortname,
+  };
+  const update = {
+    $set: { userid, tab, file, classShortname, time },
+  };
+  if (finished) {
+    update.$inc = { finishedTimes: 1 };
   }
+  const result = await playbackCollection.updateOne(filter, update, {
+    upsert: true,
+  });
+  return result.result.ok;
 };
 
 module.exports.getPlaybacks = async (

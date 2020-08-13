@@ -34,9 +34,16 @@ class MediaResourceServices {
     };
   }
 
-  static async updatePlayback(userid, file, tab, classShortname, time) {
+  static async updatePlayback(
+    userid,
+    file,
+    tab,
+    classShortname,
+    time,
+    finished
+  ) {
     const numDiff = await MediaQuery.updatePlayback(
-      { userid, file, tab, classShortname, time },
+      { userid, file, tab, classShortname, time, finished },
       'playbacks'
     );
     return numDiff;

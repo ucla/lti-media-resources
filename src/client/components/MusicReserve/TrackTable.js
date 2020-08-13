@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { CondensedButton } from '@instructure/ui-buttons';
 import { Table } from '@instructure/ui-table';
+import { View } from '@instructure/ui-view';
+import { Tag } from '@instructure/ui-tag';
 
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
@@ -32,6 +34,12 @@ export const TrackTable = ({ album, handleClick }) => {
               <CondensedButton onClick={handleClick}>
                 {track.trackTitle}
               </CondensedButton>
+              {track.finished && (
+                <View>
+                  <br />
+                  <Tag text="Watched" />
+                </View>
+              )}
             </Table.RowHeader>
             <Table.Cell>
               <PlayButtonGroup
@@ -42,7 +50,7 @@ export const TrackTable = ({ album, handleClick }) => {
                 tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
                 eventMediaTitle={{ target: { innerText: track.trackTitle } }}
                 playbackMap={
-                  track.playback && track.playback !== 0
+                  track.playback
                     ? new Map([[track.httpURL, track.playback]])
                     : null
                 }

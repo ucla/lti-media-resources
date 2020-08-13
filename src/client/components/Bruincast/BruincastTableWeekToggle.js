@@ -43,15 +43,9 @@ export const BruincastTableWeekToggle = ({
       >
         <Table.Head>
           <Table.Row>
-            <Table.ColHeader id="date" width="15%">
-              Date
-            </Table.ColHeader>
-            <Table.ColHeader id="action" width="15%">
-              Action
-            </Table.ColHeader>
-            <Table.ColHeader id="des" width="70%">
-              Description
-            </Table.ColHeader>
+            <Table.ColHeader id="date">Date</Table.ColHeader>
+            <Table.ColHeader id="play">Play</Table.ColHeader>
+            <Table.ColHeader id="des">Description</Table.ColHeader>
           </Table.Row>
         </Table.Head>
         <Table.Body>

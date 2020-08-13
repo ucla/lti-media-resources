@@ -36,10 +36,13 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
           for (const listObj of tmpCourse.casts) {
             for (const tmpCast of listObj.listings) {
               const playbackMap = new Map();
+              const finishedMap = new Map();
               for (const tmpPlayback of tmpCast.playbackArr) {
                 playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
               }
               tmpCast.playbackMap = playbackMap;
+              tmpCast.finishedMap = finishedMap;
             }
           }
         }
