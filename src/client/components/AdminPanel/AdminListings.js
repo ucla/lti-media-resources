@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
@@ -9,10 +10,27 @@ import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import { Alert } from '@instructure/ui-alerts';
 import axios from 'axios';
 
-import { BruincastAdminListingsToggle } from './BruincastAdminListingsToggle';
+import { AdminListingsToggle } from './AdminListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
-export const BruincastAdminListings = () => {
+export const AdminListings = ({ contentType }) => {
+  AdminListings.propTypes = {
+    contentType: PropTypes.string,
+  };
+
+  let contentTypeUIString = '';
+  switch (contentType) {
+    case 'bruincast':
+      contentTypeUIString = 'Bruincast';
+      break;
+    case 'videores':
+      contentTypeUIString = 'Video Reserves';
+      break;
+    default:
+      contentTypeUIString = 'content';
+      break;
+  }
+
   // Variable for searchTerm, updated directly by term field change
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -27,20 +45,20 @@ export const BruincastAdminListings = () => {
     setSearchTerm(event.target.value);
   };
 
-  const retrieveCastListings = () => {
+  const retrieveListings = () => {
     setRecentlySearchedTerm(searchTerm);
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/bruincast/castlistings?ltik=${ltik}`, {
+        .get(`/api/medias/${contentType}/alllistings?ltik=${ltik}`, {
           params: { term: searchTerm },
         })
         .then(res => setMediaListings(res.data));
     });
   };
-  useEffect(retrieveCastListings, []);
+  useEffect(retrieveListings, []);
 
   const handleListingsSearch = event => {
-    retrieveCastListings();
+    retrieveListings();
     event.preventDefault();
   };
 
@@ -86,15 +104,16 @@ export const BruincastAdminListings = () => {
       <br />
       <View>
         {mediaListings.length === 0 && recentlySearchedTerm !== '' && (
-          <Alert variant="warning" margin="small">
-            {`No Bruincast content found for ${recentlySearchedTerm}.`}
+          <Alert variant="warning">
+            {`No ${contentTypeUIString} content found for ${recentlySearchedTerm}.`}
           </Alert>
         )}
         {mediaListings.map(course => (
-          <BruincastAdminListingsToggle
+          <AdminListingsToggle
             key={course._id}
             shortname={course._id}
             listings={course.listings}
+            contentType={contentType}
           />
         ))}
       </View>

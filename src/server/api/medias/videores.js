@@ -15,6 +15,14 @@ router.get('/', (req, res) => {
   VideoresServices.getVideores(label).then(list => res.send(list));
 });
 
+router.get('/alllistings', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { term } = req.query;
+  VideoresServices.getAllVideoReserves(term).then(vidRes => res.send(vidRes));
+});
+
 router.get('/url', (req, res) => {
   const { filename } = req.query;
   const { VIDEORES_HOST, VIDEORES_TOKEN_SECRET, VALIDITY } = process.env;

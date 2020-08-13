@@ -20,6 +20,21 @@ class VideoresServices {
     }
     return docs;
   }
+
+  static async formatTermVidRes(media) {
+    for (const courseMedia of media) {
+      for (const entry of courseMedia.listings) {
+        delete entry._id;
+      }
+    }
+    return media;
+  }
+
+  static async getAllVideoReserves(term) {
+    const termMedia = await MediaQuery.getMediaForTerm('videoreserves', term);
+    const formattedMedia = this.formatTermVidRes(termMedia);
+    return formattedMedia;
+  }
 }
 
 module.exports = VideoresServices;
