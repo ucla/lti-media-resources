@@ -3,6 +3,7 @@ const path = require('path');
 
 const router = express.Router();
 
+const constants = require('../../../client/constants');
 const MediaResourceServices = require('../../services/MediaResourceServices');
 const CheckRoleServices = require('../../services/CheckRole');
 const bruincastRoute = require('./bruincast');
@@ -44,7 +45,7 @@ router.get('/url', (req, res) => {
   let host = '';
   let secret = '';
 
-  if (mediatype === 'bruincast') {
+  if (parseInt(mediatype) === constants.TAB_BRUINCAST) {
     if (!quarter || !mediaformat || !filename) {
       return res.status(500);
     }
@@ -58,7 +59,7 @@ router.get('/url', (req, res) => {
 
     host = HOST;
     secret = SECRET;
-  } else if (mediatype === 'videores') {
+  } else if (parseInt(mediatype) === constants.TAB_VIDEO_RESERVES) {
     stream = `${ext}:${filename}/playlist.m3u8`;
 
     host = VIDEORES_HOST;

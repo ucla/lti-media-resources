@@ -7,6 +7,8 @@ import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { TitleCommentBlock } from './TitleCommentBlock';
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
+const constants = require('../../constants');
+
 export const BruincastTableWeekToggle = ({
   weekNum,
   weekCasts,
@@ -59,11 +61,11 @@ export const BruincastTableWeekToggle = ({
               <Table.Cell>
                 <PlayButtonGroup
                   key={cast.audio || cast.video}
-                  media="bruincast"
                   audio={cast.audio}
                   video={cast.video}
                   selectMedia={selectMedia}
                   course={course}
+                  tab={constants.TAB_BRUINCAST}
                 />
               </Table.Cell>
               <Table.Cell>

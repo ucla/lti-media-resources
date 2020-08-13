@@ -18,6 +18,8 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "@instructure/canvas-high-contrast-theme": "^7.1.1",
     "@instructure/canvas-theme": "^7.1.1",
     "@instructure/ui-a11y-content": "^7.1.2",

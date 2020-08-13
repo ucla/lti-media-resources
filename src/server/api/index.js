@@ -16,11 +16,11 @@ router.get('/context', (req, res) => {
   const { context } = res.locals.context;
   if (roles && context) {
     context.quarter = context.label.substr(0, context.label.indexOf('-'));
-    const isOnCampus = isOnCampusIP(req.ip);
+    const onCampus = isOnCampusIP(req.ip);
     return res.send({
       course: context,
       roles,
-      onCampus: isOnCampus,
+      onCampus,
     });
   }
   return res.status(400).send(new Error('Context not found'));

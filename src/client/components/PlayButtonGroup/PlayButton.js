@@ -3,24 +3,25 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Button } from '@instructure/ui-buttons';
-import { IconVideoSolid, IconMicSolid } from '@instructure/ui-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { ltikPromise } from '../../services/ltik';
 
 export const PlayButton = ({
-  media,
   format,
   selectMedia,
   file,
   course,
+  tab,
   disabled,
 }) => {
   PlayButton.propTypes = {
-    media: PropTypes.string,
     format: PropTypes.string,
     selectMedia: PropTypes.func,
     file: PropTypes.string,
     course: PropTypes.object,
+    tab: PropTypes.number,
     disabled: PropTypes.bool,
   };
   const generateAndSelectMedia = () => {
@@ -28,7 +29,7 @@ export const PlayButton = ({
       axios
         .get(`/api/medias/url?ltik=${ltik}`, {
           params: {
-            mediatype: media,
+            mediatype: tab,
             mediaformat: format.charAt(0),
             filename: file,
             quarter: course.quarter,
@@ -44,9 +45,9 @@ export const PlayButton = ({
   };
   let playIcon = null;
   if (format === 'audio') {
-    playIcon = IconMicSolid;
+    playIcon = <FontAwesomeIcon icon={faMicrophone} />;
   } else if (format === 'video') {
-    playIcon = IconVideoSolid;
+    playIcon = <FontAwesomeIcon icon={faVideo} />;
   }
   return (
     <Button

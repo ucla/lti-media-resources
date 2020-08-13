@@ -6,12 +6,12 @@ import { View } from '@instructure/ui-view';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
-import { Button } from '@instructure/ui-buttons';
-import { IconVideoSolid } from '@instructure/ui-icons';
 
 import { ltikPromise } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';
+
+const constants = require('../../constants');
 
 export const VideoReserve = ({ course, onCampus }) => {
   VideoReserve.propTypes = {
@@ -94,11 +94,11 @@ export const VideoReserve = ({ course, onCampus }) => {
             <Table.Row key={vid.videoTitle}>
               <Table.Cell>
                 <PlayButton
-                  media="videores"
                   format="video"
                   selectMedia={selectMedia}
                   file={vid.filename}
                   course={course}
+                  tab={constants.TAB_VIDEO_RESERVES}
                   disabled={vid.expired}
                 />
               </Table.Cell>
