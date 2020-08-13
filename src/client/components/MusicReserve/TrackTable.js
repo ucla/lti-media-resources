@@ -5,7 +5,8 @@ import { CondensedButton } from '@instructure/ui-buttons';
 import { Table } from '@instructure/ui-table';
 
 import { PlayButtonGroup } from '../PlayButtonGroup';
-import * as constants from '../../constants';
+
+const constants = require('../../../../constants');
 
 export const TrackTable = ({ album, handleClick }) => {
   TrackTable.propTypes = {

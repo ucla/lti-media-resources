@@ -1,10 +1,11 @@
 const MediaQuery = require('../models/mediaquery');
+const constants = require('../../../constants');
 
 class MusicresServices {
   static async getMusicres(label, userid) {
     const docs = await MediaQuery.getMusicResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
-      parseInt(process.env.TAB_DIGITAL_AUDIO_RESERVES),
+      constants.TAB_DIGITAL_AUDIO_RESERVES,
       userid,
       label,
       'playbacks'

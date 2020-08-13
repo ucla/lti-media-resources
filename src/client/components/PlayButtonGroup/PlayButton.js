@@ -10,8 +10,9 @@ import {
   faPlay,
 } from '@fortawesome/free-solid-svg-icons';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 export const PlayButton = ({
   type,

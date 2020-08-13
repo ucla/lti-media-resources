@@ -10,8 +10,9 @@ import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaPlayer } from '../MediaPlayer';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 export const MusicReserve = ({ userid }) => {
   MusicReserve.propTypes = {

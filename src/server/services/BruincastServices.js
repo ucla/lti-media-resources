@@ -1,6 +1,7 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
+const constants = require('../../../constants');
 
 const { window } = new JSDOM('');
 const dompurify = createDOMPurify(window);
@@ -56,7 +57,7 @@ class BruincastServices {
       );
 
       const rawPlaybacks = await MediaQuery.getPlaybacks(
-        parseInt(process.env.TAB_BRUINCAST),
+        constants.TAB_BRUINCAST,
         userid,
         c.label,
         'playbacks'

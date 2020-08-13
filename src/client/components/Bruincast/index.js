@@ -14,8 +14,9 @@ import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { BruincastTable } from './BruincastTable';
 import { MediaPlayer } from '../MediaPlayer';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
   Bruincast.propTypes = {

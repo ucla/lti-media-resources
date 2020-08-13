@@ -7,7 +7,7 @@ import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { TitleCommentBlock } from './TitleCommentBlock';
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
-import * as constants from '../../constants';
+const constants = require('../../../../constants');
 
 export const BruincastTableWeekToggle = ({
   weekNum,

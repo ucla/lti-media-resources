@@ -10,7 +10,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
-import * as constants from '../../constants';
+const constants = require('../../../../constants');
 
 export const AlbumTable = ({ allAlbums, handleClick }) => {
   AlbumTable.propTypes = {

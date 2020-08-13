@@ -10,8 +10,9 @@ import { Bruincast } from '../Bruincast';
 import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 theme.use();
 

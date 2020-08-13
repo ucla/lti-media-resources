@@ -3,8 +3,9 @@ import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 export class MediaPlayer extends Component {
   constructor(props) {

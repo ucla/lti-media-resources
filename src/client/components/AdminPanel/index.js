@@ -13,8 +13,9 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
 import { BruincastAdminListings } from './BruincastAdminListings';
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
   AdminPanel.propTypes = {
