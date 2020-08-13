@@ -78,11 +78,11 @@ export const VideoReserve = ({ course, onCampus }) => {
       <Table hover id="videoreserves" caption="Video Reserves">
         <Table.Head>
           <Table.Row>
-            <Table.ColHeader id="play" width="20%">
-              Play
-            </Table.ColHeader>
             <Table.ColHeader id="title" width="40%">
               Title
+            </Table.ColHeader>
+            <Table.ColHeader id="play" width="20%">
+              Play
             </Table.ColHeader>
             <Table.ColHeader id="availability" width="40%">
               Availability
@@ -92,6 +92,7 @@ export const VideoReserve = ({ course, onCampus }) => {
         <Table.Body>
           {vidReserves.map(vid => (
             <Table.Row key={vid.videoTitle}>
+              <Table.Cell>{vid.videoTitle}</Table.Cell>
               <Table.Cell>
                 <PlayButton
                   format="video"
@@ -102,7 +103,6 @@ export const VideoReserve = ({ course, onCampus }) => {
                   disabled={vid.expired}
                 />
               </Table.Cell>
-              <Table.Cell>{vid.videoTitle}</Table.Cell>
               <Table.Cell>{`${vid.startDate} – ${vid.stopDate}`}</Table.Cell>
             </Table.Row>
           ))}

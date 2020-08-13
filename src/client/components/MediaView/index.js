@@ -16,7 +16,11 @@ export const MediaView = ({ mediaURL, mediaFormat, deSelectMedia }) => {
 
   return (
     <View>
-      <Button onClick={deSelectMedia} renderIcon={IconArrowOpenStartLine}>
+      <Button
+        onClick={deSelectMedia}
+        color="primary"
+        renderIcon={IconArrowOpenStartLine}
+      >
         Back
       </Button>
       <br />
