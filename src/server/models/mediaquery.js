@@ -3,12 +3,17 @@ const client = require('./db');
 
 const { DB_DATABASE } = process.env;
 
-module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
+module.exports.getCastsByCourse = async (
+  dbCollection,
+  courseLabel,
+  ascending
+) => {
   /*
    * Aggregation Steps:
-   * 1. Match by courseLabel
-   * 2. Sort course records by date in ascending order
-   * 3. Group buckets of records by 'week' field
+   * 1. Match by courseShortname
+   * 2. Sort course records by date by ascending/descending order
+   * 3. Group records by $week field
+   * 4. Sort the groups by week number in ascending/descending order
    *
    * The boundaries have an inclusive lowerbound and exclusive upperbound,
    * so 89 is needed in the boundaries so that casts with week 88 can be
@@ -16,6 +21,8 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
    *
    * Reference: https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#examples
    */
+
+  const sortOrder = ascending === 'true' ? 1 : -1;
   const aggregation = [
     {
       $match: {
@@ -24,25 +31,26 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
     },
     {
       $sort: {
-        date: 1,
+        date: sortOrder,
       },
     },
     {
-      $bucket: {
-        groupBy: '$week',
-        boundaries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 88, 89],
-        default: 99,
-        output: {
-          listings: {
-            $push: {
-              date: '$date',
-              video: '$video',
-              audio: '$audio',
-              title: '$title',
-              comments: '$comments',
-            },
+      $group: {
+        _id: '$week',
+        listings: {
+          $push: {
+            date: '$date',
+            video: '$video',
+            audio: '$audio',
+            title: '$title',
+            comments: '$comments',
           },
         },
+      },
+    },
+    {
+      $sort: {
+        _id: sortOrder,
       },
     },
   ];

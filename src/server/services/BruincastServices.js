@@ -34,7 +34,7 @@ class BruincastServices {
     return toBeReturned;
   }
 
-  static async getCasts(course) {
+  static async getCasts(course, ascending) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
       'crosslists'
@@ -52,7 +52,8 @@ class BruincastServices {
     for (const c of courseList) {
       const courseCasts = await MediaQuery.getCastsByCourse(
         'bruincastmedia',
-        c.label
+        c.label,
+        ascending
       );
 
       castsByCourses.push({

@@ -9,8 +9,12 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
+import { Button, CondensedButton } from '@instructure/ui-buttons';
+import {
+  IconArrowOpenUpLine,
+  IconArrowOpenDownLine,
+} from '@instructure/ui-icons';
 
-import { CondensedButton } from '@instructure/ui-buttons';
 import { BruincastTable } from './BruincastTable';
 import { MediaPlayer } from '../MediaPlayer';
 
@@ -23,22 +27,33 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
     retrieveWarning: PropTypes.func,
   };
 
+  const [ascendingSort, setAscendingSort] = useState(true);
+
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
     ltikPromise.then(async ltik => {
-      axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
-        const tmpCastsByCourses = res.data;
-        for (const tmpCourse of tmpCastsByCourses) {
-          for (const tmpCast of tmpCourse.casts) {
-            tmpCast.date = new Date(tmpCast.date);
+      axios
+        .get(`/api/medias/bruincast/casts?ltik=${ltik}`, {
+          params: { ascending: ascendingSort },
+        })
+        .then(res => {
+          const tmpCastsByCourses = res.data;
+          for (const tmpCourse of tmpCastsByCourses) {
+            for (const tmpCast of tmpCourse.casts) {
+              tmpCast.date = new Date(tmpCast.date);
+            }
           }
-        }
-        setCasts(tmpCastsByCourses);
-      });
+          setCasts(tmpCastsByCourses);
+        });
     });
   };
   useEffect(retrieveCasts, []);
+
+  const handleSortButtonClick = () => {
+    setAscendingSort(!ascendingSort);
+    retrieveCasts();
+  };
 
   // Logic when a media is selected and to be played
   // Declaring functions only
@@ -99,6 +114,16 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
         Video recordings may take up to 24 hours before they are available.{' '}
         <Link href="#">Help</Link>
       </Text>
+      <div>
+        <Button
+          renderIcon={
+            ascendingSort ? IconArrowOpenUpLine : IconArrowOpenDownLine
+          }
+          onClick={handleSortButtonClick}
+        >
+          Sort by date
+        </Button>
+      </div>
       <Tabs onRequestTabChange={handleCourseChange} variant="secondary">
         {castsByCourses.map((currCourse, i) => (
           <Tabs.Panel
