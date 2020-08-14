@@ -86,7 +86,7 @@ export const PlayButtonGroup = ({
           <View key={currAudio.src}>
             <PlayButton
               key={currAudio.src}
-              type="audio"
+              format="audio"
               selectMedia={selectMedia}
               src={currAudio.src}
               course={course}
@@ -96,6 +96,7 @@ export const PlayButtonGroup = ({
               playback={currAudio.playback}
               remaining={currAudio.remaining}
               finished={currAudio.finished}
+              disabled={false}
             />
           </View>
         ))}
@@ -106,7 +107,7 @@ export const PlayButtonGroup = ({
           <View key={currVideo.src}>
             <PlayButton
               key={currVideo.src}
-              type="video"
+              format="video"
               selectMedia={selectMedia}
               src={currVideo.src}
               course={course}
@@ -116,6 +117,7 @@ export const PlayButtonGroup = ({
               playback={currVideo.playback}
               remaining={currVideo.remaining}
               finished={currVideo.finished}
+              disabled={false}
             />
           </View>
         ))}

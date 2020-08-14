@@ -10,7 +10,7 @@ import { ltikPromise } from '../../services/ltik';
 const constants = require('../../../../constants');
 
 export const PlayButton = ({
-  type,
+  format,
   selectMedia,
   src,
   course,
@@ -20,9 +20,10 @@ export const PlayButton = ({
   playback,
   remaining,
   finished,
+  disabled,
 }) => {
   PlayButton.propTypes = {
-    type: PropTypes.string,
+    format: PropTypes.string,
     selectMedia: PropTypes.func,
     src: PropTypes.string,
     course: PropTypes.object,
@@ -32,6 +33,7 @@ export const PlayButton = ({
     playback: PropTypes.number,
     remaining: PropTypes.number,
     finished: PropTypes.number,
+    disabled: PropTypes.bool,
   };
   const generateAndSelectMedia = () => {
     if (
@@ -40,16 +42,17 @@ export const PlayButton = ({
     ) {
       ltikPromise.then(ltik => {
         axios
-          .get(`/api/medias/bruincast/url?ltik=${ltik}`, {
+          .get(`/api/medias/url?ltik=${ltik}`, {
             params: {
-              type: type.charAt(0),
-              src,
+              mediatype: tab,
+              mediaformat: format.charAt(0),
+              filename: src,
               quarter: course.quarter,
             },
           })
           .then(res => {
             const mediaToBeSelected = {
-              type,
+              format,
               url: res.data,
               classShortname: course.label,
               file,
@@ -70,12 +73,14 @@ export const PlayButton = ({
   };
 
   let playIcon = <IconVideoSolid />;
-  if (type === 'audio') {
+  if (format === 'audio') {
     playIcon = <IconAudioSolid />;
   }
 
   let playText = 'Play';
-  if (playback && playback >= 1 && remaining && remaining >= 1) {
+  if (disabled) {
+    playText = 'Unavailable';
+  } else if (playback && playback >= 1 && remaining && remaining >= 1) {
     let timeText = '';
     const timeInt = Math.floor(remaining);
     const totalMinutes = Math.floor(timeInt / 60);
@@ -112,6 +117,7 @@ export const PlayButton = ({
       size="medium"
       onClick={generateAndSelectMedia}
       textAlign="start"
+      interaction={disabled ? 'disabled' : 'enabled'}
     >
       {playText}
     </Button>

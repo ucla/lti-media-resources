@@ -2,6 +2,7 @@ const sha256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 
 const MediaQuery = require('../models/mediaquery');
+const constants = require('../../../constants');
 
 class MediaResourceServices {
   static async getCounts(courseLabel) {
@@ -75,7 +76,7 @@ class MediaResourceServices {
   }
 
   static async generateMediaURL(
-    type,
+    mediatype,
     HOST,
     stream,
     clientIP,
@@ -91,7 +92,7 @@ class MediaResourceServices {
       start,
       end
     );
-    if (type === 'bruincast') {
+    if (parseInt(mediatype) === constants.TAB_BRUINCAST) {
       const newStream = `redirect/${stream}`;
       const bcastPlaybackURL = `${HOST}${newStream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
       return bcastPlaybackURL;

@@ -38,7 +38,7 @@ export const MusicReserve = ({ userid }) => {
     const { items } = clickedAlbum;
     if (items.length === 1) {
       const musicToBeSet = items[0];
-      musicToBeSet.type = clickedAlbum.isVideo ? 'video' : 'audio';
+      musicToBeSet.format = clickedAlbum.isVideo ? 'video' : 'audio';
       if (
         !musicToBeSet.trackTitle ||
         musicToBeSet.trackTitle === '' ||
@@ -70,7 +70,7 @@ export const MusicReserve = ({ userid }) => {
     }
     clickedMusic.file = clickedMusic.url;
     clickedMusic.classShortname = selectedAlbum.classShortname;
-    clickedMusic.type = selectedAlbum.isVideo ? 'video' : 'audio';
+    clickedMusic.format = selectedAlbum.isVideo ? 'video' : 'audio';
     clickedMusic._id = selectedAlbum._id;
     clickedMusic.albumTitle = selectedAlbum.title;
     if (event.playback !== undefined && event.playback !== null) {

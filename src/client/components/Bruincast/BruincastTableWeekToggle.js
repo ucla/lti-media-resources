@@ -17,7 +17,7 @@ export const BruincastTableWeekToggle = ({
   shortname,
 }) => {
   BruincastTableWeekToggle.propTypes = {
-    weekNum: PropTypes.string,
+    weekNum: PropTypes.number,
     weekCasts: PropTypes.array,
     selectMedia: PropTypes.func,
     course: PropTypes.object,

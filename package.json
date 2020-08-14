@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.10.5",
-    "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@instructure/canvas-high-contrast-theme": "^7.1.1",
     "@instructure/canvas-theme": "^7.1.1",
     "@instructure/ui-a11y-content": "^7.1.2",
@@ -56,6 +55,7 @@
     "node-cache": "^5.1.2",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
+    "range_check": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-jw-player": "^1.19.1",

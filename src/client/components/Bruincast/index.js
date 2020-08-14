@@ -9,10 +9,8 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
-import { Button } from '@instructure/ui-buttons';
-import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { BruincastTable } from './BruincastTable';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
@@ -119,26 +117,17 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
   if (
     selectedMedia.url &&
     selectedMedia.url !== '' &&
-    selectedMedia.type &&
-    selectedMedia.type !== ''
+    selectedMedia.format &&
+    selectedMedia.format !== ''
   ) {
     return (
-      <View>
-        <Button
-          onClick={deselectMedia}
-          color="primary"
-          margin="medium"
-          renderIcon={IconArrowOpenStartSolid}
-        >
-          Back
-        </Button>
-        <MediaPlayer
-          media={selectedMedia}
-          userid={userid}
-          tab={constants.TAB_BRUINCAST}
-          hotReloadPlayback={hotReloadPlayback}
-        />
-      </View>
+      <MediaView
+        media={selectedMedia}
+        userid={userid}
+        tab={constants.TAB_BRUINCAST}
+        hotReloadPlayback={hotReloadPlayback}
+        deSelectMedia={deselectMedia}
+      />
     );
   }
 

@@ -15,8 +15,8 @@ export class MediaPlayer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const { media } = this.props;
-    const { url, type } = media;
-    return nextProps.media.url !== url || nextProps.media.type !== type;
+    const { url, format } = media;
+    return nextProps.media.url !== url || nextProps.media.format !== format;
   }
 
   componentWillUnmount() {
@@ -67,9 +67,9 @@ export class MediaPlayer extends Component {
 
   render() {
     const { media } = this.props;
-    const { url, type } = media;
+    const { url, format } = media;
     let imageURL = '';
-    if (type === 'audio' || type === 'a') {
+    if (format === 'audio' || format === 'a') {
       imageURL =
         'https://www.shutupandtakemymoney.com/wp-content/uploads/2020/04/zoom-meeting-audio-vs-video-meme.jpg';
     }
