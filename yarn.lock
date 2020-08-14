@@ -995,7 +995,7 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.30"
 
-"@fortawesome/free-solid-svg-icons@^5.13.1":
+"@fortawesome/free-solid-svg-icons@^5.14.0":
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.14.0.tgz#970453f5e8c4915ad57856c3a0252ac63f6fec18"
   integrity sha512-M933RDM8cecaKMWDSk3FRYdnzWGW7kBBlGNGfvqLVwcwhUPNj9gcw+xZMrqBdRqxnSXdl3zWzTCNNGEtFUq67Q==
@@ -6627,12 +6627,17 @@ ip-regex@^2.1.0:
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
   integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
 
+ip6@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/ip6/-/ip6-0.1.8.tgz#f3d4eef8f35c9403d6fcb75097952f82e10cebe0"
+  integrity sha512-m0NbufJowJ8ooCHp8tN9zX+WgWojsY5XvEYkr2Me4cqbMNQVNhFKjqrQkNaI87TGyxQQT1eGN0sFgpEMFSc9mw==
+
 ip@^1.1.0, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
   integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
 
-ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
+ipaddr.js@1.9.1, ipaddr.js@^1.9.0, ipaddr.js@^1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
@@ -9364,6 +9369,14 @@ range-parser@^1.2.1, range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
+
+range_check@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/range_check/-/range_check-2.0.3.tgz#6f159d42ad20917cd65ae0a92714c47a155944b7"
+  integrity sha512-l5DxkjLqCYJ5o2adtOet93H5lh/W3xnjzV5qaH6Z1mQWvY/+NXvyZnJ+/P0uWo0GdZ66/jWosihQW88HqxggBw==
+  dependencies:
+    ip6 "^0.1.8"
+    ipaddr.js "^1.9.1"
 
 raw-body@2.4.0:
   version "2.4.0"

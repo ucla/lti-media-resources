@@ -5,12 +5,13 @@ import { View } from '@instructure/ui-view';
 
 import { PlayButton } from './PlayButton';
 
-export const PlayButtonGroup = ({ audio, video, selectMedia, course }) => {
+export const PlayButtonGroup = ({ audio, video, selectMedia, course, tab }) => {
   PlayButtonGroup.propTypes = {
     audio: PropTypes.string,
     video: PropTypes.string,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
+    tab: PropTypes.number,
   };
 
   let audioButton = null;
@@ -18,10 +19,12 @@ export const PlayButtonGroup = ({ audio, video, selectMedia, course }) => {
     audioButton = (
       <PlayButton
         key={audio}
-        type="audio"
+        format="audio"
         selectMedia={selectMedia}
-        src={audio}
+        file={audio}
         course={course}
+        tab={tab}
+        disabled={false}
       />
     );
   }
@@ -31,10 +34,12 @@ export const PlayButtonGroup = ({ audio, video, selectMedia, course }) => {
     videoButton = (
       <PlayButton
         key={video}
-        type="video"
+        format="video"
         selectMedia={selectMedia}
-        src={video}
+        file={video}
         course={course}
+        tab={tab}
+        disabled={false}
       />
     );
   }
