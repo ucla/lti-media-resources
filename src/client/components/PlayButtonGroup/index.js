@@ -13,6 +13,7 @@ export const PlayButtonGroup = ({
   tab,
   eventMediaTitle,
   playbackMap,
+  finishedMap,
 }) => {
   PlayButtonGroup.propTypes = {
     audio: PropTypes.string,
@@ -22,6 +23,7 @@ export const PlayButtonGroup = ({
     tab: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playbackMap: PropTypes.object,
+    finishedMap: PropTypes.object,
   };
 
   const audioArray = [];
@@ -29,12 +31,17 @@ export const PlayButtonGroup = ({
     const audioStrs = audio.split(',');
     for (const audioStr of audioStrs) {
       let currPlayback = null;
+      let currFinished = null;
       if (playbackMap && playbackMap.has(audioStr)) {
         currPlayback = playbackMap.get(audioStr);
+      }
+      if (finishedMap && finishedMap.has(audioStr)) {
+        currFinished = finishedMap.get(audioStr);
       }
       audioArray.push({
         src: audioStr,
         playback: currPlayback,
+        finished: currFinished,
       });
     }
   }
@@ -43,12 +50,17 @@ export const PlayButtonGroup = ({
     const videoStrs = video.split(',');
     for (const videoStr of videoStrs) {
       let currPlayback = null;
+      let currFinished = null;
       if (playbackMap && playbackMap.has(videoStr)) {
         currPlayback = playbackMap.get(videoStr);
+      }
+      if (finishedMap && finishedMap.has(videoStr)) {
+        currFinished = finishedMap.get(videoStr);
       }
       videoArray.push({
         src: videoStr,
         playback: currPlayback,
+        finished: currFinished,
       });
     }
   }
@@ -69,21 +81,9 @@ export const PlayButtonGroup = ({
               file={currAudio.src}
               tab={tab}
               eventMediaTitle={eventMediaTitle}
-              playback={0}
+              playback={currAudio.playback}
+              finished={currAudio.finished}
             />
-            {currAudio.playback && (
-              <PlayButton
-                key={`${currAudio.src}${currAudio.playback}`}
-                type="audio"
-                selectMedia={selectMedia}
-                src={currAudio.src}
-                course={course}
-                file={currAudio.src}
-                tab={tab}
-                eventMediaTitle={eventMediaTitle}
-                playback={currAudio.playback}
-              />
-            )}
           </View>
         ))}
       {videoArray &&
@@ -100,21 +100,9 @@ export const PlayButtonGroup = ({
               file={currVideo.src}
               tab={tab}
               eventMediaTitle={eventMediaTitle}
-              playback={0}
+              playback={currVideo.playback}
+              finished={currVideo.finished}
             />
-            {currVideo.playback && (
-              <PlayButton
-                key={`${currVideo.src}${currVideo.playback}`}
-                type="video"
-                selectMedia={selectMedia}
-                src={currVideo.src}
-                course={course}
-                file={currVideo.src}
-                tab={tab}
-                eventMediaTitle={eventMediaTitle}
-                playback={currVideo.playback}
-              />
-            )}
           </View>
         ))}
     </View>

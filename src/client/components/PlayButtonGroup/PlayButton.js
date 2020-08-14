@@ -23,6 +23,7 @@ export const PlayButton = ({
   tab,
   eventMediaTitle,
   playback,
+  finished,
 }) => {
   PlayButton.propTypes = {
     type: PropTypes.string,
@@ -33,6 +34,7 @@ export const PlayButton = ({
     tab: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playback: PropTypes.number,
+    finished: PropTypes.number,
   };
   const generateAndSelectMedia = () => {
     if (
@@ -69,16 +71,18 @@ export const PlayButton = ({
       selectMedia(eventMediaTitle);
     }
   };
-  let playIcon = null;
-  if (playback) {
-    playIcon = <FontAwesomeIcon icon={faPlay} />;
-  } else if (type === 'audio') {
+
+  let playIcon = <FontAwesomeIcon icon={faVideo} />;
+  if (type === 'audio') {
     playIcon = <FontAwesomeIcon icon={faMicrophone} />;
-  } else if (type === 'video') {
-    playIcon = <FontAwesomeIcon icon={faVideo} />;
   }
+  if (playback && playback >= 1) {
+    playIcon = <FontAwesomeIcon icon={faPlay} />;
+  }
+
   let playText = 'Play';
-  if (playback) {
+  if (playback && playback >= 1) {
+    let timeText = '';
     const timeInt = Math.floor(playback);
     const totalMinutes = Math.floor(timeInt / 60);
     const hour = Math.floor(totalMinutes / 60);
@@ -91,18 +95,29 @@ export const PlayButton = ({
       sec = `0${sec}`;
     }
     if (hour === 0) {
-      playText = `${min}:${sec}`;
+      timeText = `${min}:${sec}`;
     } else {
-      playText = `${hour}:${min}:${sec}`;
+      timeText = `${hour}:${min}:${sec}`;
     }
+    if (finished) {
+      playText = `Rewatch from ${timeText}`;
+    } else {
+      playText = `Resume from ${timeText}`;
+    }
+  } else if (finished) {
+    playText = 'Rewatch';
   }
+
+  const playColor = finished ? 'secondary' : 'primary';
+
   return (
     <Button
       renderIcon={playIcon}
-      color={playback ? 'success' : 'primary'}
+      color={playColor}
       margin="xxx-small"
       size="medium"
       onClick={generateAndSelectMedia}
+      display="block"
     >
       {playText}
     </Button>

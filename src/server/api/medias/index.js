@@ -32,7 +32,7 @@ router.post('/playback', (req, res) => {
     classShortname,
     time,
     finished
-  ).then(numDiff => res.send({ numDiff }));
+  ).then(ok => res.send({ ok }));
 });
 
 module.exports = router;

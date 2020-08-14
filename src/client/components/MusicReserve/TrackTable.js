@@ -21,7 +21,9 @@ export const TrackTable = ({ album, handleClick }) => {
       <Table.Head>
         <Table.Row>
           <Table.ColHeader id="title">Track title</Table.ColHeader>
-          <Table.ColHeader id="actions">Actions</Table.ColHeader>
+          <Table.ColHeader id="actions" width="241px">
+            Play
+          </Table.ColHeader>
           <Table.ColHeader id="album">Album</Table.ColHeader>
         </Table.Row>
       </Table.Head>
@@ -52,6 +54,11 @@ export const TrackTable = ({ album, handleClick }) => {
                 playbackMap={
                   track.playback
                     ? new Map([[track.httpURL, track.playback]])
+                    : null
+                }
+                finishedMap={
+                  track.finished
+                    ? new Map([[track.httpURL, track.finished]])
                     : null
                 }
               />

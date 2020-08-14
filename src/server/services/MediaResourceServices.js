@@ -42,11 +42,11 @@ class MediaResourceServices {
     time,
     finished
   ) {
-    const numDiff = await MediaQuery.updatePlayback(
+    const ok = await MediaQuery.updatePlayback(
       { userid, file, tab, classShortname, time, finished },
       'playbacks'
     );
-    return numDiff;
+    return ok;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {

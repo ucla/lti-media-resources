@@ -25,7 +25,9 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
         <Table.Row>
           <Table.ColHeader id="title">Title</Table.ColHeader>
           <Table.ColHeader id="count"># of tracks</Table.ColHeader>
-          <Table.ColHeader id="actions">Actions</Table.ColHeader>
+          <Table.ColHeader id="actions" width="241px">
+            Actions
+          </Table.ColHeader>
           <Table.ColHeader id="meta">Descriptions</Table.ColHeader>
         </Table.Row>
       </Table.Head>
@@ -60,6 +62,13 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                         ])
                       : null
                   }
+                  finishedMap={
+                    album.items[0].finished
+                      ? new Map([
+                          [album.items[0].httpURL, album.items[0].finished],
+                        ])
+                      : null
+                  }
                 />
               )}
               {album.items.length !== 1 && (
@@ -71,6 +80,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                   onClick={() => {
                     handleClick({ target: { innerText: album.title } });
                   }}
+                  display="block"
                 >
                   View
                 </Button>

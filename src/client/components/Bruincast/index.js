@@ -46,6 +46,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
             }
           }
         }
+        console.log(tmpCastsByCourses);
         setCasts(tmpCastsByCourses);
       });
     });
@@ -60,6 +61,30 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
   };
   const deselectMedia = () => {
     setSelectedMedia({});
+  };
+
+  const hotReloadPlayback = (classShortname, file, playback, finished) => {
+    const toBeSet = castsByCourses;
+    const matchedCourse = toBeSet.filter(
+      obj => obj.course.label === classShortname
+    );
+    for (const listObj of matchedCourse.casts) {
+      for (const cast of listObj.listings) {
+        if (cast.video.includes(file) || cast.audio.includes(file)) {
+          cast.playbackMap.set(file, playback);
+          if (finished) {
+            if (cast.finishedMap.has(file)) {
+              cast.finishedMap.set(file, cast.finishedMap.get(file) + 1);
+            } else {
+              cast.finishedMap.set(file, 1);
+            }
+          }
+        }
+      }
+    }
+    // Force reload by state change
+    setCasts([]);
+    setCasts(toBeSet);
   };
 
   // Get notice from backend
@@ -102,6 +127,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
           media={selectedMedia}
           userid={userid}
           tab={constants.TAB_BRUINCAST}
+          hotReloadPlayback={hotReloadPlayback}
         />
       </View>
     );

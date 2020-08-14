@@ -39,6 +39,8 @@ export class MediaPlayer extends Component {
         .then(() => {
           if (tab === constants.TAB_DIGITAL_AUDIO_RESERVES) {
             hotReloadPlayback(media.albumTitle, media.file, time, finished);
+          } else if (tab === constants.TAB_BRUINCAST) {
+            hotReloadPlayback(media.classShortname, media.file, time, finished);
           }
         })
         .catch(err => {
