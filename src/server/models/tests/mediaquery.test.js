@@ -16,7 +16,7 @@ beforeAll(async done => {
 
   const testData = [
     {
-      classShortname: '201-COMSCI32-1',
+      classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
       date: '06/02/2020',
@@ -28,7 +28,7 @@ beforeAll(async done => {
       timestamp: 1596157098921,
     },
     {
-      classShortname: '201-COMSCI32-1',
+      classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
       date: '05/11/2020',
@@ -40,7 +40,7 @@ beforeAll(async done => {
       timestamp: 1596157098921,
     },
     {
-      classShortname: '201-COMSCI32-1',
+      classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
       date: '05/06/2020',
@@ -115,7 +115,8 @@ test('Test getCastsByCourse', async done => {
   try {
     const castsFor201CS32 = await getCastsByCourse(
       testCollectionName,
-      '201-COMSCI32-1'
+      '20S-COMSCI32-1',
+      'true'
     );
 
     const expectedCasts = [
@@ -168,7 +169,7 @@ test('Test getCastCountByCourse', async done => {
   try {
     const castCountFor201CS32 = await getCastCountByCourse(
       testCollectionName,
-      '201-COMSCI32-1'
+      '20S-COMSCI32-1'
     );
     expect(castCountFor201CS32).toEqual(3);
 

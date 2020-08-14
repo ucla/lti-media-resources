@@ -28,6 +28,9 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   };
 
   const [ascendingSort, setAscendingSort] = useState(true);
+  const handleSortButtonClick = () => {
+    setAscendingSort(!ascendingSort);
+  };
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
@@ -48,12 +51,7 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
         });
     });
   };
-  useEffect(retrieveCasts, []);
-
-  const handleSortButtonClick = () => {
-    setAscendingSort(!ascendingSort);
-    retrieveCasts();
-  };
+  useEffect(retrieveCasts, [ascendingSort]);
 
   // Logic when a media is selected and to be played
   // Declaring functions only
@@ -114,6 +112,7 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
         Video recordings may take up to 24 hours before they are available.{' '}
         <Link href="#">Help</Link>
       </Text>
+      <br />
       <div>
         <Button
           renderIcon={
@@ -124,6 +123,7 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
           Sort by date
         </Button>
       </div>
+      <br />
       <Tabs onRequestTabChange={handleCourseChange} variant="secondary">
         {castsByCourses.map((currCourse, i) => (
           <Tabs.Panel
