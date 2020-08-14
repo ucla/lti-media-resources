@@ -77,10 +77,10 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                   color="primary"
                   margin="xxx-small"
                   size="medium"
+                  textAlign="start"
                   onClick={() => {
                     handleClick({ target: { innerText: album.title } });
                   }}
-                  display="block"
                 >
                   View
                 </Button>

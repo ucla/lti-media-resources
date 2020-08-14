@@ -105,10 +105,10 @@ export const PlayButton = ({
       playText = `Resume from ${timeText}`;
     }
   } else if (finished) {
-    playText = 'Rewatch';
+    playText = 'Play again';
   }
 
-  const playColor = finished ? 'secondary' : 'primary';
+  const playColor = finished ? 'success' : 'primary';
 
   return (
     <Button
@@ -117,7 +117,7 @@ export const PlayButton = ({
       margin="xxx-small"
       size="medium"
       onClick={generateAndSelectMedia}
-      display="block"
+      textAlign="start"
     >
       {playText}
     </Button>
