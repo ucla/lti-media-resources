@@ -6,8 +6,7 @@ import { Text } from '@instructure/ui-text';
 import { Button, CondensedButton } from '@instructure/ui-buttons';
 import { Table } from '@instructure/ui-table';
 import { Tag } from '@instructure/ui-tag';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { IconCollectionSolid } from '@instructure/ui-icons';
 
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
@@ -20,12 +19,12 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
   };
 
   return (
-    <Table caption="Albums">
+    <Table caption="Albums" hover>
       <Table.Head>
         <Table.Row>
           <Table.ColHeader id="title">Title</Table.ColHeader>
           <Table.ColHeader id="count"># of tracks</Table.ColHeader>
-          <Table.ColHeader id="actions" width="241px">
+          <Table.ColHeader id="actions" width="260px">
             Actions
           </Table.ColHeader>
           <Table.ColHeader id="meta">Descriptions</Table.ColHeader>
@@ -62,6 +61,13 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                         ])
                       : null
                   }
+                  remainingMap={
+                    album.items[0].remaining
+                      ? new Map([
+                          [album.items[0].httpURL, album.items[0].remaining],
+                        ])
+                      : null
+                  }
                   finishedMap={
                     album.items[0].finished
                       ? new Map([
@@ -73,7 +79,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
               )}
               {album.items.length !== 1 && (
                 <Button
-                  renderIcon={<FontAwesomeIcon icon={faBars} />}
+                  renderIcon={<IconCollectionSolid />}
                   color="primary"
                   margin="xxx-small"
                   size="medium"
@@ -82,7 +88,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                     handleClick({ target: { innerText: album.title } });
                   }}
                 >
-                  View
+                  Tracks
                 </Button>
               )}
             </Table.Cell>

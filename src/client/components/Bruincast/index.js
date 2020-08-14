@@ -36,17 +36,19 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
           for (const listObj of tmpCourse.casts) {
             for (const tmpCast of listObj.listings) {
               const playbackMap = new Map();
+              const remainingMap = new Map();
               const finishedMap = new Map();
               for (const tmpPlayback of tmpCast.playbackArr) {
                 playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
                 finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
               }
               tmpCast.playbackMap = playbackMap;
+              tmpCast.remainingMap = remainingMap;
               tmpCast.finishedMap = finishedMap;
             }
           }
         }
-        console.log(tmpCastsByCourses);
         setCasts(tmpCastsByCourses);
       });
     });
@@ -63,7 +65,13 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
     setSelectedMedia({});
   };
 
-  const hotReloadPlayback = (classShortname, file, playback, finished) => {
+  const hotReloadPlayback = (
+    classShortname,
+    file,
+    playback,
+    remaining,
+    finished
+  ) => {
     const toBeSet = castsByCourses;
     const matchedCourse = toBeSet.filter(
       obj => obj.course.label === classShortname
@@ -72,6 +80,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
       for (const cast of listObj.listings) {
         if (cast.video.includes(file) || cast.audio.includes(file)) {
           cast.playbackMap.set(file, playback);
+          cast.remainingMap.set(file, remaining);
           if (finished) {
             if (cast.finishedMap.has(file)) {
               cast.finishedMap.set(file, cast.finishedMap.get(file) + 1);

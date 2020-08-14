@@ -77,6 +77,7 @@ class BruincastServices {
                 castPlaybackArr.push({
                   file: media.trim(),
                   playback: matchedPlayback[0].time,
+                  remaining: matchedPlayback[0].remaining,
                   finished: matchedPlayback[0].finishedTimes,
                 });
               }

@@ -22,10 +22,13 @@ export class MediaPlayer extends Component {
   componentWillUnmount() {
     const { playbackPos, finished } = this.state;
     const { userid, media, tab, hotReloadPlayback } = this.props;
+    const player = window.jwplayer(media._id);
+    const duration = player.getDuration();
     let time = playbackPos;
     if (finished) {
       time = 0;
     }
+    const remaining = duration - time;
     ltikPromise.then(ltik => {
       axios
         .post(`/api/medias/playback?ltik=${ltik}`, {
@@ -34,13 +37,26 @@ export class MediaPlayer extends Component {
           tab,
           classShortname: media.classShortname,
           time,
+          remaining,
           finished,
         })
         .then(() => {
           if (tab === constants.TAB_DIGITAL_AUDIO_RESERVES) {
-            hotReloadPlayback(media.albumTitle, media.file, time, finished);
+            hotReloadPlayback(
+              media.albumTitle,
+              media.file,
+              time,
+              remaining,
+              finished
+            );
           } else if (tab === constants.TAB_BRUINCAST) {
-            hotReloadPlayback(media.classShortname, media.file, time, finished);
+            hotReloadPlayback(
+              media.classShortname,
+              media.file,
+              time,
+              remaining,
+              finished
+            );
           }
         })
         .catch(err => {

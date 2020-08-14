@@ -89,12 +89,19 @@ export const MusicReserve = ({ userid }) => {
     deselectAlbum();
   };
 
-  const hotReloadPlayback = (albumTitle, trackFile, playback, finished) => {
+  const hotReloadPlayback = (
+    albumTitle,
+    trackFile,
+    playback,
+    remaining,
+    finished
+  ) => {
     const albumsToBeSet = allAlbums;
     const itemToBeSet = albumsToBeSet
       .filter(album => album.title === albumTitle)[0]
       .items.filter(item => item.httpURL === trackFile)[0];
     itemToBeSet.playback = playback;
+    itemToBeSet.remaining = remaining;
     if (finished) {
       if (itemToBeSet.finished) {
         itemToBeSet.finished += 1;

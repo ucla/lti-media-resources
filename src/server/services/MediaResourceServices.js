@@ -40,10 +40,11 @@ class MediaResourceServices {
     tab,
     classShortname,
     time,
+    remaining,
     finished
   ) {
     const ok = await MediaQuery.updatePlayback(
-      { userid, file, tab, classShortname, time, finished },
+      { userid, file, tab, classShortname, time, remaining, finished },
       'playbacks'
     );
     return ok;

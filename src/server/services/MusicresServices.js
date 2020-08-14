@@ -26,9 +26,11 @@ class MusicresServices {
         );
         if (matchedPlayback.length === 1) {
           item.playback = matchedPlayback[0].time;
+          item.remaining = matchedPlayback[0].remaining;
           item.finished = matchedPlayback[0].finishedTimes;
         } else {
           item.playback = null;
+          item.remaining = null;
           item.finished = null;
         }
       }

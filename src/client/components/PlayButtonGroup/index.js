@@ -13,6 +13,7 @@ export const PlayButtonGroup = ({
   tab,
   eventMediaTitle,
   playbackMap,
+  remainingMap,
   finishedMap,
 }) => {
   PlayButtonGroup.propTypes = {
@@ -23,6 +24,7 @@ export const PlayButtonGroup = ({
     tab: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playbackMap: PropTypes.object,
+    remainingMap: PropTypes.object,
     finishedMap: PropTypes.object,
   };
 
@@ -31,9 +33,13 @@ export const PlayButtonGroup = ({
     const audioStrs = audio.split(',');
     for (const audioStr of audioStrs) {
       let currPlayback = null;
+      let currRemaining = null;
       let currFinished = null;
       if (playbackMap && playbackMap.has(audioStr)) {
         currPlayback = playbackMap.get(audioStr);
+      }
+      if (remainingMap && remainingMap.has(audioStr)) {
+        currRemaining = remainingMap.get(audioStr);
       }
       if (finishedMap && finishedMap.has(audioStr)) {
         currFinished = finishedMap.get(audioStr);
@@ -41,6 +47,7 @@ export const PlayButtonGroup = ({
       audioArray.push({
         src: audioStr,
         playback: currPlayback,
+        remaining: currRemaining,
         finished: currFinished,
       });
     }
@@ -50,9 +57,13 @@ export const PlayButtonGroup = ({
     const videoStrs = video.split(',');
     for (const videoStr of videoStrs) {
       let currPlayback = null;
+      let currRemaining = null;
       let currFinished = null;
       if (playbackMap && playbackMap.has(videoStr)) {
         currPlayback = playbackMap.get(videoStr);
+      }
+      if (remainingMap && remainingMap.has(videoStr)) {
+        currRemaining = remainingMap.get(videoStr);
       }
       if (finishedMap && finishedMap.has(videoStr)) {
         currFinished = finishedMap.get(videoStr);
@@ -60,6 +71,7 @@ export const PlayButtonGroup = ({
       videoArray.push({
         src: videoStr,
         playback: currPlayback,
+        remaining: currRemaining,
         finished: currFinished,
       });
     }
@@ -82,6 +94,7 @@ export const PlayButtonGroup = ({
               tab={tab}
               eventMediaTitle={eventMediaTitle}
               playback={currAudio.playback}
+              remaining={currAudio.remaining}
               finished={currAudio.finished}
             />
           </View>
@@ -101,6 +114,7 @@ export const PlayButtonGroup = ({
               tab={tab}
               eventMediaTitle={eventMediaTitle}
               playback={currVideo.playback}
+              remaining={currVideo.remaining}
               finished={currVideo.finished}
             />
           </View>

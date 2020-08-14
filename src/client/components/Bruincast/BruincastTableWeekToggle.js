@@ -44,7 +44,7 @@ export const BruincastTableWeekToggle = ({
         <Table.Head>
           <Table.Row>
             <Table.ColHeader id="date">Date</Table.ColHeader>
-            <Table.ColHeader id="play" width="241px">
+            <Table.ColHeader id="play" width="260px">
               Play
             </Table.ColHeader>
             <Table.ColHeader id="des">Description</Table.ColHeader>
@@ -63,6 +63,7 @@ export const BruincastTableWeekToggle = ({
                   course={course}
                   tab={constants.TAB_BRUINCAST}
                   playbackMap={cast.playbackMap}
+                  remainingMap={cast.remainingMap}
                   finishedMap={cast.finishedMap}
                 />
               </Table.Cell>

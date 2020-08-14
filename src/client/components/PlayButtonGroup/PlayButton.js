@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Button } from '@instructure/ui-buttons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faMicrophone,
-  faVideo,
-  faPlay,
-} from '@fortawesome/free-solid-svg-icons';
+import { IconVideoSolid, IconAudioSolid } from '@instructure/ui-icons';
 
 import { ltikPromise } from '../../services/ltik';
 
@@ -23,6 +18,7 @@ export const PlayButton = ({
   tab,
   eventMediaTitle,
   playback,
+  remaining,
   finished,
 }) => {
   PlayButton.propTypes = {
@@ -34,6 +30,7 @@ export const PlayButton = ({
     tab: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playback: PropTypes.number,
+    remaining: PropTypes.number,
     finished: PropTypes.number,
   };
   const generateAndSelectMedia = () => {
@@ -72,18 +69,15 @@ export const PlayButton = ({
     }
   };
 
-  let playIcon = <FontAwesomeIcon icon={faVideo} />;
+  let playIcon = <IconVideoSolid />;
   if (type === 'audio') {
-    playIcon = <FontAwesomeIcon icon={faMicrophone} />;
-  }
-  if (playback && playback >= 1) {
-    playIcon = <FontAwesomeIcon icon={faPlay} />;
+    playIcon = <IconAudioSolid />;
   }
 
   let playText = 'Play';
-  if (playback && playback >= 1) {
+  if (playback && playback >= 1 && remaining && remaining >= 1) {
     let timeText = '';
-    const timeInt = Math.floor(playback);
+    const timeInt = Math.floor(remaining);
     const totalMinutes = Math.floor(timeInt / 60);
     const hour = Math.floor(totalMinutes / 60);
     let min = totalMinutes - hour * 60;
@@ -100,9 +94,9 @@ export const PlayButton = ({
       timeText = `${hour}:${min}:${sec}`;
     }
     if (finished) {
-      playText = `Rewatch from ${timeText}`;
+      playText = `Rewatch (${timeText} left)`;
     } else {
-      playText = `Resume from ${timeText}`;
+      playText = `Resume (${timeText} left)`;
     }
   } else if (finished) {
     playText = 'Play again';

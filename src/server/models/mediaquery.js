@@ -180,7 +180,7 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
 
 module.exports.updatePlayback = async (obj, collectionName) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const { userid, tab, file, classShortname, time, finished } = obj;
+  const { userid, tab, file, classShortname, time, remaining, finished } = obj;
   const filter = {
     userid,
     tab,
@@ -188,7 +188,7 @@ module.exports.updatePlayback = async (obj, collectionName) => {
     classShortname,
   };
   const update = {
-    $set: { userid, tab, file, classShortname, time },
+    $set: { userid, tab, file, classShortname, time, remaining },
   };
   if (finished) {
     update.$inc = { finishedTimes: 1 };
