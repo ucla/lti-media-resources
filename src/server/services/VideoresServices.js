@@ -1,13 +1,24 @@
 const MediaQuery = require('../models/mediaquery');
+const cache = require('./cache');
 
 class VideoresServices {
   static async getVideores(label) {
     const docs = await MediaQuery.getVideoResByCourse(label);
     const now = new Date();
     for (const doc of docs) {
-      doc.startDate = new Date(doc.startDate);
-      doc.stopDate = new Date(doc.stopDate);
-      if (doc.startDate < now && doc.stopDate > now) {
+      let startDate = cache.get(doc.startDate);
+      if (startDate === undefined) {
+        startDate = new Date(doc.startDate);
+        cache.set(doc.startDate, startDate);
+      }
+
+      let stopDate = cache.get(doc.stopDate);
+      if (stopDate === undefined) {
+        stopDate = new Date(doc.stopDate);
+        cache.set(doc.stopDate, stopDate);
+      }
+
+      if (startDate < now && stopDate > now) {
         doc.expired = false;
       } else {
         delete doc.videoUrl;

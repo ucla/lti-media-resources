@@ -8,35 +8,45 @@ import { faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const PlayButton = ({ type, selectMedia, src, course }) => {
+export const PlayButton = ({
+  format,
+  selectMedia,
+  file,
+  course,
+  tab,
+  disabled,
+}) => {
   PlayButton.propTypes = {
-    type: PropTypes.string,
+    format: PropTypes.string,
     selectMedia: PropTypes.func,
-    src: PropTypes.string,
+    file: PropTypes.string,
     course: PropTypes.object,
+    tab: PropTypes.number,
+    disabled: PropTypes.bool,
   };
   const generateAndSelectMedia = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/bruincast/url?ltik=${ltik}`, {
+        .get(`/api/medias/url?ltik=${ltik}`, {
           params: {
-            type: type.charAt(0),
-            src,
+            mediatype: tab,
+            mediaformat: format.charAt(0),
+            filename: file,
             quarter: course.quarter,
           },
         })
         .then(res => {
           selectMedia({
-            type,
+            format,
             url: res.data,
           });
         });
     });
   };
   let playIcon = null;
-  if (type === 'audio') {
+  if (format === 'audio') {
     playIcon = <FontAwesomeIcon icon={faMicrophone} />;
-  } else if (type === 'video') {
+  } else if (format === 'video') {
     playIcon = <FontAwesomeIcon icon={faVideo} />;
   }
   return (
@@ -46,8 +56,9 @@ export const PlayButton = ({ type, selectMedia, src, course }) => {
       margin="xxx-small"
       size="medium"
       onClick={generateAndSelectMedia}
+      interaction={disabled ? 'disabled' : 'enabled'}
     >
-      Play
+      {disabled ? 'Unavailable' : 'Play'}
     </Button>
   );
 };
