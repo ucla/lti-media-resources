@@ -8,7 +8,7 @@ import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
@@ -124,19 +124,12 @@ export const MusicReserve = ({ userid }) => {
           </Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={deselectTrack}
-          color="primary"
-          margin="medium"
-          renderIcon={IconArrowOpenStartSolid}
-        >
-          Back
-        </Button>
-        <MediaPlayer
+        <MediaView
           media={selectedMusic}
           userid={userid}
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
+          deSelectMedia={deselectTrack}
         />
       </View>
     );
@@ -148,19 +141,12 @@ export const MusicReserve = ({ userid }) => {
           <Breadcrumb.Link onClick={deselectTrack}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={deselectTrack}
-          color="primary"
-          margin="medium"
-          renderIcon={IconArrowOpenStartSolid}
-        >
-          Back
-        </Button>
-        <MediaPlayer
+        <MediaView
           media={selectedMusic}
           userid={userid}
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
+          deSelectMedia={deselectTrack}
         />
       </View>
     );

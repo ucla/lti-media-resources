@@ -126,7 +126,11 @@ const App = () => {
           renderTitle={`Video reserves (${videoReserveCount})`}
           selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
         >
-          <VideoReserve course={course} onCampus={onCampusStatus} />
+          <VideoReserve
+            course={course}
+            onCampus={onCampusStatus}
+            userid={userid}
+          />
         </Tabs.Panel>
       )}
       <Tabs.Panel

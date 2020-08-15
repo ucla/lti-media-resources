@@ -73,7 +73,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
     const toBeSet = castsByCourses;
     const matchedCourse = toBeSet.filter(
       obj => obj.course.label === classShortname
-    );
+    )[0];
     for (const listObj of matchedCourse.casts) {
       for (const cast of listObj.listings) {
         if (cast.video.includes(file) || cast.audio.includes(file)) {

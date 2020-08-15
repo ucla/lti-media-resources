@@ -79,32 +79,12 @@ export const PlayButtonGroup = ({
 
   return (
     <View>
-      {audioArray &&
-        Array.isArray(audioArray) &&
-        audioArray.length !== 0 &&
-        audioArray.map(currAudio => (
-          <View key={currAudio.src}>
-            <PlayButton
-              key={currAudio.src}
-              format="audio"
-              selectMedia={selectMedia}
-              src={currAudio.src}
-              course={course}
-              file={currAudio.src}
-              tab={tab}
-              eventMediaTitle={eventMediaTitle}
-              playback={currAudio.playback}
-              remaining={currAudio.remaining}
-              finished={currAudio.finished}
-              disabled={false}
-            />
-          </View>
-        ))}
       {videoArray &&
         Array.isArray(videoArray) &&
         videoArray.length !== 0 &&
-        videoArray.map(currVideo => (
+        videoArray.map((currVideo, i) => (
           <View key={currVideo.src}>
+            {i !== 0 && <br />}
             <PlayButton
               key={currVideo.src}
               format="video"
@@ -117,6 +97,29 @@ export const PlayButtonGroup = ({
               playback={currVideo.playback}
               remaining={currVideo.remaining}
               finished={currVideo.finished}
+              disabled={false}
+            />
+          </View>
+        ))}
+      {videoArray.length !== 0 && <br />}
+      {audioArray &&
+        Array.isArray(audioArray) &&
+        audioArray.length !== 0 &&
+        audioArray.map((currAudio, i) => (
+          <View key={currAudio.src}>
+            {i !== 0 && <br />}
+            <PlayButton
+              key={currAudio.src}
+              format="audio"
+              selectMedia={selectMedia}
+              src={currAudio.src}
+              course={course}
+              file={currAudio.src}
+              tab={tab}
+              eventMediaTitle={eventMediaTitle}
+              playback={currAudio.playback}
+              remaining={currAudio.remaining}
+              finished={currAudio.finished}
               disabled={false}
             />
           </View>

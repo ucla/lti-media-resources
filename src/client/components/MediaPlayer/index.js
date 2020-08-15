@@ -57,6 +57,8 @@ export class MediaPlayer extends Component {
               remaining,
               finished
             );
+          } else if (tab === constants.TAB_VIDEO_RESERVES) {
+            hotReloadPlayback(media.file, time, remaining, finished);
           }
         })
         .catch(err => {

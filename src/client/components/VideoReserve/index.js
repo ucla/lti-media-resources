@@ -6,6 +6,7 @@ import { View } from '@instructure/ui-view';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
+import { Tag } from '@instructure/ui-tag';
 
 import { ltikPromise } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
@@ -13,10 +14,11 @@ import { MediaView } from '../MediaView';
 
 const constants = require('../../../../constants');
 
-export const VideoReserve = ({ course, onCampus }) => {
+export const VideoReserve = ({ course, onCampus, userid }) => {
   VideoReserve.propTypes = {
     course: PropTypes.object,
     onCampus: PropTypes.bool,
+    userid: PropTypes.number,
   };
 
   const [vidReserves, setVidReserves] = React.useState([]);
@@ -37,6 +39,23 @@ export const VideoReserve = ({ course, onCampus }) => {
     setSelectedMedia({});
   };
 
+  const hotReloadPlayback = (file, playback, remaining, finished) => {
+    const toBeSet = vidReserves;
+    const itemToBeSet = toBeSet.filter(media => media.filename === file)[0];
+    itemToBeSet.playback = playback;
+    itemToBeSet.remaining = remaining;
+    if (finished) {
+      if (itemToBeSet.finished) {
+        itemToBeSet.finished += 1;
+      } else {
+        itemToBeSet.finished = 1;
+      }
+    }
+    // Change state to trigger component reload
+    setVidReserves([]);
+    setVidReserves(toBeSet);
+  };
+
   // If playing media
   if (
     selectedMedia.url &&
@@ -46,9 +65,11 @@ export const VideoReserve = ({ course, onCampus }) => {
   ) {
     return (
       <MediaView
-        mediaURL={selectedMedia.url}
-        mediaFormat={selectedMedia.format}
+        media={selectedMedia}
+        userid={userid}
+        tab={constants.TAB_VIDEO_RESERVES}
         deSelectMedia={deselectMedia}
+        hotReloadPlayback={hotReloadPlayback}
       />
     );
   }
@@ -78,28 +99,36 @@ export const VideoReserve = ({ course, onCampus }) => {
       <Table hover id="videoreserves" caption="Video Reserves">
         <Table.Head>
           <Table.Row>
-            <Table.ColHeader id="title" width="40%">
-              Title
-            </Table.ColHeader>
-            <Table.ColHeader id="play" width="20%">
+            <Table.ColHeader id="title">Title</Table.ColHeader>
+            <Table.ColHeader id="play" width="260px">
               Play
             </Table.ColHeader>
-            <Table.ColHeader id="availability" width="40%">
-              Availability
-            </Table.ColHeader>
+            <Table.ColHeader id="availability">Availability</Table.ColHeader>
           </Table.Row>
         </Table.Head>
         <Table.Body>
           {vidReserves.map(vid => (
             <Table.Row key={vid.videoTitle}>
-              <Table.Cell>{vid.videoTitle}</Table.Cell>
+              <Table.RowHeader>
+                {vid.videoTitle}
+                {vid.finished && (
+                  <View>
+                    <br />
+                    <Tag text="Watched" />
+                  </View>
+                )}
+              </Table.RowHeader>
               <Table.Cell>
                 <PlayButton
                   format="video"
+                  src={vid.filename}
                   selectMedia={selectMedia}
                   file={vid.filename}
                   course={course}
                   tab={constants.TAB_VIDEO_RESERVES}
+                  playback={vid.playback}
+                  remaining={vid.remaining}
+                  finished={vid.finished}
                   disabled={vid.expired}
                 />
               </Table.Cell>
