@@ -46,19 +46,18 @@ export const AdminListings = ({ contentType }) => {
   };
 
   const retrieveListings = () => {
-    setRecentlySearchedTerm(searchTerm);
     ltikPromise.then(ltik => {
       axios
         .get(`/api/medias/${contentType}/alllistings?ltik=${ltik}`, {
-          params: { term: searchTerm },
+          params: { term: recentlySearchedTerm },
         })
         .then(res => setMediaListings(res.data));
     });
   };
-  useEffect(retrieveListings, []);
+  useEffect(retrieveListings, [recentlySearchedTerm]);
 
   const handleListingsSearch = event => {
-    retrieveListings();
+    setRecentlySearchedTerm(searchTerm);
     event.preventDefault();
   };
 
