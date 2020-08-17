@@ -7,10 +7,18 @@ import { IconArrowOpenStartLine } from '@instructure/ui-icons';
 
 import { MediaPlayer } from '../MediaPlayer';
 
-export const MediaView = ({ mediaURL, mediaFormat, deSelectMedia }) => {
+export const MediaView = ({
+  media,
+  userid,
+  tab,
+  hotReloadPlayback,
+  deSelectMedia,
+}) => {
   MediaView.propTypes = {
-    mediaURL: PropTypes.string,
-    mediaFormat: PropTypes.string,
+    media: PropTypes.object,
+    userid: PropTypes.number,
+    tab: PropTypes.number,
+    hotReloadPlayback: PropTypes.func,
     deSelectMedia: PropTypes.func,
   };
 
@@ -25,7 +33,12 @@ export const MediaView = ({ mediaURL, mediaFormat, deSelectMedia }) => {
       </Button>
       <br />
       <br />
-      <MediaPlayer mediaURL={mediaURL} format={mediaFormat} />
+      <MediaPlayer
+        media={media}
+        userid={userid}
+        tab={tab}
+        hotReloadPlayback={hotReloadPlayback}
+      />
     </View>
   );
 };

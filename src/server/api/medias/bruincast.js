@@ -37,7 +37,10 @@ router.get('/casts', (req, res) => {
   }
   const { context } = res.locals.context;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));
-  BruincastServices.getCasts(context).then(casts => res.send(casts));
+  BruincastServices.getCasts(
+    context,
+    parseInt(res.locals.token.user)
+  ).then(casts => res.send(casts));
 });
 
 router.get('/alllistings', (req, res) => {

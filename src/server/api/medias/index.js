@@ -3,7 +3,7 @@ const path = require('path');
 
 const router = express.Router();
 
-const constants = require('../../../client/constants');
+const constants = require('../../../../constants');
 const MediaResourceServices = require('../../services/MediaResourceServices');
 const CheckRoleServices = require('../../services/CheckRole');
 const bruincastRoute = require('./bruincast');
@@ -20,6 +20,30 @@ router.get('/counts', (req, res) => {
   }
   const { label } = res.locals.context.context;
   MediaResourceServices.getCounts(label).then(counts => res.send(counts));
+});
+
+router.post('/playback', (req, res) => {
+  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const {
+    userid,
+    file,
+    tab,
+    classShortname,
+    time,
+    remaining,
+    finished,
+  } = req.body;
+  MediaResourceServices.updatePlayback(
+    userid,
+    file,
+    tab,
+    classShortname,
+    time,
+    remaining,
+    finished
+  ).then(ok => res.send({ ok }));
 });
 
 router.get('/url', (req, res) => {

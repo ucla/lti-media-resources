@@ -47,7 +47,6 @@ lti.app.use('/api', apiRouter);
 lti.app.get('/api/members', (req, res) => {
   lti.NamesAndRoles.getMembers(res.locals.token)
     .then(members => {
-      console.log(members);
       res.send(members.members);
     })
     .catch(err => res.status(400).send(err));

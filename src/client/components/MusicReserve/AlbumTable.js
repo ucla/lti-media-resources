@@ -3,8 +3,14 @@ import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
-import { CondensedButton } from '@instructure/ui-buttons';
+import { Button, CondensedButton } from '@instructure/ui-buttons';
 import { Table } from '@instructure/ui-table';
+import { Tag } from '@instructure/ui-tag';
+import { IconCollectionSolid } from '@instructure/ui-icons';
+
+import { PlayButtonGroup } from '../PlayButtonGroup';
+
+const constants = require('../../../../constants');
 
 export const AlbumTable = ({ allAlbums, handleClick }) => {
   AlbumTable.propTypes = {
@@ -13,11 +19,14 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
   };
 
   return (
-    <Table caption="Albums">
+    <Table caption="Albums" hover>
       <Table.Head>
         <Table.Row>
           <Table.ColHeader id="title">Title</Table.ColHeader>
           <Table.ColHeader id="count"># of tracks</Table.ColHeader>
+          <Table.ColHeader id="actions" width="260px">
+            Actions
+          </Table.ColHeader>
           <Table.ColHeader id="meta">Descriptions</Table.ColHeader>
         </Table.Row>
       </Table.Head>
@@ -28,8 +37,61 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
               <CondensedButton onClick={handleClick}>
                 {album.title}
               </CondensedButton>
+              {album.items.length === 1 && album.items[0].finished && (
+                <View>
+                  <br />
+                  <Tag text="Watched" />
+                </View>
+              )}
             </Table.RowHeader>
             <Table.Cell>{album.items.length}</Table.Cell>
+            <Table.Cell>
+              {album.items.length === 1 && (
+                <PlayButtonGroup
+                  video={album.isVideo ? album.items[0].httpURL : ''}
+                  audio={album.isVideo ? '' : album.items[0].httpURL}
+                  selectMedia={handleClick}
+                  course={{ classShortname: album.classShortname }}
+                  tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+                  eventMediaTitle={{ target: { innerText: album.title } }}
+                  playbackMap={
+                    album.items[0].playback
+                      ? new Map([
+                          [album.items[0].httpURL, album.items[0].playback],
+                        ])
+                      : null
+                  }
+                  remainingMap={
+                    album.items[0].remaining
+                      ? new Map([
+                          [album.items[0].httpURL, album.items[0].remaining],
+                        ])
+                      : null
+                  }
+                  finishedMap={
+                    album.items[0].finished
+                      ? new Map([
+                          [album.items[0].httpURL, album.items[0].finished],
+                        ])
+                      : null
+                  }
+                />
+              )}
+              {album.items.length !== 1 && (
+                <Button
+                  renderIcon={<IconCollectionSolid />}
+                  color="primary"
+                  margin="xxx-small"
+                  size="medium"
+                  textAlign="start"
+                  onClick={() => {
+                    handleClick({ target: { innerText: album.title } });
+                  }}
+                >
+                  Tracks
+                </Button>
+              )}
+            </Table.Cell>
             <Table.Cell>
               {album.performers !== '' && (
                 <Text>

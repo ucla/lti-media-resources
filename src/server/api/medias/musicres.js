@@ -10,7 +10,10 @@ router.get('/', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
-  MusicresServices.getMusicres(label).then(list => res.send(list));
+  MusicresServices.getMusicres(
+    label,
+    parseInt(res.locals.token.user)
+  ).then(list => res.send(list));
 });
 
 module.exports = router;
