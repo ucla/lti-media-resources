@@ -2,7 +2,7 @@ require('dotenv').config();
 require('babel-polyfill');
 
 const MediaResourceServices = require('../MediaResourceServices');
-const constants = require('../../../client/constants');
+const constants = require('../../../../constants');
 
 test('Test Token Generation', async done => {
   const generatedToken = await MediaResourceServices.generateMediaToken(

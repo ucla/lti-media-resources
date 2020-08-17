@@ -2,7 +2,7 @@ const sha256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 
 const MediaQuery = require('../models/mediaquery');
-const constants = require('../../client/constants');
+const constants = require('../../../constants');
 
 class MediaResourceServices {
   static async getCounts(courseLabel) {
@@ -33,6 +33,22 @@ class MediaResourceServices {
       videos: videoresCount,
       audios: musicresCount,
     };
+  }
+
+  static async updatePlayback(
+    userid,
+    file,
+    tab,
+    classShortname,
+    time,
+    remaining,
+    finished
+  ) {
+    const ok = await MediaQuery.updatePlayback(
+      { userid, file, tab, classShortname, time, remaining, finished },
+      'playbacks'
+    );
+    return ok;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {

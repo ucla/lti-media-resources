@@ -11,8 +11,9 @@ import { VideoReserve } from '../VideoReserve';
 import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 theme.use();
 
@@ -26,6 +27,7 @@ const App = () => {
   // Declare states
   const [course, setCourse] = useState({});
   const [roles, setRoles] = useState([]);
+  const [userid, setUserid] = useState(-1);
   const [onCampusStatus, setOnCampusStatus] = useState(true);
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
@@ -35,9 +37,10 @@ const App = () => {
   const retrieveContext = () => {
     ltikPromise.then(ltik => {
       axios.get(`/api/context?ltik=${ltik}`).then(res => {
-        const { course: c, roles: r, onCampus: oc } = res.data;
+        const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
         setRoles(r);
+        setUserid(u);
         setOnCampusStatus(oc);
       });
     });
@@ -114,6 +117,7 @@ const App = () => {
           course={course}
           warning={warning}
           retrieveWarning={retrieveWarning}
+          userid={userid}
         />
       </Tabs.Panel>
       {videoReservesTabEnabled() && (
@@ -122,7 +126,11 @@ const App = () => {
           renderTitle={`Video reserves (${videoReserveCount})`}
           selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
         >
-          <VideoReserve course={course} onCampus={onCampusStatus} />
+          <VideoReserve
+            course={course}
+            onCampus={onCampusStatus}
+            userid={userid}
+          />
         </Tabs.Panel>
       )}
       <Tabs.Panel
@@ -134,7 +142,7 @@ const App = () => {
             (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
         }
       >
-        <MusicReserve />
+        <MusicReserve userid={userid} />
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"
