@@ -127,7 +127,7 @@ export const MusicReserve = ({ userid }) => {
         <MediaView
           media={selectedMusic}
           userid={userid}
-          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          tab={constants.TABS.DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
           deSelectMedia={deselectTrack}
         />
@@ -144,7 +144,7 @@ export const MusicReserve = ({ userid }) => {
         <MediaView
           media={selectedMusic}
           userid={userid}
-          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          tab={constants.TABS.DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
           deSelectMedia={deselectTrack}
         />

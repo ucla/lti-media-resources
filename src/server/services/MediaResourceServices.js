@@ -92,7 +92,7 @@ class MediaResourceServices {
       start,
       end
     );
-    if (parseInt(mediatype) === constants.TAB_BRUINCAST) {
+    if (parseInt(mediatype) === constants.TABS.BRUINCAST) {
       const newStream = `redirect/${stream}`;
       const bcastPlaybackURL = `${HOST}${newStream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
       return bcastPlaybackURL;

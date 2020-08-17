@@ -6,19 +6,21 @@ import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { BruincastListingsTable } from './BruincastListingsTable';
 import { VideoResListingsTable } from './VideoResListingsTable';
 
-export const AdminListingsToggle = ({ shortname, listings, contentType }) => {
+const constants = require('../../../../constants');
+
+export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
   AdminListingsToggle.propTypes = {
     shortname: PropTypes.string,
     listings: PropTypes.array,
-    contentType: PropTypes.string,
+    mediaType: PropTypes.string,
   };
 
   let TableType = null;
-  switch (contentType) {
-    case 'bruincast':
+  switch (mediaType) {
+    case constants.MEDIA_TYPE.BRUINCAST:
       TableType = BruincastListingsTable;
       break;
-    case 'videores':
+    case constants.MEDIA_TYPE.VIDEO_RESERVES:
       TableType = VideoResListingsTable;
       break;
     default:

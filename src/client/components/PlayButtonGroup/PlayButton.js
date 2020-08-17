@@ -37,8 +37,8 @@ export const PlayButton = ({
   };
   const generateAndSelectMedia = () => {
     if (
-      tab === constants.TAB_BRUINCAST ||
-      tab === constants.TAB_VIDEO_RESERVES
+      tab === constants.TABS.BRUINCAST ||
+      tab === constants.TABS.VIDEO_RESERVES
     ) {
       ltikPromise.then(ltik => {
         axios

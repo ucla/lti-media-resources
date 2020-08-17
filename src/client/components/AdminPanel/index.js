@@ -26,7 +26,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
 
   // Tab change logic
   const [selectedTabIndex, setSelectedTabIndex] = useState(
-    constants.TAB_ADMIN_PANEL_SETTINGS
+    constants.ADMIN_PANEL_TABS.SETTINGS
   );
   const handleTabChange = (event, { index }) => {
     setSelectedTabIndex(index);
@@ -137,7 +137,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
       <Tabs.Panel
         id="adminPanelSettings"
         renderTitle="Bruincast Settings"
-        isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_SETTINGS}
+        isSelected={selectedTabIndex === constants.ADMIN_PANEL_TABS.SETTINGS}
       >
         {alert}
         <View>
@@ -165,19 +165,19 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
         id="adminPanelListingsBruincast"
         renderTitle="Bruincast Listings"
         isSelected={
-          selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_BRUINCAST
+          selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_BRUINCAST
         }
       >
-        <AdminListings contentType="bruincast" />
+        <AdminListings mediaType={constants.MEDIA_TYPE.BRUINCAST} />
       </Tabs.Panel>
       <Tabs.Panel
         id="adminPanelListingsVideoReserves"
         renderTitle="Video Reserves Listings"
         isSelected={
-          selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS_VIDEORESERVES
+          selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_VIDEORESERVES
         }
       >
-        <AdminListings contentType="videores" />
+        <AdminListings mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES} />
       </Tabs.Panel>
     </Tabs>
   );

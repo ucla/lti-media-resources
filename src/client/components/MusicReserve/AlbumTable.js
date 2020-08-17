@@ -52,7 +52,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                   audio={album.isVideo ? '' : album.items[0].httpURL}
                   selectMedia={handleClick}
                   course={{ classShortname: album.classShortname }}
-                  tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+                  tab={constants.TABS.DIGITAL_AUDIO_RESERVES}
                   eventMediaTitle={{ target: { innerText: album.title } }}
                   playbackMap={
                     album.items[0].playback

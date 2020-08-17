@@ -13,21 +13,22 @@ import axios from 'axios';
 import { AdminListingsToggle } from './AdminListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
-export const AdminListings = ({ contentType }) => {
+const constants = require('../../../../constants');
+
+export const AdminListings = ({ mediaType }) => {
   AdminListings.propTypes = {
-    contentType: PropTypes.string,
+    mediaType: PropTypes.string,
   };
 
   let contentTypeUIString = '';
-  switch (contentType) {
-    case 'bruincast':
+  switch (mediaType) {
+    case constants.MEDIA_TYPE.BRUINCAST:
       contentTypeUIString = 'Bruincast';
       break;
-    case 'videores':
+    case constants.MEDIA_TYPE.VIDEO_RESERVES:
       contentTypeUIString = 'Video Reserves';
       break;
     default:
-      contentTypeUIString = 'content';
       break;
   }
 
@@ -48,7 +49,7 @@ export const AdminListings = ({ contentType }) => {
   const retrieveListings = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/${contentType}/alllistings?ltik=${ltik}`, {
+        .get(`/api/medias/${mediaType}/alllistings?ltik=${ltik}`, {
           params: { term: recentlySearchedTerm },
         })
         .then(res => setMediaListings(res.data));
@@ -112,7 +113,7 @@ export const AdminListings = ({ contentType }) => {
             key={course._id}
             shortname={course._id}
             listings={course.listings}
-            contentType={contentType}
+            mediaType={mediaType}
           />
         ))}
       </View>

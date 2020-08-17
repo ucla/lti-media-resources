@@ -19,7 +19,7 @@ test('Test Token Generation', async done => {
 
 test('Test URL Generation', async done => {
   const generatedURL = await MediaResourceServices.generateMediaURL(
-    constants.TAB_BRUINCAST,
+    constants.TABS.BRUINCAST,
     'https://566f31ddb176b.streamlock.net:443/',
     '2020s-v/mp4:eeb162-1-20200331-18431.mp4',
     '172.18.0.1',

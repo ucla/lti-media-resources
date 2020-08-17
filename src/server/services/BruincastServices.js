@@ -57,7 +57,7 @@ class BruincastServices {
       );
 
       const rawPlaybacks = await MediaQuery.getPlaybacks(
-        constants.TAB_BRUINCAST,
+        constants.TABS.BRUINCAST,
         userid,
         c.label,
         'playbacks'
