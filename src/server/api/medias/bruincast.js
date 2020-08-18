@@ -45,11 +45,11 @@ router.get('/casts', (req, res) => {
   ).then(casts => res.send(casts));
 });
 
-router.get('/castlistings', (req, res) => {
-  const { term } = req.query;
+router.get('/alllistings', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
+  const { term } = req.query;
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 

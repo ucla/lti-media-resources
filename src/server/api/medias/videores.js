@@ -16,4 +16,12 @@ router.get('/', (req, res) => {
   ).then(list => res.send(list));
 });
 
+router.get('/alllistings', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { term } = req.query;
+  VideoresServices.getAllVideoReserves(term).then(vidRes => res.send(vidRes));
+});
+
 module.exports = router;

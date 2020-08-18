@@ -19,7 +19,7 @@ theme.use();
 
 const App = () => {
   // Logic of changing tabs
-  const [tabSelectedIndex, selectTabIndex] = useState(constants.TAB_BRUINCAST);
+  const [tabSelectedIndex, selectTabIndex] = useState(constants.TABS.BRUINCAST);
   const handleTabChange = (event, { index }) => {
     selectTabIndex(index);
   };
@@ -94,7 +94,7 @@ const App = () => {
       <Tabs.Panel
         id="adminPanel"
         renderTitle="Admin Panel"
-        isSelected={tabSelectedIndex === constants.TAB_ADMIN_PANEL}
+        isSelected={tabSelectedIndex === constants.TABS.ADMIN_PANEL}
       >
         <AdminPanel
           warning={warning}
@@ -110,8 +110,10 @@ const App = () => {
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
         id="bruincast"
-        renderTitle={`Bruincasts (${bruincastCount})`}
-        selected={tabSelectedIndex === constants.TAB_BRUINCAST}
+        renderTitle={`${
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.BRUINCAST).string
+        } (${bruincastCount})`}
+        selected={tabSelectedIndex === constants.TABS.BRUINCAST}
       >
         <Bruincast
           course={course}
@@ -123,8 +125,11 @@ const App = () => {
       {videoReservesTabEnabled() && (
         <Tabs.Panel
           id="videoReserves"
-          renderTitle={`Video reserves (${videoReserveCount})`}
-          selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+          renderTitle={`${
+            constants.mediaTypeMap.get(constants.MEDIA_TYPE.VIDEO_RESERVES)
+              .string
+          } (${videoReserveCount})`}
+          selected={tabSelectedIndex === constants.TABS.VIDEO_RESERVES}
         >
           <VideoReserve
             course={course}
@@ -135,10 +140,14 @@ const App = () => {
       )}
       <Tabs.Panel
         id="audioReserves"
-        renderTitle={`Digital audio reserves (${audioReserveCount})`}
+        renderTitle={`${
+          constants.mediaTypeMap.get(
+            constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES
+          ).string
+        } (${audioReserveCount})`}
         isSelected={
           tabSelectedIndex ===
-          constants.TAB_DIGITAL_AUDIO_RESERVES -
+          constants.TABS.DIGITAL_AUDIO_RESERVES -
             (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
         }
       >
@@ -146,10 +155,12 @@ const App = () => {
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"
-        renderTitle="Media gallery"
+        renderTitle={
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.MEDIA_GALLERY).string
+        }
         isSelected={
           tabSelectedIndex ===
-          constants.TAB_MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
+          constants.TABS.MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
         }
       >
         Media Gallery

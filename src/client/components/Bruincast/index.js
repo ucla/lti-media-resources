@@ -149,7 +149,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
       <MediaView
         media={selectedMedia}
         userid={userid}
-        tab={constants.TAB_BRUINCAST}
+        mediaType={constants.MEDIA_TYPE.BRUINCAST}
         hotReloadPlayback={hotReloadPlayback}
         deSelectMedia={deselectMedia}
       />

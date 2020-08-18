@@ -1,7 +1,51 @@
-module.exports.TAB_BRUINCAST = 0;
-module.exports.TAB_VIDEO_RESERVES = 1;
-module.exports.TAB_DIGITAL_AUDIO_RESERVES = 2;
-module.exports.TAB_MEDIA_GALLERY = 3;
-module.exports.TAB_ADMIN_PANEL = 4;
-module.exports.TAB_ADMIN_PANEL_SETTINGS = 0;
-module.exports.TAB_ADMIN_PANEL_LISTINGS = 1;
+module.exports.TABS = {
+  BRUINCAST: 0,
+  VIDEO_RESERVES: 1,
+  DIGITAL_AUDIO_RESERVES: 2,
+  MEDIA_GALLERY: 3,
+  ADMIN_PANEL: 4,
+};
+
+module.exports.ADMIN_PANEL_TABS = {
+  SETTINGS: 0,
+  LISTINGS_BRUINCAST: 1,
+  LISTINGS_VIDEORESERVES: 2,
+};
+
+module.exports.MEDIA_TYPE = {
+  BRUINCAST: 0,
+  VIDEO_RESERVES: 1,
+  DIGITAL_AUDIO_RESERVES: 2,
+  MEDIA_GALLERY: 3,
+};
+
+module.exports.mediaTypeMap = new Map([
+  [
+    module.exports.MEDIA_TYPE.BRUINCAST,
+    {
+      api: 'bruincast',
+      string: 'Bruincast',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.VIDEO_RESERVES,
+    {
+      api: 'videores',
+      string: 'Video Reserves',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
+    {
+      api: 'musicres',
+      string: 'Digital Audio Reserves',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.MEDIA_GALLERY,
+    {
+      api: '',
+      string: 'Media Gallery',
+    },
+  ],
+]);

@@ -67,7 +67,7 @@ export const VideoReserve = ({ course, onCampus, userid }) => {
       <MediaView
         media={selectedMedia}
         userid={userid}
-        tab={constants.TAB_VIDEO_RESERVES}
+        mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES}
         deSelectMedia={deselectMedia}
         hotReloadPlayback={hotReloadPlayback}
       />
@@ -125,7 +125,7 @@ export const VideoReserve = ({ course, onCampus, userid }) => {
                   selectMedia={selectMedia}
                   file={vid.filename}
                   course={course}
-                  tab={constants.TAB_VIDEO_RESERVES}
+                  mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES}
                   playback={vid.playback}
                   remaining={vid.remaining}
                   finished={vid.finished}

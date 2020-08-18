@@ -5,7 +5,7 @@ class MusicresServices {
   static async getMusicres(label, userid) {
     const docs = await MediaQuery.getMusicResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
-      constants.TAB_DIGITAL_AUDIO_RESERVES,
+      constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       userid,
       label,
       'playbacks'
