@@ -16,6 +16,7 @@ beforeAll(async done => {
 
   const testData = [
     {
+      _id: '100',
       classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
@@ -28,6 +29,7 @@ beforeAll(async done => {
       timestamp: 1596157098921,
     },
     {
+      _id: '101',
       classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
@@ -40,6 +42,7 @@ beforeAll(async done => {
       timestamp: 1596157098921,
     },
     {
+      _id: '102',
       classShortname: '20S-COMSCI32-1',
       classID: '187096200',
       term: '20S',
@@ -52,6 +55,7 @@ beforeAll(async done => {
       timestamp: 1596157099135,
     },
     {
+      _id: '103',
       classShortname: '201C-EEBIOL162-1',
       classID: '128672200',
       term: '201',
@@ -65,6 +69,7 @@ beforeAll(async done => {
       timestamp: 1596157101968,
     },
     {
+      _id: '104',
       classShortname: '201C-EEBIOL162-1',
       classID: '128672200',
       term: '201',
@@ -78,6 +83,7 @@ beforeAll(async done => {
       timestamp: 1596157102195,
     },
     {
+      _id: '105',
       classShortname: '201-PHYSCI146-1',
       classID: '387576200',
       term: '20S',
@@ -90,6 +96,7 @@ beforeAll(async done => {
       timestamp: 1596157107266,
     },
     {
+      _id: '106',
       classShortname: '201-CHEM153B-1',
       classID: '142638200',
       term: '20S',
@@ -124,6 +131,7 @@ test('Test getCastsByCourse', async done => {
         _id: 6,
         listings: [
           {
+            _id: '102',
             date: '05/06/2020',
             video: 'cs32-1-20200506-18379.mp4',
             audio: '',
@@ -136,6 +144,7 @@ test('Test getCastsByCourse', async done => {
         _id: 7,
         listings: [
           {
+            _id: '101',
             date: '05/11/2020',
             video: 'cs32-1-20200511-18380.mp4',
             audio: '',
@@ -148,6 +157,7 @@ test('Test getCastsByCourse', async done => {
         _id: 10,
         listings: [
           {
+            _id: '100',
             date: '06/02/2020',
             video: 'cs32-1-20200511-18380.mp4',
             audio: '',

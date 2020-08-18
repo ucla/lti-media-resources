@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
@@ -7,11 +8,17 @@ import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const MusicReserve = () => {
+const constants = require('../../../../constants');
+
+export const MusicReserve = ({ userid }) => {
+  MusicReserve.propTypes = {
+    userid: PropTypes.number.isRequired,
+  };
+
   const [allAlbums, setAllAlbums] = useState([]);
   const retrieveMusicRes = () => {
     ltikPromise.then(ltik => {
@@ -31,13 +38,23 @@ export const MusicReserve = () => {
     const { items } = clickedAlbum;
     if (items.length === 1) {
       const musicToBeSet = items[0];
-      musicToBeSet.type = clickedAlbum.isVideo ? 'video' : 'audio';
+      musicToBeSet.format = clickedAlbum.isVideo ? 'video' : 'audio';
       if (
         !musicToBeSet.trackTitle ||
         musicToBeSet.trackTitle === '' ||
         musicToBeSet.trackTitle === 'N/A'
       ) {
         musicToBeSet.trackTitle = clickedAlbum.title;
+      }
+      if (!musicToBeSet.url) {
+        musicToBeSet.url = musicToBeSet.httpURL;
+      }
+      musicToBeSet.file = musicToBeSet.url;
+      musicToBeSet.classShortname = clickedAlbum.classShortname;
+      musicToBeSet._id = clickedAlbum._id;
+      musicToBeSet.albumTitle = clickedAlbum.title;
+      if (event.playback !== undefined && event.playback !== null) {
+        musicToBeSet.playback = event.playback;
       }
       setSelectedMusic(musicToBeSet);
     } else {
@@ -48,6 +65,17 @@ export const MusicReserve = () => {
     const clickedMusic = selectedAlbum.items.filter(
       item => item.trackTitle.trim() === event.target.innerText.trim()
     )[0];
+    if (!clickedMusic.url) {
+      clickedMusic.url = clickedMusic.httpURL;
+    }
+    clickedMusic.file = clickedMusic.url;
+    clickedMusic.classShortname = selectedAlbum.classShortname;
+    clickedMusic.format = selectedAlbum.isVideo ? 'video' : 'audio';
+    clickedMusic._id = selectedAlbum._id;
+    clickedMusic.albumTitle = selectedAlbum.title;
+    if (event.playback !== undefined && event.playback !== null) {
+      clickedMusic.playback = event.playback;
+    }
     setSelectedMusic(clickedMusic);
   };
   const deselectAlbum = () => {
@@ -61,6 +89,31 @@ export const MusicReserve = () => {
     deselectAlbum();
   };
 
+  const hotReloadPlayback = (
+    albumTitle,
+    trackFile,
+    playback,
+    remaining,
+    finished
+  ) => {
+    const albumsToBeSet = allAlbums;
+    const itemToBeSet = albumsToBeSet
+      .filter(album => album.title === albumTitle)[0]
+      .items.filter(item => item.httpURL === trackFile)[0];
+    itemToBeSet.playback = playback;
+    itemToBeSet.remaining = remaining;
+    if (finished) {
+      if (itemToBeSet.finished) {
+        itemToBeSet.finished += 1;
+      } else {
+        itemToBeSet.finished = 1;
+      }
+    }
+    // Change object referenced by state to trigger component reload
+    setAllAlbums([]);
+    setAllAlbums(albumsToBeSet);
+  };
+
   if (selectedMusic && selectedAlbum) {
     return (
       <View>
@@ -71,17 +124,12 @@ export const MusicReserve = () => {
           </Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={deselectTrack}
-          color="primary"
-          margin="medium"
-          renderIcon={IconArrowOpenStartSolid}
-        >
-          Back
-        </Button>
-        <MediaPlayer
-          mediaURL={selectedMusic.httpURL}
-          type={selectedMusic.type}
+        <MediaView
+          media={selectedMusic}
+          userid={userid}
+          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          hotReloadPlayback={hotReloadPlayback}
+          deSelectMedia={deselectTrack}
         />
       </View>
     );
@@ -93,17 +141,12 @@ export const MusicReserve = () => {
           <Breadcrumb.Link onClick={deselectTrack}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={deselectTrack}
-          color="primary"
-          margin="medium"
-          renderIcon={IconArrowOpenStartSolid}
-        >
-          Back
-        </Button>
-        <MediaPlayer
-          mediaURL={selectedMusic.httpURL}
-          type={selectedMusic.type}
+        <MediaView
+          media={selectedMusic}
+          userid={userid}
+          tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+          hotReloadPlayback={hotReloadPlayback}
+          deSelectMedia={deselectTrack}
         />
       </View>
     );

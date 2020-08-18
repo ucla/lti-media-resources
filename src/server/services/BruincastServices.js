@@ -1,6 +1,7 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
+const constants = require('../../../constants');
 
 const { window } = new JSDOM('');
 const dompurify = createDOMPurify(window);
@@ -34,7 +35,7 @@ class BruincastServices {
     return toBeReturned;
   }
 
-  static async getCasts(course, ascending) {
+  static async getCasts(course, userid, ascending) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
       'crosslists'
@@ -56,10 +57,47 @@ class BruincastServices {
         ascending
       );
 
-      castsByCourses.push({
-        course: c,
-        casts: courseCasts,
-      });
+      if (
+        courseCasts &&
+        Array.isArray(courseCasts) &&
+        courseCasts.length !== 0
+      ) {
+        const rawPlaybacks = await MediaQuery.getPlaybacks(
+          constants.TAB_BRUINCAST,
+          userid,
+          c.label,
+          'playbacks'
+        );
+
+        for (const listObj of courseCasts) {
+          for (const cast of listObj.listings) {
+            const mediaStr = `${cast.video},${cast.audio}`;
+            const mediaArray = mediaStr.split(',');
+            const castPlaybackArr = [];
+            for (const media of mediaArray) {
+              if (media && media !== '') {
+                const matchedPlayback = rawPlaybacks.filter(
+                  rawPlayback => rawPlayback.file.trim() === media.trim()
+                );
+                if (matchedPlayback.length === 1) {
+                  castPlaybackArr.push({
+                    file: media.trim(),
+                    playback: matchedPlayback[0].time,
+                    remaining: matchedPlayback[0].remaining,
+                    finished: matchedPlayback[0].finishedTimes,
+                  });
+                }
+              }
+            }
+            cast.playbackArr = castPlaybackArr;
+          }
+        }
+
+        castsByCourses.push({
+          course: c,
+          casts: courseCasts,
+        });
+      }
     }
     return castsByCourses;
   }

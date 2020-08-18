@@ -7,11 +7,13 @@ import axios from 'axios';
 import { Tabs } from '@instructure/ui-tabs';
 
 import { Bruincast } from '../Bruincast';
+import { VideoReserve } from '../VideoReserve';
 import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
 
-import * as constants from '../../constants';
 import { ltikPromise } from '../../services/ltik';
+
+const constants = require('../../../../constants');
 
 theme.use();
 
@@ -25,6 +27,8 @@ const App = () => {
   // Declare states
   const [course, setCourse] = useState({});
   const [roles, setRoles] = useState([]);
+  const [userid, setUserid] = useState(-1);
+  const [onCampusStatus, setOnCampusStatus] = useState(true);
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
@@ -33,9 +37,11 @@ const App = () => {
   const retrieveContext = () => {
     ltikPromise.then(ltik => {
       axios.get(`/api/context?ltik=${ltik}`).then(res => {
-        const { course: c, roles: r } = res.data;
+        const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
         setRoles(r);
+        setUserid(u);
+        setOnCampusStatus(oc);
       });
     });
   };
@@ -44,6 +50,8 @@ const App = () => {
   // Functions that determine roles
   const userIsAdmin = () =>
     roles && (roles.includes('admin') || roles.includes('administrator'));
+  const userIsInstructor = () =>
+    roles && (roles.includes('teacher') || roles.includes('instructor'));
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
@@ -76,6 +84,9 @@ const App = () => {
     }
   };
 
+  const videoReservesTabEnabled = () =>
+    videoReserveCount > 0 || userIsInstructor() || userIsAdmin();
+
   // Display admin tab only when 'roles' contains 'admin'
   let adminPanel = null;
   if (userIsAdmin()) {
@@ -106,26 +117,40 @@ const App = () => {
           course={course}
           warning={warning}
           retrieveWarning={retrieveWarning}
+          userid={userid}
         />
       </Tabs.Panel>
-      <Tabs.Panel
-        id="videoReserves"
-        renderTitle={`Video reserves (${videoReserveCount})`}
-        selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
-      >
-        Video Reserves
-      </Tabs.Panel>
+      {videoReservesTabEnabled() && (
+        <Tabs.Panel
+          id="videoReserves"
+          renderTitle={`Video reserves (${videoReserveCount})`}
+          selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+        >
+          <VideoReserve
+            course={course}
+            onCampus={onCampusStatus}
+            userid={userid}
+          />
+        </Tabs.Panel>
+      )}
       <Tabs.Panel
         id="audioReserves"
         renderTitle={`Digital audio reserves (${audioReserveCount})`}
-        isSelected={tabSelectedIndex === constants.TAB_DIGITAL_AUDIO_RESERVES}
+        isSelected={
+          tabSelectedIndex ===
+          constants.TAB_DIGITAL_AUDIO_RESERVES -
+            (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
+        }
       >
-        <MusicReserve />
+        <MusicReserve userid={userid} />
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"
         renderTitle="Media gallery"
-        isSelected={tabSelectedIndex === constants.TAB_MEDIA_GALLERY}
+        isSelected={
+          tabSelectedIndex ===
+          constants.TAB_MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
+        }
       >
         Media Gallery
       </Tabs.Panel>

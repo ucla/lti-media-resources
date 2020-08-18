@@ -39,6 +39,7 @@ module.exports.getCastsByCourse = async (
         _id: '$week',
         listings: {
           $push: {
+            _id: '$_id',
             date: '$date',
             video: '$video',
             audio: '$audio',
@@ -183,4 +184,37 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
     session.endSession();
     throw err;
   }
+};
+
+module.exports.updatePlayback = async (obj, collectionName) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const { userid, tab, file, classShortname, time, remaining, finished } = obj;
+  const filter = {
+    userid,
+    tab,
+    file,
+    classShortname,
+  };
+  const update = {
+    $set: { userid, tab, file, classShortname, time, remaining },
+  };
+  if (finished) {
+    update.$inc = { finishedTimes: 1 };
+  }
+  const result = await playbackCollection.updateOne(filter, update, {
+    upsert: true,
+  });
+  return result.result.ok;
+};
+
+module.exports.getPlaybacks = async (
+  tab,
+  userid,
+  courseLabel,
+  collectionName
+) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const query = { tab, userid, classShortname: courseLabel };
+  const toBeReturned = await playbackCollection.find(query).toArray();
+  return toBeReturned;
 };

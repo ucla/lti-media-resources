@@ -2,6 +2,7 @@ require('dotenv').config();
 require('babel-polyfill');
 
 const MediaResourceServices = require('../MediaResourceServices');
+const constants = require('../../../../constants');
 
 test('Test Token Generation', async done => {
   const generatedToken = await MediaResourceServices.generateMediaToken(
@@ -18,7 +19,7 @@ test('Test Token Generation', async done => {
 
 test('Test URL Generation', async done => {
   const generatedURL = await MediaResourceServices.generateMediaURL(
-    'bruincast',
+    constants.TAB_BRUINCAST,
     'https://566f31ddb176b.streamlock.net:443/',
     '2020s-v/mp4:eeb162-1-20200331-18431.mp4',
     '172.18.0.1',

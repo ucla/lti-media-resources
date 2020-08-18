@@ -16,15 +16,18 @@ import {
 } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
-export const Bruincast = ({ course, warning, retrieveWarning }) => {
+const constants = require('../../../../constants');
+
+export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
+    userid: PropTypes.number,
   };
 
   const [ascendingSort, setAscendingSort] = useState(true);
@@ -43,8 +46,20 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
         .then(res => {
           const tmpCastsByCourses = res.data;
           for (const tmpCourse of tmpCastsByCourses) {
-            for (const tmpCast of tmpCourse.casts) {
-              tmpCast.date = new Date(tmpCast.date);
+            for (const listObj of tmpCourse.casts) {
+              for (const tmpCast of listObj.listings) {
+                const playbackMap = new Map();
+                const remainingMap = new Map();
+                const finishedMap = new Map();
+                for (const tmpPlayback of tmpCast.playbackArr) {
+                  playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                  remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
+                  finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
+                }
+                tmpCast.playbackMap = playbackMap;
+                tmpCast.remainingMap = remainingMap;
+                tmpCast.finishedMap = finishedMap;
+              }
             }
           }
           setCasts(tmpCastsByCourses);
@@ -61,6 +76,37 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   };
   const deselectMedia = () => {
     setSelectedMedia({});
+  };
+
+  const hotReloadPlayback = (
+    classShortname,
+    file,
+    playback,
+    remaining,
+    finished
+  ) => {
+    const toBeSet = castsByCourses;
+    const matchedCourse = toBeSet.filter(
+      obj => obj.course.label === classShortname
+    )[0];
+    for (const listObj of matchedCourse.casts) {
+      for (const cast of listObj.listings) {
+        if (cast.video.includes(file) || cast.audio.includes(file)) {
+          cast.playbackMap.set(file, playback);
+          cast.remainingMap.set(file, remaining);
+          if (finished) {
+            if (cast.finishedMap.has(file)) {
+              cast.finishedMap.set(file, cast.finishedMap.get(file) + 1);
+            } else {
+              cast.finishedMap.set(file, 1);
+            }
+          }
+        }
+      }
+    }
+    // Force reload by state change
+    setCasts([]);
+    setCasts(toBeSet);
   };
 
   // Get notice from backend
@@ -86,20 +132,17 @@ export const Bruincast = ({ course, warning, retrieveWarning }) => {
   if (
     selectedMedia.url &&
     selectedMedia.url !== '' &&
-    selectedMedia.type &&
-    selectedMedia.type !== ''
+    selectedMedia.format &&
+    selectedMedia.format !== ''
   ) {
     return (
-      <View>
-        <MediaPlayer mediaURL={selectedMedia.url} type={selectedMedia.type} />
-        <CondensedButton
-          onClick={deselectMedia}
-          display="block"
-          margin="medium"
-        >
-          {'< Back'}
-        </CondensedButton>
-      </View>
+      <MediaView
+        media={selectedMedia}
+        userid={userid}
+        tab={constants.TAB_BRUINCAST}
+        hotReloadPlayback={hotReloadPlayback}
+        deSelectMedia={deselectMedia}
+      />
     );
   }
 

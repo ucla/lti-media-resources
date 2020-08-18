@@ -7,6 +7,8 @@ import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { TitleCommentBlock } from './TitleCommentBlock';
 import { PlayButtonGroup } from '../PlayButtonGroup';
 
+const constants = require('../../../../constants');
+
 export const BruincastTableWeekToggle = ({
   weekNum,
   weekCasts,
@@ -15,7 +17,7 @@ export const BruincastTableWeekToggle = ({
   shortname,
 }) => {
   BruincastTableWeekToggle.propTypes = {
-    weekNum: PropTypes.string,
+    weekNum: PropTypes.number,
     weekCasts: PropTypes.array,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
@@ -41,15 +43,11 @@ export const BruincastTableWeekToggle = ({
       >
         <Table.Head>
           <Table.Row>
-            <Table.ColHeader id="date" width="15%">
-              Date
+            <Table.ColHeader id="date">Date</Table.ColHeader>
+            <Table.ColHeader id="play" width="260px">
+              Play
             </Table.ColHeader>
-            <Table.ColHeader id="action" width="15%">
-              Action
-            </Table.ColHeader>
-            <Table.ColHeader id="des" width="70%">
-              Description
-            </Table.ColHeader>
+            <Table.ColHeader id="des">Description</Table.ColHeader>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -63,6 +61,10 @@ export const BruincastTableWeekToggle = ({
                   video={cast.video}
                   selectMedia={selectMedia}
                   course={course}
+                  tab={constants.TAB_BRUINCAST}
+                  playbackMap={cast.playbackMap}
+                  remainingMap={cast.remainingMap}
+                  finishedMap={cast.finishedMap}
                 />
               </Table.Cell>
               <Table.Cell>
