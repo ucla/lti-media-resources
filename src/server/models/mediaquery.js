@@ -66,18 +66,40 @@ module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
   return castCount;
 };
 
-module.exports.getCastsByTerm = async (dbCollection, academicTerm) => {
-  let query = {};
+module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
+  const aggregation = [];
+  // If academicTerm isn't empty, add an aggregation stage to match by term first
   if (academicTerm !== '') {
-    query = { term: academicTerm };
+    aggregation.push({
+      $match: {
+        term: academicTerm,
+      },
+    });
   }
 
-  const recordsForTerm = await client
+  // Add aggregation stages to group by classShortname, and then sort those groups in alphabetical order by _id
+  aggregation.push(
+    {
+      $group: {
+        _id: '$classShortname',
+        listings: {
+          $push: '$$ROOT',
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    }
+  );
+
+  const termMedia = await client
     .db(DB_DATABASE)
     .collection(dbCollection)
-    .find(query)
+    .aggregate(aggregation)
     .toArray();
-  return recordsForTerm;
+  return termMedia;
 };
 
 module.exports.getVideoResByCourse = async courseLabel => {
@@ -180,15 +202,23 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
 
 module.exports.updatePlayback = async (obj, collectionName) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const { userid, tab, file, classShortname, time, remaining, finished } = obj;
+  const {
+    userid,
+    mediaType,
+    file,
+    classShortname,
+    time,
+    remaining,
+    finished,
+  } = obj;
   const filter = {
     userid,
-    tab,
+    mediaType,
     file,
     classShortname,
   };
   const update = {
-    $set: { userid, tab, file, classShortname, time, remaining },
+    $set: { userid, mediaType, file, classShortname, time, remaining },
   };
   if (finished) {
     update.$inc = { finishedTimes: 1 };
@@ -200,13 +230,13 @@ module.exports.updatePlayback = async (obj, collectionName) => {
 };
 
 module.exports.getPlaybacks = async (
-  tab,
+  mediaType,
   userid,
   courseLabel,
   collectionName
 ) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const query = { tab, userid, classShortname: courseLabel };
+  const query = { mediaType, userid, classShortname: courseLabel };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };

@@ -38,14 +38,14 @@ class MediaResourceServices {
   static async updatePlayback(
     userid,
     file,
-    tab,
+    mediaType,
     classShortname,
     time,
     remaining,
     finished
   ) {
     const ok = await MediaQuery.updatePlayback(
-      { userid, file, tab, classShortname, time, remaining, finished },
+      { userid, file, mediaType, classShortname, time, remaining, finished },
       'playbacks'
     );
     return ok;
@@ -92,7 +92,7 @@ class MediaResourceServices {
       start,
       end
     );
-    if (parseInt(mediatype) === constants.TAB_BRUINCAST) {
+    if (parseInt(mediatype) === constants.MEDIA_TYPE.BRUINCAST) {
       const newStream = `redirect/${stream}`;
       const bcastPlaybackURL = `${HOST}${newStream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
       return bcastPlaybackURL;
