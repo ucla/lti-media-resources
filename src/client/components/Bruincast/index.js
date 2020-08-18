@@ -30,40 +30,31 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
     userid: PropTypes.number,
   };
 
-  const [ascendingSort, setAscendingSort] = useState(true);
-  const handleSortButtonClick = () => {
-    setAscendingSort(!ascendingSort);
-  };
-
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
     ltikPromise.then(async ltik => {
-      axios
-        .get(`/api/medias/bruincast/casts?ltik=${ltik}`, {
-          params: { ascending: ascendingSort },
-        })
-        .then(res => {
-          const tmpCastsByCourses = res.data;
-          for (const tmpCourse of tmpCastsByCourses) {
-            for (const listObj of tmpCourse.casts) {
-              for (const tmpCast of listObj.listings) {
-                const playbackMap = new Map();
-                const remainingMap = new Map();
-                const finishedMap = new Map();
-                for (const tmpPlayback of tmpCast.playbackArr) {
-                  playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
-                  remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
-                  finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
-                }
-                tmpCast.playbackMap = playbackMap;
-                tmpCast.remainingMap = remainingMap;
-                tmpCast.finishedMap = finishedMap;
+      axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
+        const tmpCastsByCourses = res.data;
+        for (const tmpCourse of tmpCastsByCourses) {
+          for (const listObj of tmpCourse.casts) {
+            for (const tmpCast of listObj.listings) {
+              const playbackMap = new Map();
+              const remainingMap = new Map();
+              const finishedMap = new Map();
+              for (const tmpPlayback of tmpCast.playbackArr) {
+                playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
+                finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
               }
+              tmpCast.playbackMap = playbackMap;
+              tmpCast.remainingMap = remainingMap;
+              tmpCast.finishedMap = finishedMap;
             }
           }
-          setCasts(tmpCastsByCourses);
-        });
+        }
+        setCasts(tmpCastsByCourses);
+      });
     });
   };
   useEffect(retrieveCasts, []);
@@ -76,7 +67,12 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
       }
     }
   };
-  useEffect(reverseCastsOrder, [ascendingSort]);
+
+  const [ascendingSort, setAscendingSort] = useState(true);
+  const handleSortButtonClick = () => {
+    setAscendingSort(!ascendingSort);
+    reverseCastsOrder();
+  };
 
   // Logic when a media is selected and to be played
   // Declaring functions only

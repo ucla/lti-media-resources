@@ -122,8 +122,7 @@ test('Test getCastsByCourse', async done => {
   try {
     const castsFor201CS32 = await getCastsByCourse(
       testCollectionName,
-      '20S-COMSCI32-1',
-      'true'
+      '20S-COMSCI32-1'
     );
 
     const expectedCasts = [

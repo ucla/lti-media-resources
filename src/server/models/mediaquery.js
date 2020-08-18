@@ -3,20 +3,14 @@ const client = require('./db');
 
 const { DB_DATABASE } = process.env;
 
-module.exports.getCastsByCourse = async (
-  dbCollection,
-  courseLabel,
-  ascending
-) => {
+module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
   /*
    * Aggregation Steps:
    * 1. Match by courseShortname
-   * 2. Sort course records by date by ascending/descending order
+   * 2. Sort course records by date in ascending order
    * 3. Group records by $week field
-   * 4. Sort the groups by week number in ascending/descending order
+   * 4. Sort the groups by week number in ascending order
    */
-
-  const sortOrder = ascending === 'true' ? 1 : -1;
   const aggregation = [
     {
       $match: {
@@ -25,7 +19,7 @@ module.exports.getCastsByCourse = async (
     },
     {
       $sort: {
-        date: sortOrder,
+        date: 1,
       },
     },
     {
@@ -45,7 +39,7 @@ module.exports.getCastsByCourse = async (
     },
     {
       $sort: {
-        _id: sortOrder,
+        _id: 1,
       },
     },
   ];

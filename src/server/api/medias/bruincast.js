@@ -36,12 +36,10 @@ router.get('/casts', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { context } = res.locals.context;
-  const { ascending } = req.query;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));
   BruincastServices.getCasts(
     context,
-    parseInt(res.locals.token.user),
-    ascending
+    parseInt(res.locals.token.user)
   ).then(casts => res.send(casts));
 });
 
