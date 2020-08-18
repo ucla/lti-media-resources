@@ -13,6 +13,39 @@ module.exports.ADMIN_PANEL_TABS = {
 };
 
 module.exports.MEDIA_TYPE = {
-  BRUINCAST: 'bruincast',
-  VIDEO_RESERVES: 'videores',
+  BRUINCAST: 0,
+  VIDEO_RESERVES: 1,
+  DIGITAL_AUDIO_RESERVES: 2,
+  MEDIA_GALLERY: 3,
 };
+
+module.exports.mediaTypeMap = new Map([
+  [
+    module.exports.MEDIA_TYPE.BRUINCAST,
+    {
+      api: 'bruincast',
+      string: 'Bruincast',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.VIDEO_RESERVES,
+    {
+      api: 'videores',
+      string: 'Video Reserves',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
+    {
+      api: 'musicres',
+      string: 'Digital Audio Reserves',
+    },
+  ],
+  [
+    module.exports.MEDIA_TYPE.MEDIA_GALLERY,
+    {
+      api: '',
+      string: 'Media Gallery',
+    },
+  ],
+]);

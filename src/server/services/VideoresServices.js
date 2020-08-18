@@ -6,7 +6,7 @@ class VideoresServices {
   static async getVideores(label, userid) {
     const docs = await MediaQuery.getVideoResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
-      constants.TABS.VIDEO_RESERVES,
+      constants.MEDIA_TYPE.VIDEO_RESERVES,
       userid,
       label,
       'playbacks'

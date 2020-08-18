@@ -202,15 +202,23 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
 
 module.exports.updatePlayback = async (obj, collectionName) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const { userid, tab, file, classShortname, time, remaining, finished } = obj;
+  const {
+    userid,
+    mediaType,
+    file,
+    classShortname,
+    time,
+    remaining,
+    finished,
+  } = obj;
   const filter = {
     userid,
-    tab,
+    mediaType,
     file,
     classShortname,
   };
   const update = {
-    $set: { userid, tab, file, classShortname, time, remaining },
+    $set: { userid, mediaType, file, classShortname, time, remaining },
   };
   if (finished) {
     update.$inc = { finishedTimes: 1 };
@@ -222,13 +230,13 @@ module.exports.updatePlayback = async (obj, collectionName) => {
 };
 
 module.exports.getPlaybacks = async (
-  tab,
+  mediaType,
   userid,
   courseLabel,
   collectionName
 ) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
-  const query = { tab, userid, classShortname: courseLabel };
+  const query = { mediaType, userid, classShortname: courseLabel };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };

@@ -17,20 +17,8 @@ const constants = require('../../../../constants');
 
 export const AdminListings = ({ mediaType }) => {
   AdminListings.propTypes = {
-    mediaType: PropTypes.string,
+    mediaType: PropTypes.number,
   };
-
-  let contentTypeUIString = '';
-  switch (mediaType) {
-    case constants.MEDIA_TYPE.BRUINCAST:
-      contentTypeUIString = 'Bruincast';
-      break;
-    case constants.MEDIA_TYPE.VIDEO_RESERVES:
-      contentTypeUIString = 'Video Reserves';
-      break;
-    default:
-      break;
-  }
 
   // Variable for searchTerm, updated directly by term field change
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,9 +37,14 @@ export const AdminListings = ({ mediaType }) => {
   const retrieveListings = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/${mediaType}/alllistings?ltik=${ltik}`, {
-          params: { term: recentlySearchedTerm },
-        })
+        .get(
+          `/api/medias/${
+            constants.mediaTypeMap.get(mediaType).api
+          }/alllistings?ltik=${ltik}`,
+          {
+            params: { term: recentlySearchedTerm },
+          }
+        )
         .then(res => setMediaListings(res.data));
     });
   };
@@ -105,7 +98,9 @@ export const AdminListings = ({ mediaType }) => {
       <View>
         {mediaListings.length === 0 && recentlySearchedTerm !== '' && (
           <Alert variant="warning">
-            {`No ${contentTypeUIString} content found for ${recentlySearchedTerm}.`}
+            {`No ${
+              constants.mediaTypeMap.get(mediaType).string
+            } content found for ${recentlySearchedTerm}.`}
           </Alert>
         )}
         {mediaListings.map(course => (

@@ -163,7 +163,9 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
       </Tabs.Panel>
       <Tabs.Panel
         id="adminPanelListingsBruincast"
-        renderTitle="Bruincast Listings"
+        renderTitle={`${
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.BRUINCAST).string
+        } Listings`}
         isSelected={
           selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_BRUINCAST
         }
@@ -172,7 +174,9 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
       </Tabs.Panel>
       <Tabs.Panel
         id="adminPanelListingsVideoReserves"
-        renderTitle="Video Reserves Listings"
+        renderTitle={`${
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.VIDEO_RESERVES).string
+        } Listings`}
         isSelected={
           selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_VIDEORESERVES
         }

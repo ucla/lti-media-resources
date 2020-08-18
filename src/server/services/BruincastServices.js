@@ -57,7 +57,7 @@ class BruincastServices {
       );
 
       const rawPlaybacks = await MediaQuery.getPlaybacks(
-        constants.TABS.BRUINCAST,
+        constants.MEDIA_TYPE.BRUINCAST,
         userid,
         c.label,
         'playbacks'
@@ -100,16 +100,21 @@ class BruincastServices {
       for (const entry of courseMedia.listings) {
         let filetype = 'Audio/Video';
         let file = '';
-        if (entry.video === '' && entry.audio === '') {
+
+        // Video and audio strings can be formatted as 'xxx.mp4,yyy.mp4'
+        // Replace ',' to add a space after the comma for better display
+        const entryVideos = entry.video.replace(',', ', ');
+        const entryAudios = entry.audio.replace(',', ', ');
+        if (entryVideos === '' && entryAudios === '') {
           filetype = 'None';
-        } else if (entry.video === '') {
+        } else if (entryVideos === '') {
           filetype = 'Audio';
-          file = entry.audio;
-        } else if (entry.audio === '') {
+          file = entryAudios;
+        } else if (entryAudios === '') {
           filetype = 'Video';
-          file = entry.video;
+          file = entryVideos;
         } else {
-          file = `${entry.audio}, ${entry.video}`;
+          file = `${entryAudios}, ${entryVideos}`;
         }
 
         entry.type = filetype;

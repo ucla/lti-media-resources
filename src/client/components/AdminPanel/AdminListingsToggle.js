@@ -12,7 +12,7 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
   AdminListingsToggle.propTypes = {
     shortname: PropTypes.string,
     listings: PropTypes.array,
-    mediaType: PropTypes.string,
+    mediaType: PropTypes.number,
   };
 
   let TableType = null;

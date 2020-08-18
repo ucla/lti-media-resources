@@ -110,7 +110,9 @@ const App = () => {
     <Tabs onRequestTabChange={handleTabChange}>
       <Tabs.Panel
         id="bruincast"
-        renderTitle={`Bruincasts (${bruincastCount})`}
+        renderTitle={`${
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.BRUINCAST).string
+        } (${bruincastCount})`}
         selected={tabSelectedIndex === constants.TABS.BRUINCAST}
       >
         <Bruincast
@@ -123,7 +125,10 @@ const App = () => {
       {videoReservesTabEnabled() && (
         <Tabs.Panel
           id="videoReserves"
-          renderTitle={`Video reserves (${videoReserveCount})`}
+          renderTitle={`${
+            constants.mediaTypeMap.get(constants.MEDIA_TYPE.VIDEO_RESERVES)
+              .string
+          } (${videoReserveCount})`}
           selected={tabSelectedIndex === constants.TABS.VIDEO_RESERVES}
         >
           <VideoReserve
@@ -135,7 +140,11 @@ const App = () => {
       )}
       <Tabs.Panel
         id="audioReserves"
-        renderTitle={`Digital audio reserves (${audioReserveCount})`}
+        renderTitle={`${
+          constants.mediaTypeMap.get(
+            constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES
+          ).string
+        } (${audioReserveCount})`}
         isSelected={
           tabSelectedIndex ===
           constants.TABS.DIGITAL_AUDIO_RESERVES -
@@ -146,7 +155,9 @@ const App = () => {
       </Tabs.Panel>
       <Tabs.Panel
         id="mediaGallery"
-        renderTitle="Media gallery"
+        renderTitle={
+          constants.mediaTypeMap.get(constants.MEDIA_TYPE.MEDIA_GALLERY).string
+        }
         isSelected={
           tabSelectedIndex ===
           constants.TABS.MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden

@@ -15,7 +15,7 @@ export const PlayButton = ({
   src,
   course,
   file,
-  tab,
+  mediaType,
   eventMediaTitle,
   playback,
   remaining,
@@ -28,7 +28,7 @@ export const PlayButton = ({
     src: PropTypes.string,
     course: PropTypes.object,
     file: PropTypes.string,
-    tab: PropTypes.number,
+    mediaType: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playback: PropTypes.number,
     remaining: PropTypes.number,
@@ -37,14 +37,14 @@ export const PlayButton = ({
   };
   const generateAndSelectMedia = () => {
     if (
-      tab === constants.TABS.BRUINCAST ||
-      tab === constants.TABS.VIDEO_RESERVES
+      mediaType === constants.MEDIA_TYPE.BRUINCAST ||
+      mediaType === constants.MEDIA_TYPE.VIDEO_RESERVES
     ) {
       ltikPromise.then(ltik => {
         axios
           .get(`/api/medias/url?ltik=${ltik}`, {
             params: {
-              mediatype: tab,
+              mediatype: mediaType,
               mediaformat: format.charAt(0),
               filename: src,
               quarter: course.quarter,

@@ -29,7 +29,7 @@ router.post('/playback', (req, res) => {
   const {
     userid,
     file,
-    tab,
+    mediaType,
     classShortname,
     time,
     remaining,
@@ -38,7 +38,7 @@ router.post('/playback', (req, res) => {
   MediaResourceServices.updatePlayback(
     userid,
     file,
-    tab,
+    mediaType,
     classShortname,
     time,
     remaining,
@@ -69,7 +69,7 @@ router.get('/url', (req, res) => {
   let host = '';
   let secret = '';
 
-  if (parseInt(mediatype) === constants.TABS.BRUINCAST) {
+  if (parseInt(mediatype) === constants.MEDIA_TYPE.BRUINCAST) {
     if (!quarter || !mediaformat || !filename) {
       return res.status(500);
     }
@@ -83,7 +83,7 @@ router.get('/url', (req, res) => {
 
     host = HOST;
     secret = SECRET;
-  } else if (parseInt(mediatype) === constants.TABS.VIDEO_RESERVES) {
+  } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
     stream = `${ext}:${filename}/playlist.m3u8`;
 
     host = VIDEORES_HOST;
