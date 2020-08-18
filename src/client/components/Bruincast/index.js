@@ -9,7 +9,7 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
-import { Button, CondensedButton } from '@instructure/ui-buttons';
+import { Button } from '@instructure/ui-buttons';
 import {
   IconArrowOpenUpLine,
   IconArrowOpenDownLine,
@@ -66,7 +66,17 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
         });
     });
   };
-  useEffect(retrieveCasts, [ascendingSort]);
+  useEffect(retrieveCasts, []);
+
+  const reverseCastsOrder = () => {
+    for (const currCourse of castsByCourses) {
+      currCourse.casts.reverse();
+      for (const weekCasts of currCourse.casts) {
+        weekCasts.listings.reverse();
+      }
+    }
+  };
+  useEffect(reverseCastsOrder, [ascendingSort]);
 
   // Logic when a media is selected and to be played
   // Declaring functions only

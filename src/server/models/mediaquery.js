@@ -14,12 +14,6 @@ module.exports.getCastsByCourse = async (
    * 2. Sort course records by date by ascending/descending order
    * 3. Group records by $week field
    * 4. Sort the groups by week number in ascending/descending order
-   *
-   * The boundaries have an inclusive lowerbound and exclusive upperbound,
-   * so 89 is needed in the boundaries so that casts with week 88 can be
-   * grouped properly in [88, 89).
-   *
-   * Reference: https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#examples
    */
 
   const sortOrder = ascending === 'true' ? 1 : -1;
