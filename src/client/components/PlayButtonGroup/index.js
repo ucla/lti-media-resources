@@ -15,6 +15,7 @@ export const PlayButtonGroup = ({
   playbackMap,
   remainingMap,
   finishedMap,
+  setError,
 }) => {
   PlayButtonGroup.propTypes = {
     audio: PropTypes.string,
@@ -26,6 +27,7 @@ export const PlayButtonGroup = ({
     playbackMap: PropTypes.object,
     remainingMap: PropTypes.object,
     finishedMap: PropTypes.object,
+    setError: PropTypes.func,
   };
 
   const audioArray = [];
@@ -98,6 +100,7 @@ export const PlayButtonGroup = ({
               remaining={currVideo.remaining}
               finished={currVideo.finished}
               disabled={false}
+              setError={setError}
             />
           </View>
         ))}
@@ -121,6 +124,7 @@ export const PlayButtonGroup = ({
               remaining={currAudio.remaining}
               finished={currAudio.finished}
               disabled={false}
+              setError={setError}
             />
           </View>
         ))}

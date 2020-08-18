@@ -3,7 +3,10 @@ import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import axiosRetry from 'axios-retry';
 import { ltikPromise } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
@@ -21,7 +24,7 @@ export class MediaPlayer extends Component {
 
   componentWillUnmount() {
     const { playbackPos, finished } = this.state;
-    const { userid, media, tab, hotReloadPlayback } = this.props;
+    const { userid, media, tab, hotReloadPlayback, setError } = this.props;
     const player = window.jwplayer(media._id);
     const duration = player.getDuration();
     let time = playbackPos;
@@ -60,9 +63,13 @@ export class MediaPlayer extends Component {
           } else if (tab === constants.TAB_VIDEO_RESERVES) {
             hotReloadPlayback(media.file, time, remaining, finished);
           }
+          setError(null);
         })
         .catch(err => {
-          console.log(err);
+          setError({
+            err,
+            msg: 'Something went wrong when uploading playback history...',
+          });
         });
     });
   }
@@ -103,4 +110,5 @@ MediaPlayer.propTypes = {
   userid: PropTypes.number.isRequired,
   tab: PropTypes.number.isRequired,
   hotReloadPlayback: PropTypes.func,
+  setError: PropTypes.func,
 };

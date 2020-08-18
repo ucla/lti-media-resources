@@ -5,13 +5,18 @@ import dompurify from 'dompurify';
 import axios from 'axios';
 
 import { Tabs } from '@instructure/ui-tabs';
+import { View } from '@instructure/ui-view';
 
+import axiosRetry from 'axios-retry';
 import { Bruincast } from '../Bruincast';
 import { VideoReserve } from '../VideoReserve';
 import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
+import { ErrorAlert } from './ErrorAlert';
 
 import { ltikPromise } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
@@ -33,16 +38,27 @@ const App = () => {
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
 
+  const [error, setError] = useState(null);
+
   // Get the current context (course and roles) from backend
   const retrieveContext = () => {
     ltikPromise.then(ltik => {
-      axios.get(`/api/context?ltik=${ltik}`).then(res => {
-        const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
-        setCourse(c);
-        setRoles(r);
-        setUserid(u);
-        setOnCampusStatus(oc);
-      });
+      axios
+        .get(`/api/context?ltik=${ltik}`)
+        .then(res => {
+          const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
+          setCourse(c);
+          setRoles(r);
+          setUserid(u);
+          setOnCampusStatus(oc);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving app context...',
+          });
+        });
     });
   };
   useEffect(retrieveContext, []);
@@ -56,12 +72,22 @@ const App = () => {
   // Get the number of medias for each tab
   const retrieveNums = () => {
     ltikPromise.then(ltik => {
-      axios.get(`/api/medias/counts?ltik=${ltik}`).then(res => {
-        const { bruincasts, videos, audios } = res.data;
-        setBruincastCount(bruincasts);
-        setVideoReserveCount(videos);
-        setAudioReserveCount(audios);
-      });
+      axios
+        .get(`/api/medias/counts?ltik=${ltik}`)
+        .then(res => {
+          const { bruincasts, videos, audios } = res.data;
+          setBruincastCount(bruincasts);
+          setVideoReserveCount(videos);
+          setAudioReserveCount(audios);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg:
+              'Something went wrong when getting the number of media entries...',
+          });
+        });
     });
   };
   useEffect(retrieveNums, []);
@@ -75,12 +101,20 @@ const App = () => {
     // Already allowing hot notice update in front-end after submitting new notice in admin panel.
     // Hot notice update is faster than going to db so we only go to db once when there's no notice.
     if (!retrievedWarning) {
-      ltikPromise.then(ltik => {
-        axios.get(`/api/medias/bruincast/notice?ltik=${ltik}`).then(res => {
-          setWarning(dompurify.sanitize(res.data));
-          setRetrievedWarning(true);
+      ltikPromise
+        .then(ltik => {
+          axios.get(`/api/medias/bruincast/notice?ltik=${ltik}`).then(res => {
+            setWarning(dompurify.sanitize(res.data));
+            setRetrievedWarning(true);
+            setError(null);
+          });
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving bruincast notice',
+          });
         });
-      });
     }
   };
 
@@ -100,6 +134,7 @@ const App = () => {
           warning={warning}
           setWarning={setWarning}
           retrieveNums={retrieveNums}
+          setError={setError}
         />
       </Tabs.Panel>
     );
@@ -107,55 +142,60 @@ const App = () => {
 
   // JSX
   return (
-    <Tabs onRequestTabChange={handleTabChange}>
-      <Tabs.Panel
-        id="bruincast"
-        renderTitle={`Bruincasts (${bruincastCount})`}
-        selected={tabSelectedIndex === constants.TAB_BRUINCAST}
-      >
-        <Bruincast
-          course={course}
-          warning={warning}
-          retrieveWarning={retrieveWarning}
-          userid={userid}
-        />
-      </Tabs.Panel>
-      {videoReservesTabEnabled() && (
+    <View>
+      {error && <ErrorAlert err={error.err} msg={error.msg} />}
+      <Tabs onRequestTabChange={handleTabChange}>
         <Tabs.Panel
-          id="videoReserves"
-          renderTitle={`Video reserves (${videoReserveCount})`}
-          selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+          id="bruincast"
+          renderTitle={`Bruincasts (${bruincastCount})`}
+          selected={tabSelectedIndex === constants.TAB_BRUINCAST}
         >
-          <VideoReserve
+          <Bruincast
             course={course}
-            onCampus={onCampusStatus}
+            warning={warning}
+            retrieveWarning={retrieveWarning}
             userid={userid}
+            setError={setError}
           />
         </Tabs.Panel>
-      )}
-      <Tabs.Panel
-        id="audioReserves"
-        renderTitle={`Digital audio reserves (${audioReserveCount})`}
-        isSelected={
-          tabSelectedIndex ===
-          constants.TAB_DIGITAL_AUDIO_RESERVES -
-            (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
-        }
-      >
-        <MusicReserve userid={userid} />
-      </Tabs.Panel>
-      <Tabs.Panel
-        id="mediaGallery"
-        renderTitle="Media gallery"
-        isSelected={
-          tabSelectedIndex ===
-          constants.TAB_MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
-        }
-      >
-        Media Gallery
-      </Tabs.Panel>
-      {adminPanel}
-    </Tabs>
+        {videoReservesTabEnabled() && (
+          <Tabs.Panel
+            id="videoReserves"
+            renderTitle={`Video reserves (${videoReserveCount})`}
+            selected={tabSelectedIndex === constants.TAB_VIDEO_RESERVES}
+          >
+            <VideoReserve
+              course={course}
+              onCampus={onCampusStatus}
+              userid={userid}
+              setError={setError}
+            />
+          </Tabs.Panel>
+        )}
+        <Tabs.Panel
+          id="audioReserves"
+          renderTitle={`Digital audio reserves (${audioReserveCount})`}
+          isSelected={
+            tabSelectedIndex ===
+            constants.TAB_DIGITAL_AUDIO_RESERVES -
+              (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
+          }
+        >
+          <MusicReserve userid={userid} setError={setError} />
+        </Tabs.Panel>
+        <Tabs.Panel
+          id="mediaGallery"
+          renderTitle="Media gallery"
+          isSelected={
+            tabSelectedIndex ===
+            constants.TAB_MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
+          }
+        >
+          Media Gallery
+        </Tabs.Panel>
+        {adminPanel}
+      </Tabs>
+    </View>
   );
 };
 

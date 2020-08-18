@@ -15,6 +15,7 @@ export const BruincastTableWeekToggle = ({
   selectMedia,
   course,
   shortname,
+  setError,
 }) => {
   BruincastTableWeekToggle.propTypes = {
     weekNum: PropTypes.number,
@@ -22,6 +23,7 @@ export const BruincastTableWeekToggle = ({
     selectMedia: PropTypes.func,
     course: PropTypes.object,
     shortname: PropTypes.string,
+    setError: PropTypes.func,
   };
 
   let toggleSummary = `Week ${weekNum}`;
@@ -65,6 +67,7 @@ export const BruincastTableWeekToggle = ({
                   playbackMap={cast.playbackMap}
                   remainingMap={cast.remainingMap}
                   finishedMap={cast.finishedMap}
+                  setError={setError}
                 />
               </Table.Cell>
               <Table.Cell>

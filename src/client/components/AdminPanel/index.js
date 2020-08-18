@@ -12,16 +12,20 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
+import axiosRetry from 'axios-retry';
 import { BruincastAdminListings } from './BruincastAdminListings';
 import { ltikPromise } from '../../services/ltik';
 
+axiosRetry(axios);
+
 const constants = require('../../../../constants');
 
-export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
+export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
     retrieveNums: PropTypes.func,
+    setError: PropTypes.func,
   };
 
   // Tab change logic
@@ -40,18 +44,30 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
 
   const retrieveAllCrosslists = () => {
     ltikPromise.then(ltik => {
-      axios.get(`/api/medias/bruincast/crosslists?ltik=${ltik}`).then(res => {
-        const lists = res.data;
-        let crosslistStr = '';
-        for (const list of lists) {
-          for (const label of list) {
-            crosslistStr += `${label}=`;
+      axios
+        .get(`/api/medias/bruincast/crosslists?ltik=${ltik}`)
+        .then(res => {
+          const lists = res.data;
+          let crosslistStr = '';
+          for (const list of lists) {
+            for (const label of list) {
+              crosslistStr += `${label}=`;
+            }
+            crosslistStr = `${crosslistStr.substr(
+              0,
+              crosslistStr.length - 1
+            )}\n`;
           }
-          crosslistStr = `${crosslistStr.substr(0, crosslistStr.length - 1)}\n`;
-        }
-        crosslistStr = crosslistStr.substr(0, crosslistStr.length - 1);
-        setCurrCrosslist(crosslistStr);
-      });
+          crosslistStr = crosslistStr.substr(0, crosslistStr.length - 1);
+          setCurrCrosslist(crosslistStr);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving all crosslists...',
+          });
+        });
     });
   };
   useEffect(retrieveAllCrosslists, []);
@@ -167,7 +183,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
           renderTitle="Bruincast Listings"
           isSelected={selectedTabIndex === constants.TAB_ADMIN_PANEL_LISTINGS}
         >
-          <BruincastAdminListings />
+          <BruincastAdminListings setError={setError} />
         </Tabs.Panel>
       </Tabs>
     </View>

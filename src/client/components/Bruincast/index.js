@@ -9,46 +9,65 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
+import axiosRetry from 'axios-retry';
 import { BruincastTable } from './BruincastTable';
 import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
+axiosRetry(axios);
+
 const constants = require('../../../../constants');
 
-export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
+export const Bruincast = ({
+  course,
+  warning,
+  retrieveWarning,
+  userid,
+  setError,
+}) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     userid: PropTypes.number,
+    setError: PropTypes.func,
   };
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
     ltikPromise.then(async ltik => {
-      axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
-        const tmpCastsByCourses = res.data;
-        for (const tmpCourse of tmpCastsByCourses) {
-          for (const listObj of tmpCourse.casts) {
-            for (const tmpCast of listObj.listings) {
-              const playbackMap = new Map();
-              const remainingMap = new Map();
-              const finishedMap = new Map();
-              for (const tmpPlayback of tmpCast.playbackArr) {
-                playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
-                remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
-                finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
+      axios
+        .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
+        .then(res => {
+          const tmpCastsByCourses = res.data;
+          for (const tmpCourse of tmpCastsByCourses) {
+            for (const listObj of tmpCourse.casts) {
+              for (const tmpCast of listObj.listings) {
+                const playbackMap = new Map();
+                const remainingMap = new Map();
+                const finishedMap = new Map();
+                for (const tmpPlayback of tmpCast.playbackArr) {
+                  playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                  remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
+                  finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
+                }
+                tmpCast.playbackMap = playbackMap;
+                tmpCast.remainingMap = remainingMap;
+                tmpCast.finishedMap = finishedMap;
               }
-              tmpCast.playbackMap = playbackMap;
-              tmpCast.remainingMap = remainingMap;
-              tmpCast.finishedMap = finishedMap;
             }
           }
-        }
-        setCasts(tmpCastsByCourses);
-      });
+          setCasts(tmpCastsByCourses);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving bruincast contents...',
+          });
+        });
     });
   };
   useEffect(retrieveCasts, []);
@@ -127,6 +146,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
         tab={constants.TAB_BRUINCAST}
         hotReloadPlayback={hotReloadPlayback}
         deSelectMedia={deselectMedia}
+        setError={setError}
       />
     );
   }
@@ -154,6 +174,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
               selectMedia={selectMedia}
               course={currCourse.course}
               shortname={currCourse.course.label}
+              setError={setError}
             />
           </Tabs.Panel>
         ))}

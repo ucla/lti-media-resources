@@ -10,10 +10,11 @@ import { PlayButtonGroup } from '../PlayButtonGroup';
 
 const constants = require('../../../../constants');
 
-export const TrackTable = ({ album, handleClick }) => {
+export const TrackTable = ({ album, handleClick, setError }) => {
   TrackTable.propTypes = {
     album: PropTypes.object,
     handleClick: PropTypes.func,
+    setError: PropTypes.func,
   };
 
   return (
@@ -66,6 +67,7 @@ export const TrackTable = ({ album, handleClick }) => {
                     ? new Map([[track.httpURL, track.finished]])
                     : null
                 }
+                setError={setError}
               />
             </Table.Cell>
             <Table.Cell>{album.title}</Table.Cell>

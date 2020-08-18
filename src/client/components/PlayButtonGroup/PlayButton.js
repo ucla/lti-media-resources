@@ -5,7 +5,10 @@ import axios from 'axios';
 import { Button } from '@instructure/ui-buttons';
 import { IconVideoSolid, IconAudioSolid } from '@instructure/ui-icons';
 
+import axiosRetry from 'axios-retry';
 import { ltikPromise } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
@@ -21,6 +24,7 @@ export const PlayButton = ({
   remaining,
   finished,
   disabled,
+  setError,
 }) => {
   PlayButton.propTypes = {
     format: PropTypes.string,
@@ -34,6 +38,7 @@ export const PlayButton = ({
     remaining: PropTypes.number,
     finished: PropTypes.number,
     disabled: PropTypes.bool,
+    setError: PropTypes.func,
   };
   const generateAndSelectMedia = () => {
     if (
@@ -62,6 +67,13 @@ export const PlayButton = ({
               mediaToBeSelected.playback = playback;
             }
             selectMedia(mediaToBeSelected);
+            setError(null);
+          })
+          .catch(err => {
+            setError({
+              err,
+              msg: 'Something went wrong when generating url...',
+            });
           });
       });
     } else {

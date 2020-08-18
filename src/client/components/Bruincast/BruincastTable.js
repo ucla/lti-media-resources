@@ -3,12 +3,19 @@ import PropTypes from 'prop-types';
 
 import { BruincastTableWeekToggle } from './BruincastTableWeekToggle';
 
-export const BruincastTable = ({ casts, selectMedia, course, shortname }) => {
+export const BruincastTable = ({
+  casts,
+  selectMedia,
+  course,
+  shortname,
+  setError,
+}) => {
   BruincastTable.propTypes = {
     casts: PropTypes.array,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
     shortname: PropTypes.string,
+    setError: PropTypes.func,
   };
 
   return casts.map(weekCasts => (
@@ -20,6 +27,7 @@ export const BruincastTable = ({ casts, selectMedia, course, shortname }) => {
       selectMedia={selectMedia}
       course={course}
       shortname={shortname}
+      setError={setError}
     />
   ));
 };

@@ -12,10 +12,11 @@ import { PlayButtonGroup } from '../PlayButtonGroup';
 
 const constants = require('../../../../constants');
 
-export const AlbumTable = ({ allAlbums, handleClick }) => {
+export const AlbumTable = ({ allAlbums, handleClick, setError }) => {
   AlbumTable.propTypes = {
     allAlbums: PropTypes.array,
     handleClick: PropTypes.func,
+    setError: PropTypes.func,
   };
 
   return (
@@ -75,6 +76,7 @@ export const AlbumTable = ({ allAlbums, handleClick }) => {
                         ])
                       : null
                   }
+                  setError={setError}
                 />
               )}
               {album.items.length !== 1 && (

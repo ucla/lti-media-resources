@@ -14,7 +14,6 @@ module.exports.connect = async function(url) {
     await this.client.connect();
     return this.client;
   } catch (e) {
-    console.log(e);
     return e;
   }
 };

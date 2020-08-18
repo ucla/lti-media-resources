@@ -6,25 +6,39 @@ import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
 import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
+import axiosRetry from 'axios-retry';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaView } from '../MediaView';
 
 import { ltikPromise } from '../../services/ltik';
 
+axiosRetry(axios);
+
 const constants = require('../../../../constants');
 
-export const MusicReserve = ({ userid }) => {
+export const MusicReserve = ({ userid, setError }) => {
   MusicReserve.propTypes = {
     userid: PropTypes.number.isRequired,
+    setError: PropTypes.func,
   };
 
   const [allAlbums, setAllAlbums] = useState([]);
   const retrieveMusicRes = () => {
     ltikPromise.then(ltik => {
-      axios.get(`/api/medias/musicres?ltik=${ltik}`).then(res => {
-        setAllAlbums(res.data);
-      });
+      axios
+        .get(`/api/medias/musicres?ltik=${ltik}`)
+        .then(res => {
+          setAllAlbums(res.data);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg:
+              'Something went wrong when retrieving digital audio reserves...',
+          });
+        });
     });
   };
   useEffect(retrieveMusicRes, []);
@@ -130,6 +144,7 @@ export const MusicReserve = ({ userid }) => {
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
           deSelectMedia={deselectTrack}
+          setError={setError}
         />
       </View>
     );
@@ -147,6 +162,7 @@ export const MusicReserve = ({ userid }) => {
           tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
           hotReloadPlayback={hotReloadPlayback}
           deSelectMedia={deselectTrack}
+          setError={setError}
         />
       </View>
     );
@@ -166,7 +182,11 @@ export const MusicReserve = ({ userid }) => {
         >
           Back
         </Button>
-        <TrackTable album={selectedAlbum} handleClick={handleTrackClick} />
+        <TrackTable
+          album={selectedAlbum}
+          handleClick={handleTrackClick}
+          setError={setError}
+        />
       </View>
     );
   }
@@ -175,7 +195,11 @@ export const MusicReserve = ({ userid }) => {
       <Breadcrumb size="large" label="Album navigation">
         <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
       </Breadcrumb>
-      <AlbumTable allAlbums={allAlbums} handleClick={handleAlbumClick} />
+      <AlbumTable
+        allAlbums={allAlbums}
+        handleClick={handleAlbumClick}
+        setError={setError}
+      />
     </View>
   );
 };

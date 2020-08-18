@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
@@ -9,10 +10,16 @@ import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import { Alert } from '@instructure/ui-alerts';
 import axios from 'axios';
 
+import axiosRetry from 'axios-retry';
 import { BruincastAdminListingsToggle } from './BruincastAdminListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
-export const BruincastAdminListings = () => {
+axiosRetry(axios);
+
+export const BruincastAdminListings = ({ setError }) => {
+  BruincastAdminListings.propTypes = {
+    setError: PropTypes.func,
+  };
   // Variable for searchTerm, updated directly by term field change
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,7 +41,16 @@ export const BruincastAdminListings = () => {
         .get(`/api/medias/bruincast/castlistings?ltik=${ltik}`, {
           params: { term: searchTerm },
         })
-        .then(res => setMediaListings(res.data));
+        .then(res => {
+          setMediaListings(res.data);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving bruincast listings...',
+          });
+        });
     });
   };
   useEffect(retrieveCastListings, []);
