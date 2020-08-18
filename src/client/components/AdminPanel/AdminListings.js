@@ -11,15 +11,20 @@ import { Alert } from '@instructure/ui-alerts';
 import axios from 'axios';
 
 import axiosRetry from 'axios-retry';
-import { BruincastAdminListingsToggle } from './BruincastAdminListingsToggle';
+
+import { AdminListingsToggle } from './AdminListingsToggle';
 import { ltikPromise } from '../../services/ltik';
 
 axiosRetry(axios);
 
-export const BruincastAdminListings = ({ setError }) => {
-  BruincastAdminListings.propTypes = {
+const constants = require('../../../../constants');
+
+export const AdminListings = ({ mediaType, setError }) => {
+  AdminListings.propTypes = {
+    mediaType: PropTypes.number,
     setError: PropTypes.func,
   };
+
   // Variable for searchTerm, updated directly by term field change
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,13 +39,17 @@ export const BruincastAdminListings = ({ setError }) => {
     setSearchTerm(event.target.value);
   };
 
-  const retrieveCastListings = () => {
-    setRecentlySearchedTerm(searchTerm);
+  const retrieveListings = () => {
     ltikPromise.then(ltik => {
       axios
-        .get(`/api/medias/bruincast/castlistings?ltik=${ltik}`, {
-          params: { term: searchTerm },
-        })
+        .get(
+          `/api/medias/${
+            constants.mediaTypeMap.get(mediaType).api
+          }/alllistings?ltik=${ltik}`,
+          {
+            params: { term: recentlySearchedTerm },
+          }
+        )
         .then(res => {
           setMediaListings(res.data);
           setError(null);
@@ -53,10 +62,10 @@ export const BruincastAdminListings = ({ setError }) => {
         });
     });
   };
-  useEffect(retrieveCastListings, []);
+  useEffect(retrieveListings, [recentlySearchedTerm]);
 
   const handleListingsSearch = event => {
-    retrieveCastListings();
+    setRecentlySearchedTerm(searchTerm);
     event.preventDefault();
   };
 
@@ -102,16 +111,18 @@ export const BruincastAdminListings = ({ setError }) => {
       <br />
       <View>
         {mediaListings.length === 0 && recentlySearchedTerm !== '' && (
-          <Alert variant="warning" margin="small">
-            {`No Bruincast content found for ${recentlySearchedTerm}.`}
+          <Alert variant="warning">
+            {`No ${
+              constants.mediaTypeMap.get(mediaType).string
+            } content found for ${recentlySearchedTerm}.`}
           </Alert>
         )}
         {mediaListings.map(course => (
-          <BruincastAdminListingsToggle
-            key={course.courseShortname}
-            shortname={course.courseShortname}
-            term={course.courseTerm}
-            listings={course.courseListings}
+          <AdminListingsToggle
+            key={course._id}
+            shortname={course._id}
+            listings={course.listings}
+            mediaType={mediaType}
           />
         ))}
       </View>

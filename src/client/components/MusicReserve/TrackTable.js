@@ -50,7 +50,7 @@ export const TrackTable = ({ album, handleClick, setError }) => {
                 audio={album.isVideo ? '' : track.httpURL}
                 selectMedia={handleClick}
                 course={{ classShortname: album.classShortname }}
-                tab={constants.TAB_DIGITAL_AUDIO_RESERVES}
+                mediaType={constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES}
                 eventMediaTitle={{ target: { innerText: track.trackTitle } }}
                 playbackMap={
                   track.playback

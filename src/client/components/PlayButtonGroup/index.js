@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 
+import { media } from '@instructure/canvas-theme';
 import { PlayButton } from './PlayButton';
 
 export const PlayButtonGroup = ({
@@ -10,7 +11,7 @@ export const PlayButtonGroup = ({
   video,
   selectMedia,
   course,
-  tab,
+  mediaType,
   eventMediaTitle,
   playbackMap,
   remainingMap,
@@ -22,7 +23,7 @@ export const PlayButtonGroup = ({
     video: PropTypes.string,
     selectMedia: PropTypes.func,
     course: PropTypes.object,
-    tab: PropTypes.number,
+    mediaType: PropTypes.number,
     eventMediaTitle: PropTypes.object,
     playbackMap: PropTypes.object,
     remainingMap: PropTypes.object,
@@ -94,7 +95,7 @@ export const PlayButtonGroup = ({
               src={currVideo.src}
               course={course}
               file={currVideo.src}
-              tab={tab}
+              mediaType={mediaType}
               eventMediaTitle={eventMediaTitle}
               playback={currVideo.playback}
               remaining={currVideo.remaining}
@@ -118,7 +119,7 @@ export const PlayButtonGroup = ({
               src={currAudio.src}
               course={course}
               file={currAudio.src}
-              tab={tab}
+              mediaType={media}
               eventMediaTitle={eventMediaTitle}
               playback={currAudio.playback}
               remaining={currAudio.remaining}

@@ -24,7 +24,13 @@ export class MediaPlayer extends Component {
 
   componentWillUnmount() {
     const { playbackPos, finished } = this.state;
-    const { userid, media, tab, hotReloadPlayback, setError } = this.props;
+    const {
+      userid,
+      media,
+      mediaType,
+      hotReloadPlayback,
+      setError,
+    } = this.props;
     const player = window.jwplayer(media._id);
     const duration = player.getDuration();
     let time = playbackPos;
@@ -37,14 +43,14 @@ export class MediaPlayer extends Component {
         .post(`/api/medias/playback?ltik=${ltik}`, {
           userid,
           file: media.file,
-          tab,
+          mediaType,
           classShortname: media.classShortname,
           time,
           remaining,
           finished,
         })
         .then(() => {
-          if (tab === constants.TAB_DIGITAL_AUDIO_RESERVES) {
+          if (mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES) {
             hotReloadPlayback(
               media.albumTitle,
               media.file,
@@ -52,7 +58,7 @@ export class MediaPlayer extends Component {
               remaining,
               finished
             );
-          } else if (tab === constants.TAB_BRUINCAST) {
+          } else if (mediaType === constants.MEDIA_TYPE.BRUINCAST) {
             hotReloadPlayback(
               media.classShortname,
               media.file,
@@ -60,7 +66,7 @@ export class MediaPlayer extends Component {
               remaining,
               finished
             );
-          } else if (tab === constants.TAB_VIDEO_RESERVES) {
+          } else if (mediaType === constants.MEDIA_TYPE.VIDEO_RESERVES) {
             hotReloadPlayback(media.file, time, remaining, finished);
           }
           setError(null);
@@ -108,7 +114,7 @@ export class MediaPlayer extends Component {
 MediaPlayer.propTypes = {
   media: PropTypes.object.isRequired,
   userid: PropTypes.number.isRequired,
-  tab: PropTypes.number.isRequired,
+  mediaType: PropTypes.number.isRequired,
   hotReloadPlayback: PropTypes.func,
   setError: PropTypes.func,
 };

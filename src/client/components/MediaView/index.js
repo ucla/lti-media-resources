@@ -10,7 +10,7 @@ import { MediaPlayer } from './MediaPlayer';
 export const MediaView = ({
   media,
   userid,
-  tab,
+  mediaType,
   hotReloadPlayback,
   deSelectMedia,
   setError,
@@ -18,7 +18,7 @@ export const MediaView = ({
   MediaView.propTypes = {
     media: PropTypes.object,
     userid: PropTypes.number,
-    tab: PropTypes.number,
+    mediaType: PropTypes.number,
     hotReloadPlayback: PropTypes.func,
     deSelectMedia: PropTypes.func,
     setError: PropTypes.func,
@@ -38,7 +38,7 @@ export const MediaView = ({
       <MediaPlayer
         media={media}
         userid={userid}
-        tab={tab}
+        mediaType={mediaType}
         hotReloadPlayback={hotReloadPlayback}
         setError={setError}
       />
