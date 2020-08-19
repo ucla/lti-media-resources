@@ -10,10 +10,7 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
 import { Button } from '@instructure/ui-buttons';
-import {
-  IconArrowOpenUpLine,
-  IconArrowOpenDownLine,
-} from '@instructure/ui-icons';
+import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
 import { MediaView } from '../MediaView';
@@ -164,9 +161,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
       <br />
       <div>
         <Button
-          renderIcon={
-            ascendingSort ? IconArrowOpenUpLine : IconArrowOpenDownLine
-          }
+          renderIcon={ascendingSort ? IconArrowUpLine : IconArrowDownLine}
           onClick={handleSortButtonClick}
         >
           Sort by date
