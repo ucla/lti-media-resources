@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`axios error handling in App 1`] = `
+<View
+  borderColor="primary"
+  display="auto"
+  focusColor="info"
+  focusPosition="offset"
+  overflowX="visible"
+  overflowY="visible"
+  position="static"
+  shouldAnimateFocus={true}
+  withVisualDebug={false}
+>
+  <Heading
+    border="none"
+    color="inherit"
+    level="h2"
+  >
+    Bruincast: LOL
+  </Heading>
+  <Alert
+    isLiveRegionAtomic={false}
+    liveRegionPoliteness="assertive"
+    margin="x-small 0"
+    open={true}
+    renderCloseButtonLabel="Close"
+    screenReaderOnly={false}
+    timeout={0}
+    transition="fade"
+    variant="warning"
+  >
+    <div
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<p></p>",
+        }
+      }
+    />
+  </Alert>
+  <Text
+    as="span"
+    letterSpacing="normal"
+    size="medium"
+    wrap="normal"
+  >
+    Video recordings may take up to 24 hours before they are available.
+     
+    <Link
+      color="link"
+      href="#"
+      iconPlacement="start"
+      isWithinText={true}
+    >
+      Help
+    </Link>
+  </Text>
+  <Tabs
+    elementRef={[Function]}
+    onRequestTabChange={[Function]}
+    shouldFocusOnRender={false}
+    tabOverflow="stack"
+    variant="secondary"
+  />
+</View>
+`;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from '@instructure/canvas-theme';
-import './app.css';
 import dompurify from 'dompurify';
 import axios from 'axios';
 
@@ -101,20 +100,21 @@ const App = () => {
     // Already allowing hot notice update in front-end after submitting new notice in admin panel.
     // Hot notice update is faster than going to db so we only go to db once when there's no notice.
     if (!retrievedWarning) {
-      ltikPromise
-        .then(ltik => {
-          axios.get(`/api/medias/bruincast/notice?ltik=${ltik}`).then(res => {
+      ltikPromise.then(ltik => {
+        axios
+          .get(`/api/medias/bruincast/notice?ltik=${ltik}`)
+          .then(res => {
             setWarning(dompurify.sanitize(res.data));
             setRetrievedWarning(true);
             setError(null);
+          })
+          .catch(err => {
+            setError({
+              err,
+              msg: 'Something went wrong when retrieving bruincast notice',
+            });
           });
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when retrieving bruincast notice',
-          });
-        });
+      });
     }
   };
 
