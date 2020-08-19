@@ -2,6 +2,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 // Import { render, waitForElement } from '@testing-library/react';
 // import '@testing-library/jest-dom';
 import { mount } from 'enzyme';
@@ -30,13 +31,15 @@ test('axios error handling in App', done => {
   // Const retrySpy = jest.spyOn(axiosRetryMod, 'axiosRetry');
   axios.get.mockImplementationOnce(() => {
     console.log('???????????????????????????????????');
-    return Promise.resolve({
-      data: {
-        status: 400,
-      },
-    });
+    return Promise.reject(
+      new Error({
+        data: {
+          status: 400,
+        },
+      })
+    );
   });
-
+  const retrySpy = jest.spyOn(axiosRetry);
   const sampleCourse = { label: '20S-LOL-1', quarter: '20S', title: 'LOL' };
   const sampleWarning = '<p></p>';
   const sampleRetrieveWarning = jest.fn();
@@ -45,5 +48,6 @@ test('axios error handling in App', done => {
   const bcastInstance = mount(<SampleComponent />);
   // Expect(bcastInstance).toMatchSnapshot();
   expect(axios.get).toBeCalled();
+  expect(retrySpy).toBeCalled();
   done();
 });
