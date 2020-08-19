@@ -37,6 +37,11 @@ class MusicresServices {
     }
     return docs;
   }
+
+  static async getAllMusicReserves(term) {
+    const termMedia = await MediaQuery.getMediaForTerm('musicreserves', term);
+    return termMedia;
+  }
 }
 
 module.exports = MusicresServices;
