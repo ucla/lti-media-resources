@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 
-import { media } from '@instructure/canvas-theme';
 import { PlayButton } from './PlayButton';
 
 export const PlayButtonGroup = ({
@@ -116,7 +115,7 @@ export const PlayButtonGroup = ({
               src={currAudio.src}
               course={course}
               file={currAudio.src}
-              mediaType={media}
+              mediaType={mediaType}
               eventMediaTitle={eventMediaTitle}
               playback={currAudio.playback}
               remaining={currAudio.remaining}

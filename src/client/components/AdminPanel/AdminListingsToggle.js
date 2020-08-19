@@ -29,29 +29,8 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
       break;
   }
 
-  // If media type is Digital Audio Reserves, return a subtoggle for each album
-  if (mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES) {
-    return (
-      <ToggleDetails
-        id={shortname}
-        summary={`${shortname} · ${listings.length} listing${
-          listings.length !== 1 ? 's' : ''
-        }`}
-        variant="filled"
-      >
-        {listings.map(listing => (
-          <MusicResListingsAlbumToggle
-            title={listing.title}
-            items={listing.items}
-            term={listing.term}
-            classID={listing.srs}
-          />
-        ))}
-      </ToggleDetails>
-    );
-  }
-
-  // If media type is Bruincast or Video Reserves, return a listings table
+  // If media type is Bruincast or Video Reserves, display a listings table
+  // If media type is Digital Audio Reserves, display a toggle for each album
   return (
     <ToggleDetails
       id={shortname}
@@ -60,7 +39,13 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
       }`}
       variant="filled"
     >
-      <TableType shortname={shortname} listings={listings} />
+      {mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES &&
+        listings.map(listing => (
+          <MusicResListingsAlbumToggle key={listing._id} album={listing} />
+        ))}
+      {mediaType !== constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES && (
+        <TableType shortname={shortname} listings={listings} />
+      )}
     </ToggleDetails>
   );
 };
