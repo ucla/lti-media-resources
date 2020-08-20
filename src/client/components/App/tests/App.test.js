@@ -4,14 +4,12 @@ import { cleanup, render, waitFor } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import App from '../index';
 
-require('dotenv').config();
-
 jest.mock('axios');
 jest.mock('../../../services/ltik');
 
 afterEach(cleanup);
 
-test('axios error handling in App', async done => {
+test('Axios error handling in App', async done => {
   axios.get.mockImplementation(() =>
     Promise.reject(
       new Error({
@@ -28,7 +26,7 @@ test('axios error handling in App', async done => {
   done();
 });
 
-test('App snapshot', done => {
+test('App component matches its original snapshot', done => {
   const appInstance = shallow(<App />);
   expect(appInstance).toMatchSnapshot();
   done();
