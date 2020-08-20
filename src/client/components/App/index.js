@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { theme } from '@instructure/canvas-theme';
 import dompurify from 'dompurify';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { Tabs } from '@instructure/ui-tabs';
 import { View } from '@instructure/ui-view';
-
-import axiosRetry from 'axios-retry';
 import { Bruincast } from '../Bruincast';
 import { VideoReserve } from '../VideoReserve';
 import { MusicReserve } from '../MusicReserve';
