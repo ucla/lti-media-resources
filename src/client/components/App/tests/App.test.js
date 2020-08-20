@@ -1,7 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { render, cleanup, waitForElement } from '@testing-library/react';
+import { cleanup, render, waitFor } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import App from '../index';
+
+require('dotenv').config();
 
 jest.mock('axios');
 jest.mock('../../../services/ltik');
@@ -18,11 +21,15 @@ test('axios error handling in App', async done => {
       })
     )
   );
-  const { getByTestId, asFragment } = render(<App />);
-
+  const { getByTestId } = render(<App />);
+  const alertNode = await waitFor(() => getByTestId('alert'));
   expect(axios.get).toBeCalled();
-  const alertNode = await waitForElement(() => getByTestId('alert'));
   expect(alertNode).toBeDefined();
-  expect(asFragment()).toMatchSnapshot();
+  done();
+});
+
+test('App snapshot', done => {
+  const appInstance = shallow(<App />);
+  expect(appInstance).toMatchSnapshot();
   done();
 });
