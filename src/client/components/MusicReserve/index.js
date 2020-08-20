@@ -11,7 +11,7 @@ import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaView } from '../MediaView';
 
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);
 
@@ -25,21 +25,19 @@ export const MusicReserve = ({ userid, setError }) => {
 
   const [allAlbums, setAllAlbums] = useState([]);
   const retrieveMusicRes = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(`/api/medias/musicres?ltik=${ltik}`)
-        .then(res => {
-          setAllAlbums(res.data);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg:
-              'Something went wrong when retrieving digital audio reserves...',
-          });
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/musicres?ltik=${ltik}`)
+      .then(res => {
+        setAllAlbums(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving digital audio reserves...',
         });
-    });
+      });
   };
   useEffect(retrieveMusicRes, []);
 

@@ -10,7 +10,7 @@ export const ErrorAlert = ({ err, msg }) => {
   };
   return (
     <Alert variant="error" renderCloseButtonLabel="Close">
-      {`${msg}\n${err}`}
+      <p data-testid="alert">{`${msg}\n${err}`}</p>
     </Alert>
   );
 };

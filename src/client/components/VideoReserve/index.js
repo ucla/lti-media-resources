@@ -9,7 +9,7 @@ import { Table } from '@instructure/ui-table';
 import { Tag } from '@instructure/ui-tag';
 
 import axiosRetry from 'axios-retry';
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';
 
@@ -27,20 +27,19 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
 
   const [vidReserves, setVidReserves] = React.useState([]);
   const getVideoRes = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(`/api/medias/videores?ltik=${ltik}`)
-        .then(res => {
-          setVidReserves(res.data);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when retrieving video reserves...',
-          });
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/videores?ltik=${ltik}`)
+      .then(res => {
+        setVidReserves(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving video reserves...',
         });
-    });
+      });
   };
   React.useEffect(getVideoRes, []);
 

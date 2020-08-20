@@ -18,7 +18,7 @@ export const Comment = ({ commentText }) => {
   };
 
   return (
-    <span style={{ 'white-space': 'pre-line' }}>
+    <span style={{ whiteSpace: 'pre-wrap' }}>
       <Text wrap="break-word">{sanitizeComment(commentText)}</Text>
     </span>
   );

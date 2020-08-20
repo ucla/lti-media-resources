@@ -13,7 +13,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { AdminListingsToggle } from './AdminListingsToggle';
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);
 
@@ -40,27 +40,26 @@ export const AdminListings = ({ mediaType, setError }) => {
   };
 
   const retrieveListings = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(
-          `/api/medias/${
-            constants.mediaTypeMap.get(mediaType).api
-          }/alllistings?ltik=${ltik}`,
-          {
-            params: { term: recentlySearchedTerm },
-          }
-        )
-        .then(res => {
-          setMediaListings(res.data);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when retrieving bruincast listings...',
-          });
+    const ltik = getLtik();
+    axios
+      .get(
+        `/api/medias/${
+          constants.mediaTypeMap.get(mediaType).api
+        }/alllistings?ltik=${ltik}`,
+        {
+          params: { term: recentlySearchedTerm },
+        }
+      )
+      .then(res => {
+        setMediaListings(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving bruincast listings...',
         });
-    });
+      });
   };
   useEffect(retrieveListings, [recentlySearchedTerm]);
 

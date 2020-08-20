@@ -13,7 +13,7 @@ import axiosRetry from 'axios-retry';
 import { BruincastTable } from './BruincastTable';
 import { MediaView } from '../MediaView';
 
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);
 
@@ -37,38 +37,37 @@ export const Bruincast = ({
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
-    ltikPromise.then(async ltik => {
-      axios
-        .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
-        .then(res => {
-          const tmpCastsByCourses = res.data;
-          for (const tmpCourse of tmpCastsByCourses) {
-            for (const listObj of tmpCourse.casts) {
-              for (const tmpCast of listObj.listings) {
-                const playbackMap = new Map();
-                const remainingMap = new Map();
-                const finishedMap = new Map();
-                for (const tmpPlayback of tmpCast.playbackArr) {
-                  playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
-                  remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
-                  finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
-                }
-                tmpCast.playbackMap = playbackMap;
-                tmpCast.remainingMap = remainingMap;
-                tmpCast.finishedMap = finishedMap;
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
+      .then(res => {
+        const tmpCastsByCourses = res.data;
+        for (const tmpCourse of tmpCastsByCourses) {
+          for (const listObj of tmpCourse.casts) {
+            for (const tmpCast of listObj.listings) {
+              const playbackMap = new Map();
+              const remainingMap = new Map();
+              const finishedMap = new Map();
+              for (const tmpPlayback of tmpCast.playbackArr) {
+                playbackMap.set(tmpPlayback.file, tmpPlayback.playback);
+                remainingMap.set(tmpPlayback.file, tmpPlayback.remaining);
+                finishedMap.set(tmpPlayback.file, tmpPlayback.finished);
               }
+              tmpCast.playbackMap = playbackMap;
+              tmpCast.remainingMap = remainingMap;
+              tmpCast.finishedMap = finishedMap;
             }
           }
-          setCasts(tmpCastsByCourses);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when retrieving bruincast contents...',
-          });
+        }
+        setCasts(tmpCastsByCourses);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving bruincast contents...',
         });
-    });
+      });
   };
   useEffect(retrieveCasts, []);
 

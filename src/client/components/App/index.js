@@ -13,13 +13,13 @@ import { MusicReserve } from '../MusicReserve';
 import { AdminPanel } from '../AdminPanel';
 import { ErrorAlert } from './ErrorAlert';
 
-import { ltikPromise } from '../../services/ltik';
-
-axiosRetry(axios);
+import { getLtik } from '../../services/ltik';
 
 const constants = require('../../../../constants');
 
 theme.use();
+
+axiosRetry(axios);
 
 const App = () => {
   // Logic of changing tabs
@@ -41,24 +41,23 @@ const App = () => {
 
   // Get the current context (course and roles) from backend
   const retrieveContext = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(`/api/context?ltik=${ltik}`)
-        .then(res => {
-          const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
-          setCourse(c);
-          setRoles(r);
-          setUserid(u);
-          setOnCampusStatus(oc);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when retrieving app context...',
-          });
+    const ltik = getLtik();
+    axios
+      .get(`/api/context?ltik=${ltik}`)
+      .then(res => {
+        const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
+        setCourse(c);
+        setRoles(r);
+        setUserid(u);
+        setOnCampusStatus(oc);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving app context...',
         });
-    });
+      });
   };
   useEffect(retrieveContext, []);
 
@@ -70,24 +69,23 @@ const App = () => {
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(`/api/medias/counts?ltik=${ltik}`)
-        .then(res => {
-          const { bruincasts, videos, audios } = res.data;
-          setBruincastCount(bruincasts);
-          setVideoReserveCount(videos);
-          setAudioReserveCount(audios);
-          setError(null);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg:
-              'Something went wrong when getting the number of media entries...',
-          });
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/counts?ltik=${ltik}`)
+      .then(res => {
+        const { bruincasts, videos, audios } = res.data;
+        setBruincastCount(bruincasts);
+        setVideoReserveCount(videos);
+        setAudioReserveCount(audios);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg:
+            'Something went wrong when getting the number of media entries...',
         });
-    });
+      });
   };
   useEffect(retrieveNums, []);
 
@@ -100,21 +98,20 @@ const App = () => {
     // Already allowing hot notice update in front-end after submitting new notice in admin panel.
     // Hot notice update is faster than going to db so we only go to db once when there's no notice.
     if (!retrievedWarning) {
-      ltikPromise.then(ltik => {
-        axios
-          .get(`/api/medias/bruincast/notice?ltik=${ltik}`)
-          .then(res => {
-            setWarning(dompurify.sanitize(res.data));
-            setRetrievedWarning(true);
-            setError(null);
-          })
-          .catch(err => {
-            setError({
-              err,
-              msg: 'Something went wrong when retrieving bruincast notice',
-            });
+      const ltik = getLtik();
+      axios
+        .get(`/api/medias/bruincast/notice?ltik=${ltik}`)
+        .then(res => {
+          setWarning(dompurify.sanitize(res.data));
+          setRetrievedWarning(true);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when retrieving bruincast notice',
           });
-      });
+        });
     }
   };
 
