@@ -10,6 +10,9 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
 import axiosRetry from 'axios-retry';
+import { Button } from '@instructure/ui-buttons';
+import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
+
 import { BruincastTable } from './BruincastTable';
 import { MediaView } from '../MediaView';
 
@@ -70,6 +73,21 @@ export const Bruincast = ({
       });
   };
   useEffect(retrieveCasts, []);
+
+  const reverseCastsOrder = () => {
+    for (const currCourse of castsByCourses) {
+      currCourse.casts.reverse();
+      for (const weekCasts of currCourse.casts) {
+        weekCasts.listings.reverse();
+      }
+    }
+  };
+
+  const [ascendingSort, setAscendingSort] = useState(true);
+  const handleSortButtonClick = () => {
+    setAscendingSort(!ascendingSort);
+    reverseCastsOrder();
+  };
 
   // Logic when a media is selected and to be played
   // Declaring functions only
@@ -159,6 +177,16 @@ export const Bruincast = ({
         Video recordings may take up to 24 hours before they are available.{' '}
         <Link href="#">Help</Link>
       </Text>
+      <br />
+      <div>
+        <Button
+          renderIcon={ascendingSort ? IconArrowUpLine : IconArrowDownLine}
+          onClick={handleSortButtonClick}
+        >
+          Sort by date
+        </Button>
+      </div>
+      <br />
       <Tabs onRequestTabChange={handleCourseChange} variant="secondary">
         {castsByCourses.map((currCourse, i) => (
           <Tabs.Panel
