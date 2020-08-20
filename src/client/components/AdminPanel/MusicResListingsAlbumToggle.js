@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { Table } from '@instructure/ui-table';
+import { Text } from '@instructure/ui-text';
+import { Pill } from '@instructure/ui-pill';
 
 import { MusicResListingsTable } from './MusicResListingsTable';
 
@@ -11,12 +13,28 @@ export const MusicResListingsAlbumToggle = ({ album }) => {
     album: PropTypes.object,
   };
 
+  // Summary includes album title and number of tracks
+  // If blank SRS, include orange warning pill
+  // Some blank SRS numbers include multiple spaces, so trim the spaces
+  const albumTitleSummary = (
+    <>
+      <Text>
+        {`${album.title} · ${album.items.length} track${
+          album.items.length !== 1 ? 's' : ''
+        }`}
+      </Text>{' '}
+      {album.srs.trim() === '' && (
+        <Pill color="warning" margin="none">
+          Missing Class ID
+        </Pill>
+      )}
+    </>
+  );
+
   return (
     <ToggleDetails
       id={album.title}
-      summary={`${album.title} · ${album.items.length} track${
-        album.items.length !== 1 ? 's' : ''
-      }`}
+      summary={albumTitleSummary}
       variant="filled"
     >
       <ToggleDetails
