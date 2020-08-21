@@ -146,7 +146,7 @@ const App = () => {
           renderTitle={`${
             constants.mediaTypeMap.get(constants.MEDIA_TYPE.BRUINCAST).string
           } (${bruincastCount})`}
-          selected={tabSelectedIndex === constants.TABS.BRUINCAST}
+          isSelected={tabSelectedIndex === constants.TABS.BRUINCAST}
         >
           <Bruincast
             course={course}
@@ -163,7 +163,7 @@ const App = () => {
               constants.mediaTypeMap.get(constants.MEDIA_TYPE.VIDEO_RESERVES)
                 .string
             } (${videoReserveCount})`}
-            selected={tabSelectedIndex === constants.TABS.VIDEO_RESERVES}
+            isSelected={tabSelectedIndex === constants.TABS.VIDEO_RESERVES}
           >
             <VideoReserve
               course={course}

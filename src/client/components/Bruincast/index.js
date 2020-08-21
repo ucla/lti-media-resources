@@ -193,7 +193,7 @@ export const Bruincast = ({
             id={currCourse.course.label}
             key={currCourse.course.label}
             renderTitle={currCourse.course.label}
-            selected={courseIndex === i}
+            isSelected={courseIndex === i}
           >
             <BruincastTable
               key={currCourse.course.label}
