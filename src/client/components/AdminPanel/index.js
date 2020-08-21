@@ -183,6 +183,22 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
       >
         <AdminListings mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES} />
       </Tabs.Panel>
+      <Tabs.Panel
+        id="adminPanelListingsMusicReserves"
+        renderTitle={`${
+          constants.mediaTypeMap.get(
+            constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES
+          ).string
+        } Listings`}
+        isSelected={
+          selectedTabIndex ===
+          constants.ADMIN_PANEL_TABS.LISTINGS_DIGITALAUDIORESERVES
+        }
+      >
+        <AdminListings
+          mediaType={constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES}
+        />
+      </Tabs.Panel>
     </Tabs>
   );
 };
