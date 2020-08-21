@@ -8,26 +8,38 @@ import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
 import { Tag } from '@instructure/ui-tag';
 
-import { ltikPromise } from '../../services/ltik';
+import axiosRetry from 'axios-retry';
+import { getLtik } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';
 
+axiosRetry(axios);
+
 const constants = require('../../../../constants');
 
-export const VideoReserve = ({ course, onCampus, userid }) => {
+export const VideoReserve = ({ course, onCampus, userid, setError }) => {
   VideoReserve.propTypes = {
     course: PropTypes.object,
     onCampus: PropTypes.bool,
     userid: PropTypes.number,
+    setError: PropTypes.func,
   };
 
   const [vidReserves, setVidReserves] = React.useState([]);
   const getVideoRes = () => {
-    ltikPromise.then(ltik => {
-      axios.get(`/api/medias/videores?ltik=${ltik}`).then(res => {
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/videores?ltik=${ltik}`)
+      .then(res => {
         setVidReserves(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving Video Reserves...',
+        });
       });
-    });
   };
   React.useEffect(getVideoRes, []);
 
@@ -70,6 +82,7 @@ export const VideoReserve = ({ course, onCampus, userid }) => {
         mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES}
         deSelectMedia={deselectMedia}
         hotReloadPlayback={hotReloadPlayback}
+        setError={setError}
       />
     );
   }
@@ -130,6 +143,7 @@ export const VideoReserve = ({ course, onCampus, userid }) => {
                   remaining={vid.remaining}
                   finished={vid.finished}
                   disabled={vid.expired}
+                  setError={setError}
                 />
               </Table.Cell>
               <Table.Cell>{`${vid.startDate} – ${vid.stopDate}`}</Table.Cell>

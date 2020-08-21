@@ -5,7 +5,7 @@ import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
 import { IconArrowOpenStartLine } from '@instructure/ui-icons';
 
-import { MediaPlayer } from '../MediaPlayer';
+import { MediaPlayer } from './MediaPlayer';
 
 export const MediaView = ({
   media,
@@ -13,6 +13,7 @@ export const MediaView = ({
   mediaType,
   hotReloadPlayback,
   deSelectMedia,
+  setError,
 }) => {
   MediaView.propTypes = {
     media: PropTypes.object,
@@ -20,6 +21,7 @@ export const MediaView = ({
     mediaType: PropTypes.number,
     hotReloadPlayback: PropTypes.func,
     deSelectMedia: PropTypes.func,
+    setError: PropTypes.func,
   };
 
   return (
@@ -38,6 +40,7 @@ export const MediaView = ({
         userid={userid}
         mediaType={mediaType}
         hotReloadPlayback={hotReloadPlayback}
+        setError={setError}
       />
     </View>
   );

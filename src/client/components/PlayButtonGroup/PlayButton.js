@@ -5,7 +5,10 @@ import axios from 'axios';
 import { Button } from '@instructure/ui-buttons';
 import { IconVideoSolid, IconAudioSolid } from '@instructure/ui-icons';
 
-import { ltikPromise } from '../../services/ltik';
+import axiosRetry from 'axios-retry';
+import { getLtik } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
@@ -21,6 +24,7 @@ export const PlayButton = ({
   remaining,
   finished,
   disabled,
+  setError,
 }) => {
   PlayButton.propTypes = {
     format: PropTypes.string,
@@ -34,36 +38,43 @@ export const PlayButton = ({
     remaining: PropTypes.number,
     finished: PropTypes.number,
     disabled: PropTypes.bool,
+    setError: PropTypes.func,
   };
   const generateAndSelectMedia = () => {
     if (
       mediaType === constants.MEDIA_TYPE.BRUINCAST ||
       mediaType === constants.MEDIA_TYPE.VIDEO_RESERVES
     ) {
-      ltikPromise.then(ltik => {
-        axios
-          .get(`/api/medias/url?ltik=${ltik}`, {
-            params: {
-              mediatype: mediaType,
-              mediaformat: format.charAt(0),
-              filename: src,
-              quarter: course.quarter,
-            },
-          })
-          .then(res => {
-            const mediaToBeSelected = {
-              format,
-              url: res.data,
-              classShortname: course.label,
-              file,
-              _id: res.data,
-            };
-            if (playback !== undefined && playback !== null) {
-              mediaToBeSelected.playback = playback;
-            }
-            selectMedia(mediaToBeSelected);
+      const ltik = getLtik();
+      axios
+        .get(`/api/medias/url?ltik=${ltik}`, {
+          params: {
+            mediatype: mediaType,
+            mediaformat: format.charAt(0),
+            filename: src,
+            quarter: course.quarter,
+          },
+        })
+        .then(res => {
+          const mediaToBeSelected = {
+            format,
+            url: res.data,
+            classShortname: course.label,
+            file,
+            _id: res.data,
+          };
+          if (playback !== undefined && playback !== null) {
+            mediaToBeSelected.playback = playback;
+          }
+          selectMedia(mediaToBeSelected);
+          setError(null);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when generating url...',
           });
-      });
+        });
     } else {
       if (playback !== undefined && playback !== null) {
         eventMediaTitle.playback = playback;

@@ -12,16 +12,20 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
+import axiosRetry from 'axios-retry';
 import { AdminListings } from './AdminListings';
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
-export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
+export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
   AdminPanel.propTypes = {
     warning: PropTypes.string,
     setWarning: PropTypes.func,
     retrieveNums: PropTypes.func,
+    setError: PropTypes.func,
   };
 
   // Tab change logic
@@ -39,8 +43,10 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
   const [currCrosslist, setCurrCrosslist] = useState('');
 
   const retrieveAllCrosslists = () => {
-    ltikPromise.then(ltik => {
-      axios.get(`/api/medias/bruincast/crosslists?ltik=${ltik}`).then(res => {
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/bruincast/crosslists?ltik=${ltik}`)
+      .then(res => {
         const lists = res.data;
         let crosslistStr = '';
         for (const list of lists) {
@@ -51,8 +57,14 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
         }
         crosslistStr = crosslistStr.substr(0, crosslistStr.length - 1);
         setCurrCrosslist(crosslistStr);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving all crosslists...',
+        });
       });
-    });
   };
   useEffect(retrieveAllCrosslists, []);
 
@@ -68,7 +80,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
   const submitWarning = async () => {
     const warningToBeSubmitted = dompurify.sanitize(currWarning);
     if (warningToBeSubmitted !== warning) {
-      const ltik = await ltikPromise;
+      const ltik = getLtik();
       await axios.post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
         notice: warningToBeSubmitted,
       });
@@ -98,7 +110,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
       const arr = str.split('=');
       listOfArr.push(arr);
     }
-    const ltik = await ltikPromise;
+    const ltik = getLtik();
     const res = await axios.post(
       `/api/medias/bruincast/crosslists?ltik=${ltik}`,
       {
@@ -181,7 +193,10 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums }) => {
           selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_VIDEORESERVES
         }
       >
-        <AdminListings mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES} />
+        <AdminListings
+          mediaType={constants.MEDIA_TYPE.VIDEO_RESERVES}
+          setError={setError}
+        />
       </Tabs.Panel>
       <Tabs.Panel
         id="adminPanelListingsMusicReserves"

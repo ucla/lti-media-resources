@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App component matches its original snapshot 1`] = `
+<View
+  borderColor="primary"
+  display="auto"
+  focusColor="info"
+  focusPosition="offset"
+  overflowX="visible"
+  overflowY="visible"
+  position="static"
+  shouldAnimateFocus={true}
+  withVisualDebug={false}
+>
+  <Tabs
+    elementRef={[Function]}
+    onRequestTabChange={[Function]}
+    shouldFocusOnRender={false}
+    tabOverflow="stack"
+    variant="default"
+  >
+    <Panel
+      elementRef={[Function]}
+      id="bruincast"
+      isDisabled={false}
+      isSelected={true}
+      labelledBy={null}
+      padding="small"
+      renderTitle="Bruincast (0)"
+      textAlign="start"
+      variant="default"
+    >
+      <Bruincast
+        course={Object {}}
+        retrieveWarning={[Function]}
+        setError={[Function]}
+        userid={-1}
+        warning=""
+      />
+    </Panel>
+    <Panel
+      elementRef={[Function]}
+      id="audioReserves"
+      isDisabled={false}
+      isSelected={false}
+      labelledBy={null}
+      padding="small"
+      renderTitle="Digital Audio Reserves (0)"
+      textAlign="start"
+      variant="default"
+    >
+      <MusicReserve
+        setError={[Function]}
+        userid={-1}
+      />
+    </Panel>
+    <Panel
+      elementRef={[Function]}
+      id="mediaGallery"
+      isDisabled={false}
+      isSelected={false}
+      labelledBy={null}
+      padding="small"
+      renderTitle="Media Gallery"
+      textAlign="start"
+      variant="default"
+    >
+      Media Gallery
+    </Panel>
+  </Tabs>
+</View>
+`;

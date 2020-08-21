@@ -9,29 +9,41 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import { Link } from '@instructure/ui-link';
+import axiosRetry from 'axios-retry';
 import { Button } from '@instructure/ui-buttons';
 import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
 import { MediaView } from '../MediaView';
 
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
-export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
+export const Bruincast = ({
+  course,
+  warning,
+  retrieveWarning,
+  userid,
+  setError,
+}) => {
   Bruincast.propTypes = {
     course: PropTypes.object,
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     userid: PropTypes.number,
+    setError: PropTypes.func,
   };
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
   const retrieveCasts = () => {
-    ltikPromise.then(async ltik => {
-      axios.get(`/api/medias/bruincast/casts?ltik=${ltik}`).then(res => {
+    const ltik = getLtik();
+    axios
+      .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
+      .then(res => {
         const tmpCastsByCourses = res.data;
         for (const tmpCourse of tmpCastsByCourses) {
           for (const listObj of tmpCourse.casts) {
@@ -51,8 +63,14 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
           }
         }
         setCasts(tmpCastsByCourses);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving Bruincast contents...',
+        });
       });
-    });
   };
   useEffect(retrieveCasts, []);
 
@@ -145,6 +163,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
         mediaType={constants.MEDIA_TYPE.BRUINCAST}
         hotReloadPlayback={hotReloadPlayback}
         deSelectMedia={deselectMedia}
+        setError={setError}
       />
     );
   }
@@ -174,7 +193,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
             id={currCourse.course.label}
             key={currCourse.course.label}
             renderTitle={currCourse.course.label}
-            selected={courseIndex === i}
+            isSelected={courseIndex === i}
           >
             <BruincastTable
               key={currCourse.course.label}
@@ -182,6 +201,7 @@ export const Bruincast = ({ course, warning, retrieveWarning, userid }) => {
               selectMedia={selectMedia}
               course={currCourse.course}
               shortname={currCourse.course.label}
+              setError={setError}
             />
           </Tabs.Panel>
         ))}

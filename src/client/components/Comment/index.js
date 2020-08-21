@@ -2,7 +2,6 @@ import React from 'react';
 import dompurify from 'dompurify';
 import PropTypes from 'prop-types';
 
-import './comment.css';
 import { Text } from '@instructure/ui-text';
 
 const sanitizeComment = comment =>
@@ -19,7 +18,7 @@ export const Comment = ({ commentText }) => {
   };
 
   return (
-    <span>
+    <span style={{ whiteSpace: 'pre-wrap' }}>
       <Text wrap="break-word">{sanitizeComment(commentText)}</Text>
     </span>
   );

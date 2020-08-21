@@ -56,10 +56,7 @@ lti.app.get('/api/members', (req, res) => {
 lti.app.get('/api/grades', (req, res) => {
   lti.Grade.result(res.locals.token)
     .then(grades => res.status(200).send(grades))
-    .catch(err => {
-      console.log(err);
-      return res.status(400);
-    });
+    .catch(err => res.status(400).send(err));
 });
 
 lti.app.post('/api/grades', (req, res) => {
@@ -67,7 +64,6 @@ lti.app.post('/api/grades', (req, res) => {
     lti.Grade.ScorePublish(res.locals.token, req.body);
     return res.status(200).send(req.body);
   } catch (err) {
-    console.log(err);
     return res.status(400).send(err);
   }
 });
@@ -94,6 +90,7 @@ async function setup() {
 
   // Get the public key generated for that platform.
   const plat = await lti.getPlatform(process.env.PLATFORM_URL);
+  // eslint-disable-next-line no-console
   console.log(await plat.platformPublicKey());
 }
 

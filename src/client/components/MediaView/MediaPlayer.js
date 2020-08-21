@@ -3,7 +3,10 @@ import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { ltikPromise } from '../../services/ltik';
+import axiosRetry from 'axios-retry';
+import { getLtik } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
@@ -21,7 +24,13 @@ export class MediaPlayer extends Component {
 
   componentWillUnmount() {
     const { playbackPos, finished } = this.state;
-    const { userid, media, mediaType, hotReloadPlayback } = this.props;
+    const {
+      userid,
+      media,
+      mediaType,
+      hotReloadPlayback,
+      setError,
+    } = this.props;
     const player = window.jwplayer(media._id);
     const duration = player.getDuration();
     let time = playbackPos;
@@ -29,42 +38,45 @@ export class MediaPlayer extends Component {
       time = 0;
     }
     const remaining = duration - time;
-    ltikPromise.then(ltik => {
-      axios
-        .post(`/api/medias/playback?ltik=${ltik}`, {
-          userid,
-          file: media.file,
-          mediaType,
-          classShortname: media.classShortname,
-          time,
-          remaining,
-          finished,
-        })
-        .then(() => {
-          if (mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES) {
-            hotReloadPlayback(
-              media.albumTitle,
-              media.file,
-              time,
-              remaining,
-              finished
-            );
-          } else if (mediaType === constants.MEDIA_TYPE.BRUINCAST) {
-            hotReloadPlayback(
-              media.classShortname,
-              media.file,
-              time,
-              remaining,
-              finished
-            );
-          } else if (mediaType === constants.MEDIA_TYPE.VIDEO_RESERVES) {
-            hotReloadPlayback(media.file, time, remaining, finished);
-          }
-        })
-        .catch(err => {
-          console.log(err);
+    const ltik = getLtik();
+    axios
+      .post(`/api/medias/playback?ltik=${ltik}`, {
+        userid,
+        file: media.file,
+        mediaType,
+        classShortname: media.classShortname,
+        time,
+        remaining,
+        finished,
+      })
+      .then(() => {
+        if (mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES) {
+          hotReloadPlayback(
+            media.albumTitle,
+            media.file,
+            time,
+            remaining,
+            finished
+          );
+        } else if (mediaType === constants.MEDIA_TYPE.BRUINCAST) {
+          hotReloadPlayback(
+            media.classShortname,
+            media.file,
+            time,
+            remaining,
+            finished
+          );
+        } else if (mediaType === constants.MEDIA_TYPE.VIDEO_RESERVES) {
+          hotReloadPlayback(media.file, time, remaining, finished);
+        }
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when uploading playback history...',
         });
-    });
+      });
   }
 
   render() {
@@ -103,4 +115,5 @@ MediaPlayer.propTypes = {
   userid: PropTypes.number.isRequired,
   mediaType: PropTypes.number.isRequired,
   hotReloadPlayback: PropTypes.func,
+  setError: PropTypes.func,
 };

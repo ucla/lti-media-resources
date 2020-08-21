@@ -10,14 +10,19 @@ import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import { Alert } from '@instructure/ui-alerts';
 import axios from 'axios';
 
+import axiosRetry from 'axios-retry';
+
 import { AdminListingsToggle } from './AdminListingsToggle';
-import { ltikPromise } from '../../services/ltik';
+import { getLtik } from '../../services/ltik';
+
+axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
-export const AdminListings = ({ mediaType }) => {
+export const AdminListings = ({ mediaType, setError }) => {
   AdminListings.propTypes = {
     mediaType: PropTypes.number,
+    setError: PropTypes.func,
   };
 
   // Variable for searchTerm, updated directly by term field change
@@ -35,18 +40,27 @@ export const AdminListings = ({ mediaType }) => {
   };
 
   const retrieveListings = () => {
-    ltikPromise.then(ltik => {
-      axios
-        .get(
-          `/api/medias/${
-            constants.mediaTypeMap.get(mediaType).api
-          }/alllistings?ltik=${ltik}`,
-          {
-            params: { term: recentlySearchedTerm },
-          }
-        )
-        .then(res => setMediaListings(res.data));
-    });
+    const ltik = getLtik();
+    axios
+      .get(
+        `/api/medias/${
+          constants.mediaTypeMap.get(mediaType).api
+        }/alllistings?ltik=${ltik}`,
+        {
+          params: { term: recentlySearchedTerm },
+        }
+      )
+      .then(res => {
+        setMediaListings(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        const mediaTypeStr = constants.mediaTypeMap.get(mediaType).string;
+        setError({
+          err,
+          msg: `Something went wrong when retrieving ${mediaTypeStr} listings...`,
+        });
+      });
   };
   useEffect(retrieveListings, [recentlySearchedTerm]);
 
