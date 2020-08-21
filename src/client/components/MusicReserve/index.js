@@ -35,7 +35,7 @@ export const MusicReserve = ({ userid, setError }) => {
       .catch(err => {
         setError({
           err,
-          msg: 'Something went wrong when retrieving digital audio reserves...',
+          msg: 'Something went wrong when retrieving Digital Audio Reserves...',
         });
       });
   };

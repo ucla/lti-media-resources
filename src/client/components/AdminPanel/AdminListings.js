@@ -57,7 +57,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       .catch(err => {
         setError({
           err,
-          msg: 'Something went wrong when retrieving bruincast listings...',
+          msg: 'Something went wrong when retrieving Bruincast listings...',
         });
       });
   };

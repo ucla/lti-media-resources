@@ -37,7 +37,7 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
       .catch(err => {
         setError({
           err,
-          msg: 'Something went wrong when retrieving video reserves...',
+          msg: 'Something went wrong when retrieving Video Reserves...',
         });
       });
   };

@@ -68,7 +68,7 @@ export const Bruincast = ({
       .catch(err => {
         setError({
           err,
-          msg: 'Something went wrong when retrieving bruincast contents...',
+          msg: 'Something went wrong when retrieving Bruincast contents...',
         });
       });
   };
