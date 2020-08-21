@@ -170,7 +170,7 @@ async function main() {
             );
             if (weekNum === null) {
               logger.log({
-                level: 'warning',
+                level: 'warn',
                 message: `Null response from getWeekNumber for ${mediaEntry['date for recording(s)']}`,
               });
             }
