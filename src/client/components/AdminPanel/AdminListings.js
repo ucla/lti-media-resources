@@ -55,9 +55,10 @@ export const AdminListings = ({ mediaType, setError }) => {
         setError(null);
       })
       .catch(err => {
+        const mediaTypeStr = constants.mediaTypeMap.get(mediaType).string;
         setError({
           err,
-          msg: 'Something went wrong when retrieving Bruincast listings...',
+          msg: `Something went wrong when retrieving ${mediaTypeStr} listings...`,
         });
       });
   };
