@@ -51,7 +51,7 @@ export const BruincastListingsTable = ({ shortname, listings }) => {
         {listings.map(listing => (
           <Table.Row key={listing.filename}>
             <Table.Cell>{listing.term}</Table.Cell>
-            <Table.Cell>{listing.classID}</Table.Cell>
+            <Table.Cell>{listing.srs}</Table.Cell>
             <Table.Cell>{listing.week}</Table.Cell>
             <Table.Cell>{listing.date}</Table.Cell>
             <Table.Cell>

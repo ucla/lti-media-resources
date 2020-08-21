@@ -145,18 +145,18 @@ async function main() {
 
       // For each term and Class ID, get the associated media and update records
       for await (const course of courses) {
-        const currentClassID = course['srs #'];
+        const currentSRS = course['srs #'];
         const currentClassShortname = await registrar.getShortname(
           currentTerm,
-          currentClassID
+          currentSRS
         );
         logger.info(
-          `Updating records for ${currentClassShortname} (Class ID: ${currentClassID})`
+          `Updating records for ${currentClassShortname} (Class ID: ${currentSRS})`
         );
         let numCourseRecords = 0;
 
         // From the API, get media listings for given term and Class ID
-        await getMedia(formattedTerm, currentClassID, async function(
+        await getMedia(formattedTerm, currentSRS, async function(
           mediaResponse
         ) {
           const mediaEntries = JSON.parse(mediaResponse);
@@ -170,14 +170,14 @@ async function main() {
             );
             if (weekNum === null) {
               logger.log({
-                level: 'warning',
+                level: 'warn',
                 message: `Null response from getWeekNumber for ${mediaEntry['date for recording(s)']}`,
               });
             }
 
             mediaRecords.push({
               classShortname: currentClassShortname,
-              classID: currentClassID,
+              srs: currentSRS,
               term: currentTerm,
               date: mediaEntry['date for recording(s)'],
               week: weekNum,
@@ -195,7 +195,7 @@ async function main() {
             client,
             'bruincastmedia',
             currentTerm,
-            currentClassID,
+            currentSRS,
             mediaRecords,
             logger
           );
