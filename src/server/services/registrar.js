@@ -208,7 +208,7 @@ async function getShortname(offeredTermCode, classSectionID) {
 /**
  * Gets the week number, given an academic term and a date
  *
- * @param {string} term Academic term, formatted as YYQ (e.g. 20S)
+ * @param {string} term Academic term, formatted as YYQ (e.g. 20S) or summer session YY1A/YY1C (e.g. 201A/201C)
  * @param {string} date Date string formatted as MM/DD/YYYY
  * @returns {?number} Returns week number if date is valid in term
  */
@@ -217,15 +217,36 @@ async function getWeekNumber(term, date) {
     let response = cache.get(`TermSessionsByWeek_${term}`);
     if (response === undefined) {
       // If TermSessionsByWeek for term isn't cached, fetch it
+
+      // API parameters
+      let termParam = term;
+      let sessionCodeParam = 'RG';
+
+      // Handle summer session term
+      if (term.length === 4) {
+        termParam = term.slice(0, 3);
+
+        // Session A
+        if (term.charAt(3) === 'A') {
+          sessionCodeParam = '1A';
+        }
+
+        // Session C
+        if (term.charAt(3) === 'C') {
+          sessionCodeParam = '6C';
+        }
+      }
+
       response = await registrar.call({
         url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
         params: {
-          SessionTermCode: term,
-          SessionCode: 'RG',
+          SessionTermCode: termParam,
+          SessionCode: sessionCodeParam,
           PageSize: 12,
         },
       });
       if (response === null) return null;
+
       cache.set(`TermSessionsByWeek_${term}`, response);
     }
 

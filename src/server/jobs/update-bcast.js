@@ -150,6 +150,11 @@ async function main() {
           currentTerm,
           currentSRS
         );
+
+        // Get full term from shortname, in case it's summer session (e.g. 201 might be 201A)
+        // This will be passed to the registrar getWeekNumber() function
+        const currentClassTerm = currentClassShortname.split('-')[0];
+
         logger.info(
           `Updating records for ${currentClassShortname} (Class ID: ${currentSRS})`
         );
@@ -165,13 +170,13 @@ async function main() {
           // For each listing, push new database record into array
           for (const mediaEntry of mediaEntries) {
             const weekNum = await registrar.getWeekNumber(
-              currentTerm,
+              currentClassTerm,
               mediaEntry['date for recording(s)']
             );
             if (weekNum === null) {
               logger.log({
                 level: 'warn',
-                message: `Null response from getWeekNumber for ${mediaEntry['date for recording(s)']}`,
+                message: `Null response from getWeekNumber(). Term: ${currentClassTerm}, Date: ${mediaEntry['date for recording(s)']}`,
               });
             }
 
