@@ -139,6 +139,37 @@ class BruincastServices {
     const formattedMedia = this.formatTermCasts(termMedia);
     return formattedMedia;
   }
+
+  static async getAnalytics(course) {
+    const labelList = await this.getCrosslistByCourse(
+      course.label,
+      'crosslists'
+    );
+    const courseList = [course, ...labelList];
+    const castsByCourses = [];
+
+    for (const c of courseList) {
+      const courseCasts = await MediaQuery.getCastsByCourse(
+        'bruincastmedia',
+        c
+      );
+      if (
+        courseCasts &&
+        Array.isArray(courseCasts) &&
+        courseCasts.length !== 0
+      ) {
+        const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
+          constants.MEDIA_TYPE.BRUINCAST,
+          c,
+          'playbacks'
+        );
+        console.log(rawAnalytics);
+        // Then for each cast, create a userHistories field which is an array
+        // filter rawAnalytics for file identifyer
+        // for each file and userid pair, push an object with userid and playback info into userHistories
+      }
+    }
+  }
 }
 
 module.exports = BruincastServices;

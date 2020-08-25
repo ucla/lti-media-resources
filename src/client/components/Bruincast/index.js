@@ -27,6 +27,8 @@ export const Bruincast = ({
   warning,
   retrieveWarning,
   userid,
+  allUsers,
+  userIsInstructor,
   setError,
 }) => {
   Bruincast.propTypes = {
@@ -34,11 +36,14 @@ export const Bruincast = ({
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     userid: PropTypes.number,
+    allUsers: PropTypes.array,
+    userIsInstructor: PropTypes.func,
     setError: PropTypes.func,
   };
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const retrieveCasts = () => {
     const ltik = getLtik();
     axios
@@ -73,6 +78,14 @@ export const Bruincast = ({
       });
   };
   useEffect(retrieveCasts, []);
+
+  const retrieveAnalytics = () => {
+    if (userIsInstructor() && allUsers) {
+      const ltik = getLtik();
+      axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`);
+    }
+  };
+  useEffect(retrieveAnalytics, [allUsers]);
 
   const reverseCastsOrder = () => {
     for (const currCourse of castsByCourses) {

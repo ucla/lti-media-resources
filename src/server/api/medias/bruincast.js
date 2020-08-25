@@ -51,4 +51,9 @@ router.get('/alllistings', (req, res) => {
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 
+router.get('/analytics', (req, res) => {
+  const { context } = res.locals.context;
+  BruincastServices.getAnalytics(context).then(ana => res.status(200));
+});
+
 module.exports = router;

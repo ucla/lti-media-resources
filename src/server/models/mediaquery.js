@@ -236,3 +236,14 @@ module.exports.getPlaybacks = async (
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };
+
+module.exports.getAnalyticsByCourse = async (
+  mediaType,
+  courseLabel,
+  collectionName
+) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const query = { mediaType, classShortname: courseLabel };
+  const toBeReturned = await playbackCollection.find(query).toArray();
+  return toBeReturned;
+};

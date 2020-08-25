@@ -35,6 +35,7 @@ const App = () => {
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
+  const [allUsers, setAllUsers] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -64,7 +65,10 @@ const App = () => {
   const userIsAdmin = () =>
     roles && (roles.includes('admin') || roles.includes('administrator'));
   const userIsInstructor = () =>
-    roles && (roles.includes('teacher') || roles.includes('instructor'));
+    roles &&
+    (roles.includes('teacher') ||
+      roles.includes('instructor') ||
+      userIsAdmin());
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
@@ -87,6 +91,25 @@ const App = () => {
       });
   };
   useEffect(retrieveNums, []);
+
+  // Get a list of all users for analytics
+  const retrieveAllUsers = () => {
+    if (userIsInstructor()) {
+      const ltik = getLtik();
+      axios
+        .get(`/api/members?ltik=${ltik}`)
+        .then(res => {
+          setAllUsers(res.data);
+        })
+        .catch(err => {
+          setError({
+            err,
+            msg: 'Something went wrong when getting all students...',
+          });
+        });
+    }
+  };
+  useEffect(retrieveAllUsers, [roles]);
 
   // Get notice from backend
   // Declaring function only; called in Bruincast component
@@ -153,6 +176,8 @@ const App = () => {
             warning={warning}
             retrieveWarning={retrieveWarning}
             userid={userid}
+            allUsers={allUsers}
+            userIsInstructor={userIsInstructor}
             setError={setError}
           />
         </Tabs.Panel>
