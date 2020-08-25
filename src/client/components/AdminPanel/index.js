@@ -182,7 +182,10 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
           selectedTabIndex === constants.ADMIN_PANEL_TABS.LISTINGS_BRUINCAST
         }
       >
-        <AdminListings mediaType={constants.MEDIA_TYPE.BRUINCAST} />
+        <AdminListings
+          mediaType={constants.MEDIA_TYPE.BRUINCAST}
+          setError={setError}
+        />
       </Tabs.Panel>
       <Tabs.Panel
         id="adminPanelListingsVideoReserves"
@@ -212,6 +215,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
       >
         <AdminListings
           mediaType={constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES}
+          setError={setError}
         />
       </Tabs.Panel>
     </Tabs>

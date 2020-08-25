@@ -78,6 +78,12 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     {
       $group: {
         _id: '$classShortname',
+        term: {
+          $first: '$term',
+        },
+        subjectArea: {
+          $first: '$subjectArea',
+        },
         listings: {
           $push: '$$ROOT',
         },
