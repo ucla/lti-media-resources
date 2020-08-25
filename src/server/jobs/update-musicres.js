@@ -23,14 +23,20 @@ async function main() {
     let totalNumEntries = 0;
     for (const course of res.data.courses) {
       const { term, srs, works } = course;
-      const shortName = await RegistrarService.getShortname(term, srs);
-      if (!shortName) {
+      const shortnameResponse = await RegistrarService.getShortname(term, srs);
+      if (!shortnameResponse) {
         logger.warn(`${course.term}-${course.srs} does not have shortname`);
       }
+      const shortname = shortnameResponse ? shortnameResponse.shortname : null;
+      const subjectArea = shortnameResponse
+        ? shortnameResponse.subjectArea
+        : null;
+
       for (const work of works) {
         work.term = term;
         work.srs = srs;
-        work.classShortname = shortName;
+        work.classShortname = shortname;
+        work.subjectArea = subjectArea;
       }
       totalNumDiff += await UpdateMusicResServices.updateRecordsForClass(
         dbclient,

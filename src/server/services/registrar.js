@@ -197,8 +197,8 @@ async function getShortname(offeredTermCode, classSectionID) {
       ''
     )}-${secNum.replace(/^0+/g, '')}`;
 
-    registrarDebug(`getShortname: returning ${shortname}`);
-    return shortname;
+    registrarDebug(`getShortname: returning { ${shortname}, ${subArea}`);
+    return { shortname, subjectArea: subArea };
   } catch (error) {
     console.log(error);
     return null;

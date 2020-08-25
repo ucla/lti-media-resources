@@ -146,10 +146,10 @@ async function main() {
       // For each term and Class ID, get the associated media and update records
       for await (const course of courses) {
         const currentSRS = course['srs #'];
-        const currentClassShortname = await registrar.getShortname(
-          currentTerm,
-          currentSRS
-        );
+        const {
+          shortname: currentClassShortname,
+          subjectArea: currentClassSubjectArea,
+        } = await registrar.getShortname(currentTerm, currentSRS);
 
         // Get full term from shortname, in case it's summer session (e.g. 201 might be 201A)
         // This will be passed to the registrar getWeekNumber() function
@@ -182,6 +182,7 @@ async function main() {
 
             mediaRecords.push({
               classShortname: currentClassShortname,
+              subjectArea: currentClassSubjectArea,
               srs: currentSRS,
               term: currentTerm,
               date: mediaEntry['date for recording(s)'],

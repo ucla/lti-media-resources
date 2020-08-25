@@ -42,23 +42,33 @@ async function main() {
       );
       if (mappedPair && mappedPair.length !== 0) {
         media.classShortname = mappedPair[0].classShortname;
+        media.subjectArea = mappedPair[0].subjectArea;
       } else {
-        const shortName = await RegistrarService.getShortname(
+        const shortnameResponse = await RegistrarService.getShortname(
           media.term,
           media.srs
         );
-        if (!shortName) {
+        const shortname = shortnameResponse
+          ? shortnameResponse.shortname
+          : null;
+        const subjectArea = shortnameResponse
+          ? shortnameResponse.subjectArea
+          : null;
+
+        if (!shortnameResponse) {
           logger.warn(`${media.term}-${media.srs} does not have shortname`);
-        } else if (!media.filename.includes(shortName)) {
+        } else if (!media.filename.includes(shortname)) {
           logger.warn(
             `Shortname of file ${media.filename} does not match the shortname of class ${media.srs} of term ${media.term}`
           );
         }
-        media.classShortname = shortName;
+        media.classShortname = shortname;
+        media.subjectArea = subjectArea;
         srsShortnameMap.push({
           term: media.term,
           srs: media.srs,
-          classShortname: shortName,
+          classShortname: shortname,
+          subjectArea,
         });
       }
     }
