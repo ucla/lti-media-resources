@@ -44,18 +44,12 @@ async function main() {
         media.classShortname = mappedPair[0].classShortname;
         media.subjectArea = mappedPair[0].subjectArea;
       } else {
-        const shortnameResponse = await RegistrarService.getShortname(
+        const { shortname, subjectArea } = await RegistrarService.getShortname(
           media.term,
           media.srs
         );
-        const shortname = shortnameResponse
-          ? shortnameResponse.shortname
-          : null;
-        const subjectArea = shortnameResponse
-          ? shortnameResponse.subjectArea
-          : null;
 
-        if (!shortnameResponse) {
+        if (!shortname) {
           logger.warn(`${media.term}-${media.srs} does not have shortname`);
         } else if (!media.filename.includes(shortname)) {
           logger.warn(

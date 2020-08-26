@@ -23,14 +23,13 @@ async function main() {
     let totalNumEntries = 0;
     for (const course of res.data.courses) {
       const { term, srs, works } = course;
-      const shortnameResponse = await RegistrarService.getShortname(term, srs);
-      if (!shortnameResponse) {
+      const { shortname, subjectArea } = await RegistrarService.getShortname(
+        term,
+        srs
+      );
+      if (!shortname) {
         logger.warn(`${course.term}-${course.srs} does not have shortname`);
       }
-      const shortname = shortnameResponse ? shortnameResponse.shortname : null;
-      const subjectArea = shortnameResponse
-        ? shortnameResponse.subjectArea
-        : null;
 
       for (const work of works) {
         work.term = term;

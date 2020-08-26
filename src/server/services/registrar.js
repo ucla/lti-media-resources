@@ -134,12 +134,18 @@ async function call(params) {
  *
  * @param {string} offeredTermCode  Term.
  * @param {string} classSectionID   ClassID aka SRS.
- * @returns {?string}   Returns shortname if CourseClassIdentifiers were found.
+ * @returns {?object}   Returns object with shortname and subjectArea if CourseClassIdentifiers were found.
  */
 async function getShortname(offeredTermCode, classSectionID) {
   registrarDebug(
     `getShortname: called with ${offeredTermCode}|${classSectionID}`
   );
+
+  const returnObject = {
+    shortname: null,
+    subjectArea: null,
+  };
+
   let term = offeredTermCode;
   try {
     let response = await registrar.call({
@@ -147,7 +153,7 @@ async function getShortname(offeredTermCode, classSectionID) {
     });
     if (response === null) {
       registrarDebug('getShortname: CourseClassIdentifiers is null');
-      return null;
+      return returnObject;
     }
     const {
       courseClassIdentifiers: [
@@ -178,7 +184,7 @@ async function getShortname(offeredTermCode, classSectionID) {
 
       if (response === null) {
         registrarDebug('getShortname: Classes is null');
-        return null;
+        return returnObject;
       }
       const {
         classes: [
@@ -198,10 +204,12 @@ async function getShortname(offeredTermCode, classSectionID) {
     )}-${secNum.replace(/^0+/g, '')}`;
 
     registrarDebug(`getShortname: returning { ${shortname}, ${subArea}`);
-    return { shortname, subjectArea: subArea };
+    returnObject.shortname = shortname;
+    returnObject.subjectArea = subArea;
+    return returnObject;
   } catch (error) {
     console.log(error);
-    return null;
+    return returnObject;
   }
 }
 
