@@ -42,6 +42,14 @@ class MusicresServices {
     const termMedia = await MediaQuery.getMediaForTerm('musicreserves', term);
     return termMedia;
   }
+
+  static async getSubjectAreasForTerm(term) {
+    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
+      'musicreserves',
+      term
+    );
+    return subjectAreas;
+  }
 }
 
 module.exports = MusicresServices;
