@@ -14,6 +14,7 @@ import { Button } from '@instructure/ui-buttons';
 import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
+import { BruincastAnalytics } from './BruincastAnalytics';
 import { MediaView } from '../MediaView';
 
 import { getLtik } from '../../services/ltik';
@@ -43,7 +44,7 @@ export const Bruincast = ({
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
-  const [analytics, setAnalytics] = useState(null);
+  // Const [analytics, setAnalytics] = useState(null);
   const retrieveCasts = () => {
     const ltik = getLtik();
     axios
@@ -64,6 +65,15 @@ export const Bruincast = ({
               tmpCast.playbackMap = playbackMap;
               tmpCast.remainingMap = remainingMap;
               tmpCast.finishedMap = finishedMap;
+              if (tmpCast.analytics && Array.isArray(tmpCast.analytics)) {
+                const analyticsMap = new Map();
+                if (tmpCast.analytics.length !== 0) {
+                  for (const analytic of tmpCast.analytics) {
+                    analyticsMap.set(analytic.userid, analytic);
+                  }
+                }
+                tmpCast.analytics = analyticsMap;
+              }
             }
           }
         }
@@ -78,14 +88,6 @@ export const Bruincast = ({
       });
   };
   useEffect(retrieveCasts, []);
-
-  const retrieveAnalytics = () => {
-    if (userIsInstructor() && allUsers) {
-      const ltik = getLtik();
-      axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`);
-    }
-  };
-  useEffect(retrieveAnalytics, [allUsers]);
 
   const reverseCastsOrder = () => {
     for (const currCourse of castsByCourses) {
@@ -218,6 +220,21 @@ export const Bruincast = ({
             />
           </Tabs.Panel>
         ))}
+        {userIsInstructor() &&
+          allUsers &&
+          castsByCourses[0].casts[0].listings[0].analytics && (
+            <Tabs.Panel
+              id="bcastanalytics"
+              key="bcastanalytics"
+              renderTitle="Analytics"
+              isSelected={courseIndex === castsByCourses.length}
+            >
+              <BruincastAnalytics
+                castsByCourses={castsByCourses}
+                allUsers={allUsers}
+              />
+            </Tabs.Panel>
+          )}
       </Tabs>
     </View>
   );

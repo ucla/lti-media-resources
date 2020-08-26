@@ -99,6 +99,10 @@ const App = () => {
       axios
         .get(`/api/members?ltik=${ltik}`)
         .then(res => {
+          const rawUsers = res.data;
+          for (const user of rawUsers) {
+            user.userid = parseInt(user.user_id);
+          }
           setAllUsers(res.data);
         })
         .catch(err => {

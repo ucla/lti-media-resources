@@ -35,11 +35,13 @@ router.get('/casts', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.token.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
+  const isInstructor = CheckRoleServices.isInstructor(res.locals.token.roles);
   const { context } = res.locals.context;
   context.quarter = context.label.substr(0, context.label.indexOf('-'));
   BruincastServices.getCasts(
     context,
-    parseInt(res.locals.token.user)
+    parseInt(res.locals.token.user),
+    isInstructor
   ).then(casts => res.send(casts));
 });
 
@@ -49,11 +51,6 @@ router.get('/alllistings', (req, res) => {
   }
   const { term } = req.query;
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
-});
-
-router.get('/analytics', (req, res) => {
-  const { context } = res.locals.context;
-  BruincastServices.getAnalytics(context).then(ana => res.status(200));
 });
 
 module.exports = router;

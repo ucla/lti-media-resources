@@ -35,7 +35,7 @@ class BruincastServices {
     return toBeReturned;
   }
 
-  static async getCasts(course, userid) {
+  static async getCasts(course, userid, isInstructor) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
       'crosslists'
@@ -92,6 +92,54 @@ class BruincastServices {
           }
         }
 
+        if (isInstructor) {
+          const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
+            constants.MEDIA_TYPE.BRUINCAST,
+            c.label,
+            'playbacks'
+          );
+          for (const listingObj of courseCasts) {
+            for (const cast of listingObj.listings) {
+              const allMediaStr = `${cast.video},${cast.audio}`;
+              const allMedias = allMediaStr.trim(',').split(',');
+              const castAnalytics = [];
+              if (Array.isArray(allMedias) && allMedias.length !== 0) {
+                for (const media of allMedias) {
+                  const matchedAnalyticsOfMedia = rawAnalytics.filter(
+                    analytic => analytic.file === media
+                  );
+                  for (const matchedAnalytic of matchedAnalyticsOfMedia) {
+                    if (!matchedAnalytic.finishedTimes) {
+                      matchedAnalytic.finishedTimes = 0;
+                    }
+                    const userAlreadyInArr = castAnalytics.filter(
+                      anaAlreadyIn =>
+                        anaAlreadyIn.userid === matchedAnalytic.userid
+                    );
+                    if (userAlreadyInArr.length === 0) {
+                      castAnalytics.push(matchedAnalytic);
+                    } else if (
+                      matchedAnalytic.finishedTimes >
+                        userAlreadyInArr[0].finishedTimes ||
+                      (matchedAnalytic.finishedTimes ===
+                        userAlreadyInArr[0].finishedTimes &&
+                        matchedAnalytic.time > userAlreadyInArr[0].time)
+                    ) {
+                      userAlreadyInArr[0]._id = matchedAnalytic._id;
+                      userAlreadyInArr[0]._file = matchedAnalytic._file;
+                      userAlreadyInArr[0].time = matchedAnalytic.time;
+                      userAlreadyInArr[0].remaining = matchedAnalytic.remaining;
+                      userAlreadyInArr[0].finishedTimes =
+                        matchedAnalytic.finishedTimes;
+                    }
+                  }
+                }
+              }
+              cast.analytics = castAnalytics;
+            }
+          }
+        }
+
         castsByCourses.push({
           course: c,
           casts: courseCasts,
@@ -138,37 +186,6 @@ class BruincastServices {
     const termMedia = await MediaQuery.getMediaForTerm('bruincastmedia', term);
     const formattedMedia = this.formatTermCasts(termMedia);
     return formattedMedia;
-  }
-
-  static async getAnalytics(course) {
-    const labelList = await this.getCrosslistByCourse(
-      course.label,
-      'crosslists'
-    );
-    const courseList = [course, ...labelList];
-    const castsByCourses = [];
-
-    for (const c of courseList) {
-      const courseCasts = await MediaQuery.getCastsByCourse(
-        'bruincastmedia',
-        c
-      );
-      if (
-        courseCasts &&
-        Array.isArray(courseCasts) &&
-        courseCasts.length !== 0
-      ) {
-        const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
-          constants.MEDIA_TYPE.BRUINCAST,
-          c,
-          'playbacks'
-        );
-        console.log(rawAnalytics);
-        // Then for each cast, create a userHistories field which is an array
-        // filter rawAnalytics for file identifyer
-        // for each file and userid pair, push an object with userid and playback info into userHistories
-      }
-    }
   }
 }
 
