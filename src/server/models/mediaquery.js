@@ -78,6 +78,12 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     {
       $group: {
         _id: '$classShortname',
+        term: {
+          $first: '$term',
+        },
+        subjectArea: {
+          $first: '$subjectArea',
+        },
         listings: {
           $push: '$$ROOT',
         },
@@ -96,6 +102,16 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     .aggregate(aggregation)
     .toArray();
   return termMedia;
+};
+
+module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
+  const query = term !== '' ? { term } : {};
+  const subjectAreasArray = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .distinct('subjectArea', query);
+
+  return subjectAreasArray;
 };
 
 module.exports.getVideoResByCourse = async courseLabel => {

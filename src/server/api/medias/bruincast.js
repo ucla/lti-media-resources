@@ -51,4 +51,14 @@ router.get('/alllistings', (req, res) => {
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 
+router.get('/subjectareas', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { term } = req.query;
+  BruincastServices.getSubjectAreasForTerm(term).then(subjAreas =>
+    res.send(subjAreas)
+  );
+});
+
 module.exports = router;
