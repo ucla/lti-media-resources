@@ -11,7 +11,7 @@ let registrar = {};
 /**
  * Retrieves token from web service.
  *
- * @returns {string}
+ * @returns {string} Token
  */
 async function getToken() {
   registrarDebug('getToken called');
@@ -44,7 +44,7 @@ async function getToken() {
     registrarDebug(`getToken returning ${token}`);
     return token;
   } catch (error) {
-    console.log(error);
+    registrarDebug(`getToken error: ${error.message}`);
   }
 }
 
@@ -58,7 +58,7 @@ async function cacheToken(token) {
   try {
     process.env.reg_token = token;
   } catch (error) {
-    console.log(error);
+    registrarDebug(`cacheToken error: ${error.message}`);
   }
 }
 
@@ -74,7 +74,7 @@ async function refreshToken() {
     await registrar.cacheToken(token);
     return token;
   } catch (error) {
-    console.log(error);
+    registrarDebug(`refreshToken error: ${error.message}`);
   }
 }
 
@@ -118,7 +118,7 @@ async function call(params) {
       registrarDebug('call returning null (404 response)');
       return null;
     }
-    registrarDebug(`call throwing error ${error}`);
+    registrarDebug(`call error: ${error.message}`);
     const errorObject = new Error(error.message);
     errorObject.code = error.response.status;
     throw errorObject;
@@ -208,7 +208,7 @@ async function getShortname(offeredTermCode, classSectionID) {
     returnObject.subjectArea = subArea;
     return returnObject;
   } catch (error) {
-    console.log(error);
+    registrarDebug(`getShortname error: ${error.message}`);
     return returnObject;
   }
 }
@@ -221,16 +221,21 @@ async function getShortname(offeredTermCode, classSectionID) {
  * @returns {?number} Returns week number if date is valid in term
  */
 async function getWeekNumber(term, date) {
+  registrarDebug(`getWeekNumber: called with ${term} | ${date}`);
   try {
     let response = cache.get(`TermSessionsByWeek_${term}`);
     if (response === undefined) {
       // If TermSessionsByWeek for term isn't cached, fetch it
+      registrarDebug(
+        `getWeekNumber: TermSessionsByWeek_${term} not found in cache. Fetching from API`
+      );
 
       // API parameters
       let termParam = term;
       let sessionCodeParam = 'RG';
 
       // Handle summer session term
+      registrarDebug(`getWeekNumber: Handling summer session term`);
       if (term.length === 4) {
         termParam = term.slice(0, 3);
 
@@ -253,7 +258,12 @@ async function getWeekNumber(term, date) {
           PageSize: 12,
         },
       });
-      if (response === null) return null;
+      if (response === null) {
+        registrarDebug(
+          `getWeekNumber: TermSessionsByWeek API response is null`
+        );
+        return null;
+      }
 
       cache.set(`TermSessionsByWeek_${term}`, response);
     }
@@ -298,12 +308,15 @@ async function getWeekNumber(term, date) {
       }
 
       if (startDate <= dateToCheck && dateToCheck <= lastDate) {
+        registrarDebug(`getWeekNumber: returning ${week.sessionWeekNumber}`);
         return parseInt(week.sessionWeekNumber);
       }
     }
+
+    registrarDebug(`getWeekNumber: returning null`);
     return null;
   } catch (error) {
-    console.error(error);
+    registrarDebug(`getWeekNumber error: ${error.message}`);
     return null;
   }
 }
