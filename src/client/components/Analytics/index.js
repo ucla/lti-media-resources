@@ -26,7 +26,7 @@ export const Analytics = ({ analytics, allUsers, allTitles }) => {
           <ProgressCircle
             size="small"
             margin="0 0 0 xx-large"
-            screenReaderLabel="Loading completion"
+            screenReaderLabel="Viewed contents"
             valueNow={
               analytics.has(user.userid)
                 ? analytics.get(user.userid).finishedCount
@@ -94,12 +94,12 @@ export const Analytics = ({ analytics, allUsers, allTitles }) => {
                   valueNow={
                     analytics.has(user.userid) &&
                     analytics.get(user.userid).analytics.has(title)
-                      ? analytics.get(user.userid).analytics.get(title)
+                      ? analytics.get(user.userid).analytics.get(title).time +
+                        (analytics.get(user.userid).analytics.get(title)
                           .finishedTimes
-                        ? analytics.get(user.userid).analytics.get(title).time +
-                          analytics.get(user.userid).analytics.get(title)
-                            .remaining
-                        : analytics.get(user.userid).analytics.get(title).time
+                          ? analytics.get(user.userid).analytics.get(title)
+                              .remaining
+                          : 0)
                       : 0
                   }
                 />

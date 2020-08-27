@@ -43,7 +43,6 @@ export const Bruincast = ({
 
   // Get bruincast medias for all crosslisted courses
   const [castsByCourses, setCasts] = useState([]);
-  // Const [analytics, setAnalytics] = useState(null);
   const retrieveCasts = () => {
     const ltik = getLtik();
     axios
