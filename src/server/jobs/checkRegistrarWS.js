@@ -11,6 +11,7 @@ const registrar = require('../services/registrar');
     },
   });
 
+  /* eslint-disable no-console */
   console.log(result);
   console.log(`Token used = ${process.env.reg_token}`);
 })();

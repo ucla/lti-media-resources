@@ -286,6 +286,14 @@ class BruincastServices {
     }
     return analyticsByCourse;
   }
+
+  static async getSubjectAreasForTerm(term) {
+    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
+      'bruincastmedia',
+      term
+    );
+    return subjectAreas;
+  }
 }
 
 module.exports = BruincastServices;

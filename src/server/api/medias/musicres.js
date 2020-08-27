@@ -24,4 +24,14 @@ router.get('/alllistings', (req, res) => {
   MusicresServices.getAllMusicReserves(term).then(vidRes => res.send(vidRes));
 });
 
+router.get('/subjectareas', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { term } = req.query;
+  MusicresServices.getSubjectAreasForTerm(term).then(subjAreas =>
+    res.send(subjAreas)
+  );
+});
+
 module.exports = router;

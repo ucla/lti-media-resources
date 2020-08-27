@@ -56,6 +56,14 @@ class VideoresServices {
     const termMedia = await MediaQuery.getMediaForTerm('videoreserves', term);
     return termMedia;
   }
+
+  static async getSubjectAreasForTerm(term) {
+    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
+      'videoreserves',
+      term
+    );
+    return subjectAreas;
+  }
 }
 
 module.exports = VideoresServices;
