@@ -95,21 +95,24 @@ export const Bruincast = ({
       axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`).then(res => {
         const tmpAnalytics = res.data;
         for (const courseObj of tmpAnalytics) {
-          courseObj.analytics = courseObj.analytics.map(
-            userObj =>
-              new Map([
-                [
-                  userObj.userid,
-                  {
-                    analytics: userObj.analytics,
-                    finishedCount: userObj.finishedCount,
-                    totalCount: userObj.totalCount,
-                  },
-                ],
-              ])
-          );
+          const userMap = new Map();
+          for (const userObj of courseObj.analytics) {
+            const analyticMap = new Map();
+            for (const analytic of userObj.analytics) {
+              analyticMap.set(analytic.title, {
+                finishedTimes: analytic.finishedTimes,
+                time: analytic.time,
+                remaining: analytic.remaining,
+              });
+            }
+            userMap.set(userObj.userid, {
+              analytics: analyticMap,
+              finishedCount: userObj.finishedCount,
+              totalCount: userObj.totalCount,
+            });
+          }
+          courseObj.analytics = userMap;
         }
-        console.log(tmpAnalytics);
         setAnalytics(tmpAnalytics);
       });
     }

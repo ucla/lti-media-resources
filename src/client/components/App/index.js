@@ -103,7 +103,8 @@ const App = () => {
           for (const user of rawUsers) {
             user.userid = parseInt(user.user_id);
           }
-          setAllUsers(res.data);
+          rawUsers.sort((a, b) => a.name.localeCompare(b.name));
+          setAllUsers(rawUsers);
         })
         .catch(err => {
           setError({
@@ -180,7 +181,11 @@ const App = () => {
             warning={warning}
             retrieveWarning={retrieveWarning}
             userid={userid}
-            allUsers={allUsers}
+            allUsers={
+              allUsers
+                ? allUsers.filter(user => user.roles.includes('Learner'))
+                : null
+            }
             userIsInstructor={userIsInstructor}
             setError={setError}
           />

@@ -6,83 +6,124 @@ import { ToggleDetails } from '@instructure/ui-toggle-details';
 import { Table } from '@instructure/ui-table';
 import { ProgressCircle } from '@instructure/ui-progress';
 import { Text } from '@instructure/ui-text';
+import { View } from '@instructure/ui-view';
 
-export const Analytics = ({ analytics, allUsers }) => {
+export const Analytics = ({ analytics, allUsers, allTitles }) => {
   Analytics.propTypes = {
-    analytics: PropTypes.array,
+    analytics: PropTypes.object,
     allUsers: PropTypes.array,
+    allTitles: PropTypes.array,
   };
 
-  // Return analytics.map(analyticsOfUser => (
-  //   <ToggleDetails
-  //     id={media._id}
-  //     key={media._id}
-  //     variant="filled"
-  //     summary={`${media.title} ${media.date}`}
-  //   >
-  //     <Table caption="Analytics" hover>
-  //       <Table.Head>
-  //         <Table.Row>
-  //           <Table.ColHeader id="name">Student Name</Table.ColHeader>
-  //           <Table.ColHeader id="finished">Finished Times</Table.ColHeader>
-  //           <Table.ColHeader id="progression">
-  //             Latest Progression
-  //           </Table.ColHeader>
-  //         </Table.Row>
-  //       </Table.Head>
-  //       <Table.Body>
-  //         {allUsers.map(user => (
-  //           <Table.Row key={user.user_id}>
-  //             <Table.RowHeader>{user.name}</Table.RowHeader>
-  //             <Table.Cell>
-  //               {media.analytics.has(user.userid)
-  //                 ? media.analytics.get(user.userid).finishedTimes
-  //                 : 0}
-  //             </Table.Cell>
-  //             <Table.Cell>
-  //               <ProgressCircle
-  //                 size="small"
-  //                 screenReaderLabel="Percent complete"
-  //                 formatScreenReaderValue={({ valueNow, valueMax }) =>
-  //                   `${Math.round((valueNow / valueMax) * 100)} percent`
-  //                 }
-  //                 renderValue={({ valueNow, valueMax }) => {
-  //                   const percent = Math.round((valueNow / valueMax) * 100);
-  //                   return (
-  //                     <span>
-  //                       <Text size="medium" weight="bold" color="primary">
-  //                         {percent > 100 ? 100 : percent}
-  //                       </Text>
-  //                       <Text size="xx-small" weight="bold" color="secondary">
-  //                         %
-  //                       </Text>
-  //                     </span>
-  //                   );
-  //                 }}
-  //                 valueMax={
-  //                   media.analytics.has(user.userid)
-  //                     ? media.analytics.get(user.userid).time === 0 &&
-  //                       media.analytics.get(user.userid).finishedTimes > 0
-  //                       ? 100
-  //                       : media.analytics.get(user.userid).time +
-  //                         media.analytics.get(user.userid).remaining
-  //                     : 100
-  //                 }
-  //                 valueNow={
-  //                   media.analytics.has(user.userid)
-  //                     ? media.analytics.get(user.userid).time === 0 &&
-  //                       media.analytics.get(user.userid).finishedTimes > 0
-  //                       ? 100
-  //                       : media.analytics.get(user.userid).time
-  //                     : 0
-  //                 }
-  //               />
-  //             </Table.Cell>
-  //           </Table.Row>
-  //         ))}
-  //       </Table.Body>
-  //     </Table>
-  //   </ToggleDetails>
-  // ));
-  return <Text>haha</Text>;
+  return allUsers.map(user => (
+    <ToggleDetails
+      id={`user${user.userid}`}
+      key={`user${user.userid}`}
+      variant="filled"
+      summary={
+        <View>
+          <Text>{user.name}</Text>
+          <ProgressCircle
+            size="small"
+            margin="0 0 0 xx-large"
+            screenReaderLabel="Loading completion"
+            valueNow={
+              analytics.has(user.userid)
+                ? analytics.get(user.userid).finishedCount
+                : 0
+            }
+            valueMax={allTitles.length}
+            shouldAnimateOnMount
+            formatScreenReaderValue={({ valueNow, valueMax }) =>
+              `${valueNow} out of ${valueMax}`
+            }
+            renderValue={({ valueNow, valueMax }) => (
+              <span>
+                <Text size="medium" weight="bold">
+                  {valueNow}
+                </Text>
+                <br />
+                <Text size="small">/&nbsp;</Text>
+                <Text size="small">{valueMax}</Text>
+              </span>
+            )}
+          />
+        </View>
+      }
+    >
+      <Table caption="Analytics" hover>
+        <Table.Head>
+          <Table.Row>
+            <Table.ColHeader id="title">Media title</Table.ColHeader>
+            <Table.ColHeader id="progress">Progress</Table.ColHeader>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {allTitles.map(title => (
+            <Table.Row key={`title ${title}`}>
+              <Table.RowHeader>{title}</Table.RowHeader>
+              <Table.Cell>
+                <ProgressCircle
+                  size="small"
+                  screenReaderLabel="Percent complete"
+                  shouldAnimateOnMount
+                  formatScreenReaderValue={({ valueNow, valueMax }) =>
+                    `${Math.round((valueNow / valueMax) * 100)} percent`
+                  }
+                  renderValue={({ valueNow, valueMax }) => {
+                    const percent = Math.round((valueNow / valueMax) * 100);
+                    return (
+                      <span>
+                        <Text size="medium" weight="bold" color="primary">
+                          {percent > 100 ? 100 : percent}
+                        </Text>
+                        <Text size="xx-small" weight="bold" color="secondary">
+                          %
+                        </Text>
+                      </span>
+                    );
+                  }}
+                  valueMax={
+                    analytics.has(user.userid) &&
+                    analytics.get(user.userid).analytics.has(title)
+                      ? analytics.get(user.userid).analytics.get(title).time +
+                        analytics.get(user.userid).analytics.get(title)
+                          .remaining
+                      : 100
+                  }
+                  valueNow={
+                    analytics.has(user.userid) &&
+                    analytics.get(user.userid).analytics.has(title)
+                      ? analytics.get(user.userid).analytics.get(title)
+                          .finishedTimes
+                        ? analytics.get(user.userid).analytics.get(title).time +
+                          analytics.get(user.userid).analytics.get(title)
+                            .remaining
+                        : analytics.get(user.userid).analytics.get(title).time
+                      : 0
+                  }
+                />
+                {analytics.has(user.userid) &&
+                  analytics.get(user.userid).analytics.has(title) &&
+                  analytics.get(user.userid).analytics.get(title)
+                    .finishedTimes && (
+                    <Text>
+                      {`Finished ${
+                        analytics.get(user.userid).analytics.get(title)
+                          .finishedTimes
+                      } time${
+                        analytics.get(user.userid).analytics.get(title)
+                          .finishedTimes <= 1
+                          ? ''
+                          : 's'
+                      }`}
+                    </Text>
+                  )}
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </ToggleDetails>
+  ));
 };
