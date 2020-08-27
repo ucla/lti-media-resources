@@ -140,6 +140,11 @@ class BruincastServices {
     return formattedMedia;
   }
 
+  static async getTerms() {
+    const terms = await MediaQuery.getTerms('bruincastmedia');
+    return terms;
+  }
+
   static async getSubjectAreasForTerm(term) {
     const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
       'bruincastmedia',

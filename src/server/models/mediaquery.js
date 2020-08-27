@@ -104,6 +104,15 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
   return termMedia;
 };
 
+module.exports.getTerms = async dbCollection => {
+  const terms = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .distinct('term');
+
+  return terms;
+};
+
 module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
   const query = term !== '' ? { term } : {};
   const subjectAreasArray = await client
