@@ -53,6 +53,18 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
   return courseCasts;
 };
 
+module.exports.getCastsByCourseWithoutAggregation = async (
+  dbCollection,
+  courseLabel
+) => {
+  const bcastCollection = client.db(DB_DATABASE).collection(dbCollection);
+  const toBeReturned = await bcastCollection
+    .find({ classShortname: courseLabel })
+    .sort({ date: 1 })
+    .toArray();
+  return toBeReturned;
+};
+
 module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
   const castCount = await client
     .db(DB_DATABASE)

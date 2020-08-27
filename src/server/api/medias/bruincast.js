@@ -53,4 +53,14 @@ router.get('/alllistings', (req, res) => {
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 
+router.get('/analytics', (req, res) => {
+  if (!CheckRoleServices.isInstructor(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { context } = res.locals.context;
+  BruincastServices.getAnalytics(context).then(analytics =>
+    res.send(analytics)
+  );
+});
+
 module.exports = router;
