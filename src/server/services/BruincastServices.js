@@ -35,7 +35,7 @@ class BruincastServices {
     return toBeReturned;
   }
 
-  static async getCasts(course, userid, isInstructor) {
+  static async getCasts(course, userid) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
       'crosslists'
@@ -89,54 +89,6 @@ class BruincastServices {
               }
             }
             cast.playbackArr = castPlaybackArr;
-          }
-        }
-
-        if (isInstructor) {
-          const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
-            constants.MEDIA_TYPE.BRUINCAST,
-            c.label,
-            'playbacks'
-          );
-          for (const listingObj of courseCasts) {
-            for (const cast of listingObj.listings) {
-              const allMediaStr = `${cast.video},${cast.audio}`;
-              const allMedias = allMediaStr.trim(',').split(',');
-              const castAnalytics = [];
-              if (Array.isArray(allMedias) && allMedias.length !== 0) {
-                for (const media of allMedias) {
-                  const matchedAnalyticsOfMedia = rawAnalytics.filter(
-                    analytic => analytic.file === media
-                  );
-                  for (const matchedAnalytic of matchedAnalyticsOfMedia) {
-                    if (!matchedAnalytic.finishedTimes) {
-                      matchedAnalytic.finishedTimes = 0;
-                    }
-                    const userAlreadyInArr = castAnalytics.filter(
-                      anaAlreadyIn =>
-                        anaAlreadyIn.userid === matchedAnalytic.userid
-                    );
-                    if (userAlreadyInArr.length === 0) {
-                      castAnalytics.push(matchedAnalytic);
-                    } else if (
-                      matchedAnalytic.finishedTimes >
-                        userAlreadyInArr[0].finishedTimes ||
-                      (matchedAnalytic.finishedTimes ===
-                        userAlreadyInArr[0].finishedTimes &&
-                        matchedAnalytic.time > userAlreadyInArr[0].time)
-                    ) {
-                      userAlreadyInArr[0]._id = matchedAnalytic._id;
-                      userAlreadyInArr[0]._file = matchedAnalytic._file;
-                      userAlreadyInArr[0].time = matchedAnalytic.time;
-                      userAlreadyInArr[0].remaining = matchedAnalytic.remaining;
-                      userAlreadyInArr[0].finishedTimes =
-                        matchedAnalytic.finishedTimes;
-                    }
-                  }
-                }
-              }
-              cast.analytics = castAnalytics;
-            }
           }
         }
 

@@ -24,7 +24,7 @@ module.exports.isAdmin = function(rawRoles) {
   return true;
 };
 
-module.exports.isInstructor = function(rawRoles) {
+module.exports.isInstructorOrAdmin = function(rawRoles) {
   const roles = rawRoles.map(role =>
     role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
   );
