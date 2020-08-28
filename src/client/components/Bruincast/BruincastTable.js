@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
+import {
+  IconAnalyticsSolid,
+  IconArrowOpenStartSolid,
+} from '@instructure/ui-icons';
 import { BruincastTableWeekToggle } from './BruincastTableWeekToggle';
 import { Analytics } from '../Analytics';
 
@@ -52,7 +56,12 @@ export const BruincastTable = ({
   if (showingAnalytics) {
     return (
       <View>
-        <Button onClick={showAnalytics} margin="medium 0" color="primary">
+        <Button
+          onClick={showAnalytics}
+          margin="medium 0"
+          color="primary"
+          renderIcon={<IconArrowOpenStartSolid />}
+        >
           Back
         </Button>
         <Analytics
@@ -66,7 +75,12 @@ export const BruincastTable = ({
 
   return (
     <View>
-      <Button onClick={showAnalytics} margin="medium 0" color="primary">
+      <Button
+        onClick={showAnalytics}
+        margin="medium 0"
+        color="primary"
+        renderIcon={<IconAnalyticsSolid />}
+      >
         Analytics
       </Button>
       {casts.map(weekCasts => (
