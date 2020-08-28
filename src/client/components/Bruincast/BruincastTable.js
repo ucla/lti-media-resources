@@ -17,7 +17,6 @@ export const BruincastTable = ({
   shortname,
   analytics,
   allUsers,
-  userIsInstructor,
   setError,
 }) => {
   BruincastTable.propTypes = {
@@ -27,15 +26,12 @@ export const BruincastTable = ({
     shortname: PropTypes.string,
     analytics: PropTypes.object,
     allUsers: PropTypes.array,
-    userIsInstructor: PropTypes.func,
     setError: PropTypes.func,
   };
 
   const [showingAnalytics, setShowingAnalytics] = useState(false);
   const showAnalytics = () => {
-    if (userIsInstructor()) {
-      setShowingAnalytics(!showingAnalytics);
-    }
+    setShowingAnalytics(!showingAnalytics);
   };
 
   if (!analytics || !allUsers || !analytics.analytics || !analytics.allTitles) {

@@ -254,7 +254,6 @@ export const Bruincast = ({
                   : null
               }
               allUsers={allUsers}
-              userIsInstructor={userIsInstructor}
               setError={setError}
             />
           </Tabs.Panel>
