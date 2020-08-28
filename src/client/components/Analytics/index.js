@@ -106,7 +106,7 @@ export const Analytics = ({ analytics, allUsers, allTitles }) => {
                 {analytics.has(user.userid) &&
                   analytics.get(user.userid).analytics.has(title) &&
                   analytics.get(user.userid).analytics.get(title)
-                    .finishedTimes && (
+                    .finishedTimes > 0 && (
                     <Text>
                       {`Finished ${
                         analytics.get(user.userid).analytics.get(title)
