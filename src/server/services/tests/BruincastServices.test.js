@@ -4,12 +4,14 @@ require('babel-polyfill');
 const BruincastServices = require('../BruincastServices');
 const client = require('../../models/db');
 
-const testCollectionName = 'crossliststests';
+const testCrosslistsCollectionName = 'crossliststests';
 
 beforeAll(async done => {
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
-  await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
+  await client
+    .db(process.env.DB_DATABASE)
+    .createCollection(testCrosslistsCollectionName);
   done();
 });
 
@@ -20,7 +22,7 @@ test('Test Crosslist Services', async done => {
   ];
   const updateResult = await BruincastServices.updateCrosslists(
     sampleData,
-    testCollectionName
+    testCrosslistsCollectionName
   );
   expect(updateResult.updated).toBe(true);
   expect(updateResult.insertedCount).toBe(2);
@@ -31,14 +33,14 @@ test('Test Crosslist Services', async done => {
   expect(allLists[1].length).toBe(2);
   const oneList = await BruincastServices.getCrosslistByCourse(
     'a',
-    testCollectionName
+    testCrosslistsCollectionName
   );
   expect(oneList.length).toBe(2);
   expect(oneList[0]).toBe('b');
   expect(oneList[1]).toBe('c');
   const deleteResult = await BruincastServices.updateCrosslists(
     [],
-    testCollectionName
+    testCrosslistsCollectionName
   );
   expect(deleteResult.updated).toBe(true);
   expect(deleteResult.insertedCount).toBe(0);
@@ -229,7 +231,9 @@ test('Test formatTermCasts()', async done => {
 });
 
 afterAll(async done => {
-  await client.db(process.env.DB_DATABASE).dropCollection(testCollectionName);
+  await client
+    .db(process.env.DB_DATABASE)
+    .dropCollection(testCrosslistsCollectionName);
   await client.close();
   done();
 });

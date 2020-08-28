@@ -96,9 +96,12 @@ async function setup() {
   });
 
   // Get the public key generated for that platform.
-  const plats = await lti.getPlatform(process.env.PLATFORM_URL);
+  const plat = await lti.getPlatform(
+    process.env.PLATFORM_URL,
+    process.env.PLATFORM_CLIENTID
+  );
   // eslint-disable-next-line no-console
-  console.log(await plats[0].platformPublicKey());
+  console.log(await plat.platformPublicKey());
 }
 
 setup();
