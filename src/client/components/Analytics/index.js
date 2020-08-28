@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,31 +7,25 @@ import { ProgressCircle } from '@instructure/ui-progress';
 import { Text } from '@instructure/ui-text';
 import { View } from '@instructure/ui-view';
 
-export const Analytics = ({ analytics, allUsers, allTitles }) => {
+export const Analytics = ({ analytics }) => {
   Analytics.propTypes = {
-    analytics: PropTypes.object,
-    allUsers: PropTypes.array,
-    allTitles: PropTypes.array,
+    analytics: PropTypes.array,
   };
 
-  return allUsers.map(user => (
+  return analytics.map(analyticOfUser => (
     <ToggleDetails
-      id={`user${user.userid}`}
-      key={`user${user.userid}`}
+      id={`user${analyticOfUser.userid}`}
+      key={`user${analyticOfUser.userid}`}
       variant="filled"
       summary={
         <View>
-          <Text>{user.name}</Text>
+          <Text>{analyticOfUser.name}</Text>
           <ProgressCircle
             size="small"
             margin="0 0 0 xx-large"
             screenReaderLabel="Viewed contents"
-            valueNow={
-              analytics.has(user.userid)
-                ? analytics.get(user.userid).finishedCount
-                : 0
-            }
-            valueMax={allTitles.length}
+            valueNow={analyticOfUser.finishedCount}
+            valueMax={analyticOfUser.totalCount}
             shouldAnimateOnMount
             formatScreenReaderValue={({ valueNow, valueMax }) =>
               `${valueNow} out of ${valueMax}`
@@ -59,66 +52,43 @@ export const Analytics = ({ analytics, allUsers, allTitles }) => {
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {allTitles.map(title => (
-            <Table.Row key={`title ${title}`}>
-              <Table.RowHeader>{title}</Table.RowHeader>
+          {analyticOfUser.analytics.map(analytic => (
+            <Table.Row key={`title ${analytic.title}`}>
+              <Table.RowHeader>{analytic.title}</Table.RowHeader>
               <Table.Cell>
                 <ProgressCircle
                   size="small"
                   screenReaderLabel="Percent complete"
                   shouldAnimateOnMount
                   formatScreenReaderValue={({ valueNow, valueMax }) =>
-                    `${Math.round((valueNow / valueMax) * 100)} percent`
+                    `${Math.round((valueNow / valueMax) * 100)}%`
                   }
                   renderValue={({ valueNow, valueMax }) => {
                     const percent = Math.round((valueNow / valueMax) * 100);
                     return (
                       <span>
                         <Text size="medium" weight="bold" color="primary">
-                          {percent > 100 ? 100 : percent}
+                          {percent}
                         </Text>
-                        <Text size="xx-small" weight="bold" color="secondary">
+                        <Text size="x-small" weight="bold" color="secondary">
                           %
                         </Text>
                       </span>
                     );
                   }}
-                  valueMax={
-                    analytics.has(user.userid) &&
-                    analytics.get(user.userid).analytics.has(title)
-                      ? analytics.get(user.userid).analytics.get(title).time +
-                        analytics.get(user.userid).analytics.get(title)
-                          .remaining
-                      : 100
-                  }
+                  valueMax={analytic.time + analytic.remaining}
                   valueNow={
-                    analytics.has(user.userid) &&
-                    analytics.get(user.userid).analytics.has(title)
-                      ? analytics.get(user.userid).analytics.get(title).time +
-                        (analytics.get(user.userid).analytics.get(title)
-                          .finishedTimes
-                          ? analytics.get(user.userid).analytics.get(title)
-                              .remaining
-                          : 0)
-                      : 0
+                    analytic.time +
+                    (analytic.finishedTimes > 0 ? analytic.remaining : 0)
                   }
                 />
-                {analytics.has(user.userid) &&
-                  analytics.get(user.userid).analytics.has(title) &&
-                  analytics.get(user.userid).analytics.get(title)
-                    .finishedTimes > 0 && (
-                    <Text>
-                      {`Finished ${
-                        analytics.get(user.userid).analytics.get(title)
-                          .finishedTimes
-                      } time${
-                        analytics.get(user.userid).analytics.get(title)
-                          .finishedTimes <= 1
-                          ? ''
-                          : 's'
-                      }`}
-                    </Text>
-                  )}
+                {analytic.finishedTimes > 0 && (
+                  <Text>
+                    {`Finished ${analytic.finishedTimes} time${
+                      analytic.finishedTimes <= 1 ? '' : 's'
+                    }`}
+                  </Text>
+                )}
               </Table.Cell>
             </Table.Row>
           ))}

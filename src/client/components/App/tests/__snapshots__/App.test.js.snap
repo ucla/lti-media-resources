@@ -31,11 +31,10 @@ exports[`App component matches its original snapshot 1`] = `
       variant="default"
     >
       <Bruincast
-        allUsers={null}
         course={Object {}}
+        isInstructorOrAdmin={false}
         retrieveWarning={[Function]}
         setError={[Function]}
-        userIsInstructor={[Function]}
         userid={-1}
         warning=""
       />

@@ -29,13 +29,15 @@ const App = () => {
 
   // Declare states
   const [course, setCourse] = useState({});
-  const [roles, setRoles] = useState([]);
   const [userid, setUserid] = useState(-1);
   const [onCampusStatus, setOnCampusStatus] = useState(true);
+
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
-  const [allUsers, setAllUsers] = useState(null);
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isInstructorOrAdmin, setIsInstructorOrAdmin] = useState(false);
 
   const [error, setError] = useState(null);
 
@@ -47,9 +49,15 @@ const App = () => {
       .then(res => {
         const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
-        setRoles(r);
         setUserid(u);
         setOnCampusStatus(oc);
+        if (r && (r.includes('admin') || r.includes('administrator'))) {
+          setIsAdmin(true);
+          setIsInstructorOrAdmin(true);
+        }
+        if (r && r.includes('instructor')) {
+          setIsInstructorOrAdmin(true);
+        }
         setError(null);
       })
       .catch(err => {
@@ -60,15 +68,6 @@ const App = () => {
       });
   };
   useEffect(retrieveContext, []);
-
-  // Functions that determine roles
-  const userIsAdmin = () =>
-    roles && (roles.includes('admin') || roles.includes('administrator'));
-  const userIsInstructor = () =>
-    roles &&
-    (roles.includes('teacher') ||
-      roles.includes('instructor') ||
-      userIsAdmin());
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
@@ -91,30 +90,6 @@ const App = () => {
       });
   };
   useEffect(retrieveNums, []);
-
-  // Get a list of all users for analytics
-  const retrieveAllUsers = () => {
-    if (userIsInstructor()) {
-      const ltik = getLtik();
-      axios
-        .get(`/api/members?ltik=${ltik}`)
-        .then(res => {
-          const rawUsers = res.data;
-          for (const user of rawUsers) {
-            user.userid = parseInt(user.user_id);
-          }
-          rawUsers.sort((a, b) => a.name.localeCompare(b.name));
-          setAllUsers(rawUsers);
-        })
-        .catch(err => {
-          setError({
-            err,
-            msg: 'Something went wrong when getting all students...',
-          });
-        });
-    }
-  };
-  useEffect(retrieveAllUsers, [roles]);
 
   // Get notice from backend
   // Declaring function only; called in Bruincast component
@@ -143,11 +118,11 @@ const App = () => {
   };
 
   const videoReservesTabEnabled = () =>
-    videoReserveCount > 0 || userIsInstructor() || userIsAdmin();
+    videoReserveCount > 0 || isInstructorOrAdmin;
 
   // Display admin tab only when 'roles' contains 'admin'
   let adminPanel = null;
-  if (userIsAdmin()) {
+  if (isAdmin) {
     adminPanel = (
       <Tabs.Panel
         id="adminPanel"
@@ -181,12 +156,7 @@ const App = () => {
             warning={warning}
             retrieveWarning={retrieveWarning}
             userid={userid}
-            allUsers={
-              allUsers
-                ? allUsers.filter(user => user.roles.includes('Learner'))
-                : null
-            }
-            userIsInstructor={userIsInstructor}
+            isInstructorOrAdmin={isAdmin}
             setError={setError}
           />
         </Tabs.Panel>

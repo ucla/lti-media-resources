@@ -188,7 +188,7 @@ class BruincastServices {
     return formattedMedia;
   }
 
-  static async getAnalytics(course) {
+  static async getAnalytics(course, members) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
       'crosslists'
@@ -212,14 +212,13 @@ class BruincastServices {
           c,
           'playbacks'
         );
-        const allUserIds = [];
-        for (const rawAnalytic of rawAnalytics) {
-          if (!allUserIds.some(userId => userId === rawAnalytic.userid)) {
-            allUserIds.push(rawAnalytic.userid);
-          }
-        }
+        const allUsers = members.map(member => ({
+          userid: parseInt(member.user_id),
+          name: member.name,
+        }));
         const analyticsByUsers = [];
-        for (const userid of allUserIds) {
+        for (const userObj of allUsers) {
+          const { userid, name } = userObj;
           const analyticsOfUser = [];
           let finishedCount = 0;
           for (const cast of courseCasts) {
@@ -271,16 +270,15 @@ class BruincastServices {
           }
           analyticsByUsers.push({
             userid,
+            name,
             analytics: analyticsOfUser,
             finishedCount,
             totalCount: courseCasts.length,
           });
         }
-        const allTitles = courseCasts.map(cast => `${cast.title} ${cast.date}`);
         analyticsByCourse.push({
           course: { label: c },
           analytics: analyticsByUsers,
-          allTitles,
         });
       }
     }

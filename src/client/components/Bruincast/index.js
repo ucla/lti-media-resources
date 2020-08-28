@@ -27,8 +27,7 @@ export const Bruincast = ({
   warning,
   retrieveWarning,
   userid,
-  allUsers,
-  userIsInstructor,
+  isInstructorOrAdmin,
   setError,
 }) => {
   Bruincast.propTypes = {
@@ -36,8 +35,7 @@ export const Bruincast = ({
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     userid: PropTypes.number,
-    allUsers: PropTypes.array,
-    userIsInstructor: PropTypes.func,
+    isInstructorOrAdmin: PropTypes.bool,
     setError: PropTypes.func,
   };
 
@@ -89,34 +87,14 @@ export const Bruincast = ({
 
   const [analytics, setAnalytics] = useState(null);
   const retrieveAnalytics = () => {
-    if (userIsInstructor()) {
+    if (isInstructorOrAdmin) {
       const ltik = getLtik();
       axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`).then(res => {
-        const tmpAnalytics = res.data;
-        for (const courseObj of tmpAnalytics) {
-          const userMap = new Map();
-          for (const userObj of courseObj.analytics) {
-            const analyticMap = new Map();
-            for (const analytic of userObj.analytics) {
-              analyticMap.set(analytic.title, {
-                finishedTimes: analytic.finishedTimes,
-                time: analytic.time,
-                remaining: analytic.remaining,
-              });
-            }
-            userMap.set(userObj.userid, {
-              analytics: analyticMap,
-              finishedCount: userObj.finishedCount,
-              totalCount: userObj.totalCount,
-            });
-          }
-          courseObj.analytics = userMap;
-        }
-        setAnalytics(tmpAnalytics);
+        setAnalytics(res.data);
       });
     }
   };
-  useEffect(retrieveAnalytics, [allUsers]);
+  useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
 
   const reverseCastsOrder = () => {
     for (const currCourse of castsByCourses) {
@@ -250,10 +228,9 @@ export const Bruincast = ({
                   ? analytics.filter(
                       analytic =>
                         analytic.course.label === currCourse.course.label
-                    )[0]
+                    )[0].analytics
                   : null
               }
-              allUsers={allUsers}
               setError={setError}
             />
           </Tabs.Panel>

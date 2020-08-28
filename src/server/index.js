@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 
 // Requiring LTIJS provider
-const Lti = require('ltijs').Provider;
+const lti = require('ltijs').Provider;
 
 // Connect to db on start
 const client = require('./models/db');
@@ -21,7 +21,7 @@ if (process.env.MODE === 'production') {
     cookies: { secure: false },
   };
 }
-const lti = new Lti(
+lti.setup(
   process.env.LTI_KEY,
   // Setting up database configurations
   {
@@ -96,9 +96,9 @@ async function setup() {
   });
 
   // Get the public key generated for that platform.
-  const plat = await lti.getPlatform(process.env.PLATFORM_URL);
+  const plats = await lti.getPlatform(process.env.PLATFORM_URL);
   // eslint-disable-next-line no-console
-  console.log(await plat.platformPublicKey());
+  console.log(await plats[0].platformPublicKey());
 }
 
 setup();

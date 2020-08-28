@@ -16,7 +16,6 @@ export const BruincastTable = ({
   course,
   shortname,
   analytics,
-  allUsers,
   setError,
 }) => {
   BruincastTable.propTypes = {
@@ -24,8 +23,7 @@ export const BruincastTable = ({
     selectMedia: PropTypes.func,
     course: PropTypes.object,
     shortname: PropTypes.string,
-    analytics: PropTypes.object,
-    allUsers: PropTypes.array,
+    analytics: PropTypes.array,
     setError: PropTypes.func,
   };
 
@@ -34,7 +32,7 @@ export const BruincastTable = ({
     setShowingAnalytics(!showingAnalytics);
   };
 
-  if (!analytics || !allUsers || !analytics.analytics || !analytics.allTitles) {
+  if (!analytics) {
     return casts.map(weekCasts => (
       <BruincastTableWeekToggle
         id={`toggleWeek${weekCasts._id}`}
@@ -60,11 +58,7 @@ export const BruincastTable = ({
         >
           Back
         </Button>
-        <Analytics
-          analytics={analytics.analytics}
-          allUsers={allUsers}
-          allTitles={analytics.allTitles}
-        />
+        <Analytics analytics={analytics} />
       </View>
     );
   }
