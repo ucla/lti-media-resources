@@ -62,24 +62,17 @@ module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
   return castCount;
 };
 
-module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
-  const aggregation = [];
-  // If academicTerm isn't empty, add an aggregation stage to match by term first
-  if (academicTerm !== '') {
-    aggregation.push({
-      $match: {
-        term: academicTerm,
-      },
-    });
-  }
-
-  // Add aggregation stages to group by classShortname, and then sort those groups in alphabetical order by _id
-  aggregation.push(
+module.exports.getMediaGroupedByShortname = async dbCollection => {
+  /*
+   * This aggregation groups media records by shortname and term.
+   * Grouping by both fields separates records with null shortname into groups by term.
+   */
+  const aggregation = [
     {
       $group: {
-        _id: '$classShortname',
-        term: {
-          $first: '$term',
+        _id: {
+          shortname: '$classShortname',
+          term: '$term',
         },
         subjectArea: {
           $first: '$subjectArea',
@@ -91,10 +84,11 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     },
     {
       $sort: {
+        term: 1,
         _id: 1,
       },
-    }
-  );
+    },
+  ];
 
   const termMedia = await client
     .db(DB_DATABASE)

@@ -134,8 +134,10 @@ class BruincastServices {
     return media;
   }
 
-  static async getCastListings(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('bruincastmedia', term);
+  static async getCastListings() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      'bruincastmedia'
+    );
     const formattedMedia = this.formatTermCasts(termMedia);
     return formattedMedia;
   }

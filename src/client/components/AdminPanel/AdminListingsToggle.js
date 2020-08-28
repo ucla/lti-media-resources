@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ToggleDetails } from '@instructure/ui-toggle-details';
+import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Pill } from '@instructure/ui-pill';
 
@@ -11,9 +12,15 @@ import { MusicResListingsAlbumToggle } from './MusicResListingsAlbumToggle';
 
 const constants = require('../../../../constants');
 
-export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
+export const AdminListingsToggle = ({
+  shortname,
+  term,
+  listings,
+  mediaType,
+}) => {
   AdminListingsToggle.propTypes = {
     shortname: PropTypes.string,
+    term: PropTypes.string,
     listings: PropTypes.array,
     mediaType: PropTypes.number,
   };
@@ -34,9 +41,9 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
   // Summary includes the shortname and the number of listings
   // If missing shortname, include an orange warning pill
   const shortnameSummary = (
-    <>
+    <View>
       <Text>
-        {`${shortname === null ? 'No Shortname' : shortname} · ${
+        {`${shortname === null ? `${term}: No Shortname` : shortname} · ${
           listings.length
         } listing${listings.length !== 1 ? 's' : ''}`}
       </Text>{' '}
@@ -45,7 +52,7 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
           Missing Shortname
         </Pill>
       )}
-    </>
+    </View>
   );
 
   // If media type is Bruincast or Video Reserves, display a listings table

@@ -31,7 +31,10 @@ export const AdminListings = ({ mediaType, setError }) => {
 
   const handleTermSelect = (event, { value }) => {
     setSelectedAcademicTerm(value);
-    setSelectedSubjectArea('');
+
+    // If Term is not changed to All, then reset Subject Area to All
+    // This is because the newly selected Term may not have media for that Subject Area
+    if (value !== '') setSelectedSubjectArea('');
   };
 
   const handleSubjectSelect = (event, { value }) => {
@@ -65,10 +68,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       .get(
         `/api/medias/${
           constants.mediaTypeMap.get(mediaType).api
-        }/alllistings?ltik=${ltik}`,
-        {
-          params: { term: selectedAcademicTerm },
-        }
+        }/alllistings?ltik=${ltik}`
       )
       .then(res => {
         setMediaListings(res.data);
@@ -83,17 +83,22 @@ export const AdminListings = ({ mediaType, setError }) => {
         });
       });
   };
-  useEffect(retrieveListings, [selectedAcademicTerm]);
+  useEffect(retrieveListings, []);
 
   const filterListings = () => {
     setFilteredMediaListings(
-      mediaListings.filter(mediaGroup => {
-        if (selectedSubjectArea === '') return mediaGroup;
-        return mediaGroup.subjectArea === selectedSubjectArea;
-      })
+      mediaListings
+        .filter(courseMediaGroup => {
+          if (selectedAcademicTerm === '') return courseMediaGroup;
+          return courseMediaGroup._id.term === selectedAcademicTerm;
+        })
+        .filter(courseMediaGroup => {
+          if (selectedSubjectArea === '') return courseMediaGroup;
+          return courseMediaGroup.subjectArea === selectedSubjectArea;
+        })
     );
   };
-  useEffect(filterListings, [selectedSubjectArea]);
+  useEffect(filterListings, [selectedAcademicTerm, selectedSubjectArea]);
 
   const retrieveSubjectAreas = () => {
     const ltik = getLtik();
@@ -170,7 +175,8 @@ export const AdminListings = ({ mediaType, setError }) => {
         {filteredMediaListings.map(course => (
           <AdminListingsToggle
             key={course._id}
-            shortname={course._id}
+            shortname={course._id.shortname}
+            term={course._id.term}
             listings={course.listings}
             mediaType={mediaType}
           />

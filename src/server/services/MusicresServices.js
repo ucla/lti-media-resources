@@ -38,8 +38,10 @@ class MusicresServices {
     return docs;
   }
 
-  static async getAllMusicReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('musicreserves', term);
+  static async getAllMusicReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      'musicreserves'
+    );
     return termMedia;
   }
 

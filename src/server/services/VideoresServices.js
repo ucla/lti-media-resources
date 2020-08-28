@@ -52,8 +52,10 @@ class VideoresServices {
     return docs;
   }
 
-  static async getAllVideoReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('videoreserves', term);
+  static async getAllVideoReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      'videoreserves'
+    );
     return termMedia;
   }
 
