@@ -1219,7 +1219,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-grid@^7.1.2", "@instructure/ui-grid@^7.1.3":
+"@instructure/ui-grid@^7.1.3":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@instructure/ui-grid/-/ui-grid-7.1.3.tgz#0c63b0ea9ff0c12e526dee1be2d42b7ceda94510"
   integrity sha512-Drb+TqtfcMzHGq8DvXGGh+vAjitFETsTCjrg/e6lmkWSM4ycnTj8uwGvn57Bm923dX7o7UnDkUgvpUQqxpChBw==

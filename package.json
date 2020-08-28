@@ -23,7 +23,7 @@
     "@instructure/ui-billboard": "^7.1.1",
     "@instructure/ui-breadcrumb": "^7.1.2",
     "@instructure/ui-buttons": "^7.1.1",
-    "@instructure/ui-grid": "^7.1.2",
+    "@instructure/ui-flex": "^7.1.3",
     "@instructure/ui-heading": "^7.1.1",
     "@instructure/ui-icons": "^7.1.1",
     "@instructure/ui-link": "^7.1.2",

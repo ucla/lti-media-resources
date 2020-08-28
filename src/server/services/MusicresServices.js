@@ -43,6 +43,11 @@ class MusicresServices {
     return termMedia;
   }
 
+  static async getTerms() {
+    const terms = await MediaQuery.getTerms('musicreserves');
+    return terms;
+  }
+
   static async getSubjectAreasForTerm(term) {
     const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
       'musicreserves',

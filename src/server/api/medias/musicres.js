@@ -34,4 +34,11 @@ router.get('/subjectareas', (req, res) => {
   );
 });
 
+router.get('/terms', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  MusicresServices.getTerms().then(terms => res.send(terms));
+});
+
 module.exports = router;
