@@ -61,15 +61,6 @@ export const Bruincast = ({
               tmpCast.playbackMap = playbackMap;
               tmpCast.remainingMap = remainingMap;
               tmpCast.finishedMap = finishedMap;
-              if (tmpCast.analytics && Array.isArray(tmpCast.analytics)) {
-                const analyticsMap = new Map();
-                if (tmpCast.analytics.length !== 0) {
-                  for (const analytic of tmpCast.analytics) {
-                    analyticsMap.set(analytic.userid, analytic);
-                  }
-                }
-                tmpCast.analytics = analyticsMap;
-              }
             }
           }
         }
