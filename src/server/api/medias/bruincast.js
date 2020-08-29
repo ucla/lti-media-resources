@@ -66,9 +66,13 @@ router.get('/analytics', async (req, res) => {
     delete member.email;
   }
   const { context } = res.locals.context;
-  BruincastServices.getAnalytics(context, members).then(analytics =>
-    res.send(analytics)
-  );
+  BruincastServices.getAnalytics(
+    context,
+    members,
+    'crosslists',
+    'bruincastmedia',
+    'playbacks'
+  ).then(analytics => res.send(analytics));
 });
 
 router.get('/subjectareas', (req, res) => {

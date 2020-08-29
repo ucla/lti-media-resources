@@ -140,17 +140,28 @@ class BruincastServices {
     return formattedMedia;
   }
 
-  static async getAnalytics(course, members) {
+  static async getAnalytics(
+    course,
+    members,
+    crosslistsCollectionName,
+    castCollectionName,
+    playbacksCollectionName
+  ) {
     const labelList = await this.getCrosslistByCourse(
       course.label,
-      'crosslists'
+      crosslistsCollectionName
     );
     const courseList = [course.label, ...labelList];
 
+    // The following codes format analytics into the following format
+    // Top level (Course Level): { course: object, this course's analytics: array of second level }
+    // Second level (User Level):
+    //   { userid: number, name: string, this user's analytics: array of third level, finishedCount: number, totalCount: number }
+    // Third level (Media Level): { title of media: string, finishedTimes: number, time: number, remaining: number }
     const analyticsByCourse = [];
     for (const c of courseList) {
       const courseCasts = await MediaQuery.getCastsByCourseWithoutAggregation(
-        'bruincastmedia',
+        castCollectionName,
         c
       );
 
@@ -162,20 +173,17 @@ class BruincastServices {
         const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
           constants.MEDIA_TYPE.BRUINCAST,
           c,
-          'playbacks'
+          playbacksCollectionName
         );
-        const allUsers = members.map(member => ({
-          userid: parseInt(member.user_id),
-          name: member.name,
-        }));
         const analyticsByUsers = [];
-        for (const userObj of allUsers) {
-          const { userid, name } = userObj;
+        for (const userObj of members) {
+          const { user_id: idStr, name } = userObj;
+          const userid = parseInt(idStr);
           const analyticsOfUser = [];
           let finishedCount = 0;
           for (const cast of courseCasts) {
             const currMedia = `${cast.video},${cast.audio}`;
-            const currTitle = `${cast.title} ${cast.date}`;
+            const currTitle = `${cast.title}  ${cast.date}`;
             const matchedAnalyticArr = rawAnalytics.filter(
               rawAnalytic =>
                 rawAnalytic.userid === userid &&
@@ -183,10 +191,12 @@ class BruincastServices {
             );
             if (matchedAnalyticArr.length >= 1) {
               let matchedAnalytic;
+              let totalWatchedTimes = 0;
               matchedAnalyticArr.forEach((currAnalytic, i) => {
                 if (!currAnalytic.finishedTimes) {
                   currAnalytic.finishedTimes = 0;
                 }
+                totalWatchedTimes += currAnalytic.finishedTimes;
                 if (
                   i === 0 ||
                   currAnalytic.finishedTimes > matchedAnalytic.finishedTimes ||
@@ -197,6 +207,7 @@ class BruincastServices {
                   matchedAnalytic = currAnalytic;
                 }
               });
+              matchedAnalytic.finishedTimes = totalWatchedTimes;
               if (matchedAnalytic.finishedTimes > 0) {
                 finishedCount += 1;
               }
