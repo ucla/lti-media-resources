@@ -1,5 +1,6 @@
 const MediaQuery = require('../models/mediaquery');
 const cache = require('./cache');
+const registrar = require('./registrar');
 const constants = require('../../../constants');
 
 class VideoresServices {
@@ -61,7 +62,8 @@ class VideoresServices {
 
   static async getTerms() {
     const terms = await MediaQuery.getTerms('videoreserves');
-    return terms;
+    const sortedTerms = registrar.sortAcademicTerms(terms, true);
+    return sortedTerms;
   }
 
   static async getSubjectAreasForTerm(term) {

@@ -1,6 +1,7 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
+const registrar = require('./registrar');
 const constants = require('../../../constants');
 
 const { window } = new JSDOM('');
@@ -144,7 +145,8 @@ class BruincastServices {
 
   static async getTerms() {
     const terms = await MediaQuery.getTerms('bruincastmedia');
-    return terms;
+    const sortedTerms = registrar.sortAcademicTerms(terms, true);
+    return sortedTerms;
   }
 
   static async getSubjectAreasForTerm(term) {
