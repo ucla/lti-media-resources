@@ -51,7 +51,7 @@ const App = () => {
         setCourse(c);
         setUserid(u);
         setOnCampusStatus(oc);
-        if (r && (r.includes('admin') || r.includes('administrator'))) {
+        if (r && r.includes('administrator')) {
           setIsAdmin(true);
           setIsInstructorOrAdmin(true);
         }

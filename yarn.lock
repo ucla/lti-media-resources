@@ -1644,7 +1644,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-text-input@^7.1.2", "@instructure/ui-text-input@^7.1.3":
+"@instructure/ui-text-input@^7.1.3":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@instructure/ui-text-input/-/ui-text-input-7.1.3.tgz#fa14b7e7597b5547a4eb3cb2d08ee213e4a99dc4"
   integrity sha512-CgwmIgmukM0SXHy3ghLHQg2KLv0rXCmjFsrOugcvh4jgeThEkTfQ4qqfI9n1zW1IQ0c1Fe3JnGkxSo1Jk/pHsQ==
