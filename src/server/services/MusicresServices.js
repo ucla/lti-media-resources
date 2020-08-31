@@ -1,5 +1,5 @@
 const MediaQuery = require('../models/mediaquery');
-const registrar = require('./registrar');
+const { sortAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 class MusicresServices {
@@ -48,7 +48,7 @@ class MusicresServices {
 
   static async getTerms() {
     const terms = await MediaQuery.getTerms('musicreserves');
-    const sortedTerms = registrar.sortAcademicTerms(terms, true);
+    const sortedTerms = sortAcademicTerms(terms, true);
     return sortedTerms;
   }
 

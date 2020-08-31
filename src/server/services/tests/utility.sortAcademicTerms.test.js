@@ -1,4 +1,4 @@
-import registrar from '../registrar';
+const { sortAcademicTerms } = require('../utility');
 
 test('Test sortAcademicTerms', done => {
   const unsortedTerms = [
@@ -14,6 +14,10 @@ test('Test sortAcademicTerms', done => {
     '20F',
     '20S',
     '20W',
+    '211',
+    '21F',
+    '21S',
+    '21W',
   ];
 
   const expectedSortedTerms = [
@@ -29,15 +33,16 @@ test('Test sortAcademicTerms', done => {
     '20S',
     '201',
     '20F',
+    '21W',
+    '21S',
+    '211',
+    '21F',
   ];
 
-  const sortedTerms = registrar.sortAcademicTerms(unsortedTerms);
+  const sortedTerms = sortAcademicTerms(unsortedTerms);
   expect(sortedTerms).toEqual(expectedSortedTerms);
 
-  const sortedTermsDescending = registrar.sortAcademicTerms(
-    unsortedTerms,
-    true
-  );
+  const sortedTermsDescending = sortAcademicTerms(unsortedTerms, true);
   expect(sortedTermsDescending).toEqual(expectedSortedTerms.reverse());
 
   done();
