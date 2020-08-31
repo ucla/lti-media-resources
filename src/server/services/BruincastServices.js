@@ -170,25 +170,32 @@ class BruincastServices {
         Array.isArray(courseCasts) &&
         courseCasts.length !== 0
       ) {
+        // Retrieving all playback histories of course from database
         const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
           constants.MEDIA_TYPE.BRUINCAST,
           c,
           playbacksCollectionName
         );
+        // Declare an array of second level objects
         const analyticsByUsers = [];
+        // Push a second level object into the above array for each user
         for (const userObj of members) {
           const { user_id: idStr, name } = userObj;
           const userid = parseInt(idStr);
+          // Declare an array of third level objects
           const analyticsOfUser = [];
           let finishedCount = 0;
+          // For each bruincast entry, push a third level object into the above array
           for (const cast of courseCasts) {
             const currMedia = `${cast.video},${cast.audio}`;
             const currTitle = `${cast.title}  ${cast.date}`;
+            // Find if the user have watched the bruincast entry
             const matchedAnalyticArr = rawAnalytics.filter(
               rawAnalytic =>
                 rawAnalytic.userid === userid &&
                 currMedia.includes(rawAnalytic.file)
             );
+            // If the user have watched it, modify its playback history and push into array
             if (matchedAnalyticArr.length >= 1) {
               let matchedAnalytic;
               let totalWatchedTimes = 0;
@@ -222,6 +229,7 @@ class BruincastServices {
                 matchedAnalytic.remaining = 100;
               }
               analyticsOfUser.push(matchedAnalytic);
+              // If the user has not watched the media, push a third level object with 0 progress
             } else {
               analyticsOfUser.push({
                 title: currTitle,
