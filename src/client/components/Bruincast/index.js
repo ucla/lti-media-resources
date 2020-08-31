@@ -27,6 +27,7 @@ export const Bruincast = ({
   warning,
   retrieveWarning,
   userid,
+  isInstructorOrAdmin,
   setError,
 }) => {
   Bruincast.propTypes = {
@@ -34,6 +35,7 @@ export const Bruincast = ({
     warning: PropTypes.string,
     retrieveWarning: PropTypes.func,
     userid: PropTypes.number,
+    isInstructorOrAdmin: PropTypes.bool,
     setError: PropTypes.func,
   };
 
@@ -73,6 +75,17 @@ export const Bruincast = ({
       });
   };
   useEffect(retrieveCasts, []);
+
+  const [analytics, setAnalytics] = useState(null);
+  const retrieveAnalytics = () => {
+    if (isInstructorOrAdmin) {
+      const ltik = getLtik();
+      axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`).then(res => {
+        setAnalytics(res.data);
+      });
+    }
+  };
+  useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
 
   const reverseCastsOrder = () => {
     for (const currCourse of castsByCourses) {
@@ -201,6 +214,14 @@ export const Bruincast = ({
               selectMedia={selectMedia}
               course={currCourse.course}
               shortname={currCourse.course.label}
+              analytics={
+                analytics
+                  ? analytics.filter(
+                      analytic =>
+                        analytic.course.label === currCourse.course.label
+                    )[0].analytics
+                  : null
+              }
               setError={setError}
             />
           </Tabs.Panel>

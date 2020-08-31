@@ -29,12 +29,15 @@ const App = () => {
 
   // Declare states
   const [course, setCourse] = useState({});
-  const [roles, setRoles] = useState([]);
   const [userid, setUserid] = useState(-1);
   const [onCampusStatus, setOnCampusStatus] = useState(true);
+
   const [bruincastCount, setBruincastCount] = useState(0);
   const [videoReserveCount, setVideoReserveCount] = useState(0);
   const [audioReserveCount, setAudioReserveCount] = useState(0);
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isInstructorOrAdmin, setIsInstructorOrAdmin] = useState(false);
 
   const [error, setError] = useState(null);
 
@@ -46,9 +49,15 @@ const App = () => {
       .then(res => {
         const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
-        setRoles(r);
         setUserid(u);
         setOnCampusStatus(oc);
+        if (r && r.includes('administrator')) {
+          setIsAdmin(true);
+          setIsInstructorOrAdmin(true);
+        }
+        if (r && r.includes('instructor')) {
+          setIsInstructorOrAdmin(true);
+        }
         setError(null);
       })
       .catch(err => {
@@ -59,12 +68,6 @@ const App = () => {
       });
   };
   useEffect(retrieveContext, []);
-
-  // Functions that determine roles
-  const userIsAdmin = () =>
-    roles && (roles.includes('admin') || roles.includes('administrator'));
-  const userIsInstructor = () =>
-    roles && (roles.includes('teacher') || roles.includes('instructor'));
 
   // Get the number of medias for each tab
   const retrieveNums = () => {
@@ -115,11 +118,11 @@ const App = () => {
   };
 
   const videoReservesTabEnabled = () =>
-    videoReserveCount > 0 || userIsInstructor() || userIsAdmin();
+    videoReserveCount > 0 || isInstructorOrAdmin;
 
   // Display admin tab only when 'roles' contains 'admin'
   let adminPanel = null;
-  if (userIsAdmin()) {
+  if (isAdmin) {
     adminPanel = (
       <Tabs.Panel
         id="adminPanel"
@@ -153,6 +156,7 @@ const App = () => {
             warning={warning}
             retrieveWarning={retrieveWarning}
             userid={userid}
+            isInstructorOrAdmin={isAdmin}
             setError={setError}
           />
         </Tabs.Panel>
