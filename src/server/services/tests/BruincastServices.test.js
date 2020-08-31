@@ -4,24 +4,25 @@ require('babel-polyfill');
 const BruincastServices = require('../BruincastServices');
 const client = require('../../models/db');
 
-const testCrosslistServicesCollectionName = 'crossliststestservices';
-const testAnalyticsCrosslistsCollectionName = 'crossliststestanalytics';
-const testAnalyticsCastsCollectionName = 'bruincastmediatestanalytics';
-const testAnalyticsPlaybacksCollectionName = 'playbackstestanalytics';
+const testCollections = new Map([
+  ['testCrosslistServicesCollection', 'crossliststestservices'],
+  ['testAnalyticsCrosslistsCollection', 'crossliststestanalytics'],
+  ['testAnalyticsCastsCollection', 'bruincastmediatestanalytics'],
+  ['testAnalyticsPlaybacksCollection', 'playbackstestanalytics'],
+]);
 
 beforeAll(async done => {
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
   const db = client.db(process.env.DB_DATABASE);
-  await db.createCollection(testCrosslistServicesCollectionName);
-  await db.createCollection(testAnalyticsCrosslistsCollectionName);
-  await db.createCollection(testAnalyticsCastsCollectionName);
-  await db.createCollection(testAnalyticsPlaybacksCollectionName);
+  for (const col of testCollections) {
+    await db.createCollection(col[1]);
+  }
   const sampleCrosslist = {
     list: ['Potions', 'Defence Against the Dark Arts'],
   };
   await db
-    .collection(testAnalyticsCrosslistsCollectionName)
+    .collection(testCollections.get('testAnalyticsCrosslistsCollection'))
     .insertOne(sampleCrosslist);
   const sampleCasts = [
     {
@@ -46,7 +47,9 @@ beforeAll(async done => {
       date: '1993',
     },
   ];
-  await db.collection(testAnalyticsCastsCollectionName).insertMany(sampleCasts);
+  await db
+    .collection(testCollections.get('testAnalyticsCastsCollection'))
+    .insertMany(sampleCasts);
   const samplePlaybacks = [
     {
       classShortname: 'Potions',
@@ -110,7 +113,7 @@ beforeAll(async done => {
     },
   ];
   await db
-    .collection(testAnalyticsPlaybacksCollectionName)
+    .collection(testCollections.get('testAnalyticsPlaybacksCollection'))
     .insertMany(samplePlaybacks);
   done();
 });
@@ -122,27 +125,27 @@ test('Test Crosslist Services', async done => {
   ];
   const updateResult = await BruincastServices.updateCrosslists(
     sampleData,
-    testCrosslistServicesCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(updateResult.updated).toBe(true);
   expect(updateResult.insertedCount).toBe(2);
   expect(updateResult.deletedCount).toBe(0);
   const allLists = await BruincastServices.getAllCrosslists(
-    testCrosslistServicesCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(allLists.length).toBe(2);
   expect(allLists[0].length).toBe(3);
   expect(allLists[1].length).toBe(2);
   const oneList = await BruincastServices.getCrosslistByCourse(
     'a',
-    testCrosslistServicesCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(oneList.length).toBe(2);
   expect(oneList[0]).toBe('b');
   expect(oneList[1]).toBe('c');
   const deleteResult = await BruincastServices.updateCrosslists(
     [],
-    testCrosslistServicesCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(deleteResult.updated).toBe(true);
   expect(deleteResult.insertedCount).toBe(0);
@@ -342,9 +345,9 @@ test('Test Analytics Generation', async done => {
   const analytics = await BruincastServices.getAnalytics(
     sampleCourse,
     sampleMembers,
-    testAnalyticsCrosslistsCollectionName,
-    testAnalyticsCastsCollectionName,
-    testAnalyticsPlaybacksCollectionName
+    testCollections.get('testAnalyticsCrosslistsCollection'),
+    testCollections.get('testAnalyticsCastsCollection'),
+    testCollections.get('testAnalyticsPlaybacksCollection')
   );
   const correctAnalytics = [
     {
@@ -466,10 +469,9 @@ test('Test Analytics Generation', async done => {
 
 afterAll(async done => {
   const db = client.db(process.env.DB_DATABASE);
-  await db.dropCollection(testCrosslistServicesCollectionName);
-  await db.dropCollection(testAnalyticsCrosslistsCollectionName);
-  await db.dropCollection(testAnalyticsCastsCollectionName);
-  await db.dropCollection(testAnalyticsPlaybacksCollectionName);
+  for (const col of testCollections) {
+    await db.dropCollection(col[1]);
+  }
   await client.close();
   done();
 });
