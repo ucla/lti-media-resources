@@ -4,12 +4,117 @@ require('babel-polyfill');
 const BruincastServices = require('../BruincastServices');
 const client = require('../../models/db');
 
-const testCollectionName = 'crossliststests';
+const testCollections = new Map([
+  ['testCrosslistServicesCollection', 'crossliststestservices'],
+  ['testAnalyticsCrosslistsCollection', 'crossliststestanalytics'],
+  ['testAnalyticsCastsCollection', 'bruincastmediatestanalytics'],
+  ['testAnalyticsPlaybacksCollection', 'playbackstestanalytics'],
+]);
 
 beforeAll(async done => {
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
-  await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.createCollection(col[1]);
+  }
+  const sampleCrosslist = {
+    list: ['Potions', 'Defence Against the Dark Arts'],
+  };
+  await db
+    .collection(testCollections.get('testAnalyticsCrosslistsCollection'))
+    .insertOne(sampleCrosslist);
+  const sampleCasts = [
+    {
+      classShortname: 'Potions',
+      video: 'EffectsOfPolyjuicePotions.mp4',
+      audio: 'HowToMakePolyjuicePotions.mp3',
+      title: 'Polyjuice Potions',
+      date: '1992',
+    },
+    {
+      classShortname: 'Potions',
+      video: '',
+      audio: 'HowToMakeFelixFelicis.mp3',
+      title: 'How to Make Felix Felicis',
+      date: '1996',
+    },
+    {
+      classShortname: 'Defence Against the Dark Arts',
+      video: 'ExpectoPatronum.mp4',
+      audio: '',
+      title: 'How to Cast the Patronus Charm',
+      date: '1993',
+    },
+  ];
+  await db
+    .collection(testCollections.get('testAnalyticsCastsCollection'))
+    .insertMany(sampleCasts);
+  const samplePlaybacks = [
+    {
+      classShortname: 'Potions',
+      file: 'EffectsOfPolyjuicePotions.mp4',
+      mediaType: 0,
+      userid: 0,
+      finishedTimes: 7,
+      time: 7,
+      remaining: 7,
+    },
+    {
+      classShortname: 'Potions',
+      file: 'EffectsOfPolyjuicePotions.mp4',
+      mediaType: 0,
+      userid: 2,
+      time: 7,
+      remaining: 7,
+    },
+    {
+      classShortname: 'Potions',
+      file: 'HowToMakePolyjuicePotions.mp3',
+      mediaType: 0,
+      userid: 0,
+      finishedTimes: 1,
+      time: 0,
+      remaining: 14,
+    },
+    {
+      classShortname: 'Potions',
+      file: 'HowToMakeFelixFelicis.mp3',
+      mediaType: 0,
+      userid: 0,
+      finishedTimes: 2,
+      time: 0,
+      remaining: 0,
+    },
+    {
+      classShortname: 'Potions',
+      file: 'HowToMakeFelixFelicis.mp3',
+      mediaType: 0,
+      userid: 2,
+      finishedTimes: 1,
+      time: 0,
+      remaining: 14,
+    },
+    {
+      classShortname: 'Defence Against the Dark Arts',
+      file: 'ExpectoPatronum.mp4',
+      mediaType: 0,
+      userid: 0,
+      time: 0,
+      remaining: 14,
+    },
+    {
+      classShortname: 'Defence Against the Dark Arts',
+      file: 'ExpectoPatronum.mp4',
+      mediaType: 0,
+      userid: 2,
+      time: 0,
+      remaining: 0,
+    },
+  ];
+  await db
+    .collection(testCollections.get('testAnalyticsPlaybacksCollection'))
+    .insertMany(samplePlaybacks);
   done();
 });
 
@@ -20,25 +125,27 @@ test('Test Crosslist Services', async done => {
   ];
   const updateResult = await BruincastServices.updateCrosslists(
     sampleData,
-    testCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(updateResult.updated).toBe(true);
   expect(updateResult.insertedCount).toBe(2);
   expect(updateResult.deletedCount).toBe(0);
-  const allLists = await BruincastServices.getAllCrosslists('crossliststests');
+  const allLists = await BruincastServices.getAllCrosslists(
+    testCollections.get('testCrosslistServicesCollection')
+  );
   expect(allLists.length).toBe(2);
   expect(allLists[0].length).toBe(3);
   expect(allLists[1].length).toBe(2);
   const oneList = await BruincastServices.getCrosslistByCourse(
     'a',
-    testCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(oneList.length).toBe(2);
   expect(oneList[0]).toBe('b');
   expect(oneList[1]).toBe('c');
   const deleteResult = await BruincastServices.updateCrosslists(
     [],
-    testCollectionName
+    testCollections.get('testCrosslistServicesCollection')
   );
   expect(deleteResult.updated).toBe(true);
   expect(deleteResult.insertedCount).toBe(0);
@@ -228,8 +335,143 @@ test('Test formatTermCasts()', async done => {
   done();
 });
 
+test('Test Analytics Generation', async done => {
+  const sampleCourse = { label: 'Potions' };
+  const sampleMembers = [
+    { user_id: '0', name: 'Hermione Granger' },
+    { user_id: '1', name: 'Ronald Weasley' },
+    { user_id: '2', name: 'Neville Longbottom' },
+  ];
+  const analytics = await BruincastServices.getAnalytics(
+    sampleCourse,
+    sampleMembers,
+    testCollections.get('testAnalyticsCrosslistsCollection'),
+    testCollections.get('testAnalyticsCastsCollection'),
+    testCollections.get('testAnalyticsPlaybacksCollection')
+  );
+  const correctAnalytics = [
+    {
+      course: { label: 'Potions' },
+      analytics: [
+        {
+          userid: 0,
+          name: 'Hermione Granger',
+          finishedCount: 2,
+          totalCount: 2,
+          analytics: [
+            {
+              title: 'Polyjuice Potions  1992',
+              finishedTimes: 8,
+              time: 7,
+              remaining: 7,
+            },
+            {
+              title: 'How to Make Felix Felicis  1996',
+              finishedTimes: 2,
+              time: 0,
+              remaining: 100,
+            },
+          ],
+        },
+        {
+          userid: 1,
+          name: 'Ronald Weasley',
+          finishedCount: 0,
+          totalCount: 2,
+          analytics: [
+            {
+              title: 'Polyjuice Potions  1992',
+              finishedTimes: 0,
+              time: 0,
+              remaining: 100,
+            },
+            {
+              title: 'How to Make Felix Felicis  1996',
+              finishedTimes: 0,
+              time: 0,
+              remaining: 100,
+            },
+          ],
+        },
+        {
+          userid: 2,
+          name: 'Neville Longbottom',
+          finishedCount: 1,
+          totalCount: 2,
+          analytics: [
+            {
+              title: 'Polyjuice Potions  1992',
+              finishedTimes: 0,
+              time: 7,
+              remaining: 7,
+            },
+            {
+              title: 'How to Make Felix Felicis  1996',
+              finishedTimes: 1,
+              time: 0,
+              remaining: 14,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      course: { label: 'Defence Against the Dark Arts' },
+      analytics: [
+        {
+          userid: 0,
+          name: 'Hermione Granger',
+          finishedCount: 0,
+          totalCount: 1,
+          analytics: [
+            {
+              title: 'How to Cast the Patronus Charm  1993',
+              finishedTimes: 0,
+              time: 0,
+              remaining: 14,
+            },
+          ],
+        },
+        {
+          userid: 1,
+          name: 'Ronald Weasley',
+          finishedCount: 0,
+          totalCount: 1,
+          analytics: [
+            {
+              title: 'How to Cast the Patronus Charm  1993',
+              finishedTimes: 0,
+              time: 0,
+              remaining: 100,
+            },
+          ],
+        },
+        {
+          userid: 2,
+          name: 'Neville Longbottom',
+          finishedCount: 0,
+          totalCount: 1,
+          analytics: [
+            {
+              title: 'How to Cast the Patronus Charm  1993',
+              finishedTimes: 0,
+              time: 0,
+              remaining: 100,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  expect(analytics).toMatchObject(correctAnalytics);
+  done();
+});
+
 afterAll(async done => {
-  await client.db(process.env.DB_DATABASE).dropCollection(testCollectionName);
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.dropCollection(col[1]);
+  }
   await client.close();
   done();
 });
