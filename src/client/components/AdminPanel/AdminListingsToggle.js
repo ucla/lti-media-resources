@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ToggleDetails } from '@instructure/ui-toggle-details';
-import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
 import { Pill } from '@instructure/ui-pill';
 
@@ -41,7 +40,7 @@ export const AdminListingsToggle = ({
   // Summary includes the shortname and the number of listings
   // If missing shortname, include an orange warning pill
   const shortnameSummary = (
-    <View>
+    <>
       <Text>
         {`${shortname === null ? `${term}: No Shortname` : shortname} · ${
           listings.length
@@ -52,7 +51,7 @@ export const AdminListingsToggle = ({
           Missing Shortname
         </Pill>
       )}
-    </View>
+    </>
   );
 
   // If media type is Bruincast or Video Reserves, display a listings table

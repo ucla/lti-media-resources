@@ -29,28 +29,17 @@ function enumerateAcademicTerm(term) {
 }
 
 /**
- * Sorts an array of academic terms in chronological order.
+ * Compares two academic terms. Returns -1 if term1 is chronologically earlier than term2.
  *
- * @param {Array} termsArray An array of terms to sort
- * @param {boolean} descending Optional parameter to return terms in descending order (most recent first)
- * @returns {Array} A sorted array of terms
+ * @param {string} term1 First academic term to compare
+ * @param {string} term2 Second academic term to compare
+ * @returns {number} -1 if term1 is earlier than term2, 1 if term1 is later, 0 if equal
  */
-module.exports.sortAcademicTerms = function(termsArray, descending = false) {
-  const termsEnumArray = [];
-  const termsEnumMap = new Map();
-  for (const term of termsArray) {
-    const enumeratedTerm = enumerateAcademicTerm(term);
-    termsEnumArray.push(enumeratedTerm);
-    termsEnumMap.set(enumeratedTerm, term);
-  }
+module.exports.compareAcademicTerms = function(term1, term2) {
+  const term1Enum = enumerateAcademicTerm(term1);
+  const term2Enum = enumerateAcademicTerm(term2);
 
-  termsEnumArray.sort();
-  if (descending) termsEnumArray.reverse();
-
-  const sortedTerms = [];
-  for (const enumeratedTerm of termsEnumArray) {
-    sortedTerms.push(termsEnumMap.get(enumeratedTerm));
-  }
-
-  return sortedTerms;
+  if (term1Enum < term2Enum) return -1;
+  if (term1Enum > term2Enum) return 1;
+  return 0;
 };

@@ -126,7 +126,7 @@ export const AdminListings = ({ mediaType, setError }) => {
 
   return (
     <View>
-      <Flex margin="none none none">
+      <Flex>
         <Flex.Item padding="small">
           <SimpleSelect
             renderLabel="Term"

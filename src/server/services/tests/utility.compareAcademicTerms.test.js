@@ -1,4 +1,4 @@
-const { sortAcademicTerms } = require('../utility');
+const { compareAcademicTerms } = require('../utility');
 
 test('Test sortAcademicTerms', done => {
   const unsortedTerms = [
@@ -39,11 +39,7 @@ test('Test sortAcademicTerms', done => {
     '21F',
   ];
 
-  const sortedTerms = sortAcademicTerms(unsortedTerms);
-  expect(sortedTerms).toEqual(expectedSortedTerms);
-
-  const sortedTermsDescending = sortAcademicTerms(unsortedTerms, true);
-  expect(sortedTermsDescending).toEqual(expectedSortedTerms.reverse());
-
+  unsortedTerms.sort(compareAcademicTerms);
+  expect(unsortedTerms).toEqual(expectedSortedTerms);
   done();
 });
