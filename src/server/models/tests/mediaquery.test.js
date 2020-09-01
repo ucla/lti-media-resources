@@ -7,8 +7,13 @@ const {
   getMediaForTerm,
 } = require('../mediaquery');
 
+const { COLLECTION_TYPE } = require('../../../../constants');
+
+const { BRUINCAST } = COLLECTION_TYPE;
+
+const testCollections = new Map([[BRUINCAST, 'bruincastmediatestmediaquery']]);
+
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-const testCollectionName = 'mediaquerytests';
 const testData = [
   {
     _id: '100',
@@ -106,24 +111,20 @@ const testData = [
 ];
 
 beforeAll(async done => {
+  process.env.DB_COLLECTION_BRUINCAST = testCollections.get(BRUINCAST);
   client.connect(dbURL, function() {});
-  await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
-
-  await client
-    .db(process.env.DB_DATABASE)
-    .collection(testCollectionName)
-    .insertMany(testData);
-
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.createCollection(col[1]);
+  }
+  await db.collection(testCollections.get(BRUINCAST)).insertMany(testData);
   done();
 });
 
 test('Test getCastsByCourse', async done => {
   // Expect the returned casts to be bucketed by week
   try {
-    const castsFor201CS32 = await getCastsByCourse(
-      testCollectionName,
-      '20S-COMSCI32-1'
-    );
+    const castsFor201CS32 = await getCastsByCourse('20S-COMSCI32-1');
 
     const expectedCasts = [
       {
@@ -176,14 +177,10 @@ test('Test getCastsByCourse', async done => {
 
 test('Test getCastCountByCourse', async done => {
   try {
-    const castCountFor201CS32 = await getCastCountByCourse(
-      testCollectionName,
-      '20S-COMSCI32-1'
-    );
+    const castCountFor201CS32 = await getCastCountByCourse('20S-COMSCI32-1');
     expect(castCountFor201CS32).toEqual(3);
 
     const castCountFor201EEBIOL162 = await getCastCountByCourse(
-      testCollectionName,
       '201C-EEBIOL162-1'
     );
     expect(castCountFor201EEBIOL162).toEqual(2);
@@ -196,7 +193,10 @@ test('Test getCastCountByCourse', async done => {
 
 test('Test getMediaForTerm 20S', async done => {
   try {
-    const mediaFor20S = await getMediaForTerm(testCollectionName, '20S');
+    const mediaFor20S = await getMediaForTerm(
+      testCollections.get(BRUINCAST),
+      '20S'
+    );
     for (const courseMedia of mediaFor20S) {
       for (const entry of courseMedia.listings) {
         expect(entry.term).toEqual('20S');
@@ -210,7 +210,10 @@ test('Test getMediaForTerm 20S', async done => {
 
 test('Test getMediaForTerm 201', async done => {
   try {
-    const mediaFor20S = await getMediaForTerm(testCollectionName, '201');
+    const mediaFor20S = await getMediaForTerm(
+      testCollections.get(BRUINCAST),
+      '201'
+    );
     for (const courseMedia of mediaFor20S) {
       for (const entry of courseMedia.listings) {
         expect(entry.term).toEqual('201');
@@ -224,7 +227,10 @@ test('Test getMediaForTerm 201', async done => {
 
 test('Test getMediaForTerm All', async done => {
   try {
-    const mediaFor20S = await getMediaForTerm(testCollectionName, '');
+    const mediaFor20S = await getMediaForTerm(
+      testCollections.get(BRUINCAST),
+      ''
+    );
     let listingsCount = 0;
     for (const courseMedia of mediaFor20S) {
       listingsCount += courseMedia.listings.length;
@@ -237,7 +243,10 @@ test('Test getMediaForTerm All', async done => {
 });
 
 afterAll(async done => {
-  await client.db(process.env.DB_DATABASE).dropCollection(testCollectionName);
-  client.close();
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.dropCollection(col[1]);
+  }
+  await client.close();
   done();
 });

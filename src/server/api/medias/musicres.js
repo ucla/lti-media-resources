@@ -49,12 +49,9 @@ router.get('/analytics', async (req, res) => {
     delete member.email;
   }
   const { context } = res.locals.context;
-  MusicresServices.getAnalytics(
-    context,
-    members,
-    'musicreserves',
-    'playbacks'
-  ).then(analytics => res.send(analytics));
+  MusicresServices.getAnalytics(context, members).then(analytics =>
+    res.send(analytics)
+  );
 });
 
 module.exports = router;

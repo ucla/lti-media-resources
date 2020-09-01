@@ -3,13 +3,20 @@ require('babel-polyfill');
 
 const MusicresServices = require('../MusicresServices');
 const client = require('../../models/db');
+const { COLLECTION_TYPE } = require('../../../../constants');
+
+const { DIGITAL_AUDIO_RESERVES, PLAYBACKS } = COLLECTION_TYPE;
 
 const testCollections = new Map([
-  ['testAnalyticsAlbumsCollection', 'musicreservestestanalytics'],
-  ['testAnalyticsPlaybacksCollection', 'playbackstestanalyticsmusicres'],
+  [DIGITAL_AUDIO_RESERVES, 'musicreservestestmusicresservices'],
+  [PLAYBACKS, 'playbackstestmusicresservices'],
 ]);
 
 beforeAll(async done => {
+  process.env.DB_COLLECTION_MUSICRES = testCollections.get(
+    DIGITAL_AUDIO_RESERVES
+  );
+  process.env.DB_COLLECTION_PLAYBACKS = testCollections.get(PLAYBACKS);
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
   const db = client.db(process.env.DB_DATABASE);
@@ -43,7 +50,7 @@ beforeAll(async done => {
     },
   ];
   await db
-    .collection(testCollections.get('testAnalyticsAlbumsCollection'))
+    .collection(testCollections.get(DIGITAL_AUDIO_RESERVES))
     .insertMany(sampleAlbums);
   const samplePlaybacks = [
     {
@@ -91,7 +98,7 @@ beforeAll(async done => {
     },
   ];
   await db
-    .collection(testCollections.get('testAnalyticsPlaybacksCollection'))
+    .collection(testCollections.get(PLAYBACKS))
     .insertMany(samplePlaybacks);
   done();
 });
@@ -105,9 +112,7 @@ test('Test Analytics Generation', async done => {
   ];
   const analytics = await MusicresServices.getAnalytics(
     sampleCourse,
-    sampleMembers,
-    testCollections.get('testAnalyticsAlbumsCollection'),
-    testCollections.get('testAnalyticsPlaybacksCollection')
+    sampleMembers
   );
   const correctAnalytics = [
     {

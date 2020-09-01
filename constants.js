@@ -50,3 +50,13 @@ module.exports.mediaTypeMap = new Map([
     },
   ],
 ]);
+
+module.exports.COLLECTION_TYPE = {
+  BRUINCAST: 0,
+  VIDEO_RESERVES: 1,
+  DIGITAL_AUDIO_RESERVES: 2,
+  MEDIA_GALLERY: 3,
+  CROSSLISTS: 4,
+  PLAYBACKS: 5,
+  NOTICE: 6,
+};

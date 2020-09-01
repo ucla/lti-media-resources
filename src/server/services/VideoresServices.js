@@ -4,12 +4,11 @@ const constants = require('../../../constants');
 
 class VideoresServices {
   static async getVideores(label, userid) {
-    const docs = await MediaQuery.getVideoResByCourse(label, 'videoreserves');
+    const docs = await MediaQuery.getVideoResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       constants.MEDIA_TYPE.VIDEO_RESERVES,
       userid,
-      label,
-      'playbacks'
+      label
     );
     const now = new Date();
     for (const doc of docs) {
@@ -53,13 +52,16 @@ class VideoresServices {
   }
 
   static async getAllVideoReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('videoreserves', term);
+    const termMedia = await MediaQuery.getMediaForTerm(
+      process.env.DB_COLLECTION_VIDEORES,
+      term
+    );
     return termMedia;
   }
 
   static async getSubjectAreasForTerm(term) {
     const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'videoreserves',
+      process.env.DB_COLLECTION_VIDEORES,
       term
     );
     return subjectAreas;

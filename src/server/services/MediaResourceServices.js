@@ -6,28 +6,20 @@ const constants = require('../../../constants');
 
 class MediaResourceServices {
   static async getCounts(courseLabel) {
-    let labelList = await MediaQuery.getCrosslistByCourse(
-      courseLabel,
-      'crosslists'
-    );
+    let labelList = await MediaQuery.getCrosslistByCourse(courseLabel);
     labelList = [courseLabel, ...labelList];
 
     let bruincastCount = 0;
     for (const label of labelList) {
-      bruincastCount += await MediaQuery.getCastCountByCourse(
-        'bruincastmedia',
-        label
-      );
+      bruincastCount += await MediaQuery.getCastCountByCourse(label);
     }
 
     const videoresCount = await MediaQuery.getVideoResCountByCourse(
-      courseLabel,
-      'videoreserves'
+      courseLabel
     );
 
     const musicresCount = await MediaQuery.getMusicResCountByCourse(
-      courseLabel,
-      'musicreserves'
+      courseLabel
     );
 
     return {
@@ -46,10 +38,15 @@ class MediaResourceServices {
     remaining,
     finished
   ) {
-    const ok = await MediaQuery.updatePlayback(
-      { userid, file, mediaType, classShortname, time, remaining, finished },
-      'playbacks'
-    );
+    const ok = await MediaQuery.updatePlayback({
+      userid,
+      file,
+      mediaType,
+      classShortname,
+      time,
+      remaining,
+      finished,
+    });
     return ok;
   }
 

@@ -3,12 +3,11 @@ const constants = require('../../../constants');
 
 class MusicresServices {
   static async getMusicres(label, userid) {
-    const docs = await MediaQuery.getMusicResByCourse(label, 'musicreserves');
+    const docs = await MediaQuery.getMusicResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       userid,
-      label,
-      'playbacks'
+      label
     );
     for (const doc of docs) {
       let combinedNote = doc.noteOne ? doc.noteOne : '';
@@ -39,28 +38,17 @@ class MusicresServices {
   }
 
   static async getAllMusicReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('musicreserves', term);
+    const termMedia = await MediaQuery.getMediaForTerm(term);
     return termMedia;
   }
 
   static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'musicreserves',
-      term
-    );
+    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(term);
     return subjectAreas;
   }
 
-  static async getAnalytics(
-    course,
-    members,
-    musicresCollectionName,
-    playbacksCollectionName
-  ) {
-    const allAlbums = await MediaQuery.getMusicResByCourse(
-      course.label,
-      musicresCollectionName
-    );
+  static async getAnalytics(course, members) {
+    const allAlbums = await MediaQuery.getMusicResByCourse(course.label);
     const allTracks = [];
     for (const album of allAlbums) {
       for (const track of album.items) {
@@ -72,8 +60,7 @@ class MusicresServices {
     }
     const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
       constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
-      course.label,
-      playbacksCollectionName
+      course.label
     );
     // Declare an empty array to push in final results
     // The array contains objects organized like this:
