@@ -8,6 +8,7 @@ import { Grid } from '@instructure/ui-grid';
 import { TextInput } from '@instructure/ui-text-input';
 import { ScreenReaderContent } from '@instructure/ui-a11y-content';
 import { Alert } from '@instructure/ui-alerts';
+import { SimpleSelect } from '@instructure/ui-simple-select';
 import axios from 'axios';
 
 import axiosRetry from 'axios-retry';
@@ -34,6 +35,7 @@ export const AdminListings = ({ mediaType, setError }) => {
 
   // Array to hold response for returned media listings
   const [mediaListings, setMediaListings] = useState([]);
+  const [filteredMediaListings, setFilteredMediaListings] = useState([]);
 
   const handleTermInput = event => {
     setSearchTerm(event.target.value);
@@ -52,6 +54,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       )
       .then(res => {
         setMediaListings(res.data);
+        setFilteredMediaListings(res.data);
         setError(null);
       })
       .catch(err => {
@@ -64,8 +67,49 @@ export const AdminListings = ({ mediaType, setError }) => {
   };
   useEffect(retrieveListings, [recentlySearchedTerm]);
 
+  const [selectedSubjectArea, setSelectedSubjectArea] = useState('');
+  const handleSubjectSelect = (event, { value }) => {
+    setSelectedSubjectArea(value);
+  };
+
+  const filterListings = () => {
+    setFilteredMediaListings(
+      mediaListings.filter(mediaGroup => {
+        if (selectedSubjectArea === '') return mediaGroup;
+        return mediaGroup.subjectArea === selectedSubjectArea;
+      })
+    );
+  };
+  useEffect(filterListings, [selectedSubjectArea]);
+
+  const [subjectAreas, setSubjectAreas] = useState([]);
+  const retrieveSubjectAreas = () => {
+    const ltik = getLtik();
+    axios
+      .get(
+        `/api/medias/${
+          constants.mediaTypeMap.get(mediaType).api
+        }/subjectareas?ltik=${ltik}`,
+        {
+          params: { term: recentlySearchedTerm },
+        }
+      )
+      .then(res => {
+        setSubjectAreas(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError({
+          err,
+          msg: 'Something went wrong when retrieving subject areas...',
+        });
+      });
+  };
+  useEffect(retrieveSubjectAreas, [recentlySearchedTerm]);
+
   const handleListingsSearch = event => {
     setRecentlySearchedTerm(searchTerm);
+    setSelectedSubjectArea('');
     event.preventDefault();
   };
 
@@ -96,14 +140,37 @@ export const AdminListings = ({ mediaType, setError }) => {
                   width="5rem"
                   onChange={handleTermInput}
                 />
+                &nbsp;
+                <Button color="primary" onClick={handleListingsSearch}>
+                  Go
+                </Button>
               </div>
             </Grid.Col>
           </Grid.Row>
-          <Grid.Row key="gobutton">
-            <Grid.Col key="button" width="auto">
-              <Button color="primary" onClick={handleListingsSearch}>
-                Go
-              </Button>
+          <Grid.Row>
+            <Grid.Col>
+              <SimpleSelect
+                renderLabel="Subject Area"
+                value={selectedSubjectArea}
+                onChange={handleSubjectSelect}
+                visibleOptionsCount={5}
+                width="12rem"
+              >
+                <SimpleSelect.Option id="all" value="">
+                  All
+                </SimpleSelect.Option>
+                {subjectAreas
+                  .filter(subjArea => subjArea !== null)
+                  .map(subjArea => (
+                    <SimpleSelect.Option
+                      key={subjArea}
+                      id={subjArea}
+                      value={subjArea}
+                    >
+                      {subjArea}
+                    </SimpleSelect.Option>
+                  ))}
+              </SimpleSelect>
             </Grid.Col>
           </Grid.Row>
         </Grid>
@@ -117,7 +184,7 @@ export const AdminListings = ({ mediaType, setError }) => {
             } content found for ${recentlySearchedTerm}.`}
           </Alert>
         )}
-        {mediaListings.map(course => (
+        {filteredMediaListings.map(course => (
           <AdminListingsToggle
             key={course._id}
             shortname={course._id}

@@ -21,7 +21,7 @@ it('returns basic shortname', async () => {
     ],
   });
 
-  const shortname = await registrar.getShortname('20S', '318001200');
+  const { shortname } = await registrar.getShortname('20S', '318001200');
   expect(shortname).toEqual('20S-PHYSICS1A-1');
 });
 
@@ -44,7 +44,7 @@ it('returns complex shortname', async () => {
     ],
   });
 
-  const shortname = await registrar.getShortname('20S', '370705200');
+  const { shortname } = await registrar.getShortname('20S', '370705200');
   expect(shortname).toEqual('20S-CSBIO150M-1');
 });
 
@@ -81,8 +81,11 @@ it('returns summer shortnames', async () => {
       ],
     }));
 
-  let shortname = await registrar.getShortname('201', '187093910');
-  expect(shortname).toEqual('201A-COMSCI31-1');
+  const { shortname: shortnameA } = await registrar.getShortname(
+    '201',
+    '187093910'
+  );
+  expect(shortnameA).toEqual('201A-COMSCI31-1');
 
   registrar.call = jest
     .fn()
@@ -113,6 +116,9 @@ it('returns summer shortnames', async () => {
       ],
     }));
 
-  shortname = await registrar.getShortname('201', '252091930');
-  expect(shortname).toEqual('201C-LIFESCI30B-1');
+  const { shortname: shortnameC } = await registrar.getShortname(
+    '201',
+    '252091930'
+  );
+  expect(shortnameC).toEqual('201C-LIFESCI30B-1');
 });

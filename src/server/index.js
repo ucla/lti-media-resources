@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 
 // Requiring LTIJS provider
-const Lti = require('ltijs').Provider;
+const lti = require('ltijs').Provider;
 
 // Connect to db on start
 const client = require('./models/db');
@@ -21,7 +21,7 @@ if (process.env.MODE === 'production') {
     cookies: { secure: false },
   };
 }
-const lti = new Lti(
+lti.setup(
   process.env.LTI_KEY,
   // Setting up database configurations
   {
@@ -41,32 +41,6 @@ lti.onConnect((token, req, res) => {
 
 // Routes
 lti.app.use('/api', apiRouter);
-
-// LTI services
-// Names and Roles route.
-lti.app.get('/api/members', (req, res) => {
-  lti.NamesAndRoles.getMembers(res.locals.token)
-    .then(members => {
-      res.send(members.members);
-    })
-    .catch(err => res.status(400).send(err));
-});
-
-// Grades routes.
-lti.app.get('/api/grades', (req, res) => {
-  lti.Grade.result(res.locals.token)
-    .then(grades => res.status(200).send(grades))
-    .catch(err => res.status(400).send(err));
-});
-
-lti.app.post('/api/grades', (req, res) => {
-  try {
-    lti.Grade.ScorePublish(res.locals.token, req.body);
-    return res.status(200).send(req.body);
-  } catch (err) {
-    return res.status(400).send(err);
-  }
-});
 
 /**
  * Set up everything
@@ -89,7 +63,10 @@ async function setup() {
   });
 
   // Get the public key generated for that platform.
-  const plat = await lti.getPlatform(process.env.PLATFORM_URL);
+  const plat = await lti.getPlatform(
+    process.env.PLATFORM_URL,
+    process.env.PLATFORM_CLIENTID
+  );
   // eslint-disable-next-line no-console
   console.log(await plat.platformPublicKey());
 }

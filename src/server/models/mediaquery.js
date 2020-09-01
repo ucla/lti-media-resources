@@ -53,6 +53,18 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
   return courseCasts;
 };
 
+module.exports.getCastsByCourseWithoutAggregation = async (
+  dbCollection,
+  courseLabel
+) => {
+  const bcastCollection = client.db(DB_DATABASE).collection(dbCollection);
+  const toBeReturned = await bcastCollection
+    .find({ classShortname: courseLabel })
+    .sort({ date: 1 })
+    .toArray();
+  return toBeReturned;
+};
+
 module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
   const castCount = await client
     .db(DB_DATABASE)
@@ -78,6 +90,12 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     {
       $group: {
         _id: '$classShortname',
+        term: {
+          $first: '$term',
+        },
+        subjectArea: {
+          $first: '$subjectArea',
+        },
         listings: {
           $push: '$$ROOT',
         },
@@ -96,6 +114,16 @@ module.exports.getMediaForTerm = async (dbCollection, academicTerm) => {
     .aggregate(aggregation)
     .toArray();
   return termMedia;
+};
+
+module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
+  const query = term !== '' ? { term } : {};
+  const subjectAreasArray = await client
+    .db(DB_DATABASE)
+    .collection(dbCollection)
+    .distinct('subjectArea', query);
+
+  return subjectAreasArray;
 };
 
 module.exports.getVideoResByCourse = async courseLabel => {
@@ -233,6 +261,17 @@ module.exports.getPlaybacks = async (
 ) => {
   const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
   const query = { mediaType, userid, classShortname: courseLabel };
+  const toBeReturned = await playbackCollection.find(query).toArray();
+  return toBeReturned;
+};
+
+module.exports.getAnalyticsByCourse = async (
+  mediaType,
+  courseLabel,
+  collectionName
+) => {
+  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+  const query = { mediaType, classShortname: courseLabel };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };
