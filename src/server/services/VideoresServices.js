@@ -4,7 +4,7 @@ const constants = require('../../../constants');
 
 class VideoresServices {
   static async getVideores(label, userid) {
-    const docs = await MediaQuery.getVideoResByCourse(label);
+    const docs = await MediaQuery.getVideoResByCourse(label, 'videoreserves');
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       constants.MEDIA_TYPE.VIDEO_RESERVES,
       userid,

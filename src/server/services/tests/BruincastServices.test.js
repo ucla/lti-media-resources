@@ -8,7 +8,7 @@ const testCollections = new Map([
   ['testCrosslistServicesCollection', 'crossliststestservices'],
   ['testAnalyticsCrosslistsCollection', 'crossliststestanalytics'],
   ['testAnalyticsCastsCollection', 'bruincastmediatestanalytics'],
-  ['testAnalyticsPlaybacksCollection', 'playbackstestanalytics'],
+  ['testAnalyticsPlaybacksCollection', 'playbackstestanalyticsbruincast'],
 ]);
 
 beforeAll(async done => {

@@ -21,11 +21,13 @@ class MediaResourceServices {
     }
 
     const videoresCount = await MediaQuery.getVideoResCountByCourse(
-      courseLabel
+      courseLabel,
+      'videoreserves'
     );
 
     const musicresCount = await MediaQuery.getMusicResCountByCourse(
-      courseLabel
+      courseLabel,
+      'musicreserves'
     );
 
     return {

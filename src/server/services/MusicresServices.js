@@ -3,7 +3,7 @@ const constants = require('../../../constants');
 
 class MusicresServices {
   static async getMusicres(label, userid) {
-    const docs = await MediaQuery.getMusicResByCourse(label);
+    const docs = await MediaQuery.getMusicResByCourse(label, 'musicreserves');
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       userid,
@@ -49,6 +49,79 @@ class MusicresServices {
       term
     );
     return subjectAreas;
+  }
+
+  static async getAnalytics(
+    course,
+    members,
+    musicresCollectionName,
+    playbacksCollectionName
+  ) {
+    const allAlbums = await MediaQuery.getMusicResByCourse(
+      course.label,
+      musicresCollectionName
+    );
+    const allTracks = [];
+    for (const album of allAlbums) {
+      for (const track of album.items) {
+        allTracks.push({
+          title: `${album.title} - ${track.trackTitle}`,
+          file: track.httpURL,
+        });
+      }
+    }
+    const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
+      constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
+      course.label,
+      playbacksCollectionName
+    );
+    const analyticsByUsers = [];
+    for (const userObj of members) {
+      const { user_id: idStr, name } = userObj;
+      const userid = parseInt(idStr);
+      // Declare an array of third level objects
+      const analyticsOfUser = [];
+      let finishedCount = 0;
+      for (const track of allTracks) {
+        const matchedAnalyticArr = rawAnalytics.filter(
+          a => a.userid === userid && a.file === track.file
+        );
+        if (matchedAnalyticArr.length >= 1) {
+          if (!matchedAnalyticArr[0].finishedTimes) {
+            matchedAnalyticArr[0].finishedTimes = 0;
+          }
+          if (matchedAnalyticArr[0].finishedTimes > 0) {
+            finishedCount += 1;
+          }
+          delete matchedAnalyticArr[0]._id;
+          delete matchedAnalyticArr[0].classShortname;
+          delete matchedAnalyticArr[0].mediaType;
+          matchedAnalyticArr[0].title = track.title;
+          if (
+            matchedAnalyticArr[0].time === 0 &&
+            matchedAnalyticArr[0].remaining === 0
+          ) {
+            matchedAnalyticArr[0].remaining = 100;
+          }
+          analyticsOfUser.push(matchedAnalyticArr[0]);
+        } else {
+          analyticsOfUser.push({
+            title: track.title,
+            time: 0,
+            remaining: 100,
+            finishedTimes: 0,
+          });
+        }
+      }
+      analyticsByUsers.push({
+        userid,
+        name,
+        analytics: analyticsOfUser,
+        finishedCount,
+        totalCount: allTracks.length,
+      });
+    }
+    return analyticsByUsers;
   }
 }
 

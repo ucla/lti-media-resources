@@ -51,6 +51,7 @@ exports[`App component matches its original snapshot 1`] = `
       variant="default"
     >
       <MusicReserve
+        isInstructorOrAdmin={false}
         setError={[Function]}
         userid={-1}
       />

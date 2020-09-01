@@ -190,7 +190,11 @@ const App = () => {
               (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
           }
         >
-          <MusicReserve userid={userid} setError={setError} />
+          <MusicReserve
+            userid={userid}
+            isInstructorOrAdmin={isInstructorOrAdmin}
+            setError={setError}
+          />
         </Tabs.Panel>
         <Tabs.Panel
           id="mediaGallery"

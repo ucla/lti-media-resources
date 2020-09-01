@@ -126,8 +126,8 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
   return subjectAreasArray;
 };
 
-module.exports.getVideoResByCourse = async courseLabel => {
-  const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
+module.exports.getVideoResByCourse = async (courseLabel, collectionName) => {
+  const videoResCollection = client.db(DB_DATABASE).collection(collectionName);
   const toBeReturned = await videoResCollection
     .find({ classShortname: courseLabel })
     .sort({ videoTitle: 1 })
@@ -135,17 +135,20 @@ module.exports.getVideoResByCourse = async courseLabel => {
   return toBeReturned;
 };
 
-module.exports.getVideoResCountByCourse = async courseLabel => {
+module.exports.getVideoResCountByCourse = async (
+  courseLabel,
+  collectionName
+) => {
   const resCount = await client
     .db(DB_DATABASE)
-    .collection('videoreserves')
+    .collection(collectionName)
     .find({ classShortname: courseLabel })
     .count();
   return resCount;
 };
 
-module.exports.getMusicResByCourse = async courseLabel => {
-  const musicResCollection = client.db(DB_DATABASE).collection('musicreserves');
+module.exports.getMusicResByCourse = async (courseLabel, collectionName) => {
+  const musicResCollection = client.db(DB_DATABASE).collection(collectionName);
   const toBeReturned = await musicResCollection
     .find({ classShortname: courseLabel })
     .sort({ title: 1 })
@@ -153,8 +156,14 @@ module.exports.getMusicResByCourse = async courseLabel => {
   return toBeReturned;
 };
 
-module.exports.getMusicResCountByCourse = async courseLabel => {
-  const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
+module.exports.getMusicResCountByCourse = async (
+  courseLabel,
+  collectionName
+) => {
+  const arrayOfMusicRes = await this.getMusicResByCourse(
+    courseLabel,
+    collectionName
+  );
   let totalItemCount = 0;
   for (const album of arrayOfMusicRes) {
     if (album.items && Array.isArray(album.items)) {
