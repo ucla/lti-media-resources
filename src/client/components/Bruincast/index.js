@@ -10,6 +10,7 @@ import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
 import axiosRetry from 'axios-retry';
 import { Button } from '@instructure/ui-buttons';
+import { Link } from '@instructure/ui-link';
 import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
@@ -188,13 +189,13 @@ export const Bruincast = ({
       <Text>
         Video recordings may take up to 24 hours before they are available. For
         help regarding Bruincast content, please read our{' '}
-        <a
+        <Link
           href="https://docs.ccle.ucla.edu/index.php?title=BruinCast"
           target="_blank"
           rel="noopener noreferrer"
         >
           help document
-        </a>
+        </Link>
         .
       </Text>
       <br />
