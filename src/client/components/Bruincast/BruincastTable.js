@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
-import { Button } from '@instructure/ui-buttons';
-import {
-  IconAnalyticsSolid,
-  IconArrowOpenStartSolid,
-} from '@instructure/ui-icons';
 import { BruincastTableWeekToggle } from './BruincastTableWeekToggle';
 import { Analytics } from '../Analytics';
 
@@ -50,29 +45,18 @@ export const BruincastTable = ({
   if (showingAnalytics) {
     return (
       <View>
-        <Button
-          onClick={showAnalytics}
-          margin="medium 0"
-          color="primary"
-          renderIcon={<IconArrowOpenStartSolid />}
-        >
-          Back
-        </Button>
-        <Analytics analytics={analytics} />
+        <Analytics
+          analytics={analytics}
+          showing={showingAnalytics}
+          show={showAnalytics}
+        />
       </View>
     );
   }
 
   return (
     <View>
-      <Button
-        onClick={showAnalytics}
-        margin="medium 0"
-        color="primary"
-        renderIcon={<IconAnalyticsSolid />}
-      >
-        Analytics
-      </Button>
+      <Analytics showing={showingAnalytics} show={showAnalytics} />
       {casts.map(weekCasts => (
         <BruincastTableWeekToggle
           id={`toggleWeek${weekCasts._id}`}

@@ -2,13 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
 import { Breadcrumb } from '@instructure/ui-breadcrumb';
-import {
-  IconArrowOpenStartSolid,
-  IconAnalyticsSolid,
-} from '@instructure/ui-icons';
+import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
 import axiosRetry from 'axios-retry';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
@@ -153,15 +149,11 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
         <Breadcrumb size="large" label="Album navigation">
           <Breadcrumb.Link>Analytics</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={showAnalytics}
-          margin="medium 0"
-          color="primary"
-          renderIcon={<IconArrowOpenStartSolid />}
-        >
-          Back
-        </Button>
-        <Analytics analytics={analytics} />
+        <Analytics
+          analytics={analytics}
+          showing={showingAnalytics}
+          show={showAnalytics}
+        />
       </>
     );
   }
@@ -212,14 +204,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
           <Breadcrumb.Link onClick={deselectAlbum}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedAlbum.title}</Breadcrumb.Link>
         </Breadcrumb>
-        <Button
-          onClick={showAnalytics}
-          margin="medium 0"
-          color="primary"
-          renderIcon={<IconAnalyticsSolid />}
-        >
-          Analytics
-        </Button>
+        <Analytics showing={showingAnalytics} show={showAnalytics} />
         <br />
         <Button
           onClick={deselectAlbum}
@@ -242,14 +227,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
       <Breadcrumb size="large" label="Album navigation">
         <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
       </Breadcrumb>
-      <Button
-        onClick={showAnalytics}
-        margin="medium 0"
-        color="primary"
-        renderIcon={<IconAnalyticsSolid />}
-      >
-        Analytics
-      </Button>
+      <Analytics showing={showingAnalytics} show={showAnalytics} />
       <AlbumTable
         allAlbums={allAlbums}
         handleClick={handleAlbumClick}

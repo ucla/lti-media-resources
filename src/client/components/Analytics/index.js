@@ -7,19 +7,47 @@ import { ProgressCircle } from '@instructure/ui-progress';
 import { Text } from '@instructure/ui-text';
 import { View } from '@instructure/ui-view';
 import { TextInput } from '@instructure/ui-text-input';
-import { IconSearchLine } from '@instructure/ui-icons';
+import { Button } from '@instructure/ui-buttons';
+import {
+  IconSearchLine,
+  IconArrowOpenStartSolid,
+  IconAnalyticsSolid,
+} from '@instructure/ui-icons';
 
-export const Analytics = ({ analytics }) => {
+export const Analytics = ({ analytics, showing, show }) => {
   Analytics.propTypes = {
     analytics: PropTypes.array,
+    showing: PropTypes.bool,
+    show: PropTypes.func,
   };
 
   const [searchedName, setSearchedName] = useState('');
 
   const handleChange = (e, value) => setSearchedName(value);
 
+  if (!analytics || !showing) {
+    return (
+      <Button
+        onClick={show}
+        margin="medium 0"
+        color="primary"
+        renderIcon={<IconAnalyticsSolid />}
+      >
+        Analytics
+      </Button>
+    );
+  }
+
   return (
-    <View>
+    <>
+      <Button
+        onClick={show}
+        margin="medium 0"
+        color="primary"
+        renderIcon={<IconArrowOpenStartSolid />}
+      >
+        Back
+      </Button>
       <View margin="x-large">
         <TextInput
           renderBeforeInput={<IconSearchLine inline={false} />}
@@ -121,6 +149,6 @@ export const Analytics = ({ analytics }) => {
             </Table>
           </ToggleDetails>
         ))}
-    </View>
+    </>
   );
 };

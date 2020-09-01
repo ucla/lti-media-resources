@@ -75,17 +75,26 @@ class MusicresServices {
       course.label,
       playbacksCollectionName
     );
+    // Declare an empty array to push in final results
+    // The array contains objects organized like this:
+    // First level objects: analytics of each user
+    //   {name: string, userid: number, finishedCount: number, totalCount: number, analytics: array of second level objects}
+    // Second level objects: playback history of a track
+    //   {title: string, finishedTimes: number, time: number, remaining: number}
     const analyticsByUsers = [];
+    // Create a first level object for each user
     for (const userObj of members) {
       const { user_id: idStr, name } = userObj;
       const userid = parseInt(idStr);
       // Declare an array of third level objects
       const analyticsOfUser = [];
       let finishedCount = 0;
+      // Create a second level object for each track
       for (const track of allTracks) {
         const matchedAnalyticArr = rawAnalytics.filter(
           a => a.userid === userid && a.file === track.file
         );
+        // If user has watched this track before, modify playback history and push to result
         if (matchedAnalyticArr.length >= 1) {
           if (!matchedAnalyticArr[0].finishedTimes) {
             matchedAnalyticArr[0].finishedTimes = 0;
@@ -104,6 +113,7 @@ class MusicresServices {
             matchedAnalyticArr[0].remaining = 100;
           }
           analyticsOfUser.push(matchedAnalyticArr[0]);
+          // If user has not watched this track before, create an analytic with no progress
         } else {
           analyticsOfUser.push({
             title: track.title,
