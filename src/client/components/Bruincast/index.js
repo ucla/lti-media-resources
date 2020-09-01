@@ -8,9 +8,9 @@ import { Tabs } from '@instructure/ui-tabs';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
-import { Link } from '@instructure/ui-link';
 import axiosRetry from 'axios-retry';
 import { Button } from '@instructure/ui-buttons';
+import { Link } from '@instructure/ui-link';
 import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';
 
 import { BruincastTable } from './BruincastTable';
@@ -187,8 +187,16 @@ export const Bruincast = ({
       <Heading>{`Bruincast: ${course.title}`}</Heading>
       {warningElement}
       <Text>
-        Video recordings may take up to 24 hours before they are available.{' '}
-        <Link href="#">Help</Link>
+        Video recordings may take up to 24 hours before they are available. For
+        help regarding Bruincast content, please read our{' '}
+        <Link
+          href="https://docs.ccle.ucla.edu/index.php?title=BruinCast"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          help document
+        </Link>
+        .
       </Text>
       <br />
       <div>
