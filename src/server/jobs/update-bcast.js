@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const registrar = require('../services/registrar');
 const UpdateBruincastServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
+const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
 
 require('dotenv').config();
 
@@ -199,7 +200,7 @@ async function main() {
           // Update database records
           await UpdateBruincastServices.updateRecordsForClass(
             client,
-            'bruincastmedia',
+            collectionMap.get(COLLECTION_TYPE.BRUINCAST),
             currentTerm,
             currentSRS,
             mediaRecords,
