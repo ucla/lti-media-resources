@@ -61,6 +61,71 @@ class VideoresServices {
     );
     return termMedia;
   }
+
+  static async getAnalytics(course, members) {
+    const allMedias = await MediaQuery.getVideoResByCourse(course.label);
+    const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
+      MEDIA_TYPE.VIDEO_RESERVES,
+      course.label
+    );
+    // Declare an empty array to push in final results
+    // The array contains objects organized like this:
+    // First level objects: analytics of each user
+    //   {name: string, userid: number, finishedCount: number, totalCount: number, analytics: array of second level objects}
+    // Second level objects: playback history of a media
+    //   {title: string, finishedTimes: number, time: number, remaining: number}
+    const analyticsByUsers = [];
+    // Create a first level object for each user
+    for (const userObj of members) {
+      const { user_id: idStr, name } = userObj;
+      const userid = parseInt(idStr);
+      // Declare an array of second level objects
+      const analyticsOfUser = [];
+      let finishedCount = 0;
+      // Create a second level object for each media
+      for (const media of allMedias) {
+        const matchedAnalyticArr = rawAnalytics.filter(
+          a => a.userid === userid && a.file === media.filename
+        );
+        // If user has watched this media before, modify playback history and push to result
+        if (matchedAnalyticArr.length >= 1) {
+          if (!matchedAnalyticArr[0].finishedTimes) {
+            matchedAnalyticArr[0].finishedTimes = 0;
+          }
+          if (matchedAnalyticArr[0].finishedTimes > 0) {
+            finishedCount += 1;
+          }
+          delete matchedAnalyticArr[0]._id;
+          delete matchedAnalyticArr[0].classShortname;
+          delete matchedAnalyticArr[0].mediaType;
+          matchedAnalyticArr[0].title = media.videoTitle;
+          if (
+            matchedAnalyticArr[0].time === 0 &&
+            matchedAnalyticArr[0].remaining === 0
+          ) {
+            matchedAnalyticArr[0].remaining = 100;
+          }
+          analyticsOfUser.push(matchedAnalyticArr[0]);
+          // If user has not watched this media before, create an analytic with no progress
+        } else {
+          analyticsOfUser.push({
+            title: media.videoTitle,
+            time: 0,
+            remaining: 100,
+            finishedTimes: 0,
+          });
+        }
+      }
+      analyticsByUsers.push({
+        userid,
+        name,
+        analytics: analyticsOfUser,
+        finishedCount,
+        totalCount: allMedias.length,
+      });
+    }
+    return analyticsByUsers;
+  }
 }
 
 module.exports = VideoresServices;

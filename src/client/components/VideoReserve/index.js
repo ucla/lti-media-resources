@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -12,20 +12,28 @@ import axiosRetry from 'axios-retry';
 import { getLtik } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';
+import { Analytics } from '../Analytics';
 
 axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
-export const VideoReserve = ({ course, onCampus, userid, setError }) => {
+export const VideoReserve = ({
+  course,
+  onCampus,
+  userid,
+  isInstructorOrAdmin,
+  setError,
+}) => {
   VideoReserve.propTypes = {
     course: PropTypes.object,
     onCampus: PropTypes.bool,
     userid: PropTypes.number,
+    isInstructorOrAdmin: PropTypes.bool,
     setError: PropTypes.func,
   };
 
-  const [vidReserves, setVidReserves] = React.useState([]);
+  const [vidReserves, setVidReserves] = useState([]);
   const getVideoRes = () => {
     const ltik = getLtik();
     axios
@@ -41,9 +49,9 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
         });
       });
   };
-  React.useEffect(getVideoRes, []);
+  useEffect(getVideoRes, []);
 
-  const [selectedMedia, setSelectedMedia] = React.useState({});
+  const [selectedMedia, setSelectedMedia] = useState({});
   const selectMedia = obj => {
     setSelectedMedia(obj);
   };
@@ -68,6 +76,26 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
     setVidReserves(toBeSet);
   };
 
+  const [analytics, setAnalytics] = useState(null);
+  const retrieveAnalytics = () => {
+    if (isInstructorOrAdmin) {
+      const ltik = getLtik();
+      axios
+        .get(`/api/medias/analytics?ltik=${ltik}`, {
+          params: { mediaType: constants.MEDIA_TYPE.VIDEO_RESERVES },
+        })
+        .then(res => {
+          setAnalytics(res.data);
+        });
+    }
+  };
+  useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
+
+  const [showingAnalytics, setShowingAnalytics] = useState(false);
+  const showAnalytics = () => {
+    setShowingAnalytics(!showingAnalytics);
+  };
+
   // If playing media
   if (
     selectedMedia.url &&
@@ -83,6 +111,16 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
         deSelectMedia={deselectMedia}
         hotReloadPlayback={hotReloadPlayback}
         setError={setError}
+      />
+    );
+  }
+
+  if (analytics && showingAnalytics) {
+    return (
+      <Analytics
+        analytics={analytics}
+        showing={showingAnalytics}
+        show={showAnalytics}
       />
     );
   }
@@ -108,6 +146,9 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
             it.ucla.edu/it-support-center/services/virtual-private-network-vpn-clients
           </a>
         </Alert>
+      )}
+      {analytics && (
+        <Analytics showing={showingAnalytics} show={showAnalytics} />
       )}
       <Table hover id="videoreserves" caption="Video Reserves">
         <Table.Head>

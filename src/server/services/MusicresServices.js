@@ -74,7 +74,7 @@ class MusicresServices {
     for (const userObj of members) {
       const { user_id: idStr, name } = userObj;
       const userid = parseInt(idStr);
-      // Declare an array of third level objects
+      // Declare an array of second level objects
       const analyticsOfUser = [];
       let finishedCount = 0;
       // Create a second level object for each track

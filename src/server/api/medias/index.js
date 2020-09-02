@@ -8,6 +8,7 @@ const constants = require('../../../../constants');
 const MediaResourceServices = require('../../services/MediaResourceServices');
 const BruincastServices = require('../../services/BruincastServices');
 const MusicresServices = require('../../services/MusicresServices');
+const VideoresServices = require('../../services/VideoresServices');
 const CheckRoleServices = require('../../services/CheckRole');
 const bruincastRoute = require('./bruincast');
 const videoresRoute = require('./videores');
@@ -73,6 +74,11 @@ router.get('/analytics', async (req, res) => {
       break;
     case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
       MusicresServices.getAnalytics(context, members).then(analytics =>
+        res.send(analytics)
+      );
+      break;
+    case constants.MEDIA_TYPE.VIDEO_RESERVES:
+      VideoresServices.getAnalytics(context, members).then(analytics =>
         res.send(analytics)
       );
       break;
