@@ -1,7 +1,11 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
-const constants = require('../../../constants');
+const {
+  MEDIA_TYPE,
+  COLLECTION_TYPE,
+  collectionMap,
+} = require('../../../constants');
 
 const { window } = new JSDOM('');
 const dompurify = createDOMPurify(window);
@@ -53,7 +57,7 @@ class BruincastServices {
         courseCasts.length !== 0
       ) {
         const rawPlaybacks = await MediaQuery.getPlaybacks(
-          constants.MEDIA_TYPE.BRUINCAST,
+          MEDIA_TYPE.BRUINCAST,
           userid,
           c.label
         );
@@ -124,10 +128,9 @@ class BruincastServices {
     return media;
   }
 
-  static async getCastListings(term) {
-    const termMedia = await MediaQuery.getMediaForTerm(
-      constants.collectionMap.get(constants.COLLECTION_TYPE.BRUINCAST),
-      term
+  static async getCastListings() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      collectionMap.get(COLLECTION_TYPE.BRUINCAST)
     );
     const formattedMedia = this.formatTermCasts(termMedia);
     return formattedMedia;
@@ -155,7 +158,7 @@ class BruincastServices {
       ) {
         // Retrieving all playback histories of course from database
         const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
-          constants.MEDIA_TYPE.BRUINCAST,
+          MEDIA_TYPE.BRUINCAST,
           c
         );
         // Declare an array of second level objects
@@ -236,14 +239,6 @@ class BruincastServices {
       }
     }
     return analyticsByCourse;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      constants.collectionMap.get(constants.COLLECTION_TYPE.BRUINCAST),
-      term
-    );
-    return subjectAreas;
   }
 }
 

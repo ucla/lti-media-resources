@@ -1,11 +1,15 @@
 const MediaQuery = require('../models/mediaquery');
-const constants = require('../../../constants');
+const {
+  MEDIA_TYPE,
+  COLLECTION_TYPE,
+  collectionMap,
+} = require('../../../constants');
 
 class MusicresServices {
   static async getMusicres(label, userid) {
     const docs = await MediaQuery.getMusicResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
-      constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
+      MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       userid,
       label
     );
@@ -37,19 +41,11 @@ class MusicresServices {
     return docs;
   }
 
-  static async getAllMusicReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm(
-      constants.collectionMap.get(
-        constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
-      ),
-      term
+  static async getAllMusicReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES)
     );
     return termMedia;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(term);
-    return subjectAreas;
   }
 
   static async getAnalytics(course, members) {
@@ -64,7 +60,7 @@ class MusicresServices {
       }
     }
     const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
-      constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
+      MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       course.label
     );
     // Declare an empty array to push in final results

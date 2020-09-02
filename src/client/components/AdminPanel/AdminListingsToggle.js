@@ -11,9 +11,15 @@ import { MusicResListingsAlbumToggle } from './MusicResListingsAlbumToggle';
 
 const constants = require('../../../../constants');
 
-export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
+export const AdminListingsToggle = ({
+  shortname,
+  term,
+  listings,
+  mediaType,
+}) => {
   AdminListingsToggle.propTypes = {
     shortname: PropTypes.string,
+    term: PropTypes.string,
     listings: PropTypes.array,
     mediaType: PropTypes.number,
   };
@@ -36,7 +42,7 @@ export const AdminListingsToggle = ({ shortname, listings, mediaType }) => {
   const shortnameSummary = (
     <>
       <Text>
-        {`${shortname === null ? 'No Shortname' : shortname} · ${
+        {`${shortname === null ? `${term}: No Shortname` : shortname} · ${
           listings.length
         } listing${listings.length !== 1 ? 's' : ''}`}
       </Text>{' '}

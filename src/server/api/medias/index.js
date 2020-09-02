@@ -81,6 +81,25 @@ router.get('/analytics', async (req, res) => {
   }
 });
 
+router.get('/terms', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { mediaType } = req.query;
+  MediaResourceServices.getTerms(mediaType).then(terms => res.send(terms));
+});
+
+router.get('/subjectareas', (req, res) => {
+  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { mediaType, term } = req.query;
+  MediaResourceServices.getSubjectAreasForTerm(
+    mediaType,
+    term
+  ).then(subjAreas => res.send(subjAreas));
+});
+
 router.get('/url', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.token.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));

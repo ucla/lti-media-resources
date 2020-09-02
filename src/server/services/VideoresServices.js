@@ -1,12 +1,16 @@
 const MediaQuery = require('../models/mediaquery');
 const cache = require('./cache');
-const constants = require('../../../constants');
+const {
+  MEDIA_TYPE,
+  COLLECTION_TYPE,
+  collectionMap,
+} = require('../../../constants');
 
 class VideoresServices {
   static async getVideores(label, userid) {
     const docs = await MediaQuery.getVideoResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
-      constants.MEDIA_TYPE.VIDEO_RESERVES,
+      MEDIA_TYPE.VIDEO_RESERVES,
       userid,
       label
     );
@@ -51,20 +55,11 @@ class VideoresServices {
     return docs;
   }
 
-  static async getAllVideoReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm(
-      constants.collectionMap.get(constants.COLLECTION_TYPE.VIDEO_RESERVES),
-      term
+  static async getAllVideoReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES)
     );
     return termMedia;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      constants.collectionMap.get(constants.COLLECTION_TYPE.VIDEO_RESERVES),
-      term
-    );
-    return subjectAreas;
   }
 }
 
