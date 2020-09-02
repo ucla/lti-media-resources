@@ -227,7 +227,7 @@ test('Test getMediaGroupedByShortname', async done => {
             audio: '',
             title: 'Past Lectures',
             comments:
-              '<p>Video recording is from Spring 2017 (date of lecture: 6/8/2017) ... No audio recording from Spring 2018 (6/7/2018)</p>\n',
+              '<p>Video recording is from Spring 2017 (date of lecture: 6/8/2017) ... No audio recording from Spring 2018 (6/7/2018)</p>\n',
             timestamp: 1596157101968,
           },
           {
@@ -242,7 +242,7 @@ test('Test getMediaGroupedByShortname', async done => {
             audio: '',
             title: 'Past Lectures',
             comments:
-              '<p>Video recording is from Spring 2017 (date of lecture: 6/6/2017) ... No audio recording from Spring 2018 (6/5/2018)</p>\n',
+              '<p>Video recording is from Spring 2017 (date of lecture: 6/6/2017) ... No audio recording from Spring 2018 (6/5/2018)</p>\n',
             timestamp: 1596157102195,
           },
         ],
