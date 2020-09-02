@@ -80,9 +80,13 @@ export const Bruincast = ({
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
-      axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`).then(res => {
-        setAnalytics(res.data);
-      });
+      axios
+        .get(`/api/medias/analytics?ltik=${ltik}`, {
+          params: { mediaType: constants.MEDIA_TYPE.BRUINCAST },
+        })
+        .then(res => {
+          setAnalytics(res.data);
+        });
     }
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);

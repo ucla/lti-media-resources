@@ -58,7 +58,9 @@ export const Analytics = ({ analytics, showing, show }) => {
         />
       </View>
       {analytics
-        .filter(analyticOfUser => analyticOfUser.name.includes(searchedName))
+        .filter(analyticOfUser =>
+          analyticOfUser.name.toLowerCase().includes(searchedName.toLowerCase())
+        )
         .map(analyticOfUser => (
           <ToggleDetails
             id={`user${analyticOfUser.userid}`}

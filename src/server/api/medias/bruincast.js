@@ -45,25 +45,6 @@ router.get('/alllistings', (req, res) => {
   BruincastServices.getCastListings(term).then(casts => res.send(casts));
 });
 
-router.get('/analytics', async (req, res) => {
-  if (!CheckRoleServices.isInstructorOrAdmin(res.locals.token.roles)) {
-    return res.status(403).send(new Error('Unauthorized role'));
-  }
-  let { members } = await lti.NamesAndRoles.getMembers(res.locals.token);
-  members = members.filter(member => member.roles.includes('Learner'));
-  for (const member of members) {
-    delete member.status;
-    delete member.lis_person_sourcedid;
-    delete member.given_name;
-    delete member.family_name;
-    delete member.email;
-  }
-  const { context } = res.locals.context;
-  BruincastServices.getAnalytics(context, members).then(analytics =>
-    res.send(analytics)
-  );
-});
-
 router.get('/subjectareas', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));

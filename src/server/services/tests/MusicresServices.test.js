@@ -7,9 +7,10 @@ const { COLLECTION_TYPE } = require('../../../../constants');
 
 const { DIGITAL_AUDIO_RESERVES, PLAYBACKS } = COLLECTION_TYPE;
 
+const postfix = 'testmusicresservices';
 const testCollections = new Map([
-  [DIGITAL_AUDIO_RESERVES, 'musicreservestestmusicresservices'],
-  [PLAYBACKS, 'playbackstestmusicresservices'],
+  [DIGITAL_AUDIO_RESERVES, `${process.env.DB_COLLECTION_MUSICRES}${postfix}`],
+  [PLAYBACKS, `${process.env.DB_COLLECTION_PLAYBACKS}${postfix}`],
 ]);
 
 beforeAll(async done => {

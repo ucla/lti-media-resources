@@ -131,9 +131,13 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
-      axios.get(`/api/medias/musicres/analytics?ltik=${ltik}`).then(res => {
-        setAnalytics(res.data);
-      });
+      axios
+        .get(`/api/medias/analytics?ltik=${ltik}`, {
+          params: { mediaType: constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES },
+        })
+        .then(res => {
+          setAnalytics(res.data);
+        });
     }
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
@@ -204,7 +208,9 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
           <Breadcrumb.Link onClick={deselectAlbum}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedAlbum.title}</Breadcrumb.Link>
         </Breadcrumb>
-        <Analytics showing={showingAnalytics} show={showAnalytics} />
+        {analytics && (
+          <Analytics showing={showingAnalytics} show={showAnalytics} />
+        )}
         <br />
         <Button
           onClick={deselectAlbum}
@@ -227,7 +233,9 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
       <Breadcrumb size="large" label="Album navigation">
         <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
       </Breadcrumb>
-      <Analytics showing={showingAnalytics} show={showAnalytics} />
+      {analytics && (
+        <Analytics showing={showingAnalytics} show={showAnalytics} />
+      )}
       <AlbumTable
         allAlbums={allAlbums}
         handleClick={handleAlbumClick}

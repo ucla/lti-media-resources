@@ -8,10 +8,11 @@ const { COLLECTION_TYPE } = require('../../../../constants');
 
 const { BRUINCAST, CROSSLISTS, PLAYBACKS } = COLLECTION_TYPE;
 
+const postfix = 'testbruincastservices';
 const testCollections = new Map([
-  [BRUINCAST, 'bruincastmediatestbruincastservices'],
-  [CROSSLISTS, 'crossliststestbruincastservices'],
-  [PLAYBACKS, 'playbackstestbruincastservices'],
+  [BRUINCAST, `${process.env.DB_COLLECTION_BRUINCAST}${postfix}`],
+  [CROSSLISTS, `${process.env.DB_COLLECTION_CROSSLISTS}${postfix}`],
+  [PLAYBACKS, `${process.env.DB_COLLECTION_PLAYBACKS}${postfix}`],
 ]);
 
 beforeAll(async done => {

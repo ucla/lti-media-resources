@@ -10,8 +10,9 @@ const { VIDEO_RESERVES } = COLLECTION_TYPE;
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
 
+const postfix = 'testupdateservices';
 const testCollections = new Map([
-  [VIDEO_RESERVES, 'videoreservestestupdateservices'],
+  [VIDEO_RESERVES, `${process.env.DB_COLLECTION_VIDEORES}${postfix}`],
 ]);
 
 beforeAll(async done => {

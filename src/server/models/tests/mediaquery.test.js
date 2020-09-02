@@ -11,7 +11,10 @@ const { COLLECTION_TYPE } = require('../../../../constants');
 
 const { BRUINCAST } = COLLECTION_TYPE;
 
-const testCollections = new Map([[BRUINCAST, 'bruincastmediatestmediaquery']]);
+const postfix = 'testmediaquery';
+const testCollections = new Map([
+  [BRUINCAST, `${process.env.DB_COLLECTION_BRUINCAST}${postfix}`],
+]);
 
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const testData = [
