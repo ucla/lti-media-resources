@@ -1,5 +1,4 @@
 const express = require('express');
-const lti = require('ltijs').Provider;
 
 const router = express.Router();
 

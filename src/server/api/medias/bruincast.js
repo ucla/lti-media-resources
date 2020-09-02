@@ -1,5 +1,4 @@
 const express = require('express');
-const lti = require('ltijs').Provider;
 
 const BruincastServices = require('../../services/BruincastServices');
 const CheckRoleServices = require('../../services/CheckRole');
