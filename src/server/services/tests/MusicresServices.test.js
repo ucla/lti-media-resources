@@ -3,21 +3,25 @@ require('babel-polyfill');
 
 const MusicresServices = require('../MusicresServices');
 const client = require('../../models/db');
-const { COLLECTION_TYPE } = require('../../../../constants');
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
 
 const { DIGITAL_AUDIO_RESERVES, PLAYBACKS } = COLLECTION_TYPE;
 
 const postfix = 'testmusicresservices';
 const testCollections = new Map([
-  [DIGITAL_AUDIO_RESERVES, `${process.env.DB_COLLECTION_MUSICRES}${postfix}`],
-  [PLAYBACKS, `${process.env.DB_COLLECTION_PLAYBACKS}${postfix}`],
+  [
+    DIGITAL_AUDIO_RESERVES,
+    `${collectionMap.get(DIGITAL_AUDIO_RESERVES)}${postfix}`,
+  ],
+  [PLAYBACKS, `${collectionMap.get(PLAYBACKS)}${postfix}`],
 ]);
 
 beforeAll(async done => {
-  process.env.DB_COLLECTION_MUSICRES = testCollections.get(
-    DIGITAL_AUDIO_RESERVES
+  collectionMap.set(
+    DIGITAL_AUDIO_RESERVES,
+    testCollections.get(DIGITAL_AUDIO_RESERVES)
   );
-  process.env.DB_COLLECTION_PLAYBACKS = testCollections.get(PLAYBACKS);
+  collectionMap.set(PLAYBACKS, testCollections.get(PLAYBACKS));
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
   const db = client.db(process.env.DB_DATABASE);

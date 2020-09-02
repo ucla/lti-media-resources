@@ -4,21 +4,21 @@ require('babel-polyfill');
 const BruincastServices = require('../BruincastServices');
 const client = require('../../models/db');
 
-const { COLLECTION_TYPE } = require('../../../../constants');
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
 
 const { BRUINCAST, CROSSLISTS, PLAYBACKS } = COLLECTION_TYPE;
 
 const postfix = 'testbruincastservices';
 const testCollections = new Map([
-  [BRUINCAST, `${process.env.DB_COLLECTION_BRUINCAST}${postfix}`],
-  [CROSSLISTS, `${process.env.DB_COLLECTION_CROSSLISTS}${postfix}`],
-  [PLAYBACKS, `${process.env.DB_COLLECTION_PLAYBACKS}${postfix}`],
+  [BRUINCAST, `${collectionMap.get(BRUINCAST)}${postfix}`],
+  [CROSSLISTS, `${collectionMap.get(CROSSLISTS)}${postfix}`],
+  [PLAYBACKS, `${collectionMap.get(PLAYBACKS)}${postfix}`],
 ]);
 
 beforeAll(async done => {
-  process.env.DB_COLLECTION_BRUINCAST = testCollections.get(BRUINCAST);
-  process.env.DB_COLLECTION_CROSSLISTS = testCollections.get(CROSSLISTS);
-  process.env.DB_COLLECTION_PLAYBACKS = testCollections.get(PLAYBACKS);
+  collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
+  collectionMap.set(CROSSLISTS, testCollections.get(CROSSLISTS));
+  collectionMap.set(PLAYBACKS, testCollections.get(PLAYBACKS));
   const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
   await client.connect(dbURL);
   const db = client.db(process.env.DB_DATABASE);

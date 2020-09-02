@@ -151,6 +151,19 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     return (
       <>
         <Breadcrumb size="large" label="Album navigation">
+          <Breadcrumb.Link
+            onClick={() => {
+              showAnalytics();
+              deselectAlbum();
+            }}
+          >
+            All Albums
+          </Breadcrumb.Link>
+          {selectedAlbum && (
+            <Breadcrumb.Link onClick={showAnalytics}>
+              {selectedAlbum.title}
+            </Breadcrumb.Link>
+          )}
           <Breadcrumb.Link>Analytics</Breadcrumb.Link>
         </Breadcrumb>
         <Analytics

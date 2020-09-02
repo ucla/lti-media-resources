@@ -7,13 +7,13 @@ const {
   getMediaForTerm,
 } = require('../mediaquery');
 
-const { COLLECTION_TYPE } = require('../../../../constants');
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
 
 const { BRUINCAST } = COLLECTION_TYPE;
 
 const postfix = 'testmediaquery';
 const testCollections = new Map([
-  [BRUINCAST, `${process.env.DB_COLLECTION_BRUINCAST}${postfix}`],
+  [BRUINCAST, `${collectionMap.get(BRUINCAST)}${postfix}`],
 ]);
 
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
@@ -114,7 +114,7 @@ const testData = [
 ];
 
 beforeAll(async done => {
-  process.env.DB_COLLECTION_BRUINCAST = testCollections.get(BRUINCAST);
+  collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
   client.connect(dbURL, function() {});
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {

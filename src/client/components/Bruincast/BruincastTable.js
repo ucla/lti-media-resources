@@ -11,6 +11,8 @@ export const BruincastTable = ({
   course,
   shortname,
   analytics,
+  showingAnalytics,
+  showAnalytics,
   setError,
 }) => {
   BruincastTable.propTypes = {
@@ -19,12 +21,9 @@ export const BruincastTable = ({
     course: PropTypes.object,
     shortname: PropTypes.string,
     analytics: PropTypes.array,
+    showingAnalytics: PropTypes.bool,
+    showAnalytics: PropTypes.func,
     setError: PropTypes.func,
-  };
-
-  const [showingAnalytics, setShowingAnalytics] = useState(false);
-  const showAnalytics = () => {
-    setShowingAnalytics(!showingAnalytics);
   };
 
   if (!analytics) {

@@ -3,7 +3,7 @@ const fs = require('fs');
 require('dotenv').config();
 require('babel-polyfill');
 const UpdateReserveServices = require('../UpdateReserveServices');
-const { COLLECTION_TYPE } = require('../../../../constants');
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
 
 const { VIDEO_RESERVES } = COLLECTION_TYPE;
 
@@ -12,11 +12,11 @@ const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
 
 const postfix = 'testupdateservices';
 const testCollections = new Map([
-  [VIDEO_RESERVES, `${process.env.DB_COLLECTION_VIDEORES}${postfix}`],
+  [VIDEO_RESERVES, `${collectionMap.get(VIDEO_RESERVES)}${postfix}`],
 ]);
 
 beforeAll(async done => {
-  process.env.DB_COLLECTION_VIDEORES = testCollections.get(VIDEO_RESERVES);
+  collectionMap.set(VIDEO_RESERVES, testCollections.get(VIDEO_RESERVES));
   await dbclient.connect();
   const db = dbclient.db(process.env.DB_DATABASE);
   for (const col of testCollections) {

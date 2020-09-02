@@ -166,6 +166,11 @@ export const Bruincast = ({
     setCourseIndex(index);
   };
 
+  const [showingAnalytics, setShowingAnalytics] = useState(false);
+  const showAnalytics = () => {
+    setShowingAnalytics(!showingAnalytics);
+  };
+
   // JSX if playing a media
   if (
     selectedMedia.url &&
@@ -226,6 +231,8 @@ export const Bruincast = ({
                     )[0].analytics
                   : null
               }
+              showingAnalytics={showingAnalytics}
+              showAnalytics={showAnalytics}
               setError={setError}
             />
           </Tabs.Panel>
