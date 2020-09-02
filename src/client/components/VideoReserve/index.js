@@ -7,6 +7,7 @@ import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Table } from '@instructure/ui-table';
 import { Tag } from '@instructure/ui-tag';
+import { Link } from '@instructure/ui-link';
 
 import axiosRetry from 'axios-retry';
 import { getLtik } from '../../services/ltik';
@@ -100,13 +101,13 @@ export const VideoReserve = ({ course, onCampus, userid, setError }) => {
           <br />
           <br />
           VPN instructions:{' '}
-          <a
+          <Link
             href="https://www.it.ucla.edu/it-support-center/services/virtual-private-network-vpn-clients"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             it.ucla.edu/it-support-center/services/virtual-private-network-vpn-clients
-          </a>
+          </Link>
         </Alert>
       )}
       <Table hover id="videoreserves" caption="Video Reserves">
