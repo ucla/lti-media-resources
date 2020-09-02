@@ -1,7 +1,6 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
-const { compareAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 const { window } = new JSDOM('');

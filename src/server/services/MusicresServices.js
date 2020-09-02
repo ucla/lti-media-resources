@@ -1,5 +1,4 @@
 const MediaQuery = require('../models/mediaquery');
-const { compareAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 class MusicresServices {

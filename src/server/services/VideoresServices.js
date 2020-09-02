@@ -1,6 +1,5 @@
 const MediaQuery = require('../models/mediaquery');
 const cache = require('./cache');
-const { compareAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 class VideoresServices {
