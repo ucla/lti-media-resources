@@ -53,7 +53,7 @@ class VideoresServices {
 
   static async getAllVideoReserves(term) {
     const termMedia = await MediaQuery.getMediaForTerm(
-      process.env.DB_COLLECTION_VIDEORES,
+      constants.collectionMap.get(constants.COLLECTION_TYPE.VIDEO_RESERVES),
       term
     );
     return termMedia;
@@ -61,7 +61,7 @@ class VideoresServices {
 
   static async getSubjectAreasForTerm(term) {
     const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      process.env.DB_COLLECTION_VIDEORES,
+      constants.collectionMap.get(constants.COLLECTION_TYPE.VIDEO_RESERVES),
       term
     );
     return subjectAreas;

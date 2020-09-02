@@ -126,7 +126,7 @@ class BruincastServices {
 
   static async getCastListings(term) {
     const termMedia = await MediaQuery.getMediaForTerm(
-      process.env.DB_COLLECTION_BRUINCAST,
+      constants.collectionMap.get(constants.COLLECTION_TYPE.BRUINCAST),
       term
     );
     const formattedMedia = this.formatTermCasts(termMedia);
@@ -240,7 +240,7 @@ class BruincastServices {
 
   static async getSubjectAreasForTerm(term) {
     const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      process.env.DB_COLLECTION_BRUINCAST,
+      constants.collectionMap.get(constants.COLLECTION_TYPE.BRUINCAST),
       term
     );
     return subjectAreas;

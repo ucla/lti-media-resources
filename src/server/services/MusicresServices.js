@@ -38,7 +38,12 @@ class MusicresServices {
   }
 
   static async getAllMusicReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm(term);
+    const termMedia = await MediaQuery.getMediaForTerm(
+      constants.collectionMap.get(
+        constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
+      ),
+      term
+    );
     return termMedia;
   }
 
