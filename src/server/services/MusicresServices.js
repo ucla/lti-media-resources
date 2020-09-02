@@ -38,17 +38,11 @@ class MusicresServices {
     return docs;
   }
 
-  static async getAllMusicReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('musicreserves', term);
-    return termMedia;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'musicreserves',
-      term
+  static async getAllMusicReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      'musicreserves'
     );
-    return subjectAreas;
+    return termMedia;
   }
 }
 

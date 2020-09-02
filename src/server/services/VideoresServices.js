@@ -52,17 +52,11 @@ class VideoresServices {
     return docs;
   }
 
-  static async getAllVideoReserves(term) {
-    const termMedia = await MediaQuery.getMediaForTerm('videoreserves', term);
-    return termMedia;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'videoreserves',
-      term
+  static async getAllVideoReserves() {
+    const termMedia = await MediaQuery.getMediaGroupedByShortname(
+      'videoreserves'
     );
-    return subjectAreas;
+    return termMedia;
   }
 }
 

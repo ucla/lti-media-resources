@@ -2,6 +2,7 @@ const sha256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 
 const MediaQuery = require('../models/mediaquery');
+const { compareAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 class MediaResourceServices {
@@ -49,6 +50,51 @@ class MediaResourceServices {
       'playbacks'
     );
     return ok;
+  }
+
+  static async getTerms(mediaType) {
+    let mediaCollectionName = '';
+
+    switch (parseInt(mediaType)) {
+      case constants.MEDIA_TYPE.BRUINCAST:
+        mediaCollectionName = 'bruincastmedia';
+        break;
+      case constants.MEDIA_TYPE.VIDEO_RESERVES:
+        mediaCollectionName = 'videoreserves';
+        break;
+      case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
+        mediaCollectionName = 'musicreserves';
+        break;
+      default:
+        throw new Error('Invalid mediaType');
+    }
+
+    const terms = await MediaQuery.getTerms(mediaCollectionName);
+    terms.sort(compareAcademicTerms).reverse();
+    return terms;
+  }
+
+  static async getSubjectAreasForTerm(mediaType, term) {
+    let mediaCollectionName = '';
+    switch (parseInt(mediaType)) {
+      case constants.MEDIA_TYPE.BRUINCAST:
+        mediaCollectionName = 'bruincastmedia';
+        break;
+      case constants.MEDIA_TYPE.VIDEO_RESERVES:
+        mediaCollectionName = 'videoreserves';
+        break;
+      case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
+        mediaCollectionName = 'musicreserves';
+        break;
+      default:
+        throw new Error('Invalid mediaType');
+    }
+
+    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
+      mediaCollectionName,
+      term
+    );
+    return subjectAreas;
   }
 
   static async generateMediaToken(stream, clientIP, secret, start, end) {
