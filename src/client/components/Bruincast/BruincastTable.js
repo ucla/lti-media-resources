@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { View } from '@instructure/ui-view';
-import { Button } from '@instructure/ui-buttons';
-import {
-  IconAnalyticsSolid,
-  IconArrowOpenStartSolid,
-} from '@instructure/ui-icons';
 import { BruincastTableWeekToggle } from './BruincastTableWeekToggle';
 import { Analytics } from '../Analytics';
 
@@ -16,6 +11,8 @@ export const BruincastTable = ({
   course,
   shortname,
   analytics,
+  showingAnalytics,
+  showAnalytics,
   setError,
 }) => {
   BruincastTable.propTypes = {
@@ -24,12 +21,9 @@ export const BruincastTable = ({
     course: PropTypes.object,
     shortname: PropTypes.string,
     analytics: PropTypes.array,
+    showingAnalytics: PropTypes.bool,
+    showAnalytics: PropTypes.func,
     setError: PropTypes.func,
-  };
-
-  const [showingAnalytics, setShowingAnalytics] = useState(false);
-  const showAnalytics = () => {
-    setShowingAnalytics(!showingAnalytics);
   };
 
   if (!analytics) {
@@ -50,29 +44,18 @@ export const BruincastTable = ({
   if (showingAnalytics) {
     return (
       <View>
-        <Button
-          onClick={showAnalytics}
-          margin="medium 0"
-          color="primary"
-          renderIcon={<IconArrowOpenStartSolid />}
-        >
-          Back
-        </Button>
-        <Analytics analytics={analytics} />
+        <Analytics
+          analytics={analytics}
+          showing={showingAnalytics}
+          show={showAnalytics}
+        />
       </View>
     );
   }
 
   return (
     <View>
-      <Button
-        onClick={showAnalytics}
-        margin="medium 0"
-        color="primary"
-        renderIcon={<IconAnalyticsSolid />}
-      >
-        Analytics
-      </Button>
+      <Analytics showing={showingAnalytics} show={showAnalytics} />
       {casts.map(weekCasts => (
         <BruincastTableWeekToggle
           id={`toggleWeek${weekCasts._id}`}

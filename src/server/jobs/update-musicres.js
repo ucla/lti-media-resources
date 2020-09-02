@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');
 const UpdateMusicResServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
+const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
 
 /**
  * The main process
@@ -39,7 +40,7 @@ async function main() {
       }
       totalNumDiff += await UpdateMusicResServices.updateRecordsForClass(
         dbclient,
-        'musicreserves',
+        collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES),
         term,
         srs,
         works,

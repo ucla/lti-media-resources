@@ -50,3 +50,23 @@ module.exports.mediaTypeMap = new Map([
     },
   ],
 ]);
+
+module.exports.COLLECTION_TYPE = {
+  BRUINCAST: 0,
+  VIDEO_RESERVES: 1,
+  DIGITAL_AUDIO_RESERVES: 2,
+  MEDIA_GALLERY: 3,
+  CROSSLISTS: 4,
+  PLAYBACKS: 5,
+  NOTICE: 6,
+};
+
+module.exports.collectionMap = new Map([
+  [module.exports.COLLECTION_TYPE.BRUINCAST, 'bruincastmedia'],
+  [module.exports.COLLECTION_TYPE.VIDEO_RESERVES, 'videoreserves'],
+  [module.exports.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES, 'musicreserves'],
+  [module.exports.COLLECTION_TYPE.MEDIA_GALLERY, 'mediagallery'],
+  [module.exports.COLLECTION_TYPE.CROSSLISTS, 'crosslists'],
+  [module.exports.COLLECTION_TYPE.PLAYBACKS, 'playbacks'],
+  [module.exports.COLLECTION_TYPE.NOTICE, 'notice'],
+]);

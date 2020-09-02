@@ -1,7 +1,11 @@
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const MediaQuery = require('../models/mediaquery');
-const constants = require('../../../constants');
+const {
+  MEDIA_TYPE,
+  COLLECTION_TYPE,
+  collectionMap,
+} = require('../../../constants');
 
 const { window } = new JSDOM('');
 const dompurify = createDOMPurify(window);
@@ -17,29 +21,23 @@ class BruincastServices {
     return ret;
   }
 
-  static async getAllCrosslists(collectionName) {
-    const toBeReturned = await MediaQuery.getAllCrosslists(collectionName);
+  static async getAllCrosslists() {
+    const toBeReturned = await MediaQuery.getAllCrosslists();
     return toBeReturned;
   }
 
-  static async updateCrosslists(crosslists, collectionName) {
-    const numDiff = await MediaQuery.setCrosslists(crosslists, collectionName);
+  static async updateCrosslists(crosslists) {
+    const numDiff = await MediaQuery.setCrosslists(crosslists);
     return numDiff;
   }
 
-  static async getCrosslistByCourse(courseLabel, collectionName) {
-    const toBeReturned = await MediaQuery.getCrosslistByCourse(
-      courseLabel,
-      collectionName
-    );
+  static async getCrosslistByCourse(courseLabel) {
+    const toBeReturned = await MediaQuery.getCrosslistByCourse(courseLabel);
     return toBeReturned;
   }
 
   static async getCasts(course, userid) {
-    const labelList = await this.getCrosslistByCourse(
-      course.label,
-      'crosslists'
-    );
+    const labelList = await this.getCrosslistByCourse(course.label);
     const courseList = [course];
 
     for (const label of labelList) {
@@ -51,10 +49,7 @@ class BruincastServices {
 
     const castsByCourses = [];
     for (const c of courseList) {
-      const courseCasts = await MediaQuery.getCastsByCourse(
-        'bruincastmedia',
-        c.label
-      );
+      const courseCasts = await MediaQuery.getCastsByCourse(c.label);
 
       if (
         courseCasts &&
@@ -62,10 +57,9 @@ class BruincastServices {
         courseCasts.length !== 0
       ) {
         const rawPlaybacks = await MediaQuery.getPlaybacks(
-          constants.MEDIA_TYPE.BRUINCAST,
+          MEDIA_TYPE.BRUINCAST,
           userid,
-          c.label,
-          'playbacks'
+          c.label
         );
 
         for (const listObj of courseCasts) {
@@ -136,23 +130,14 @@ class BruincastServices {
 
   static async getCastListings() {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
-      'bruincastmedia'
+      collectionMap.get(COLLECTION_TYPE.BRUINCAST)
     );
     const formattedMedia = this.formatTermCasts(termMedia);
     return formattedMedia;
   }
 
-  static async getAnalytics(
-    course,
-    members,
-    crosslistsCollectionName,
-    castCollectionName,
-    playbacksCollectionName
-  ) {
-    const labelList = await this.getCrosslistByCourse(
-      course.label,
-      crosslistsCollectionName
-    );
+  static async getAnalytics(course, members) {
+    const labelList = await this.getCrosslistByCourse(course.label);
     const courseList = [course.label, ...labelList];
 
     // The following codes format analytics into the following format
@@ -163,7 +148,6 @@ class BruincastServices {
     const analyticsByCourse = [];
     for (const c of courseList) {
       const courseCasts = await MediaQuery.getCastsByCourseWithoutAggregation(
-        castCollectionName,
         c
       );
 
@@ -174,9 +158,8 @@ class BruincastServices {
       ) {
         // Retrieving all playback histories of course from database
         const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
-          constants.MEDIA_TYPE.BRUINCAST,
-          c,
-          playbacksCollectionName
+          MEDIA_TYPE.BRUINCAST,
+          c
         );
         // Declare an array of second level objects
         const analyticsByUsers = [];

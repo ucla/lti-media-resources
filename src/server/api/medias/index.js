@@ -1,10 +1,13 @@
 const express = require('express');
+const lti = require('ltijs').Provider;
 const path = require('path');
 
 const router = express.Router();
 
 const constants = require('../../../../constants');
 const MediaResourceServices = require('../../services/MediaResourceServices');
+const BruincastServices = require('../../services/BruincastServices');
+const MusicresServices = require('../../services/MusicresServices');
 const CheckRoleServices = require('../../services/CheckRole');
 const bruincastRoute = require('./bruincast');
 const videoresRoute = require('./videores');
@@ -44,6 +47,38 @@ router.post('/playback', (req, res) => {
     remaining,
     finished
   ).then(ok => res.send({ ok }));
+});
+
+router.get('/analytics', async (req, res) => {
+  if (!CheckRoleServices.isInstructorOrAdmin(res.locals.token.roles)) {
+    return res.status(403).send(new Error('Unauthorized role'));
+  }
+  const { mediaType } = req.query;
+
+  let { members } = await lti.NamesAndRoles.getMembers(res.locals.token);
+  members = members.filter(member => member.roles.includes('Learner'));
+  for (const member of members) {
+    delete member.status;
+    delete member.lis_person_sourcedid;
+    delete member.given_name;
+    delete member.family_name;
+    delete member.email;
+  }
+  const { context } = res.locals.context;
+  switch (parseInt(mediaType)) {
+    case constants.MEDIA_TYPE.BRUINCAST:
+      BruincastServices.getAnalytics(context, members).then(analytics =>
+        res.send(analytics)
+      );
+      break;
+    case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
+      MusicresServices.getAnalytics(context, members).then(analytics =>
+        res.send(analytics)
+      );
+      break;
+    default:
+      res.status(400).send(new Error('Unknown media type'));
+  }
 });
 
 router.get('/terms', (req, res) => {

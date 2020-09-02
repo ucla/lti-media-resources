@@ -1,9 +1,20 @@
 require('dotenv').config();
 const client = require('./db');
 
+const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
+
+const {
+  BRUINCAST,
+  VIDEO_RESERVES,
+  DIGITAL_AUDIO_RESERVES,
+  CROSSLISTS,
+  PLAYBACKS,
+  NOTICE,
+} = COLLECTION_TYPE;
+
 const { DB_DATABASE } = process.env;
 
-module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
+module.exports.getCastsByCourse = async courseLabel => {
   /*
    * Aggregation Steps:
    * 1. Match by courseShortname
@@ -46,18 +57,17 @@ module.exports.getCastsByCourse = async (dbCollection, courseLabel) => {
 
   const courseCasts = await client
     .db(DB_DATABASE)
-    .collection(dbCollection)
+    .collection(collectionMap.get(BRUINCAST))
     .aggregate(aggregation)
     .toArray();
 
   return courseCasts;
 };
 
-module.exports.getCastsByCourseWithoutAggregation = async (
-  dbCollection,
-  courseLabel
-) => {
-  const bcastCollection = client.db(DB_DATABASE).collection(dbCollection);
+module.exports.getCastsByCourseWithoutAggregation = async courseLabel => {
+  const bcastCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(BRUINCAST));
   const toBeReturned = await bcastCollection
     .find({ classShortname: courseLabel })
     .sort({ date: 1 })
@@ -65,10 +75,10 @@ module.exports.getCastsByCourseWithoutAggregation = async (
   return toBeReturned;
 };
 
-module.exports.getCastCountByCourse = async (dbCollection, courseLabel) => {
+module.exports.getCastCountByCourse = async courseLabel => {
   const castCount = await client
     .db(DB_DATABASE)
-    .collection(dbCollection)
+    .collection(collectionMap.get(BRUINCAST))
     .find({ classShortname: courseLabel })
     .count();
   return castCount;
@@ -130,7 +140,9 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
 };
 
 module.exports.getVideoResByCourse = async courseLabel => {
-  const videoResCollection = client.db(DB_DATABASE).collection('videoreserves');
+  const videoResCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(VIDEO_RESERVES));
   const toBeReturned = await videoResCollection
     .find({ classShortname: courseLabel })
     .sort({ videoTitle: 1 })
@@ -141,14 +153,16 @@ module.exports.getVideoResByCourse = async courseLabel => {
 module.exports.getVideoResCountByCourse = async courseLabel => {
   const resCount = await client
     .db(DB_DATABASE)
-    .collection('videoreserves')
+    .collection(collectionMap.get(VIDEO_RESERVES))
     .find({ classShortname: courseLabel })
     .count();
   return resCount;
 };
 
 module.exports.getMusicResByCourse = async courseLabel => {
-  const musicResCollection = client.db(DB_DATABASE).collection('musicreserves');
+  const musicResCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(DIGITAL_AUDIO_RESERVES));
   const toBeReturned = await musicResCollection
     .find({ classShortname: courseLabel })
     .sort({ title: 1 })
@@ -168,19 +182,25 @@ module.exports.getMusicResCountByCourse = async courseLabel => {
 };
 
 module.exports.getNotice = async () => {
-  const noticeCollection = client.db(DB_DATABASE).collection('notice');
+  const noticeCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(NOTICE));
   const noticeArray = await noticeCollection.find({}).toArray();
   return noticeArray[0].notice;
 };
 
 module.exports.setNotice = async notice => {
-  const noticeCollection = client.db(DB_DATABASE).collection('notice');
+  const noticeCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(NOTICE));
   const ret = await noticeCollection.updateOne({}, { $set: { notice } });
   return ret.result;
 };
 
-module.exports.getAllCrosslists = async collectionName => {
-  const crosslistCollection = client.db(DB_DATABASE).collection(collectionName);
+module.exports.getAllCrosslists = async () => {
+  const crosslistCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(CROSSLISTS));
   const raw = await crosslistCollection.find({}).toArray();
   const toBeReturned = [];
   for (const obj of raw) {
@@ -191,8 +211,10 @@ module.exports.getAllCrosslists = async collectionName => {
   return toBeReturned;
 };
 
-module.exports.getCrosslistByCourse = async (courseLabel, collectionName) => {
-  const arrayOfLists = await module.exports.getAllCrosslists(collectionName);
+module.exports.getCrosslistByCourse = async courseLabel => {
+  const arrayOfLists = await module.exports.getAllCrosslists(
+    collectionMap.get(CROSSLISTS)
+  );
   let toBeReturned = [];
   for (const list of arrayOfLists) {
     if (list && Array.isArray(list) && list.includes(courseLabel)) {
@@ -203,8 +225,10 @@ module.exports.getCrosslistByCourse = async (courseLabel, collectionName) => {
   return toBeReturned;
 };
 
-module.exports.setCrosslists = async (crosslists, collectionName) => {
-  const crosslistCollection = client.db(DB_DATABASE).collection(collectionName);
+module.exports.setCrosslists = async crosslists => {
+  const crosslistCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(CROSSLISTS));
   const session = client.client.startSession();
   session.startTransaction();
   try {
@@ -227,8 +251,10 @@ module.exports.setCrosslists = async (crosslists, collectionName) => {
   }
 };
 
-module.exports.updatePlayback = async (obj, collectionName) => {
-  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+module.exports.updatePlayback = async obj => {
+  const playbackCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(PLAYBACKS));
   const {
     userid,
     mediaType,
@@ -256,24 +282,19 @@ module.exports.updatePlayback = async (obj, collectionName) => {
   return result.result.ok;
 };
 
-module.exports.getPlaybacks = async (
-  mediaType,
-  userid,
-  courseLabel,
-  collectionName
-) => {
-  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+module.exports.getPlaybacks = async (mediaType, userid, courseLabel) => {
+  const playbackCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(PLAYBACKS));
   const query = { mediaType, userid, classShortname: courseLabel };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };
 
-module.exports.getAnalyticsByCourse = async (
-  mediaType,
-  courseLabel,
-  collectionName
-) => {
-  const playbackCollection = client.db(DB_DATABASE).collection(collectionName);
+module.exports.getAnalyticsByCourse = async (mediaType, courseLabel) => {
+  const playbackCollection = client
+    .db(DB_DATABASE)
+    .collection(collectionMap.get(PLAYBACKS));
   const query = { mediaType, classShortname: courseLabel };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;

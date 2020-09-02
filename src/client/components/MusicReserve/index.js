@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
 import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
@@ -10,6 +9,7 @@ import axiosRetry from 'axios-retry';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaView } from '../MediaView';
+import { Analytics } from '../Analytics';
 
 import { getLtik } from '../../services/ltik';
 
@@ -17,9 +17,10 @@ axiosRetry(axios);
 
 const constants = require('../../../../constants');
 
-export const MusicReserve = ({ userid, setError }) => {
+export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   MusicReserve.propTypes = {
     userid: PropTypes.number.isRequired,
+    isInstructorOrAdmin: PropTypes.bool,
     setError: PropTypes.func,
   };
 
@@ -126,9 +127,57 @@ export const MusicReserve = ({ userid, setError }) => {
     setAllAlbums(albumsToBeSet);
   };
 
+  const [analytics, setAnalytics] = useState(null);
+  const retrieveAnalytics = () => {
+    if (isInstructorOrAdmin) {
+      const ltik = getLtik();
+      axios
+        .get(`/api/medias/analytics?ltik=${ltik}`, {
+          params: { mediaType: constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES },
+        })
+        .then(res => {
+          setAnalytics(res.data);
+        });
+    }
+  };
+  useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
+
+  const [showingAnalytics, setShowingAnalytics] = useState(false);
+  const showAnalytics = () => {
+    setShowingAnalytics(!showingAnalytics);
+  };
+
+  if (analytics && showingAnalytics) {
+    return (
+      <>
+        <Breadcrumb size="large" label="Album navigation">
+          <Breadcrumb.Link
+            onClick={() => {
+              showAnalytics();
+              deselectAlbum();
+            }}
+          >
+            All Albums
+          </Breadcrumb.Link>
+          {selectedAlbum && (
+            <Breadcrumb.Link onClick={showAnalytics}>
+              {selectedAlbum.title}
+            </Breadcrumb.Link>
+          )}
+          <Breadcrumb.Link>Analytics</Breadcrumb.Link>
+        </Breadcrumb>
+        <Analytics
+          analytics={analytics}
+          showing={showingAnalytics}
+          show={showAnalytics}
+        />
+      </>
+    );
+  }
+
   if (selectedMusic && selectedAlbum) {
     return (
-      <View>
+      <>
         <Breadcrumb size="large" label="Album navigation">
           <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link onClick={deselectTrack}>
@@ -144,12 +193,12 @@ export const MusicReserve = ({ userid, setError }) => {
           deSelectMedia={deselectTrack}
           setError={setError}
         />
-      </View>
+      </>
     );
   }
   if (selectedMusic) {
     return (
-      <View>
+      <>
         <Breadcrumb size="large" label="Album navigation">
           <Breadcrumb.Link onClick={deselectTrack}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedMusic.trackTitle}</Breadcrumb.Link>
@@ -162,20 +211,24 @@ export const MusicReserve = ({ userid, setError }) => {
           deSelectMedia={deselectTrack}
           setError={setError}
         />
-      </View>
+      </>
     );
   }
   if (selectedAlbum) {
     return (
-      <View>
+      <>
         <Breadcrumb size="large" label="Album navigation">
           <Breadcrumb.Link onClick={deselectAlbum}>All Albums</Breadcrumb.Link>
           <Breadcrumb.Link>{selectedAlbum.title}</Breadcrumb.Link>
         </Breadcrumb>
+        {analytics && (
+          <Analytics showing={showingAnalytics} show={showAnalytics} />
+        )}
+        <br />
         <Button
           onClick={deselectAlbum}
           color="primary"
-          margin="medium"
+          margin="medium none"
           renderIcon={IconArrowOpenStartSolid}
         >
           Back
@@ -185,19 +238,22 @@ export const MusicReserve = ({ userid, setError }) => {
           handleClick={handleTrackClick}
           setError={setError}
         />
-      </View>
+      </>
     );
   }
   return (
-    <View>
+    <>
       <Breadcrumb size="large" label="Album navigation">
         <Breadcrumb.Link onClick={deselectBoth}>All Albums</Breadcrumb.Link>
       </Breadcrumb>
+      {analytics && (
+        <Analytics showing={showingAnalytics} show={showAnalytics} />
+      )}
       <AlbumTable
         allAlbums={allAlbums}
         handleClick={handleAlbumClick}
         setError={setError}
       />
-    </View>
+    </>
   );
 };

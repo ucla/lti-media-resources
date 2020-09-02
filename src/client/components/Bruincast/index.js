@@ -80,9 +80,13 @@ export const Bruincast = ({
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
-      axios.get(`/api/medias/bruincast/analytics?ltik=${ltik}`).then(res => {
-        setAnalytics(res.data);
-      });
+      axios
+        .get(`/api/medias/analytics?ltik=${ltik}`, {
+          params: { mediaType: constants.MEDIA_TYPE.BRUINCAST },
+        })
+        .then(res => {
+          setAnalytics(res.data);
+        });
     }
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
@@ -162,6 +166,11 @@ export const Bruincast = ({
     setCourseIndex(index);
   };
 
+  const [showingAnalytics, setShowingAnalytics] = useState(false);
+  const showAnalytics = () => {
+    setShowingAnalytics(!showingAnalytics);
+  };
+
   // JSX if playing a media
   if (
     selectedMedia.url &&
@@ -230,6 +239,8 @@ export const Bruincast = ({
                     )[0].analytics
                   : null
               }
+              showingAnalytics={showingAnalytics}
+              showAnalytics={showAnalytics}
               setError={setError}
             />
           </Tabs.Panel>

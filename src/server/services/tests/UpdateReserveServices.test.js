@@ -3,15 +3,25 @@ const fs = require('fs');
 require('dotenv').config();
 require('babel-polyfill');
 const UpdateReserveServices = require('../UpdateReserveServices');
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
+
+const { VIDEO_RESERVES } = COLLECTION_TYPE;
 
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
 
+const postfix = 'testupdateservices';
+const testCollections = new Map([
+  [VIDEO_RESERVES, `${collectionMap.get(VIDEO_RESERVES)}${postfix}`],
+]);
+
 beforeAll(async done => {
+  collectionMap.set(VIDEO_RESERVES, testCollections.get(VIDEO_RESERVES));
   await dbclient.connect();
-  await dbclient
-    .db(process.env.DB_DATABASE)
-    .createCollection('videoreservestests');
+  const db = dbclient.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.createCollection(col[1]);
+  }
   done();
 });
 
@@ -102,7 +112,7 @@ test('Update records for class', async done => {
   ];
   const numDiff1 = await UpdateReserveServices.updateRecordsForClass(
     dbclient,
-    'videoreservestests',
+    testCollections.get(VIDEO_RESERVES),
     '99F',
     '69420',
     sampleEntries,
@@ -129,7 +139,7 @@ test('Update records for class', async done => {
   ];
   const numDiff2 = await UpdateReserveServices.updateRecordsForClass(
     dbclient,
-    'videoreservestests',
+    testCollections.get(VIDEO_RESERVES),
     '99F',
     '69420',
     sampleEntry,
@@ -140,9 +150,10 @@ test('Update records for class', async done => {
 });
 
 afterAll(async done => {
-  await dbclient
-    .db(process.env.DB_DATABASE)
-    .dropCollection('videoreservestests');
+  const db = dbclient.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.dropCollection(col[1]);
+  }
   await dbclient.close();
   done();
 });

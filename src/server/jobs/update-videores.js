@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');
 const UpdateVideoResServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
+const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
 
 /**
  * The main process
@@ -72,7 +73,7 @@ async function main() {
     for (const srsPair of srsShortnameMap) {
       totalNumDiff += await UpdateVideoResServices.updateRecordsForClass(
         dbclient,
-        'videoreserves',
+        collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES),
         srsPair.term,
         srsPair.srs,
         result.filter(

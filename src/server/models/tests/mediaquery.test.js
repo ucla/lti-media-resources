@@ -7,8 +7,16 @@ const {
   getMediaGroupedByShortname,
 } = require('../mediaquery');
 
+const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
+
+const { BRUINCAST } = COLLECTION_TYPE;
+
+const postfix = 'testmediaquery';
+const testCollections = new Map([
+  [BRUINCAST, `${collectionMap.get(BRUINCAST)}${postfix}`],
+]);
+
 const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-const testCollectionName = 'mediaquerytests';
 const testData = [
   {
     _id: '100',
@@ -113,24 +121,20 @@ const testData = [
 ];
 
 beforeAll(async done => {
+  collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
   client.connect(dbURL, function() {});
-  await client.db(process.env.DB_DATABASE).createCollection(testCollectionName);
-
-  await client
-    .db(process.env.DB_DATABASE)
-    .collection(testCollectionName)
-    .insertMany(testData);
-
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.createCollection(col[1]);
+  }
+  await db.collection(testCollections.get(BRUINCAST)).insertMany(testData);
   done();
 });
 
 test('Test getCastsByCourse', async done => {
   // Expect the returned casts to be bucketed by week
   try {
-    const castsFor201CS32 = await getCastsByCourse(
-      testCollectionName,
-      '20S-COMSCI32-1'
-    );
+    const castsFor201CS32 = await getCastsByCourse('20S-COMSCI32-1');
 
     const expectedCasts = [
       {
@@ -183,14 +187,10 @@ test('Test getCastsByCourse', async done => {
 
 test('Test getCastCountByCourse', async done => {
   try {
-    const castCountFor201CS32 = await getCastCountByCourse(
-      testCollectionName,
-      '20S-COMSCI32-1'
-    );
+    const castCountFor201CS32 = await getCastCountByCourse('20S-COMSCI32-1');
     expect(castCountFor201CS32).toEqual(3);
 
     const castCountFor201EEBIOL162 = await getCastCountByCourse(
-      testCollectionName,
       '201C-EEBIOL162-1'
     );
     expect(castCountFor201EEBIOL162).toEqual(2);
@@ -203,7 +203,9 @@ test('Test getCastCountByCourse', async done => {
 
 test('Test getMediaGroupedByShortname', async done => {
   try {
-    const groupedMedia = await getMediaGroupedByShortname(testCollectionName);
+    const groupedMedia = await getMediaGroupedByShortname(
+      testCollections.get(BRUINCAST)
+    );
 
     const expectedMedia = [
       {
@@ -353,7 +355,10 @@ test('Test getMediaGroupedByShortname', async done => {
 });
 
 afterAll(async done => {
-  await client.db(process.env.DB_DATABASE).dropCollection(testCollectionName);
-  client.close();
+  const db = client.db(process.env.DB_DATABASE);
+  for (const col of testCollections) {
+    await db.dropCollection(col[1]);
+  }
+  await client.close();
   done();
 });
