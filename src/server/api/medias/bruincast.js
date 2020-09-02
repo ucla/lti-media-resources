@@ -74,21 +74,4 @@ router.get('/analytics', async (req, res) => {
   ).then(analytics => res.send(analytics));
 });
 
-router.get('/subjectareas', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
-    return res.status(403).send(new Error('Unauthorized role'));
-  }
-  const { term } = req.query;
-  BruincastServices.getSubjectAreasForTerm(term).then(subjAreas =>
-    res.send(subjAreas)
-  );
-});
-
-router.get('/terms', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
-    return res.status(403).send(new Error('Unauthorized role'));
-  }
-  BruincastServices.getTerms().then(terms => res.send(terms));
-});
-
 module.exports = router;

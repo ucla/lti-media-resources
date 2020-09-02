@@ -258,20 +258,6 @@ class BruincastServices {
     }
     return analyticsByCourse;
   }
-
-  static async getTerms() {
-    const terms = await MediaQuery.getTerms('bruincastmedia');
-    terms.sort(compareAcademicTerms).reverse();
-    return terms;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'bruincastmedia',
-      term
-    );
-    return subjectAreas;
-  }
 }
 
 module.exports = BruincastServices;

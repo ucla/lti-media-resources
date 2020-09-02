@@ -44,11 +44,9 @@ export const AdminListings = ({ mediaType, setError }) => {
   const retrieveTerms = () => {
     const ltik = getLtik();
     axios
-      .get(
-        `/api/medias/${
-          constants.mediaTypeMap.get(mediaType).api
-        }/terms?ltik=${ltik}`
-      )
+      .get(`/api/medias/terms?ltik=${ltik}`, {
+        params: { mediaType },
+      })
       .then(res => {
         setAcademicTerms(res.data);
         setError(null);
@@ -103,14 +101,9 @@ export const AdminListings = ({ mediaType, setError }) => {
   const retrieveSubjectAreas = () => {
     const ltik = getLtik();
     axios
-      .get(
-        `/api/medias/${
-          constants.mediaTypeMap.get(mediaType).api
-        }/subjectareas?ltik=${ltik}`,
-        {
-          params: { term: selectedAcademicTerm },
-        }
-      )
+      .get(`/api/medias/subjectareas?ltik=${ltik}`, {
+        params: { mediaType, term: selectedAcademicTerm },
+      })
       .then(res => {
         setSubjectAreas(res.data);
         setError(null);

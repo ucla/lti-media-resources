@@ -59,20 +59,6 @@ class VideoresServices {
     );
     return termMedia;
   }
-
-  static async getTerms() {
-    const terms = await MediaQuery.getTerms('videoreserves');
-    terms.sort(compareAcademicTerms).reverse();
-    return terms;
-  }
-
-  static async getSubjectAreasForTerm(term) {
-    const subjectAreas = await MediaQuery.getSubjectAreasForTerm(
-      'videoreserves',
-      term
-    );
-    return subjectAreas;
-  }
 }
 
 module.exports = VideoresServices;
