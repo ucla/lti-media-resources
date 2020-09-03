@@ -80,7 +80,7 @@ export const PlayButtonGroup = ({
   }
 
   return (
-    <View>
+    <>
       {videoArray &&
         Array.isArray(videoArray) &&
         videoArray.length !== 0 &&
@@ -128,6 +128,6 @@ export const PlayButtonGroup = ({
             />
           </View>
         ))}
-    </View>
+    </>
   );
 };

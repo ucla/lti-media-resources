@@ -128,7 +128,7 @@ export const VideoReserve = ({
 
   // If not playing media
   return (
-    <View>
+    <>
       <Heading>{`Video reserves: ${course.title}`}</Heading>
       <br />
       {!onCampus && (
@@ -193,6 +193,6 @@ export const VideoReserve = ({
           ))}
         </Table.Body>
       </Table>
-    </View>
+    </>
   );
 };

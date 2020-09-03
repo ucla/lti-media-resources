@@ -5,7 +5,6 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { Tabs } from '@instructure/ui-tabs';
-import { View } from '@instructure/ui-view';
 import { Bruincast } from '../Bruincast';
 import { VideoReserve } from '../VideoReserve';
 import { MusicReserve } from '../MusicReserve';
@@ -141,7 +140,7 @@ const App = () => {
 
   // JSX
   return (
-    <View>
+    <>
       {error && <ErrorAlert err={error.err} msg={error.msg} />}
       <Tabs onRequestTabChange={handleTabChange}>
         <Tabs.Panel
@@ -212,7 +211,7 @@ const App = () => {
         </Tabs.Panel>
         {adminPanel}
       </Tabs>
-    </View>
+    </>
   );
 };
 

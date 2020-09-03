@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View } from '@instructure/ui-view';
 import { Button } from '@instructure/ui-buttons';
 import { IconArrowOpenStartLine } from '@instructure/ui-icons';
 
@@ -25,7 +24,7 @@ export const MediaView = ({
   };
 
   return (
-    <View>
+    <>
       <Button
         onClick={deSelectMedia}
         color="primary"
@@ -42,6 +41,6 @@ export const MediaView = ({
         hotReloadPlayback={hotReloadPlayback}
         setError={setError}
       />
-    </View>
+    </>
   );
 };
