@@ -25,7 +25,7 @@ router.post('/crosslists', (req, res) => {
 });
 
 router.get('/casts', (req, res) => {
-  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+  if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { context } = res.locals.context;
@@ -37,14 +37,14 @@ router.get('/casts', (req, res) => {
 });
 
 router.get('/alllistings', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   BruincastServices.getCastListings().then(casts => res.send(casts));
 });
 
 router.get('/subjectareas', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { term } = req.query;

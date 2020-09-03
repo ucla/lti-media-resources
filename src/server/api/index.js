@@ -11,7 +11,7 @@ const { isOnCampusIP } = require('../services/IPServices');
 // Names and Roles route.
 router.get('/context', (req, res) => {
   const userid = parseInt(res.locals.token.user);
-  const roles = res.locals.token.roles.map(role =>
+  const roles = res.locals.context.roles.map(role =>
     role.substr(role.lastIndexOf('#') + 1, role.length).toLowerCase()
   );
   const { context } = res.locals.context;

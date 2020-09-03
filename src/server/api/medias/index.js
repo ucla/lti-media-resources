@@ -19,7 +19,7 @@ router.use('/videores', videoresRoute);
 router.use('/musicres', musicresRoute);
 
 router.get('/counts', (req, res) => {
-  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+  if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
@@ -27,7 +27,7 @@ router.get('/counts', (req, res) => {
 });
 
 router.post('/playback', (req, res) => {
-  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+  if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const {
@@ -51,13 +51,14 @@ router.post('/playback', (req, res) => {
 });
 
 router.get('/analytics', async (req, res) => {
-  if (!CheckRoleServices.isInstructorOrAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isInstructorOrAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { mediaType } = req.query;
 
-  let { members } = await lti.NamesAndRoles.getMembers(res.locals.token);
-  members = members.filter(member => member.roles.includes('Learner'));
+  const { members } = await lti.NamesAndRoles.getMembers(res.locals.token, {
+    role: 'Learner',
+  });
   for (const member of members) {
     delete member.status;
     delete member.lis_person_sourcedid;
@@ -88,7 +89,7 @@ router.get('/analytics', async (req, res) => {
 });
 
 router.get('/terms', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { mediaType } = req.query;
@@ -96,7 +97,7 @@ router.get('/terms', (req, res) => {
 });
 
 router.get('/subjectareas', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { mediaType, term } = req.query;
@@ -107,7 +108,7 @@ router.get('/subjectareas', (req, res) => {
 });
 
 router.get('/url', (req, res) => {
-  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+  if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
 

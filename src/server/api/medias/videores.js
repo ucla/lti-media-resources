@@ -6,7 +6,7 @@ const VideoresServices = require('../../services/VideoresServices');
 const CheckRoleServices = require('../../services/CheckRole');
 
 router.get('/', (req, res) => {
-  if (!CheckRoleServices.isUser(res.locals.token.roles)) {
+  if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/alllistings', (req, res) => {
-  if (!CheckRoleServices.isAdmin(res.locals.token.roles)) {
+  if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   VideoresServices.getAllVideoReserves().then(vidRes => res.send(vidRes));
