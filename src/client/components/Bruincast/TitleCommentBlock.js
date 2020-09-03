@@ -25,7 +25,7 @@ export const TitleCommentBlock = ({ title, comments }) => {
     );
   }
   return (
-    <div>
+    <>
       <div>
         <strong>Title: </strong>
         {title}
@@ -34,6 +34,6 @@ export const TitleCommentBlock = ({ title, comments }) => {
         <strong>Comments: </strong>
         <Comment commentText={comments} />
       </span>
-    </div>
+    </>
   );
 };

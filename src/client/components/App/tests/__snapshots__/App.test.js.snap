@@ -1,17 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App component matches its original snapshot 1`] = `
-<View
-  borderColor="primary"
-  display="auto"
-  focusColor="info"
-  focusPosition="offset"
-  overflowX="visible"
-  overflowY="visible"
-  position="static"
-  shouldAnimateFocus={true}
-  withVisualDebug={false}
->
+<Fragment>
   <Tabs
     elementRef={[Function]}
     onRequestTabChange={[Function]}
@@ -70,5 +60,5 @@ exports[`App component matches its original snapshot 1`] = `
       Media Gallery
     </Panel>
   </Tabs>
-</View>
+</Fragment>
 `;

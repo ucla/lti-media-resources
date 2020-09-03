@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View } from '@instructure/ui-view';
 import { BruincastTableWeekToggle } from './BruincastTableWeekToggle';
 import { Analytics } from '../Analytics';
 
@@ -43,18 +42,16 @@ export const BruincastTable = ({
 
   if (showingAnalytics) {
     return (
-      <View>
-        <Analytics
-          analytics={analytics}
-          showing={showingAnalytics}
-          show={showAnalytics}
-        />
-      </View>
+      <Analytics
+        analytics={analytics}
+        showing={showingAnalytics}
+        show={showAnalytics}
+      />
     );
   }
 
   return (
-    <View>
+    <>
       <Analytics showing={showingAnalytics} show={showAnalytics} />
       {casts.map(weekCasts => (
         <BruincastTableWeekToggle
@@ -68,6 +65,6 @@ export const BruincastTable = ({
           setError={setError}
         />
       ))}
-    </View>
+    </>
   );
 };

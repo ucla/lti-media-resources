@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { View } from '@instructure/ui-view';
 import { Tabs } from '@instructure/ui-tabs';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
@@ -192,7 +191,7 @@ export const Bruincast = ({
 
   // JSX if not playing a media
   return (
-    <View>
+    <>
       <Heading>{`Bruincast: ${course.title}`}</Heading>
       {warningElement}
       <Text>
@@ -246,6 +245,6 @@ export const Bruincast = ({
           </Tabs.Panel>
         ))}
       </Tabs>
-    </View>
+    </>
   );
 };

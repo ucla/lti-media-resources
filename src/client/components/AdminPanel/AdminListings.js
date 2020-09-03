@@ -118,7 +118,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   useEffect(retrieveSubjectAreas, [selectedAcademicTerm]);
 
   return (
-    <View>
+    <>
       <Flex>
         <Flex.Item padding="small">
           <SimpleSelect
@@ -175,6 +175,6 @@ export const AdminListings = ({ mediaType, setError }) => {
           />
         ))}
       </View>
-    </View>
+    </>
   );
 };
