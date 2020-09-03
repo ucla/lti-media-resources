@@ -173,6 +173,7 @@ const App = () => {
               course={course}
               onCampus={onCampusStatus}
               userid={userid}
+              isInstructorOrAdmin={isInstructorOrAdmin}
               setError={setError}
             />
           </Tabs.Panel>
