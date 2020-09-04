@@ -117,8 +117,8 @@ router.get('/url', (req, res) => {
     HOST,
     VALIDITY,
     SECRET,
-    VIDEORES_HOST,
-    VIDEORES_TOKEN_SECRET,
+    SECRET_VIDEORES_HOST,
+    SECRET_VIDEORES_TOKEN_SECRET,
   } = process.env;
 
   // When testing during development, replace with your external IP
@@ -147,8 +147,8 @@ router.get('/url', (req, res) => {
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
     stream = `${ext}:${filename}/playlist.m3u8`;
 
-    host = VIDEORES_HOST;
-    secret = VIDEORES_TOKEN_SECRET;
+    host = SECRET_VIDEORES_HOST;
+    secret = SECRET_VIDEORES_TOKEN_SECRET;
   } else {
     return res.status(400).send(new Error('Invalid mediatype'));
   }

@@ -31,8 +31,8 @@ async function getToken() {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
     },
     auth: {
-      username: process.env.REG_WS_CLIENT_ID,
-      password: process.env.REG_WS_SECRET,
+      username: process.env.SECRET_REG_WS_CLIENT_ID,
+      password: process.env.SECRET_REG_WS_SECRET,
     },
     data,
     httpsAgent,

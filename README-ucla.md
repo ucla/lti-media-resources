@@ -6,6 +6,21 @@
 2. Install ESlint package: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
 3. Install ESlint rules: npx install-peerdeps --global eslint-config-wesbos
 
+## Set up git-secrets hooks
+
+To prevent us from accidentally committing secrets, we will install the [git-secrets](https://github.com/awslabs/git-secrets) hooks.
+
+1. Install git-secrets locally on your machine. See instructions for your platform [here](https://github.com/awslabs/git-secrets#installing-git-secrets).
+
+2. Set up git-secrets for this repo
+
+   - `cd` into the repo
+   - Run `git secrets --install`
+
+3. Configure git-secrets by running the following commands:
+   - `git secrets --register-aws`
+   - `git secrets --add 'SECRET(\s|[a-zA-Z\_])*=\s*.+'`
+
 ## Set up LTI tool
 
 1. Startup your local Moodle on Docker
