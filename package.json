@@ -1,7 +1,7 @@
 {
-  "name": "simple-react-full-stack",
+  "name": "lti-media-resources",
   "version": "1.0.0",
-  "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
+  "description": "",
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production",
@@ -11,10 +11,11 @@
     "dev": "migrate-mongo up && concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
-  "author": "Sandeep Raveesh",
-  "license": "ISC",
+  "author": "UC Regents",
+  "license": "BSD-2",
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "@instructure/canvas-high-contrast-theme": "^7.1.1",

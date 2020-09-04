@@ -2,9 +2,9 @@ const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
 const registrarDebug = require('debug')('registrar:api');
-require('dotenv').config();
-
 const cache = require('./cache');
+
+require('dotenv').config();
 
 let registrar = {};
 
@@ -186,22 +186,33 @@ async function getShortname(offeredTermCode, classSectionID) {
         registrarDebug('getShortname: Classes is null');
         return returnObject;
       }
-      const {
-        classes: [
-          {
-            termSessionGroupCollection: [
-              { termsessionGroupCode: sessionGroup },
-            ],
-          },
-        ],
-      } = response;
+
+      // Find the session that matches the class number.
+      let sessionGroup = '';
+      response.classes[0].termSessionGroupCollection.forEach(groupItem => {
+        groupItem.classCollection.forEach(classItem => {
+          if (classItem.classNumber === secNum) {
+            sessionGroup = groupItem.termsessionGroupCode;
+          }
+        });
+      });
+
+      registrarDebug(`getShortname: using sessionGroup ${sessionGroup}`);
       term += sessionGroup;
     }
 
-    const shortname = `${term}-${subArea.replace(/\s|&/g, '')}${catNum.replace(
-      /\s|^0+/g,
+    // Format catNum from 0000SSPP to PP . int(0000) . SS.
+    // SS are section letters. PP is C(oncurrent) and/or M(ultilisted).
+    const formattedCatNum =
+      catNum.substr(6, 2).trim() +
+      parseInt(catNum.substr(0, 4)) +
+      catNum.substr(4, 2).trim();
+
+    // Remove spaces and ampersands.
+    const shortname = `${term}-${subArea.replace(
+      /\s|&/g,
       ''
-    )}-${secNum.replace(/^0+/g, '')}`;
+    )}${formattedCatNum}-${secNum.replace(/^0+/g, '')}`;
 
     registrarDebug(`getShortname: returning { ${shortname}, ${subArea}`);
     returnObject.shortname = shortname;
