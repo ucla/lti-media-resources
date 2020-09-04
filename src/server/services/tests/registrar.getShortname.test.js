@@ -45,10 +45,11 @@ it('returns complex shortname', async () => {
   });
 
   const { shortname } = await registrar.getShortname('20S', '370705200');
-  expect(shortname).toEqual('20S-CSBIO150M-1');
+  expect(shortname).toEqual('20S-CSBIOM150-1');
 });
 
 it('returns summer shortnames', async () => {
+  // Just one summer section.
   registrar.call = jest
     .fn()
     .mockImplementationOnce(() => ({
@@ -75,6 +76,7 @@ it('returns summer shortnames', async () => {
             {
               termsessionGroupCode: 'A',
               termsessionInstructionWeeks: '8',
+              classCollection: [{ classNumber: '001' }],
             },
           ],
         },
@@ -87,6 +89,7 @@ it('returns summer shortnames', async () => {
   );
   expect(shortnameA).toEqual('201A-COMSCI31-1');
 
+  // Multiple summer sessions.
   registrar.call = jest
     .fn()
     .mockImplementationOnce(() => ({
@@ -96,8 +99,8 @@ it('returns summer shortnames', async () => {
             {
               subjectAreaCode: 'LIFESCI',
               courseCatalogNumber: '0030B',
-              classNumber: '001',
-              classSectionNumber: '001',
+              classNumber: '002',
+              classSectionNumber: '002',
             },
           ],
         },
@@ -108,8 +111,14 @@ it('returns summer shortnames', async () => {
         {
           termSessionGroupCollection: [
             {
+              termsessionGroupCode: 'A',
+              termsessionInstructionWeeks: '8',
+              classCollection: [{ classNumber: '001' }],
+            },
+            {
               termsessionGroupCode: 'C',
               termsessionInstructionWeeks: '6',
+              classCollection: [{ classNumber: '002' }],
             },
           ],
         },
@@ -120,5 +129,5 @@ it('returns summer shortnames', async () => {
     '201',
     '252091930'
   );
-  expect(shortnameC).toEqual('201C-LIFESCI30B-1');
+  expect(shortnameC).toEqual('201C-LIFESCI30B-2');
 });

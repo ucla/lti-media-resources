@@ -54,7 +54,7 @@ async function main() {
           logger.warn(`${media.term}-${media.srs} does not have shortname`);
         } else if (!media.filename.includes(shortname)) {
           logger.warn(
-            `Shortname of file ${media.filename} does not match the shortname of class ${media.srs} of term ${media.term}`
+            `Shortname of file ${media.filename} does not match the shortname ${shortname} (${media.term}|${media.srs})`
           );
         }
         media.classShortname = shortname;
