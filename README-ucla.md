@@ -21,6 +21,8 @@ To prevent us from accidentally committing secrets, we will install the [git-sec
    - `git secrets --register-aws`
    - `git secrets --add 'SECRET(\s|[a-zA-Z\_])*=\s*.+'`
 
+These rules will prevent any variables prefixed with `SECRET_` from being committed with a value filled in.
+
 ## Set up LTI tool
 
 1. Startup your local Moodle on Docker
