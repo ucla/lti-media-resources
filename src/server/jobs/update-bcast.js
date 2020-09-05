@@ -47,7 +47,7 @@ async function loginBruinCast() {
 
   const config = {
     method: 'post',
-    url: process.env.SECRET_BRUINCAST_API_LOGIN,
+    url: process.env.BRUINCAST_API_LOGIN,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
@@ -73,7 +73,7 @@ async function loginBruinCast() {
 async function getCourses(term, callback) {
   const config = {
     method: 'get',
-    url: `${process.env.SECRET_BRUINCAST_API}?display_id=ccle_api_courses&args[0]=${term}`,
+    url: `${process.env.BRUINCAST_API}?display_id=ccle_api_courses&args[0]=${term}`,
     headers: {
       Cookie: bcastCookie,
     },
@@ -98,7 +98,7 @@ async function getCourses(term, callback) {
 async function getMedia(term, classID, callback) {
   const config = {
     method: 'get',
-    url: `${process.env.SECRET_BRUINCAST_API}?display_id=ccle_api_media&args[0]=${term}&args[1]=${classID}`,
+    url: `${process.env.BRUINCAST_API}?display_id=ccle_api_media&args[0]=${term}&args[1]=${classID}`,
     headers: {
       Cookie: bcastCookie,
     },

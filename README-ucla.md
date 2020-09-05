@@ -51,7 +51,7 @@ These rules will prevent any variables prefixed with `SECRET_` from being commit
 
 5. Click "Save changes"
 6. Then under "Tools" find LTI app you just created and click on the "View configurations" icon (first icon, next to gear)
-7. Copy Client ID value into PLATFORM_CLIENTID value in .env file (created below in "Startup app" Step 1).
+7. Copy Client ID value into SECRET_PLATFORM_CLIENTID value in .env file (created below in "Startup app" Step 1).
 
 ## Install MongoDB
 
