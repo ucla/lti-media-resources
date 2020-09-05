@@ -118,7 +118,7 @@ router.get('/url', (req, res) => {
     VALIDITY,
     SECRET,
     SECRET_VIDEORES_HOST,
-    SECRET_VIDEORES_TOKEN_SECRET,
+    SECRET_VIDEORES_TOKEN,
   } = process.env;
 
   // When testing during development, replace with your external IP
@@ -148,7 +148,7 @@ router.get('/url', (req, res) => {
     stream = `${ext}:${filename}/playlist.m3u8`;
 
     host = SECRET_VIDEORES_HOST;
-    secret = SECRET_VIDEORES_TOKEN_SECRET;
+    secret = SECRET_VIDEORES_TOKEN;
   } else {
     return res.status(400).send(new Error('Invalid mediatype'));
   }

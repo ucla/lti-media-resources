@@ -32,7 +32,7 @@ async function getToken() {
     },
     auth: {
       username: process.env.SECRET_REG_WS_CLIENT_ID,
-      password: process.env.SECRET_REG_WS_SECRET,
+      password: process.env.SECRET_REG_WS_PASSWORD,
     },
     data,
     httpsAgent,
