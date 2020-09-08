@@ -11,31 +11,68 @@ const { window } = new JSDOM('');
 const dompurify = createDOMPurify(window);
 
 class BruincastServices {
+  /**
+   * Retrieve bruincast notice from database
+   * (Notice is in HTML format)
+   *
+   * @returns {string}   Returns sanitized notice.
+   */
   static async getNotice() {
     const notice = await MediaQuery.getNotice();
     return dompurify.sanitize(notice);
   }
 
+  /**
+   * Set bruincast notice in database
+   * (Notice is in HTML format)
+   *
+   * @param {string} notice  Notice to be set.
+   * @returns {object}   Returns status of database insertion (success or failure).
+   */
   static async setNotice(notice) {
-    const ret = await MediaQuery.setNotice(notice);
+    const ret = await MediaQuery.setNotice(dompurify.sanitize(notice));
     return ret;
   }
 
+  /**
+   * Retrieve crosslist from database
+   *
+   * @returns {Array}   Returns all crosslists.
+   */
   static async getAllCrosslists() {
     const toBeReturned = await MediaQuery.getAllCrosslists();
     return toBeReturned;
   }
 
+  /**
+   * Set crosslists in database
+   *
+   * @param {Array} crosslists  Crosslists to be set.
+   * @returns {number}   Returns number of crosslists inserted minus deleted.
+   */
   static async updateCrosslists(crosslists) {
     const numDiff = await MediaQuery.setCrosslists(crosslists);
     return numDiff;
   }
 
+  /**
+   * Retrieve crosslist of a course from database
+   *
+   * @param {string} courseLabel  Label of course to query for.
+   * @returns {Array}   Returns crosslists that contains courseLabel.
+   */
   static async getCrosslistByCourse(courseLabel) {
     const toBeReturned = await MediaQuery.getCrosslistByCourse(courseLabel);
     return toBeReturned;
   }
 
+  /**
+   * Retrieve all bruincast contents from database
+   *
+   * @param {object} course  Course object to query for.
+   * @param {number} userid  User who made this query request.
+   * @returns {Array}   Returns all bruincast contents, including all crosslisted courses.
+   */
   static async getCasts(course, userid) {
     const labelList = await this.getCrosslistByCourse(course.label);
     const courseList = [course];
@@ -95,6 +132,12 @@ class BruincastServices {
     return castsByCourses;
   }
 
+  /**
+   * Update bruincast media entries with clean fields
+   *
+   * @param {Array} media  Media entries to be updated.
+   * @returns {Array}   Updated media entries.
+   */
   static formatTermCasts(media) {
     for (const courseMedia of media) {
       for (const entry of courseMedia.listings) {
@@ -128,6 +171,11 @@ class BruincastServices {
     return media;
   }
 
+  /**
+   * Retrieve all bruincast media grouped by course for admin panel
+   *
+   * @returns {Array}   Return all bruincast medias grouped by course.
+   */
   static async getCastListings() {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
       collectionMap.get(COLLECTION_TYPE.BRUINCAST)
@@ -136,6 +184,13 @@ class BruincastServices {
     return formattedMedia;
   }
 
+  /**
+   * Retrieve all playback histories of all students
+   *
+   * @param {object} course  Course to query for.
+   * @param {Array} members  Array of all students.
+   * @returns {Array}   Return all playback histories of all students.
+   */
   static async getAnalytics(course, members) {
     const labelList = await this.getCrosslistByCourse(course.label);
     const courseList = [course.label, ...labelList];

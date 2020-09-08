@@ -6,6 +6,12 @@ const { compareAcademicTerms } = require('./utility');
 const constants = require('../../../constants');
 
 class MediaResourceServices {
+  /**
+   * Count how many of each media type the course has
+   *
+   * @param {string} courseLabel  Course counting for.
+   * @returns {object}   Return the count for each media type.
+   */
   static async getCounts(courseLabel) {
     let labelList = await MediaQuery.getCrosslistByCourse(courseLabel);
     labelList = [courseLabel, ...labelList];
@@ -30,6 +36,18 @@ class MediaResourceServices {
     };
   }
 
+  /**
+   * Check if the user is a student, instructor, or admin
+   *
+   * @param {number} userid  User of the playback.
+   * @param {string} file  Media of the playback.
+   * @param {number} mediaType  Number that indicate bruincast, video reserves, or music reserves.
+   * @param {string} classShortname  Label of course of the media.
+   * @param {number} time  Watched time, or in other words, user's progress of the media.
+   * @param {number} remaining  Remaining time of the media.
+   * @param {boolean} finished  If the user finished the media or not.
+   * @returns {number}   Return database operation status (success or failure).
+   */
   static async updatePlayback(
     userid,
     file,
@@ -51,6 +69,12 @@ class MediaResourceServices {
     return ok;
   }
 
+  /**
+   * Retrieve all terms that the database has for a media type
+   *
+   * @param {number} mediaType  Media type to query for
+   * @returns {Array}   Return all terms (ex. 20S).
+   */
   static async getTerms(mediaType) {
     let mediaCollectionName = '';
 
@@ -73,6 +97,13 @@ class MediaResourceServices {
     return terms;
   }
 
+  /**
+   * Retrieve all subject areas that the database has for a media type and a term
+   *
+   * @param {number} mediaType  Media type to query for.
+   * @param {string} term  Term to query for.
+   * @returns {Array}   Return all subject areas, abbreviated.
+   */
   static async getSubjectAreasForTerm(mediaType, term) {
     let mediaCollectionName = '';
     switch (parseInt(mediaType)) {
@@ -96,6 +127,16 @@ class MediaResourceServices {
     return subjectAreas;
   }
 
+  /**
+   * Generate hashed token for media URL
+   *
+   * @param {string} stream  A URL path that indicate which file to play from server.
+   * @param {string} clientIP  Client's IP.
+   * @param {string} secret  A very secret secret.
+   * @param {number} start  Start time when the token is valid
+   * @param {number} end  End time when the token will not be valid anymore
+   * @returns {string}   Return hashed token.
+   */
   static async generateMediaToken(stream, clientIP, secret, start, end) {
     const { TOKEN_NAME } = process.env;
     const params = [
@@ -120,6 +161,18 @@ class MediaResourceServices {
     return base64Hash;
   }
 
+  /**
+   * Generate URL for media
+   *
+   * @param {number} mediatype  Media type of the media
+   * @param {string} HOST  Server url.
+   * @param {string} stream  A url path that indicate which file to play from server.
+   * @param {string} clientIP  Client's IP.
+   * @param {string} secret  A very secret secret.
+   * @param {number} start  Start time when the token is valid
+   * @param {number} end  End time when the token will not be valid anymore
+   * @returns {string}   Return generated URL.
+   */
   static async generateMediaURL(
     mediatype,
     HOST,

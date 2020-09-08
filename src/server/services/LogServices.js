@@ -1,6 +1,12 @@
 const winston = require('winston');
 
 class LogServices {
+  /**
+   * Construct a logger object
+   *
+   * @param {string} taskName  Name of task this logger is for
+   * @returns {object}   Return the logger.
+   */
   static async createLogger(taskName) {
     // Global variable for current date and time
     const currentTimestamp = new Date();

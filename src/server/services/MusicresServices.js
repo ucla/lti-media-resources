@@ -6,6 +6,13 @@ const {
 } = require('../../../constants');
 
 class MusicresServices {
+  /**
+   * Retrieve music reserves of a course
+   *
+   * @param {string} label  Label of course to query for
+   * @param {number} userid  User that made this query request
+   * @returns {Array}   Return music reserves of the course.
+   */
   static async getMusicres(label, userid) {
     const docs = await MediaQuery.getMusicResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
@@ -41,6 +48,11 @@ class MusicresServices {
     return docs;
   }
 
+  /**
+   * Retrieve all music reserves
+   *
+   * @returns {Array}   Return all music reserves.
+   */
   static async getAllMusicReserves() {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
       collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES)
@@ -48,6 +60,13 @@ class MusicresServices {
     return termMedia;
   }
 
+  /**
+   * Retrieve all playback histories of all students
+   *
+   * @param {object} course  Course to query for.
+   * @param {Array} members  Array of all students.
+   * @returns {Array}   Return all playback histories of all students.
+   */
   static async getAnalytics(course, members) {
     const allAlbums = await MediaQuery.getMusicResByCourse(course.label);
     const allTracks = [];
