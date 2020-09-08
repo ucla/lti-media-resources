@@ -160,7 +160,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
             onChange={setCurrWarning}
           />
         </View>
-        <View margin="small">
+        <View margin="small none" display="block">
           <TextArea
             label="Bruincast crosslists"
             value={currCrosslist}
