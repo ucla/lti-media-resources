@@ -167,7 +167,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       <View>
         {filteredMediaListings.map(course => (
           <AdminListingsToggle
-            key={course._id}
+            key={`${course._id.term}_${course._id.shortname}`}
             shortname={course._id.shortname}
             term={course._id.term}
             listings={course.listings}

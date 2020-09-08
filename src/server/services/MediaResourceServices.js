@@ -56,13 +56,19 @@ class MediaResourceServices {
 
     switch (parseInt(mediaType)) {
       case constants.MEDIA_TYPE.BRUINCAST:
-        mediaCollectionName = 'bruincastmedia';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.BRUINCAST
+        );
         break;
       case constants.MEDIA_TYPE.VIDEO_RESERVES:
-        mediaCollectionName = 'videoreserves';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.VIDEO_RESERVES
+        );
         break;
       case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-        mediaCollectionName = 'musicreserves';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
+        );
         break;
       default:
         throw new Error('Invalid mediaType');
@@ -77,13 +83,19 @@ class MediaResourceServices {
     let mediaCollectionName = '';
     switch (parseInt(mediaType)) {
       case constants.MEDIA_TYPE.BRUINCAST:
-        mediaCollectionName = 'bruincastmedia';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.BRUINCAST
+        );
         break;
       case constants.MEDIA_TYPE.VIDEO_RESERVES:
-        mediaCollectionName = 'videoreserves';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.VIDEO_RESERVES
+        );
         break;
       case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-        mediaCollectionName = 'musicreserves';
+        mediaCollectionName = constants.collectionMap.get(
+          constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
+        );
         break;
       default:
         throw new Error('Invalid mediaType');
