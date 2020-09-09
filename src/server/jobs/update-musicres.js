@@ -10,57 +10,53 @@ const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
  * The main process
  */
 async function main() {
-  try {
-    const logger = await LogServices.createLogger('update-musicres');
-    const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-    const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
-    await dbclient.connect();
-    logger.info(`Connected database at ${dbURL}`);
+  const logger = await LogServices.createLogger('update-musicres');
+  const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
+  const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
+  await dbclient.connect();
+  logger.info(`Connected database at ${dbURL}`);
 
-    const res = await axios.get(
-      'https://webservices.library.ucla.edu/music/v2/classes'
+  const res = await axios.get(
+    'https://webservices.library.ucla.edu/music/v2/classes'
+  );
+  let totalNumDiff = 0;
+  let totalNumEntries = 0;
+  for (const course of res.data.courses) {
+    const { term, srs, works } = course;
+    const { shortname, subjectArea } = await RegistrarService.getShortname(
+      term,
+      srs
     );
-    let totalNumDiff = 0;
-    let totalNumEntries = 0;
-    for (const course of res.data.courses) {
-      const { term, srs, works } = course;
-      const { shortname, subjectArea } = await RegistrarService.getShortname(
-        term,
-        srs
-      );
-      if (!shortname) {
-        logger.warn(`${course.term}-${course.srs} does not have shortname`);
-      }
+    if (!shortname) {
+      logger.warn(`${course.term}-${course.srs} does not have shortname`);
+    }
 
-      for (const work of works) {
-        work.term = term;
-        work.srs = srs;
-        work.classShortname = shortname;
-        work.subjectArea = subjectArea;
-      }
-      totalNumDiff += await UpdateMusicResServices.updateRecordsForClass(
-        dbclient,
-        collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES),
-        term,
-        srs,
-        works,
-        logger
-      );
-      totalNumEntries += works.length;
+    for (const work of works) {
+      work.term = term;
+      work.srs = srs;
+      work.classShortname = shortname;
+      work.subjectArea = subjectArea;
     }
-    if (totalNumDiff < 0) {
-      logger.info(
-        `Done. Processed ${totalNumEntries} entries with ${-totalNumDiff} deletion(s).`
-      );
-    } else {
-      logger.info(
-        `Done. Processed ${totalNumEntries} entries with ${totalNumDiff} insertion(s).`
-      );
-    }
-    dbclient.close();
-  } catch (e) {
-    throw e;
+    totalNumDiff += await UpdateMusicResServices.updateRecordsForClass(
+      dbclient,
+      collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES),
+      term,
+      srs,
+      works,
+      logger
+    );
+    totalNumEntries += works.length;
   }
+  if (totalNumDiff < 0) {
+    logger.info(
+      `Done. Processed ${totalNumEntries} entries with ${-totalNumDiff} deletion(s).`
+    );
+  } else {
+    logger.info(
+      `Done. Processed ${totalNumEntries} entries with ${totalNumDiff} insertion(s).`
+    );
+  }
+  dbclient.close();
 }
 
 main();
