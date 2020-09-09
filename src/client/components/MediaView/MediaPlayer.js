@@ -84,8 +84,7 @@ export class MediaPlayer extends Component {
     const { url, format } = media;
     let imageURL = '';
     if (format === 'audio' || format === 'a') {
-      imageURL =
-        'https://www.shutupandtakemymoney.com/wp-content/uploads/2020/04/zoom-meeting-audio-vs-video-meme.jpg';
+      imageURL = '../../../../public/audio_only.jpg';
     }
     return (
       <ReactJWPlayer
