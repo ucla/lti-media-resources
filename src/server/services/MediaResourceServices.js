@@ -3,7 +3,11 @@ const Base64 = require('crypto-js/enc-base64');
 
 const MediaQuery = require('../models/mediaquery');
 const { compareAcademicTerms } = require('./utility');
-const constants = require('../../../constants');
+const {
+  MEDIA_TYPE,
+  COLLECTION_TYPE,
+  collectionMap,
+} = require('../../../constants');
 
 class MediaResourceServices {
   static async getCounts(courseLabel) {
@@ -55,19 +59,15 @@ class MediaResourceServices {
     let mediaCollectionName = '';
 
     switch (parseInt(mediaType)) {
-      case constants.MEDIA_TYPE.BRUINCAST:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.BRUINCAST
-        );
+      case MEDIA_TYPE.BRUINCAST:
+        mediaCollectionName = collectionMap.get(COLLECTION_TYPE.BRUINCAST);
         break;
-      case constants.MEDIA_TYPE.VIDEO_RESERVES:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.VIDEO_RESERVES
-        );
+      case MEDIA_TYPE.VIDEO_RESERVES:
+        mediaCollectionName = collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES);
         break;
-      case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
+      case MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
+        mediaCollectionName = collectionMap.get(
+          COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
         );
         break;
       default:
@@ -82,19 +82,15 @@ class MediaResourceServices {
   static async getSubjectAreasForTerm(mediaType, term) {
     let mediaCollectionName = '';
     switch (parseInt(mediaType)) {
-      case constants.MEDIA_TYPE.BRUINCAST:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.BRUINCAST
-        );
+      case MEDIA_TYPE.BRUINCAST:
+        mediaCollectionName = collectionMap.get(COLLECTION_TYPE.BRUINCAST);
         break;
-      case constants.MEDIA_TYPE.VIDEO_RESERVES:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.VIDEO_RESERVES
-        );
+      case MEDIA_TYPE.VIDEO_RESERVES:
+        mediaCollectionName = collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES);
         break;
-      case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-        mediaCollectionName = constants.collectionMap.get(
-          constants.COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
+      case MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
+        mediaCollectionName = collectionMap.get(
+          COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES
         );
         break;
       default:
@@ -149,7 +145,7 @@ class MediaResourceServices {
       start,
       end
     );
-    if (parseInt(mediatype) === constants.MEDIA_TYPE.BRUINCAST) {
+    if (parseInt(mediatype) === MEDIA_TYPE.BRUINCAST) {
       const newStream = `redirect/${stream}`;
       const bcastPlaybackURL = `${HOST}${newStream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
       return bcastPlaybackURL;
