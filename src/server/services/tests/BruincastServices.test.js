@@ -127,11 +127,16 @@ describe('Bruincast services tests', () => {
   test('Test formatTermCasts()', async done => {
     const termCasts = [
       {
-        _id: '201C-EEBIOL162-1',
+        _id: {
+          shortname: '201C-EEBIOL162-1',
+          term: '201',
+        },
+        subjectArea: 'EE BIOL',
         listings: [
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/04/2020',
             week: 10,
@@ -144,7 +149,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/02/2020',
             week: 10,
@@ -156,7 +162,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/02/2020',
             week: 10,
@@ -169,11 +176,16 @@ describe('Bruincast services tests', () => {
         ],
       },
       {
-        _id: '20S-COMSCI32-1',
+        _id: {
+          shortname: '20S-COMSCI32-1',
+          term: '20S',
+        },
+        subjectArea: 'COM SCI',
         listings: [
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/11/2020',
             week: 7,
@@ -185,7 +197,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/06/2020',
             week: 6,
@@ -197,7 +210,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/04/2020',
             week: 6,
@@ -213,11 +227,16 @@ describe('Bruincast services tests', () => {
     const formattedArray = BruincastServices.formatTermCasts(termCasts);
     const expectedArray = [
       {
-        _id: '201C-EEBIOL162-1',
+        _id: {
+          shortname: '201C-EEBIOL162-1',
+          term: '201',
+        },
+        subjectArea: 'EE BIOL',
         listings: [
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/04/2020',
             week: 10,
@@ -231,7 +250,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/02/2020',
             week: 10,
@@ -244,7 +264,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '201C-EEBIOL162-1',
-            classID: '128672200',
+            subjectArea: 'EE BIOL',
+            srs: '128672200',
             term: '201',
             date: '06/02/2020',
             week: 10,
@@ -258,11 +279,16 @@ describe('Bruincast services tests', () => {
         ],
       },
       {
-        _id: '20S-COMSCI32-1',
+        _id: {
+          shortname: '20S-COMSCI32-1',
+          term: '20S',
+        },
+        subjectArea: 'COM SCI',
         listings: [
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/11/2020',
             week: 7,
@@ -275,7 +301,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/06/2020',
             week: 6,
@@ -288,7 +315,8 @@ describe('Bruincast services tests', () => {
           },
           {
             classShortname: '20S-COMSCI32-1',
-            classID: '187096200',
+            subjectArea: 'COM SCI',
+            srs: '187096200',
             term: '20S',
             date: '05/04/2020',
             week: 6,
