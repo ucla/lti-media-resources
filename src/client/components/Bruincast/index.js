@@ -75,6 +75,7 @@ export const Bruincast = ({
   };
   useEffect(retrieveCasts, []);
 
+  // Get analytics data if user is instructor or admin
   const [analytics, setAnalytics] = useState(null);
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
@@ -90,6 +91,7 @@ export const Bruincast = ({
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
 
+  // An onclick handler to reverse the display order of bruincasts
   const reverseCastsOrder = () => {
     for (const currCourse of castsByCourses) {
       currCourse.casts.reverse();
@@ -99,6 +101,7 @@ export const Bruincast = ({
     }
   };
 
+  // A state indicating which order bruincasts are sorted
   const [ascendingSort, setAscendingSort] = useState(true);
   const handleSortButtonClick = () => {
     setAscendingSort(!ascendingSort);
@@ -115,6 +118,8 @@ export const Bruincast = ({
     setSelectedMedia({});
   };
 
+  // After users stop watching a video, their progress are updated and displayed immediately
+  // This function is fed to MediaPlayer as a prop
   const hotReloadPlayback = (
     classShortname,
     file,
@@ -165,6 +170,7 @@ export const Bruincast = ({
     setCourseIndex(index);
   };
 
+  // State indicating if the user sees analytics or bruincast table
   const [showingAnalytics, setShowingAnalytics] = useState(false);
   const showAnalytics = () => {
     setShowingAnalytics(!showingAnalytics);

@@ -40,6 +40,9 @@ export const PlayButton = ({
     disabled: PropTypes.bool,
     setError: PropTypes.func,
   };
+
+  // Onclick function of play buttons
+  // Select media and play
   const generateAndSelectMedia = () => {
     if (
       mediaType === constants.MEDIA_TYPE.BRUINCAST ||
@@ -83,6 +86,7 @@ export const PlayButton = ({
     }
   };
 
+  // Define UI components of the button
   let playIcon = <IconVideoSolid />;
   if (format === 'audio') {
     playIcon = <IconAudioSolid />;

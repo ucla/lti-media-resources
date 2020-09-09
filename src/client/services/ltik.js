@@ -1,3 +1,4 @@
+// Asynchronous form of getting ltik token
 const getLtikPromise = new Promise((resolve, reject) => {
   const searchParams = new URLSearchParams(window.location.search);
   let potentialLtik = searchParams.get('ltik');
@@ -19,6 +20,7 @@ const ltikPromise = new Promise((resolve, reject) => {
     });
 });
 
+// Synchronous form of getting ltik token
 const getLtik = () => {
   const searchParams = new URLSearchParams(window.location.search);
   let ltik = searchParams.get('ltik');
