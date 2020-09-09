@@ -21,10 +21,14 @@ export const Analytics = ({ analytics, showing, show }) => {
     show: PropTypes.func,
   };
 
+  // State that controls name search bar
+  // Users' names are filtered by this state
   const [searchedName, setSearchedName] = useState('');
 
   const handleChange = (e, value) => setSearchedName(value);
 
+  // If analytics is not defined or if showing is false, show an Analytic button
+  // (We assume this component is only rendered if isInstructorOrAdmin is true in upper levels)
   if (!analytics || !showing) {
     return (
       <Button
@@ -38,6 +42,7 @@ export const Analytics = ({ analytics, showing, show }) => {
     );
   }
 
+  // If analytic is defined and showing is true, show analytic table
   return (
     <>
       <Button
