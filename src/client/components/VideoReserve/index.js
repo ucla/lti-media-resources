@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { View } from '@instructure/ui-view';
 import { Heading } from '@instructure/ui-heading';
@@ -9,7 +10,6 @@ import { Table } from '@instructure/ui-table';
 import { Tag } from '@instructure/ui-tag';
 import { Link } from '@instructure/ui-link';
 
-import axiosRetry from 'axios-retry';
 import { getLtik } from '../../services/ltik';
 import { PlayButton } from '../PlayButtonGroup/PlayButton';
 import { MediaView } from '../MediaView';

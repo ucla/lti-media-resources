@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
 import axiosRetry from 'axios-retry';
+
 import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);
@@ -84,8 +84,7 @@ export class MediaPlayer extends Component {
     const { url, format } = media;
     let imageURL = '';
     if (format === 'audio' || format === 'a') {
-      imageURL =
-        'https://www.shutupandtakemymoney.com/wp-content/uploads/2020/04/zoom-meeting-audio-vs-video-meme.jpg';
+      imageURL = '../../../../public/audio_only.jpg';
     }
     return (
       <ReactJWPlayer

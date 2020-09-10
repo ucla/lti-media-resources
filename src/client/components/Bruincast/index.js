@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { Tabs } from '@instructure/ui-tabs';
 import { Heading } from '@instructure/ui-heading';
 import { Alert } from '@instructure/ui-alerts';
 import { Text } from '@instructure/ui-text';
-import axiosRetry from 'axios-retry';
 import { Button } from '@instructure/ui-buttons';
 import { Link } from '@instructure/ui-link';
 import { IconArrowUpLine, IconArrowDownLine } from '@instructure/ui-icons';

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { View } from '@instructure/ui-view';
 import { Flex } from '@instructure/ui-flex';
 import { SimpleSelect } from '@instructure/ui-simple-select';
-import axios from 'axios';
-
-import axiosRetry from 'axios-retry';
 
 import { AdminListingsToggle } from './AdminListingsToggle';
 import { getLtik } from '../../services/ltik';
@@ -167,7 +166,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       <View>
         {filteredMediaListings.map(course => (
           <AdminListingsToggle
-            key={course._id}
+            key={`${course._id.term}_${course._id.shortname}`}
             shortname={course._id.shortname}
             term={course._id.term}
             listings={course.listings}

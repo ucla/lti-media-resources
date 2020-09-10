@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { Button } from '@instructure/ui-buttons';
 import { Breadcrumb } from '@instructure/ui-breadcrumb';
 import { IconArrowOpenStartSolid } from '@instructure/ui-icons';
-import axiosRetry from 'axios-retry';
 import { AlbumTable } from './AlbumTable';
 import { TrackTable } from './TrackTable';
 import { MediaView } from '../MediaView';

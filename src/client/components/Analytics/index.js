@@ -48,8 +48,9 @@ export const Analytics = ({ analytics, showing, show }) => {
       >
         Back
       </Button>
-      <View margin="x-large">
+      <View display="block" margin="medium none">
         <TextInput
+          label=""
           renderBeforeInput={<IconSearchLine inline={false} />}
           value={searchedName}
           onChange={handleChange}
