@@ -92,72 +92,371 @@ beforeAll(async done => {
   done();
 });
 
-test('Test Analytics Generation', async done => {
-  const sampleCourse = { label: 'Charms' };
-  const sampleMembers = [
-    { user_id: '0', name: 'Luna Lovegood' },
-    { user_id: '1', name: 'Cho Chang' },
-  ];
-  const analytics = await VideoresServices.getAnalytics(
-    sampleCourse,
-    sampleMembers
-  );
-  const correctAnalytics = [
-    {
-      userid: 0,
-      name: 'Luna Lovegood',
-      finishedCount: 2,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Expelliarmus',
-          finishedTimes: 1,
-          time: 0,
-          remaining: 14,
+describe('VideoresServices tests', () => {
+  test('Test formatAllVideoReservesListings()', async done => {
+    const videoReservesListings = [
+      {
+        _id: {
+          shortname: null,
+          term: '201',
         },
-        {
-          title: 'Lumos Solem',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
+        subjectArea: null,
+        listings: [
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'Knives Out',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID22371_KnivesOut.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'Zootopia',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID20904_Zootopia.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'BlacKKKlansman',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID21882_BlackkKlansman.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22004110',
+            startDate: '6/19/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 1',
+            instructor: 'Matisoff',
+            videoTitle: 'Life and Debt (CC)',
+            videoUrl: '',
+            filename: '201A-GLBLST-1/ID22287_LifeandDebt_CC.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22004110',
+            startDate: '6/18/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 1',
+            instructor: 'Matisoff',
+            videoTitle: 'Life and Debt',
+            videoUrl: '',
+            filename: '201A-GLBLST-1/ID4409_LifeandDebt.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+        ],
+      },
+      {
+        _id: {
+          shortname: '201A-FILMTV4-3',
+          term: '201',
         },
-        {
-          title: 'Wingardium Leviosa',
-          finishedTimes: 7,
-          time: 7,
-          remaining: 7,
+        subjectArea: 'FILM TV',
+        listings: [
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Teminator 2',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID2336_Terminator2.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Stagecoach',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID4887_Stagecoach.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Double Indemnity',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID6828_DoubleIndemnity.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+        ],
+      },
+    ];
+
+    const formattedMedia = VideoresServices.formatAllVideoReservesListings(
+      videoReservesListings
+    );
+
+    const expectedMedia = [
+      {
+        _id: {
+          shortname: null,
+          term: '201',
         },
-      ],
-    },
-    {
-      userid: 1,
-      name: 'Cho Chang',
-      finishedCount: 1,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Expelliarmus',
-          finishedTimes: 2,
-          time: 0,
-          remaining: 100,
+        subjectArea: null,
+        listings: [
+          {
+            term: '201',
+            srs: '22004110',
+            startDate: '6/18/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 1',
+            instructor: 'Matisoff',
+            videoTitle: 'Life and Debt',
+            videoUrl: '',
+            filename: '201A-GLBLST-1/ID4409_LifeandDebt.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22004110',
+            startDate: '6/19/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 1',
+            instructor: 'Matisoff',
+            videoTitle: 'Life and Debt (CC)',
+            videoUrl: '',
+            filename: '201A-GLBLST-1/ID22287_LifeandDebt_CC.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'BlacKKKlansman',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID21882_BlackkKlansman.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'Knives Out',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID22371_KnivesOut.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+          {
+            term: '201',
+            srs: '22540130',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: 'Global Studies 140',
+            instructor: 'Franklin',
+            videoTitle: 'Zootopia',
+            videoUrl: '',
+            filename: '201C-GLBLST140-1/ID20904_Zootopia.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: null,
+          },
+        ],
+      },
+      {
+        _id: {
+          shortname: '201A-FILMTV4-3',
+          term: '201',
         },
-        {
-          title: 'Lumos Solem',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Wingardium Leviosa',
-          finishedTimes: 0,
-          time: 7,
-          remaining: 7,
-        },
-      ],
-    },
-  ];
-  expect(analytics).toMatchObject(correctAnalytics);
-  done();
+        subjectArea: 'FILM TV',
+        listings: [
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Double Indemnity',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID6828_DoubleIndemnity.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Stagecoach',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID4887_Stagecoach.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+          {
+            term: '201',
+            srs: '238012911',
+            startDate: '6/15/20',
+            stopDate: '9/12/20',
+            title: '"Film and Television 4, lec. 3"',
+            instructor: 'Trice',
+            videoTitle: 'Teminator 2',
+            videoUrl: '',
+            filename: '201A-FILMTV4-3/ID2336_Terminator2.mp4',
+            subtitle: '',
+            height: '480',
+            width: '720',
+            classShortname: '201A-FILMTV4-3',
+            subjectArea: 'FILM TV',
+          },
+        ],
+      },
+    ];
+
+    expect(formattedMedia).toEqual(expectedMedia);
+    done();
+  });
+
+  test('Test Analytics Generation', async done => {
+    const sampleCourse = { label: 'Charms' };
+    const sampleMembers = [
+      { user_id: '0', name: 'Luna Lovegood' },
+      { user_id: '1', name: 'Cho Chang' },
+    ];
+    const analytics = await VideoresServices.getAnalytics(
+      sampleCourse,
+      sampleMembers
+    );
+    const correctAnalytics = [
+      {
+        userid: 0,
+        name: 'Luna Lovegood',
+        finishedCount: 2,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Expelliarmus',
+            finishedTimes: 1,
+            time: 0,
+            remaining: 14,
+          },
+          {
+            title: 'Lumos Solem',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Wingardium Leviosa',
+            finishedTimes: 7,
+            time: 7,
+            remaining: 7,
+          },
+        ],
+      },
+      {
+        userid: 1,
+        name: 'Cho Chang',
+        finishedCount: 1,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Expelliarmus',
+            finishedTimes: 2,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Lumos Solem',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Wingardium Leviosa',
+            finishedTimes: 0,
+            time: 7,
+            remaining: 7,
+          },
+        ],
+      },
+    ];
+    expect(analytics).toMatchObject(correctAnalytics);
+    done();
+  });
 });
 
 afterAll(async done => {

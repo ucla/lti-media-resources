@@ -49,6 +49,30 @@ class MusicresServices {
   }
 
   /**
+   * Sort each course's media by SRS and title in ascending order.
+   *
+   * @param {Array} media  Media entries to be sorted.
+   * @returns {Array}   Formatted media entries.
+   */
+  static formatAllMusicReservesListings(media) {
+    for (const courseMedia of media) {
+      // Sort media for a course group by title.
+      // The sort callback compares SRS first so that items in the "null" course are kept together.
+      courseMedia.listings.sort(function(listing1, listing2) {
+        if (listing1.srs < listing2.srs) return -1;
+        if (listing2.srs < listing1.srs) return 1;
+        if (listing1.srs === listing2.srs) {
+          if (listing1.title < listing2.title) return -1;
+          if (listing2.title < listing1.title) return 1;
+        }
+        return 0;
+      });
+    }
+
+    return media;
+  }
+
+  /**
    * Retrieve all music reserves
    *
    * @returns {Array}   Return all music reserves.
@@ -57,7 +81,8 @@ class MusicresServices {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
       collectionMap.get(COLLECTION_TYPE.DIGITAL_AUDIO_RESERVES)
     );
-    return termMedia;
+    const sortedMedia = this.formatAllMusicReservesListings(termMedia);
+    return sortedMedia;
   }
 
   /**

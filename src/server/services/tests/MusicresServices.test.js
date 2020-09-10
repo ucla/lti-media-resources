@@ -107,99 +107,402 @@ beforeAll(async done => {
   done();
 });
 
-test('Test Analytics Generation', async done => {
-  const sampleCourse = { label: 'Herbology' };
-  const sampleMembers = [
-    { user_id: '0', name: 'Draco Malfoy' },
-    { user_id: '1', name: 'Vincent Crabbe' },
-    { user_id: '2', name: 'Gregory Goyle' },
-  ];
-  const analytics = await MusicresServices.getAnalytics(
-    sampleCourse,
-    sampleMembers
-  );
-  const correctAnalytics = [
-    {
-      userid: 0,
-      name: 'Draco Malfoy',
-      finishedCount: 2,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 1,
-          time: 0,
-          remaining: 14,
+describe('MusicresServices tests', () => {
+  test('Test formatAllMusicReservesListings()', async done => {
+    const musicReservesListings = [
+      {
+        _id: {
+          shortname: null,
+          term: '201',
         },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 7,
-          time: 7,
-          remaining: 7,
+        subjectArea: null,
+        listings: [
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Rent (2005 film)',
+            performers:
+              'Directed by Chris Columbus;\r\nProduced by\tJane Rosenthal,\r\nRobert De Niro,\r\nChris Columbus,\r\nMark Radcliffe,\r\nMichael Barnathan;\r\nScreenplay by\tStephen Chbosky;\r\nBased on\tRent\r\nby Jonathan Larson;\r\nStarring\tRosario Dawson,\r\nTaye Diggs,\r\nWilson Jermaine Heredia,\r\nJesse L. Martin,\r\nIdina Menzel,\r\nAdam Pascal,\r\nAnthony Rapp,\r\nTracie Thoms;\r\nMusic by\tJonathan Larson;\r\nCinematography\tStephen Goldblatt;\r\nEdited by\tRichard Pearson;\r\nProduction\r\ncompany\r\nRevolution Studios,\r\n1492 Pictures,\r\nTribeca Productions;\r\nDistributed by\tColumbia Pictures;\r\nRelease date\r\nNovember 23, 2005',
+            noteOne: '',
+            noteTwo: '',
+            label: '',
+            labelCatalogNumber: '',
+            callNumber: 'DVD 392',
+            items: [
+              {
+                trackTitle: 'N/A',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd392.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd392.mp4',
+              },
+            ],
+            workID: 8639,
+            term: '201',
+            srs: '         ',
+            classShortname: null,
+            subjectArea: null,
+          },
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Hustle & Flow (2002)',
+            performers:
+              'Terrence Howard (Djay), Anthony Anderson (Key), Taryn Manning (Nola), Taraji P. Henson (Shug), Paula Jai Parker (Lexus), Elise Neal (Yevette), Isaac Hayes (Arnel), D.J. Qualls (Shelby), Ludacris (Skinny Black)',
+            noteOne:
+              'Paramount Classics, MTV Films and New Deal Entertainment present ; a Crunk Pictures/Homegrown Pictures production ; written and directed by Craig Brewer ; produced by John Singleton, Stephanie Allain',
+            noteTwo:
+              'Director of photography, Amelia Vincent ; editor, Billy Fox ; original score by Scott Bomar ; music supervisor, Paul Stewart',
+            label: 'Paramount Pictures',
+            labelCatalogNumber: '34565',
+            callNumber: 'm1192020disc02',
+            embedURL: '',
+            items: [
+              {
+                trackTitle: 'N/A',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:m1192020disc02.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/m1192020disc02.mp4',
+              },
+            ],
+            workID: 8964,
+            term: '201',
+            srs: '         ',
+            classShortname: null,
+            subjectArea: null,
+          },
+        ],
+      },
+      {
+        _id: {
+          shortname: '201C-MUSCLG68-1',
+          term: '201',
         },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
+        subjectArea: 'MUSCLG',
+        listings: [
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Yellow Submarine',
+            performers: 'The Beatles',
+            noteOne: '',
+            noteTwo: '',
+            label: '',
+            labelCatalogNumber: '',
+            callNumber: 'DVD 758',
+            embedURL: '',
+            items: [
+              {
+                trackTitle: 'Yellow Submarine',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '1',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd758-1.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd758-1.mp4',
+              },
+            ],
+            workID: 8778,
+            term: '201',
+            srs: '432204200',
+            classShortname: '201C-MUSCLG68-1',
+            subjectArea: 'MUSCLG',
+          },
+          {
+            isVideo: true,
+            composer: '',
+            title: "A hard day's night (1964)",
+            performers:
+              'The Beatles, Wilfrid Brambell, Norman Rossington, Victor Spinetti.',
+            noteOne:
+              'Miramax Films ; a Walter Shenson production ; original screenplay by Alun Owen ; produced by Walter Shenson ; directed by Richard Lester.',
+            noteTwo:
+              'Director of photography, Gilbert Taylor ; editor, John Jympson ; musical director, George Martin ; songs by John Lennon, Paul McCartney.  Originally produced as a motion picture in 1964.',
+            label: 'Miramax Home Entertainment',
+            labelCatalogNumber: '18301',
+            callNumber: 'DVD 84',
+            items: [
+              {
+                trackTitle: "A hard day's night",
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd84.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd84.mp4',
+              },
+            ],
+            workID: 8132,
+            term: '201',
+            srs: '432204200',
+            classShortname: '201C-MUSCLG68-1',
+            subjectArea: 'MUSCLG',
+          },
+        ],
+      },
+    ];
+
+    const formattedMedia = MusicresServices.formatAllMusicReservesListings(
+      musicReservesListings
+    );
+
+    const expectedMedia = [
+      {
+        _id: {
+          shortname: null,
+          term: '201',
         },
-      ],
-    },
-    {
-      userid: 1,
-      name: 'Vincent Crabbe',
-      finishedCount: 0,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
+        subjectArea: null,
+        listings: [
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Hustle & Flow (2002)',
+            performers:
+              'Terrence Howard (Djay), Anthony Anderson (Key), Taryn Manning (Nola), Taraji P. Henson (Shug), Paula Jai Parker (Lexus), Elise Neal (Yevette), Isaac Hayes (Arnel), D.J. Qualls (Shelby), Ludacris (Skinny Black)',
+            noteOne:
+              'Paramount Classics, MTV Films and New Deal Entertainment present ; a Crunk Pictures/Homegrown Pictures production ; written and directed by Craig Brewer ; produced by John Singleton, Stephanie Allain',
+            noteTwo:
+              'Director of photography, Amelia Vincent ; editor, Billy Fox ; original score by Scott Bomar ; music supervisor, Paul Stewart',
+            label: 'Paramount Pictures',
+            labelCatalogNumber: '34565',
+            callNumber: 'm1192020disc02',
+            embedURL: '',
+            items: [
+              {
+                trackTitle: 'N/A',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:m1192020disc02.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/m1192020disc02.mp4',
+              },
+            ],
+            workID: 8964,
+            term: '201',
+            srs: '         ',
+            classShortname: null,
+            subjectArea: null,
+          },
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Rent (2005 film)',
+            performers:
+              'Directed by Chris Columbus;\r\nProduced by\tJane Rosenthal,\r\nRobert De Niro,\r\nChris Columbus,\r\nMark Radcliffe,\r\nMichael Barnathan;\r\nScreenplay by\tStephen Chbosky;\r\nBased on\tRent\r\nby Jonathan Larson;\r\nStarring\tRosario Dawson,\r\nTaye Diggs,\r\nWilson Jermaine Heredia,\r\nJesse L. Martin,\r\nIdina Menzel,\r\nAdam Pascal,\r\nAnthony Rapp,\r\nTracie Thoms;\r\nMusic by\tJonathan Larson;\r\nCinematography\tStephen Goldblatt;\r\nEdited by\tRichard Pearson;\r\nProduction\r\ncompany\r\nRevolution Studios,\r\n1492 Pictures,\r\nTribeca Productions;\r\nDistributed by\tColumbia Pictures;\r\nRelease date\r\nNovember 23, 2005',
+            noteOne: '',
+            noteTwo: '',
+            label: '',
+            labelCatalogNumber: '',
+            callNumber: 'DVD 392',
+            items: [
+              {
+                trackTitle: 'N/A',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd392.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd392.mp4',
+              },
+            ],
+            workID: 8639,
+            term: '201',
+            srs: '         ',
+            classShortname: null,
+            subjectArea: null,
+          },
+        ],
+      },
+      {
+        _id: {
+          shortname: '201C-MUSCLG68-1',
+          term: '201',
         },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-      ],
-    },
-    {
-      userid: 2,
-      name: 'Gregory Goyle',
-      finishedCount: 1,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 2,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 0,
-          time: 7,
-          remaining: 7,
-        },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-      ],
-    },
-  ];
-  expect(analytics).toMatchObject(correctAnalytics);
-  done();
+        subjectArea: 'MUSCLG',
+        listings: [
+          {
+            isVideo: true,
+            composer: '',
+            title: "A hard day's night (1964)",
+            performers:
+              'The Beatles, Wilfrid Brambell, Norman Rossington, Victor Spinetti.',
+            noteOne:
+              'Miramax Films ; a Walter Shenson production ; original screenplay by Alun Owen ; produced by Walter Shenson ; directed by Richard Lester.',
+            noteTwo:
+              'Director of photography, Gilbert Taylor ; editor, John Jympson ; musical director, George Martin ; songs by John Lennon, Paul McCartney.  Originally produced as a motion picture in 1964.',
+            label: 'Miramax Home Entertainment',
+            labelCatalogNumber: '18301',
+            callNumber: 'DVD 84',
+            items: [
+              {
+                trackTitle: "A hard day's night",
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd84.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd84.mp4',
+              },
+            ],
+            workID: 8132,
+            term: '201',
+            srs: '432204200',
+            classShortname: '201C-MUSCLG68-1',
+            subjectArea: 'MUSCLG',
+          },
+          {
+            isVideo: true,
+            composer: '',
+            title: 'Yellow Submarine',
+            performers: 'The Beatles',
+            noteOne: '',
+            noteTwo: '',
+            label: '',
+            labelCatalogNumber: '',
+            callNumber: 'DVD 758',
+            embedURL: '',
+            items: [
+              {
+                trackTitle: 'Yellow Submarine',
+                volume: '',
+                disc: '',
+                side: '',
+                trackNumber: '1',
+                httpURL:
+                  'https://wowza.library.ucla.edu/audioreserves/definst/mp4:dvd758-1.mp4/playlist.m3u8',
+                rtmpURL:
+                  'rtmps://wowza.library.ucla.edu/dlp/mp4:audioreserves/dvd758-1.mp4',
+              },
+            ],
+            workID: 8778,
+            term: '201',
+            srs: '432204200',
+            classShortname: '201C-MUSCLG68-1',
+            subjectArea: 'MUSCLG',
+          },
+        ],
+      },
+    ];
+
+    expect(formattedMedia).toEqual(expectedMedia);
+    done();
+  });
+
+  test('Test Analytics Generation', async done => {
+    const sampleCourse = { label: 'Herbology' };
+    const sampleMembers = [
+      { user_id: '0', name: 'Draco Malfoy' },
+      { user_id: '1', name: 'Vincent Crabbe' },
+      { user_id: '2', name: 'Gregory Goyle' },
+    ];
+    const analytics = await MusicresServices.getAnalytics(
+      sampleCourse,
+      sampleMembers
+    );
+    const correctAnalytics = [
+      {
+        userid: 0,
+        name: 'Draco Malfoy',
+        finishedCount: 2,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 1,
+            time: 0,
+            remaining: 14,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 7,
+            time: 7,
+            remaining: 7,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+      {
+        userid: 1,
+        name: 'Vincent Crabbe',
+        finishedCount: 0,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+      {
+        userid: 2,
+        name: 'Gregory Goyle',
+        finishedCount: 1,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 2,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 0,
+            time: 7,
+            remaining: 7,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+    ];
+    expect(analytics).toMatchObject(correctAnalytics);
+    done();
+  });
 });
 
 afterAll(async done => {
