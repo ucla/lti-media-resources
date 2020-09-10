@@ -19,8 +19,7 @@ beforeAll(async done => {
   collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
   collectionMap.set(CROSSLISTS, testCollections.get(CROSSLISTS));
   collectionMap.set(PLAYBACKS, testCollections.get(PLAYBACKS));
-  const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-  await client.connect(dbURL);
+  await client.connect(process.env.DB_URL);
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.createCollection(col[1]);

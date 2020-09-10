@@ -16,7 +16,6 @@ const testCollections = new Map([
   [BRUINCAST, `${collectionMap.get(BRUINCAST)}${postfix}`],
 ]);
 
-const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
 const testData = [
   {
     _id: '100',
@@ -122,7 +121,7 @@ const testData = [
 
 beforeAll(async done => {
   collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
-  client.connect(dbURL, function() {});
+  await client.connect(process.env.DB_URL);
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.createCollection(col[1]);
