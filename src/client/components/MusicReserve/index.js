@@ -24,6 +24,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     setError: PropTypes.func,
   };
 
+  // Get all albums from back-end
   const [allAlbums, setAllAlbums] = useState([]);
   const retrieveMusicRes = () => {
     const ltik = getLtik();
@@ -42,8 +43,11 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   };
   useEffect(retrieveMusicRes, []);
 
+  // State that indicates a user's selected album and selected track within the album
+  // Use those state to navigate through albums and tracks, and determine what to display
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [selectedMusic, setSelectedMusic] = useState(null);
+  // Onclick functions that handle album / track selection
   const handleAlbumClick = event => {
     const clickedAlbum = allAlbums.filter(
       album => album.title.trim() === event.target.innerText.trim()
@@ -102,6 +106,8 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     deselectAlbum();
   };
 
+  // After users stop watching a video, their progress are updated and displayed immediately
+  // This function is fed to MediaPlayer as a prop
   const hotReloadPlayback = (
     albumTitle,
     trackFile,
@@ -127,6 +133,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     setAllAlbums(albumsToBeSet);
   };
 
+  // Get analytics data if user is instructor or admin
   const [analytics, setAnalytics] = useState(null);
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
@@ -142,6 +149,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
 
+  // State indicating if the user sees analytics or music reserves table
   const [showingAnalytics, setShowingAnalytics] = useState(false);
   const showAnalytics = () => {
     setShowingAnalytics(!showingAnalytics);

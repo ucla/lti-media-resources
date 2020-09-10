@@ -14,6 +14,12 @@ const {
 
 const { DB_DATABASE } = process.env;
 
+/**
+ * Retrieve all bruincast contents of a course, aggregated by week
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {Array}   Return all bruincast contents of a course, aggregated.
+ */
 module.exports.getCastsByCourse = async courseLabel => {
   /*
    * Aggregation Steps:
@@ -64,6 +70,12 @@ module.exports.getCastsByCourse = async courseLabel => {
   return courseCasts;
 };
 
+/**
+ * Retrieve all bruincast contents of a course, not aggregated
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {Array}   Return all bruincast contents of a course, not aggregated.
+ */
 module.exports.getCastsByCourseWithoutAggregation = async courseLabel => {
   const bcastCollection = client
     .db(DB_DATABASE)
@@ -75,6 +87,12 @@ module.exports.getCastsByCourseWithoutAggregation = async courseLabel => {
   return toBeReturned;
 };
 
+/**
+ * Retrieve the number of bruincast contents of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {number}   Return the number of bruincast contents of a course.
+ */
 module.exports.getCastCountByCourse = async courseLabel => {
   const castCount = await client
     .db(DB_DATABASE)
@@ -84,6 +102,12 @@ module.exports.getCastCountByCourse = async courseLabel => {
   return castCount;
 };
 
+/**
+ * Retrieve all medias of a media type, grouped by course
+ *
+ * @param {string} dbCollection  The database collection to look for the medias, usually indicating media type.
+ * @returns {Array}   Return all medias in dbCollection, grouped by course.
+ */
 module.exports.getMediaGroupedByShortname = async dbCollection => {
   /*
    * This aggregation groups media records by shortname and term.
@@ -120,6 +144,12 @@ module.exports.getMediaGroupedByShortname = async dbCollection => {
   return termMedia;
 };
 
+/**
+ * Retrieve the terms a database collection has
+ *
+ * @param {string} dbCollection  The database collection to look for terms, usually indicating media type.
+ * @returns {Array}   Return all terms dbCollection has.
+ */
 module.exports.getTerms = async dbCollection => {
   const terms = await client
     .db(DB_DATABASE)
@@ -129,6 +159,13 @@ module.exports.getTerms = async dbCollection => {
   return terms;
 };
 
+/**
+ * Retrieve the subject areas a database collection has for a term
+ *
+ * @param {string} dbCollection  The database collection to look for terms, usually indicating media type.
+ * @param {string} term  Term to query for.
+ * @returns {Array}   Return all subject areas dbCollection has for term.
+ */
 module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
   const query = term !== '' ? { term } : {};
   const subjectAreasArray = await client
@@ -139,6 +176,12 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
   return subjectAreasArray;
 };
 
+/**
+ * Retrieve video reserves of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {Array}   Return video reserves of the course.
+ */
 module.exports.getVideoResByCourse = async courseLabel => {
   const videoResCollection = client
     .db(DB_DATABASE)
@@ -150,6 +193,12 @@ module.exports.getVideoResByCourse = async courseLabel => {
   return toBeReturned;
 };
 
+/**
+ * Retrieve the number of video reserves of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {number}   Return the number of video reserves of a course.
+ */
 module.exports.getVideoResCountByCourse = async courseLabel => {
   const resCount = await client
     .db(DB_DATABASE)
@@ -159,6 +208,12 @@ module.exports.getVideoResCountByCourse = async courseLabel => {
   return resCount;
 };
 
+/**
+ * Retrieve music reserves of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {Array}   Return music reserves of the course.
+ */
 module.exports.getMusicResByCourse = async courseLabel => {
   const musicResCollection = client
     .db(DB_DATABASE)
@@ -170,6 +225,12 @@ module.exports.getMusicResByCourse = async courseLabel => {
   return toBeReturned;
 };
 
+/**
+ * Retrieve the number of music reserves of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {number}   Return the number of music reserves of a course.
+ */
 module.exports.getMusicResCountByCourse = async courseLabel => {
   const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
   let totalItemCount = 0;
@@ -181,6 +242,12 @@ module.exports.getMusicResCountByCourse = async courseLabel => {
   return totalItemCount;
 };
 
+/**
+ * Retrieve bruincast notice
+ * (Notice is in HTML format)
+ *
+ * @returns {string}   Returns notice (not sanitized yet).
+ */
 module.exports.getNotice = async () => {
   const noticeCollection = client
     .db(DB_DATABASE)
@@ -192,6 +259,13 @@ module.exports.getNotice = async () => {
   return noticeArray;
 };
 
+/**
+ * Set bruincast notice in database
+ * (Notice is in HTML format)
+ *
+ * @param {string} notice  Notice to be set (should be already sanitized).
+ * @returns {object}   Returns status of database insertion (success or failure).
+ */
 module.exports.setNotice = async notice => {
   const noticeCollection = client
     .db(DB_DATABASE)
@@ -200,6 +274,11 @@ module.exports.setNotice = async notice => {
   return ret.result;
 };
 
+/**
+ * Retrieve crosslist
+ *
+ * @returns {Array}   Returns all crosslists.
+ */
 module.exports.getAllCrosslists = async () => {
   const crosslistCollection = client
     .db(DB_DATABASE)
@@ -214,6 +293,12 @@ module.exports.getAllCrosslists = async () => {
   return toBeReturned;
 };
 
+/**
+ * Retrieve crosslist of a course
+ *
+ * @param {string} courseLabel  Label of course to query for.
+ * @returns {Array}   Returns crosslists that contains courseLabel.
+ */
 module.exports.getCrosslistByCourse = async courseLabel => {
   const arrayOfLists = await module.exports.getAllCrosslists(
     collectionMap.get(CROSSLISTS)
@@ -228,6 +313,12 @@ module.exports.getCrosslistByCourse = async courseLabel => {
   return toBeReturned;
 };
 
+/**
+ * Set crosslists in database
+ *
+ * @param {Array} crosslists  Crosslists to be set.
+ * @returns {number}   Returns number of crosslists inserted minus deleted.
+ */
 module.exports.setCrosslists = async crosslists => {
   const crosslistCollection = client
     .db(DB_DATABASE)
@@ -254,6 +345,12 @@ module.exports.setCrosslists = async crosslists => {
   }
 };
 
+/**
+ * Update a playback history in database
+ *
+ * @param {object} obj  Object that contains all playback fields to be updated.
+ * @returns {number}   Returns status of update (success or failure).
+ */
 module.exports.updatePlayback = async obj => {
   const playbackCollection = client
     .db(DB_DATABASE)
@@ -285,6 +382,14 @@ module.exports.updatePlayback = async obj => {
   return result.result.ok;
 };
 
+/**
+ * Retrieve playbacks of a specific course, user, and media type
+ *
+ * @param {number} mediaType  Media type to query for.
+ * @param {number} userid  User to query for.
+ * @param {string} courseLabel Label of course to query for.
+ * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
+ */
 module.exports.getPlaybacks = async (mediaType, userid, courseLabel) => {
   const playbackCollection = client
     .db(DB_DATABASE)
@@ -294,6 +399,13 @@ module.exports.getPlaybacks = async (mediaType, userid, courseLabel) => {
   return toBeReturned;
 };
 
+/**
+ * Retrieve all playbacks of a specific course and media type for all users
+ *
+ * @param {number} mediaType  Media type to query for.
+ * @param {string} courseLabel Label of course to query for.
+ * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
+ */
 module.exports.getAnalyticsByCourse = async (mediaType, courseLabel) => {
   const playbackCollection = client
     .db(DB_DATABASE)

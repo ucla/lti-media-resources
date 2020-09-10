@@ -18,6 +18,23 @@ router.use('/bruincast', bruincastRoute);
 router.use('/videores', videoresRoute);
 router.use('/musicres', musicresRoute);
 
+/**
+ * /counts:
+ *   get:
+ *     summary: Get the number of media for each media type
+ *     responses:
+ *       200:
+ *         description: Successfully counted the number of medias
+ *         schema:
+ *           type: object
+ *           properties:
+ *             bruincasts:
+ *               type: number
+ *             videos:
+ *               type: number
+ *             audios:
+ *               type: number
+ */
 router.get('/counts', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
@@ -26,6 +43,36 @@ router.get('/counts', (req, res) => {
   MediaResourceServices.getCounts(label).then(counts => res.send(counts));
 });
 
+/**
+ * /playback:
+ *   post:
+ *     summary: Update a playback in database
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userid:
+ *                 type: number
+ *               file:
+ *                 type: string
+ *               mediaType:
+ *                 type: number
+ *               classShortname:
+ *                 type: string
+ *               time:
+ *                 type: number
+ *               remaining:
+ *                 type: number
+ *               finished:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Successfully updated playback
+ *       403:
+ *         description: Request rejected by user's role; access restriction
+ */
 router.post('/playback', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
@@ -50,6 +97,26 @@ router.post('/playback', (req, res) => {
   ).then(ok => res.send({ ok }));
 });
 
+/**
+ * /analytics:
+ *   get:
+ *     summary: Get all analytics of a specific media type
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mediaType:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved analytics (schema depends on media type)
+ *       400:
+ *         description: Unknown media type
+ *       403:
+ *         description: Request rejected by user's role; access restriction
+ */
 router.get('/analytics', async (req, res) => {
   if (!CheckRoleServices.isInstructorOrAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
@@ -88,6 +155,28 @@ router.get('/analytics', async (req, res) => {
   }
 });
 
+/**
+ * /terms:
+ *   get:
+ *     summary: Get all terms that a specific media type's collection has
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mediaType:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved terms
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       403:
+ *         description: Request rejected by user's role; access restriction
+ */
 router.get('/terms', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
@@ -96,6 +185,30 @@ router.get('/terms', (req, res) => {
   MediaResourceServices.getTerms(mediaType).then(terms => res.send(terms));
 });
 
+/**
+ * /subjectareas:
+ *   get:
+ *     summary: Get all subject areas of a specific term that a specific media type's collection has
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mediaType:
+ *                 type: number
+ *               term:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved subject areas
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       403:
+ *         description: Request rejected by user's role; access restriction
+ */
 router.get('/subjectareas', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
@@ -107,6 +220,36 @@ router.get('/subjectareas', (req, res) => {
   ).then(subjAreas => res.send(subjAreas));
 });
 
+/**
+ * /url:
+ *   get:
+ *     summary: Generate URL of media contents
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mediaType:
+ *                 type: number
+ *               mediaformat:
+ *                 type: string
+ *               filename:
+ *                 type: string
+ *               quarter:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully generated URL
+ *         schema:
+ *           type: string
+ *       400:
+ *         description: Unrecognizable parameter value(s)
+ *       403:
+ *         description: Request rejected by user's role; access restriction
+ *       500:
+ *         description: Missing parameter(s)
+ */
 router.get('/url', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));

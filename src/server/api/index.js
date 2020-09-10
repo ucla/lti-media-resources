@@ -8,7 +8,29 @@ router.use('/medias', mediasRoute);
 
 const { isOnCampusIP } = require('../services/IPServices');
 
-// Names and Roles route.
+/**
+ * /context:
+ *   get:
+ *     summary: Get userid, roles, and course
+ *     responses:
+ *       200:
+ *         description: Successfully got userid, roles, and course from ltijs
+ *         schema:
+ *           type: object
+ *           properties:
+ *             course:
+ *               type: object
+ *             roles:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             userid:
+ *               type: number
+ *             onCampus:
+ *               type: boolean
+ *       400:
+ *         description: Ltijs internal error
+ */
 router.get('/context', (req, res) => {
   const userid = parseInt(res.locals.token.user);
   const roles = res.locals.context.roles.map(role =>

@@ -42,6 +42,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
   // Controlled state of 'Bruincast crosslists' input
   const [currCrosslist, setCurrCrosslist] = useState('');
 
+  // Retrieve all crosslists from back-end
   const retrieveAllCrosslists = () => {
     const ltik = getLtik();
     axios
@@ -68,12 +69,15 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
   };
   useEffect(retrieveAllCrosslists, []);
 
+  // Declare a boolean to indicate whether the text input for crosslist is ever changed or not.
+  // If crosslist is never changed, we can save the costly http request of updating crosslists.
   const [crosslistChanged, setCrosslistChanged] = useState(false);
   const handleCrosslistChange = e => {
     setCurrCrosslist(e.target.value);
     setCrosslistChanged(true);
   };
 
+  // An alert that indicate submission status (success of failure)
   const [alert, setAlert] = useState(null);
 
   // Submit logic

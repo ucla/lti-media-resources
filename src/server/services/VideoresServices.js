@@ -7,6 +7,13 @@ const {
 } = require('../../../constants');
 
 class VideoresServices {
+  /**
+   * Retrieve video reserves of a course
+   *
+   * @param {string} label  Label of course to query for
+   * @param {number} userid  User that made this query request
+   * @returns {Array}   Return video reserves of the course.
+   */
   static async getVideores(label, userid) {
     const docs = await MediaQuery.getVideoResByCourse(label);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
@@ -55,6 +62,11 @@ class VideoresServices {
     return docs;
   }
 
+  /**
+   * Retrieve all video reserves
+   *
+   * @returns {Array}   Return all video reserves.
+   */
   static async getAllVideoReserves() {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
       collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES)
@@ -62,6 +74,13 @@ class VideoresServices {
     return termMedia;
   }
 
+  /**
+   * Retrieve all playback histories of all students
+   *
+   * @param {object} course  Course to query for.
+   * @param {Array} members  Array of all students.
+   * @returns {Array}   Return all playback histories of all students.
+   */
   static async getAnalytics(course, members) {
     const allMedias = await MediaQuery.getVideoResByCourse(course.label);
     const rawAnalytics = await MediaQuery.getAnalyticsByCourse(

@@ -13,15 +13,19 @@ const constants = require('../../../../constants');
 export class MediaPlayer extends Component {
   constructor(props) {
     super(props);
+    // States that indicate user's progress when watching videos
     this.state = { playbackPos: 0, finished: false };
   }
 
+  // Only re-render this component when media url or format changes
+  // Don't re-render on state change
   shouldComponentUpdate(nextProps, nextState) {
     const { media } = this.props;
     const { url, format } = media;
     return nextProps.media.url !== url || nextProps.media.format !== format;
   }
 
+  // When users stop watching a video, update the playback history to database
   componentWillUnmount() {
     const { playbackPos, finished } = this.state;
     const {

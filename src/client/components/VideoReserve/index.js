@@ -34,6 +34,7 @@ export const VideoReserve = ({
     setError: PropTypes.func,
   };
 
+  // Get video reserves from back-end
   const [vidReserves, setVidReserves] = useState([]);
   const getVideoRes = () => {
     const ltik = getLtik();
@@ -52,7 +53,9 @@ export const VideoReserve = ({
   };
   useEffect(getVideoRes, []);
 
+  // State that indicates user's selected video
   const [selectedMedia, setSelectedMedia] = useState({});
+  // Onclick functions to select video
   const selectMedia = obj => {
     setSelectedMedia(obj);
   };
@@ -60,6 +63,8 @@ export const VideoReserve = ({
     setSelectedMedia({});
   };
 
+  // After users stop watching a video, their progress are updated and displayed immediately
+  // This function is fed to MediaPlayer as a prop
   const hotReloadPlayback = (file, playback, remaining, finished) => {
     const toBeSet = vidReserves;
     const itemToBeSet = toBeSet.filter(media => media.filename === file)[0];
@@ -77,6 +82,7 @@ export const VideoReserve = ({
     setVidReserves(toBeSet);
   };
 
+  // Get analytics data if user is instructor or admin
   const [analytics, setAnalytics] = useState(null);
   const retrieveAnalytics = () => {
     if (isInstructorOrAdmin) {
@@ -92,6 +98,7 @@ export const VideoReserve = ({
   };
   useEffect(retrieveAnalytics, [isInstructorOrAdmin]);
 
+  // State indicating if the user sees analytics or video reserves table
   const [showingAnalytics, setShowingAnalytics] = useState(false);
   const showAnalytics = () => {
     setShowingAnalytics(!showingAnalytics);

@@ -20,11 +20,19 @@ export const AdminListings = ({ mediaType, setError }) => {
     setError: PropTypes.func,
   };
 
+  // Holds all media listings; set once
   const [mediaListings, setMediaListings] = useState([]);
+
+  // Holds listings filtered based on term and subject area; set each time a filter changes
   const [filteredMediaListings, setFilteredMediaListings] = useState([]);
+
+  // Holds all available academic terms for this mediaType; set once
   const [academicTerms, setAcademicTerms] = useState([]);
+
+  // Holds all available subject areas; set each time the academic term changes
   const [subjectAreas, setSubjectAreas] = useState([]);
 
+  // Holds filter selections
   const [selectedAcademicTerm, setSelectedAcademicTerm] = useState('');
   const [selectedSubjectArea, setSelectedSubjectArea] = useState('');
 
@@ -40,6 +48,7 @@ export const AdminListings = ({ mediaType, setError }) => {
     setSelectedSubjectArea(value);
   };
 
+  // Retrieves all academic terms for this media type; called once
   const retrieveTerms = () => {
     const ltik = getLtik();
     axios
@@ -59,6 +68,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   };
   useEffect(retrieveTerms, []);
 
+  // Retrieves all media listings, unfiltered; called once
   const retrieveListings = () => {
     const ltik = getLtik();
     axios
@@ -82,6 +92,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   };
   useEffect(retrieveListings, []);
 
+  // React effect to set filteredMediaListings; called if academic term or subject area filter changes
   const filterListings = () => {
     setFilteredMediaListings(
       mediaListings
@@ -97,6 +108,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   };
   useEffect(filterListings, [selectedAcademicTerm, selectedSubjectArea]);
 
+  // Retrieves subject areas for this mediaType and selected academic term; called each term filter updates
   const retrieveSubjectAreas = () => {
     const ltik = getLtik();
     axios

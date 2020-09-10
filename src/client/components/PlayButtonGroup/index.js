@@ -30,6 +30,8 @@ export const PlayButtonGroup = ({
     setError: PropTypes.func,
   };
 
+  // Create arrays such that each array element is a media
+  // Later we can create a button for each media in the arrays
   const audioArray = [];
   if (audio && audio.length !== 0 && audio !== '') {
     const audioStrs = audio.split(',');

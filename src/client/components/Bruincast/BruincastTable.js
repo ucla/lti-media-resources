@@ -25,6 +25,7 @@ export const BruincastTable = ({
     setError: PropTypes.func,
   };
 
+  // If analytics is undefined or null (when user doesn't have permission to see analytics)
   if (!analytics) {
     return casts.map(weekCasts => (
       <BruincastTableWeekToggle
@@ -40,6 +41,7 @@ export const BruincastTable = ({
     ));
   }
 
+  // If the user wants to see analytics
   if (showingAnalytics) {
     return (
       <Analytics
@@ -50,6 +52,7 @@ export const BruincastTable = ({
     );
   }
 
+  // If the user is permitted to see analytics but is looking at bruincast medias instead
   return (
     <>
       <Analytics showing={showingAnalytics} show={showAnalytics} />
