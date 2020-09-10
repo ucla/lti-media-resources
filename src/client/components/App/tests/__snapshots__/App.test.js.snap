@@ -46,19 +46,6 @@ exports[`App component matches its original snapshot 1`] = `
         userid={-1}
       />
     </Panel>
-    <Panel
-      elementRef={[Function]}
-      id="mediaGallery"
-      isDisabled={false}
-      isSelected={false}
-      labelledBy={null}
-      padding="small"
-      renderTitle="Media Gallery"
-      textAlign="start"
-      variant="default"
-    >
-      Media Gallery
-    </Panel>
   </Tabs>
 </Fragment>
 `;

@@ -196,19 +196,6 @@ const App = () => {
             setError={setError}
           />
         </Tabs.Panel>
-        <Tabs.Panel
-          id="mediaGallery"
-          renderTitle={
-            constants.mediaTypeMap.get(constants.MEDIA_TYPE.MEDIA_GALLERY)
-              .string
-          }
-          isSelected={
-            tabSelectedIndex ===
-            constants.TABS.MEDIA_GALLERY - (!videoReservesTabEnabled() ? 1 : 0) // Reindex if VideoReserve tab is hidden
-          }
-        >
-          Media Gallery
-        </Tabs.Panel>
         {adminPanel}
       </Tabs>
     </>
