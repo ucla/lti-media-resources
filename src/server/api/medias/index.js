@@ -1,6 +1,7 @@
 const express = require('express');
 const lti = require('ltijs').Provider;
 const path = require('path');
+const requestIp = require('request-ip');
 
 const router = express.Router();
 
@@ -265,7 +266,11 @@ router.get('/url', (req, res) => {
   } = process.env;
 
   // When testing during development, replace with your external IP
-  const clientIP = req.ip;
+  const clientIP = requestIp.getClientIp(req);
+
+  // TODO: Remove after debugging
+  // eslint-disable-next-line no-console
+  console.log(`clientIP = ${clientIP}`);
 
   let stream = '';
   const ext = path.extname(filename).substr(1);

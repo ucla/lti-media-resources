@@ -33,6 +33,8 @@ export const MediaView = ({
         Back
       </Button>
       <br />
+      {/* TODO: Remove after debugging */}
+      <p>URL: {media.url}</p>
       <br />
       <MediaPlayer
         media={media}

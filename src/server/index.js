@@ -9,9 +9,6 @@ const client = require('./models/db');
 
 client.connect(process.env.DB_URL);
 
-// Routes
-const apiRouter = require('./api');
-
 // Creating a provider instance
 let options = {};
 if (process.env.MODE === 'production') {
@@ -36,6 +33,8 @@ lti.onConnect((token, req, res) => {
 });
 
 // Routes
+const apiRouter = require('./api');
+
 lti.app.use('/api', apiRouter);
 
 /**

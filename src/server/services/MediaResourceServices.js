@@ -199,8 +199,7 @@ class MediaResourceServices {
       end
     );
     if (parseInt(mediatype) === MEDIA_TYPE.BRUINCAST) {
-      const newStream = `redirect/${stream}`;
-      const bcastPlaybackURL = `${HOST}${newStream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
+      const bcastPlaybackURL = `${HOST}/${stream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
       return bcastPlaybackURL;
     }
     const playbackURL = `${HOST}${stream}?${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;

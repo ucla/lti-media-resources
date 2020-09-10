@@ -1,4 +1,5 @@
 const express = require('express');
+const requestIp = require('request-ip');
 
 const router = express.Router();
 
@@ -39,7 +40,8 @@ router.get('/context', (req, res) => {
   const { context } = res.locals.context;
   if (roles && context) {
     context.quarter = context.label.substr(0, context.label.indexOf('-'));
-    const onCampus = isOnCampusIP(req.ip);
+    const clientIP = requestIp.getClientIp(req);
+    const onCampus = isOnCampusIP(clientIP);
     return res.send({
       course: context,
       roles,
