@@ -3,17 +3,10 @@ require('dotenv').config();
 
 const config = {
   mongodb: {
-    // TODO Change (or review) the url to your MongoDB:
     url: process.env.DB_URL,
-
-    // TODO Change this to your database name:
-    databaseName: process.env.DB_DATABASE,
-
     options: {
       useNewUrlParser: true, // Removes a deprecation warning when connecting
       useUnifiedTopology: true, // Removes a deprecating warning when connecting
-      //   connectTimeoutMS: 3600000, // increase connection timeout to 1 hour
-      //   socketTimeoutMS: 3600000, // increase socket timeout to 1 hour
     },
   },
 

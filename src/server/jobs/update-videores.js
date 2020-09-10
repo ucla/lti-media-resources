@@ -11,17 +11,18 @@ const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
  */
 async function main() {
   const logger = await LogServices.createLogger('update-videores');
-  const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-  const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
+  const dbclient = new MongoClient(process.env.DB_URL, {
+    useUnifiedTopology: true,
+  });
   await dbclient.connect();
-  logger.info(`Connected database at ${dbURL}`);
+  logger.info(`Connected to database`);
 
   let result = [];
   const srsShortnameMap = [];
 
   const c = new FtpClient();
   c.on('ready', function() {
-    c.get(process.env.VIDEORES_FILEPATH, function(err, stream) {
+    c.get(process.env.SECRET_VIDEORES_FILEPATH, function(err, stream) {
       if (err) throw err;
       stream.once('close', function() {
         c.end();
@@ -97,9 +98,9 @@ async function main() {
   });
   // Connect to localhost:21 as anonymous
   c.connect({
-    host: process.env.VIDEORES_FTP_HOST,
-    user: process.env.VIDEORES_FTP_USERNAME,
-    password: process.env.VIDEORES_FTP_PWD,
+    host: process.env.SECRET_VIDEORES_FTP_HOST,
+    user: process.env.SECRET_VIDEORES_FTP_USERNAME,
+    password: process.env.SECRET_VIDEORES_FTP_PWD,
   });
 }
 

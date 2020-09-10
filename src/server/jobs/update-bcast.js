@@ -41,8 +41,8 @@ function convertTerm(term) {
  */
 async function loginBruinCast() {
   const data = qs.stringify({
-    username: process.env.BRUINCAST_API_USERNAME,
-    password: process.env.BRUINCAST_API_PASSWORD,
+    username: process.env.SECRET_BRUINCAST_API_USERNAME,
+    password: process.env.SECRET_BRUINCAST_API_PASSWORD,
   });
 
   const config = {
@@ -121,12 +121,13 @@ async function main() {
   // Log in to BruinCast API and store cookie
   await loginBruinCast();
 
-  const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-  const client = new MongoClient(dbURL, { useUnifiedTopology: true });
+  const client = new MongoClient(process.env.DB_URL, {
+    useUnifiedTopology: true,
+  });
 
   try {
     await client.connect();
-    logger.info(`Connected database at ${dbURL}`);
+    logger.info(`Connected to database`);
 
     const currentTerm = process.argv[2];
     if (!currentTerm) {

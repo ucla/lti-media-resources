@@ -6,6 +6,23 @@
 2. Install ESlint package: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
 3. Install ESlint rules: npx install-peerdeps --global eslint-config-wesbos
 
+## Set up git-secrets hooks
+
+To prevent us from accidentally committing secrets, we will install the [git-secrets](https://github.com/awslabs/git-secrets) hooks.
+
+1. Install git-secrets locally on your machine. See instructions for your platform [here](https://github.com/awslabs/git-secrets#installing-git-secrets).
+
+2. Set up git-secrets for this repo
+
+   - `cd` into the repo
+   - Run `git secrets --install`
+
+3. Configure git-secrets by running the following commands:
+   - `git secrets --register-aws`
+   - `git secrets --add 'SECRET(\s|[a-zA-Z\_])*=\s*.+'`
+
+These rules will prevent any variables prefixed with `SECRET_` from being committed with a value filled in.
+
 ## Set up LTI tool
 
 1. Startup your local Moodle on Docker
@@ -34,7 +51,7 @@
 
 5. Click "Save changes"
 6. Then under "Tools" find LTI app you just created and click on the "View configurations" icon (first icon, next to gear)
-7. Copy Client ID value into PLATFORM_CLIENTID value in .env file (created below in "Startup app" Step 1).
+7. Copy Client ID value into SECRET_PLATFORM_CLIENTID value in .env file (created below in "Startup app" Step 1).
 
 ## Install MongoDB
 

@@ -7,8 +7,7 @@ const lti = require('ltijs').Provider;
 // Connect to db on start
 const client = require('./models/db');
 
-const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-client.connect(dbURL);
+client.connect(process.env.DB_URL);
 
 // Routes
 const apiRouter = require('./api');
@@ -24,10 +23,7 @@ if (process.env.MODE === 'production') {
 lti.setup(
   process.env.LTI_KEY,
   // Setting up database configurations
-  {
-    url: `mongodb://${process.env.DB_HOST}/${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`,
-    connection: { user: process.env.DB_USER, pass: process.env.DB_PASS },
-  },
+  { url: process.env.DB_URL },
   options
 );
 
@@ -53,7 +49,7 @@ async function setup() {
   await lti.registerPlatform({
     url: process.env.PLATFORM_URL,
     name: 'Platform',
-    clientId: process.env.PLATFORM_CLIENTID,
+    clientId: process.env.SECRET_PLATFORM_CLIENTID,
     authenticationEndpoint: process.env.PLATFORM_ENDPOINT,
     accesstokenEndpoint: process.env.PLATFORM_TOKEN_ENDPOINT,
     authConfig: {
@@ -65,7 +61,7 @@ async function setup() {
   // Get the public key generated for that platform.
   const plat = await lti.getPlatform(
     process.env.PLATFORM_URL,
-    process.env.PLATFORM_CLIENTID
+    process.env.SECRET_PLATFORM_CLIENTID
   );
   // eslint-disable-next-line no-console
   console.log(await plat.platformPublicKey());

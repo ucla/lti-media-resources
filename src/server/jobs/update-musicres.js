@@ -11,10 +11,11 @@ const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
  */
 async function main() {
   const logger = await LogServices.createLogger('update-musicres');
-  const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-  const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
+  const dbclient = new MongoClient(process.env.DB_URL, {
+    useUnifiedTopology: true,
+  });
   await dbclient.connect();
-  logger.info(`Connected database at ${dbURL}`);
+  logger.info(`Connected to database`);
 
   const res = await axios.get(
     'https://webservices.library.ucla.edu/music/v2/classes'
