@@ -186,7 +186,10 @@ module.exports.getNotice = async () => {
     .db(DB_DATABASE)
     .collection(collectionMap.get(NOTICE));
   const noticeArray = await noticeCollection.find({}).toArray();
-  return noticeArray[0].notice;
+  if (noticeArray) {
+    return noticeArray[0].notice;
+  }
+  return noticeArray;
 };
 
 module.exports.setNotice = async notice => {

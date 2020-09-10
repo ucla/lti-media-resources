@@ -7,8 +7,7 @@ const lti = require('ltijs').Provider;
 // Connect to db on start
 const client = require('./models/db');
 
-const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-client.connect(dbURL);
+client.connect(process.env.DB_URL);
 
 // Routes
 const apiRouter = require('./api');
@@ -24,13 +23,7 @@ if (process.env.MODE === 'production') {
 lti.setup(
   process.env.LTI_KEY,
   // Setting up database configurations
-  {
-    url: `mongodb://${process.env.DB_HOST}/${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`,
-    connection: {
-      user: process.env.SECRET_DB_USER,
-      pass: process.env.SECRET_DB_PASS,
-    },
-  },
+  { url: process.env.DB_URL },
   options
 );
 

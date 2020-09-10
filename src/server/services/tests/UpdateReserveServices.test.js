@@ -7,8 +7,9 @@ const { COLLECTION_TYPE, collectionMap } = require('../../../../constants');
 
 const { VIDEO_RESERVES } = COLLECTION_TYPE;
 
-const dbURL = `${process.env.DB_URL}${process.env.DB_DATABASE}?replicaSet=${process.env.DB_REPLSET}`;
-const dbclient = new MongoClient(dbURL, { useUnifiedTopology: true });
+const dbclient = new MongoClient(process.env.DB_URL, {
+  useUnifiedTopology: true,
+});
 
 const postfix = 'testupdateservices';
 const testCollections = new Map([
