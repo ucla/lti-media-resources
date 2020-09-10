@@ -41,8 +41,8 @@ function convertTerm(term) {
  */
 async function loginBruinCast() {
   const data = qs.stringify({
-    username: process.env.BRUINCAST_API_USERNAME,
-    password: process.env.BRUINCAST_API_PASSWORD,
+    username: process.env.SECRET_BRUINCAST_API_USERNAME,
+    password: process.env.SECRET_BRUINCAST_API_PASSWORD,
   });
 
   const config = {

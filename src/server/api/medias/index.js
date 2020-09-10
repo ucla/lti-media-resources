@@ -257,11 +257,11 @@ router.get('/url', (req, res) => {
 
   const { mediatype, mediaformat, filename, quarter } = req.query;
   const {
-    HOST,
+    BRUINCAST_HOST,
     VALIDITY,
-    SECRET,
+    SECRET_BRUINCAST_TOKEN,
     VIDEORES_HOST,
-    VIDEORES_TOKEN_SECRET,
+    SECRET_VIDEORES_TOKEN,
   } = process.env;
 
   // When testing during development, replace with your external IP
@@ -285,13 +285,13 @@ router.get('/url', (req, res) => {
       return res.status(400).send(new Error('Incorrect format for quarter'));
     }
 
-    host = HOST;
-    secret = SECRET;
+    host = BRUINCAST_HOST;
+    secret = SECRET_BRUINCAST_TOKEN;
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
     stream = `${ext}:${filename}/playlist.m3u8`;
 
     host = VIDEORES_HOST;
-    secret = VIDEORES_TOKEN_SECRET;
+    secret = SECRET_VIDEORES_TOKEN;
   } else {
     return res.status(400).send(new Error('Invalid mediatype'));
   }

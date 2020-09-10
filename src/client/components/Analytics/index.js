@@ -81,9 +81,10 @@ export const Analytics = ({ analytics, showing, show }) => {
                   valueNow={analyticOfUser.finishedCount}
                   valueMax={analyticOfUser.totalCount}
                   shouldAnimateOnMount
-                  formatScreenReaderValue={({ valueNow, valueMax }) =>
-                    `${valueNow} out of ${valueMax}`
-                  }
+                  formatScreenReaderValue={({ valueNow, valueMax }) => {
+                    const screenReader = `${valueNow} out of ${valueMax}`;
+                    return screenReader;
+                  }}
                   renderValue={({ valueNow, valueMax }) => (
                     <span>
                       <Text size="medium" weight="bold">
@@ -114,9 +115,12 @@ export const Analytics = ({ analytics, showing, show }) => {
                         size="small"
                         screenReaderLabel="Percent complete"
                         shouldAnimateOnMount
-                        formatScreenReaderValue={({ valueNow, valueMax }) =>
-                          `${Math.round((valueNow / valueMax) * 100)}%`
-                        }
+                        formatScreenReaderValue={({ valueNow, valueMax }) => {
+                          const screenReader = `${Math.round(
+                            (valueNow / valueMax) * 100
+                          )}%`;
+                          return screenReader;
+                        }}
                         renderValue={({ valueNow, valueMax }) => {
                           const percent = Math.round(
                             (valueNow / valueMax) * 100
