@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactJWPlayer from 'react-jw-player';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
 import axiosRetry from 'axios-retry';
+
 import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);

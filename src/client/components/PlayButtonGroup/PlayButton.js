@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import { Button } from '@instructure/ui-buttons';
 import { IconVideoSolid, IconAudioSolid } from '@instructure/ui-icons';
 
-import axiosRetry from 'axios-retry';
 import { getLtik } from '../../services/ltik';
 
 axiosRetry(axios);

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import dompurify from 'dompurify';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import { View } from '@instructure/ui-view';
 import { Text } from '@instructure/ui-text';
@@ -8,11 +12,7 @@ import { Button } from '@instructure/ui-buttons';
 import { TextArea } from '@instructure/ui-text-area';
 import { Tabs } from '@instructure/ui-tabs';
 import { Alert } from '@instructure/ui-alerts';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 
-import axiosRetry from 'axios-retry';
 import { AdminListings } from './AdminListings';
 import { getLtik } from '../../services/ltik';
 
