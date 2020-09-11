@@ -75,10 +75,8 @@ class VideoresServices {
       courseMedia.listings.sort(function(listing1, listing2) {
         if (listing1.srs < listing2.srs) return -1;
         if (listing2.srs < listing1.srs) return 1;
-        if (listing1.srs === listing2.srs) {
-          if (listing1.videoTitle < listing2.videoTitle) return -1;
-          if (listing2.videoTitle < listing1.videoTitle) return 1;
-        }
+        if (listing1.videoTitle < listing2.videoTitle) return -1;
+        if (listing2.videoTitle < listing1.videoTitle) return 1;
         return 0;
       });
     }

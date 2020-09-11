@@ -61,10 +61,8 @@ class MusicresServices {
       courseMedia.listings.sort(function(listing1, listing2) {
         if (listing1.srs < listing2.srs) return -1;
         if (listing2.srs < listing1.srs) return 1;
-        if (listing1.srs === listing2.srs) {
-          if (listing1.title < listing2.title) return -1;
-          if (listing2.title < listing1.title) return 1;
-        }
+        if (listing1.title < listing2.title) return -1;
+        if (listing2.title < listing1.title) return 1;
         return 0;
       });
     }

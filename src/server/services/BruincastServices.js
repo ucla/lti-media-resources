@@ -172,10 +172,8 @@ class BruincastServices {
       courseMedia.listings.sort(function(listing1, listing2) {
         if (listing1.date < listing2.date) return -1;
         if (listing2.date < listing1.date) return 1;
-        if (listing1.date === listing2.date && listing1.title < listing2.title)
-          return -1;
-        if (listing1.date === listing2.date && listing2.title < listing1.title)
-          return 1;
+        if (listing1.title < listing2.title) return -1;
+        if (listing2.title < listing1.title) return 1;
         return 0;
       });
     }
