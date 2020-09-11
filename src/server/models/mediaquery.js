@@ -112,7 +112,9 @@ module.exports.getMediaGroupedByShortname = async dbCollection => {
   /*
    * Aggregation Steps:
    * 1. Sort records by date, then title, then videoTitle.
-   *   (The videoTitle field is used only by Video Reserves records.)
+   *   If a record doesn't have a certain field, then that field is ignored during $sort.
+   *   The videoTitle field is used only by Video Reserves records.
+   *   The date field is used only by Bruincast records.
    * 2. Group media records by shortname and term.
    *   Grouping by both fields separates records with null shortname into separate groups by term.
    * 3. Sort groups by term, then _id.
