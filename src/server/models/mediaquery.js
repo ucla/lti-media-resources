@@ -110,10 +110,21 @@ module.exports.getCastCountByCourse = async courseLabel => {
  */
 module.exports.getMediaGroupedByShortname = async dbCollection => {
   /*
-   * This aggregation groups media records by shortname and term.
-   * Grouping by both fields separates records with null shortname into groups by term.
+   * Aggregation Steps:
+   * 1. Sort records by date, then title, then videoTitle.
+   *   (The videoTitle field is used only by Video Reserves records.)
+   * 2. Group media records by shortname and term.
+   *   Grouping by both fields separates records with null shortname into separate groups by term.
+   * 3. Sort groups by term, then _id.
    */
   const aggregation = [
+    {
+      $sort: {
+        date: 1,
+        title: 1,
+        videoTitle: 1,
+      },
+    },
     {
       $group: {
         _id: {

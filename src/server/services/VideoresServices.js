@@ -63,28 +63,6 @@ class VideoresServices {
   }
 
   /**
-   * Sort each course's media by SRS and title in ascending order.
-   *
-   * @param {Array} media  Media entries to be sorted.
-   * @returns {Array}   Formatted media entries.
-   */
-  static formatAllVideoReservesListings(media) {
-    for (const courseMedia of media) {
-      // Sort media for a course group by videoTitle.
-      // The sort callback compares SRS first so that items in the "null" course are kept together.
-      courseMedia.listings.sort(function(listing1, listing2) {
-        if (listing1.srs < listing2.srs) return -1;
-        if (listing2.srs < listing1.srs) return 1;
-        if (listing1.videoTitle < listing2.videoTitle) return -1;
-        if (listing2.videoTitle < listing1.videoTitle) return 1;
-        return 0;
-      });
-    }
-
-    return media;
-  }
-
-  /**
    * Retrieve all video reserves
    *
    * @returns {Array}   Return all video reserves.
@@ -93,8 +71,7 @@ class VideoresServices {
     const termMedia = await MediaQuery.getMediaGroupedByShortname(
       collectionMap.get(COLLECTION_TYPE.VIDEO_RESERVES)
     );
-    const sortedMedia = this.formatAllVideoReservesListings(termMedia);
-    return sortedMedia;
+    return termMedia;
   }
 
   /**

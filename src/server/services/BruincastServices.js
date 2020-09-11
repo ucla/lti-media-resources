@@ -134,7 +134,6 @@ class BruincastServices {
 
   /**
    * Update bruincast media entries with clean fields.
-   * Each course's media entries are then sorted in ascending order.
    *
    * @param {Array} media  Media entries to be updated.
    * @returns {Array}   Formatted media entries.
@@ -167,15 +166,6 @@ class BruincastServices {
         delete entry._id;
         delete entry.timestamp;
       }
-
-      // Sort each course's media listings by date. If date is the same, then sort by title.
-      courseMedia.listings.sort(function(listing1, listing2) {
-        if (listing1.date < listing2.date) return -1;
-        if (listing2.date < listing1.date) return 1;
-        if (listing1.title < listing2.title) return -1;
-        if (listing2.title < listing1.title) return 1;
-        return 0;
-      });
     }
 
     return media;
