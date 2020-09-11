@@ -33,6 +33,7 @@ export const MediaView = ({
         Back
       </Button>
       <br />
+      <p>{media.url}</p>
       <br />
       <MediaPlayer
         media={media}
