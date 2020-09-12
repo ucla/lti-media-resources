@@ -133,10 +133,10 @@ class BruincastServices {
   }
 
   /**
-   * Update bruincast media entries with clean fields
+   * Update bruincast media entries with clean fields.
    *
    * @param {Array} media  Media entries to be updated.
-   * @returns {Array}   Updated media entries.
+   * @returns {Array}   Formatted media entries.
    */
   static formatTermCasts(media) {
     for (const courseMedia of media) {

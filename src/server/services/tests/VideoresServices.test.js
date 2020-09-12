@@ -92,72 +92,74 @@ beforeAll(async done => {
   done();
 });
 
-test('Test Analytics Generation', async done => {
-  const sampleCourse = { label: 'Charms' };
-  const sampleMembers = [
-    { user_id: '0', name: 'Luna Lovegood' },
-    { user_id: '1', name: 'Cho Chang' },
-  ];
-  const analytics = await VideoresServices.getAnalytics(
-    sampleCourse,
-    sampleMembers
-  );
-  const correctAnalytics = [
-    {
-      userid: 0,
-      name: 'Luna Lovegood',
-      finishedCount: 2,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Expelliarmus',
-          finishedTimes: 1,
-          time: 0,
-          remaining: 14,
-        },
-        {
-          title: 'Lumos Solem',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Wingardium Leviosa',
-          finishedTimes: 7,
-          time: 7,
-          remaining: 7,
-        },
-      ],
-    },
-    {
-      userid: 1,
-      name: 'Cho Chang',
-      finishedCount: 1,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Expelliarmus',
-          finishedTimes: 2,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Lumos Solem',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Wingardium Leviosa',
-          finishedTimes: 0,
-          time: 7,
-          remaining: 7,
-        },
-      ],
-    },
-  ];
-  expect(analytics).toMatchObject(correctAnalytics);
-  done();
+describe('VideoresServices tests', () => {
+  test('Test Analytics Generation', async done => {
+    const sampleCourse = { label: 'Charms' };
+    const sampleMembers = [
+      { user_id: '0', name: 'Luna Lovegood' },
+      { user_id: '1', name: 'Cho Chang' },
+    ];
+    const analytics = await VideoresServices.getAnalytics(
+      sampleCourse,
+      sampleMembers
+    );
+    const correctAnalytics = [
+      {
+        userid: 0,
+        name: 'Luna Lovegood',
+        finishedCount: 2,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Expelliarmus',
+            finishedTimes: 1,
+            time: 0,
+            remaining: 14,
+          },
+          {
+            title: 'Lumos Solem',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Wingardium Leviosa',
+            finishedTimes: 7,
+            time: 7,
+            remaining: 7,
+          },
+        ],
+      },
+      {
+        userid: 1,
+        name: 'Cho Chang',
+        finishedCount: 1,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Expelliarmus',
+            finishedTimes: 2,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Lumos Solem',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Wingardium Leviosa',
+            finishedTimes: 0,
+            time: 7,
+            remaining: 7,
+          },
+        ],
+      },
+    ];
+    expect(analytics).toMatchObject(correctAnalytics);
+    done();
+  });
 });
 
 afterAll(async done => {

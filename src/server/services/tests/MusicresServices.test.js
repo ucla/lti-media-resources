@@ -107,99 +107,101 @@ beforeAll(async done => {
   done();
 });
 
-test('Test Analytics Generation', async done => {
-  const sampleCourse = { label: 'Herbology' };
-  const sampleMembers = [
-    { user_id: '0', name: 'Draco Malfoy' },
-    { user_id: '1', name: 'Vincent Crabbe' },
-    { user_id: '2', name: 'Gregory Goyle' },
-  ];
-  const analytics = await MusicresServices.getAnalytics(
-    sampleCourse,
-    sampleMembers
-  );
-  const correctAnalytics = [
-    {
-      userid: 0,
-      name: 'Draco Malfoy',
-      finishedCount: 2,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 1,
-          time: 0,
-          remaining: 14,
-        },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 7,
-          time: 7,
-          remaining: 7,
-        },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-      ],
-    },
-    {
-      userid: 1,
-      name: 'Vincent Crabbe',
-      finishedCount: 0,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-      ],
-    },
-    {
-      userid: 2,
-      name: 'Gregory Goyle',
-      finishedCount: 1,
-      totalCount: 3,
-      analytics: [
-        {
-          title: 'Gillyweed - Gillyweed under water',
-          finishedTimes: 2,
-          time: 0,
-          remaining: 100,
-        },
-        {
-          title: 'Mandrake - Mandrake cry',
-          finishedTimes: 0,
-          time: 7,
-          remaining: 7,
-        },
-        {
-          title: 'Mandrake - Petrification cure',
-          finishedTimes: 0,
-          time: 0,
-          remaining: 100,
-        },
-      ],
-    },
-  ];
-  expect(analytics).toMatchObject(correctAnalytics);
-  done();
+describe('MusicresServices tests', () => {
+  test('Test Analytics Generation', async done => {
+    const sampleCourse = { label: 'Herbology' };
+    const sampleMembers = [
+      { user_id: '0', name: 'Draco Malfoy' },
+      { user_id: '1', name: 'Vincent Crabbe' },
+      { user_id: '2', name: 'Gregory Goyle' },
+    ];
+    const analytics = await MusicresServices.getAnalytics(
+      sampleCourse,
+      sampleMembers
+    );
+    const correctAnalytics = [
+      {
+        userid: 0,
+        name: 'Draco Malfoy',
+        finishedCount: 2,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 1,
+            time: 0,
+            remaining: 14,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 7,
+            time: 7,
+            remaining: 7,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+      {
+        userid: 1,
+        name: 'Vincent Crabbe',
+        finishedCount: 0,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+      {
+        userid: 2,
+        name: 'Gregory Goyle',
+        finishedCount: 1,
+        totalCount: 3,
+        analytics: [
+          {
+            title: 'Gillyweed - Gillyweed under water',
+            finishedTimes: 2,
+            time: 0,
+            remaining: 100,
+          },
+          {
+            title: 'Mandrake - Mandrake cry',
+            finishedTimes: 0,
+            time: 7,
+            remaining: 7,
+          },
+          {
+            title: 'Mandrake - Petrification cure',
+            finishedTimes: 0,
+            time: 0,
+            remaining: 100,
+          },
+        ],
+      },
+    ];
+    expect(analytics).toMatchObject(correctAnalytics);
+    done();
+  });
 });
 
 afterAll(async done => {
