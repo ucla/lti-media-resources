@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "@instructure/canvas-high-contrast-theme": "^7.1.1",
-    "@instructure/canvas-theme": "^7.1.1",
+    "@instructure/canvas-theme": "^7.1.4",
     "@instructure/ui-alerts": "^7.1.1",
     "@instructure/ui-billboard": "^7.1.1",
     "@instructure/ui-breadcrumb": "^7.1.2",
