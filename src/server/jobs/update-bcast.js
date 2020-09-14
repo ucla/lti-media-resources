@@ -55,11 +55,11 @@ async function loginBruinCast() {
   };
 
   await axios(config)
-    .then(response => {
+    .then((response) => {
       // Formats the BruinCast cookie in the format of 'session_name=sessid'
       bcastCookie = `${response.data.session_name}=${response.data.sessid}`;
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }
@@ -80,10 +80,10 @@ async function getCourses(term, callback) {
   };
 
   await axios(config)
-    .then(async function(response) {
+    .then(async function (response) {
       await callback(JSON.stringify(response.data));
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }
@@ -105,10 +105,10 @@ async function getMedia(term, classID, callback) {
   };
 
   await axios(config)
-    .then(async function(response) {
+    .then(async function (response) {
       await callback(JSON.stringify(response.data));
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }
@@ -142,7 +142,7 @@ async function main() {
     logger.info(`Updating records for term: ${currentTerm}`);
 
     // From the API, get Class IDs with available media for the given term
-    await getCourses(formattedTerm, async function(coursesResponse) {
+    await getCourses(formattedTerm, async function (coursesResponse) {
       const courses = JSON.parse(coursesResponse);
 
       // For each term and Class ID, get the associated media and update records
@@ -163,7 +163,7 @@ async function main() {
         let numCourseRecords = 0;
 
         // From the API, get media listings for given term and Class ID
-        await getMedia(formattedTerm, currentSRS, async function(
+        await getMedia(formattedTerm, currentSRS, async function (
           mediaResponse
         ) {
           const mediaEntries = JSON.parse(mediaResponse);

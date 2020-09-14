@@ -26,12 +26,12 @@ const router = express.Router();
  *         description: Successfully updated bruincast notice
  */
 router.get('/notice', (req, res) => {
-  BruincastServices.getNotice().then(notice => res.send(notice));
+  BruincastServices.getNotice().then((notice) => res.send(notice));
 });
 
 router.post('/notice', (req, res) => {
   const { notice } = req.body;
-  BruincastServices.setNotice(notice).then(ret => res.send(ret));
+  BruincastServices.setNotice(notice).then((ret) => res.send(ret));
 });
 
 /**
@@ -63,11 +63,11 @@ router.post('/notice', (req, res) => {
  *         description: Successfully updated crosslists
  */
 router.get('/crosslists', (req, res) => {
-  BruincastServices.getAllCrosslists().then(list => res.send(list));
+  BruincastServices.getAllCrosslists().then((list) => res.send(list));
 });
 
 router.post('/crosslists', (req, res) => {
-  BruincastServices.updateCrosslists(req.body.crosslists).then(numDiff =>
+  BruincastServices.updateCrosslists(req.body.crosslists).then((numDiff) =>
     res.send(numDiff)
   );
 });
@@ -125,7 +125,7 @@ router.get('/casts', (req, res) => {
   BruincastServices.getCasts(
     context,
     parseInt(res.locals.token.user)
-  ).then(casts => res.send(casts));
+  ).then((casts) => res.send(casts));
 });
 
 /**
@@ -185,7 +185,7 @@ router.get('/alllistings', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  BruincastServices.getCastListings().then(casts => res.send(casts));
+  BruincastServices.getCastListings().then((casts) => res.send(casts));
 });
 
 /**
@@ -215,7 +215,7 @@ router.get('/subjectareas', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { term } = req.query;
-  BruincastServices.getSubjectAreasForTerm(term).then(subjAreas =>
+  BruincastServices.getSubjectAreasForTerm(term).then((subjAreas) =>
     res.send(subjAreas)
   );
 });

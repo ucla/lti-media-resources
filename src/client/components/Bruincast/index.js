@@ -44,7 +44,7 @@ export const Bruincast = ({
     const ltik = getLtik();
     axios
       .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         const tmpCastsByCourses = res.data;
         for (const tmpCourse of tmpCastsByCourses) {
           for (const listObj of tmpCourse.casts) {
@@ -66,13 +66,15 @@ export const Bruincast = ({
         setCasts(tmpCastsByCourses);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving Bruincast contents...',
         });
       });
   };
+  // Loads Bruincasts (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveCasts, []);
 
   // Get analytics data if user is instructor or admin
@@ -84,7 +86,7 @@ export const Bruincast = ({
         .get(`/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.BRUINCAST },
         })
-        .then(res => {
+        .then((res) => {
           setAnalytics(res.data);
         });
     }
@@ -111,7 +113,7 @@ export const Bruincast = ({
   // Logic when a media is selected and to be played
   // Declaring functions only
   const [selectedMedia, setSelectedMedia] = React.useState({});
-  const selectMedia = obj => {
+  const selectMedia = (obj) => {
     setSelectedMedia(obj);
   };
   const deselectMedia = () => {
@@ -129,7 +131,7 @@ export const Bruincast = ({
   ) => {
     const toBeSet = castsByCourses;
     const matchedCourse = toBeSet.filter(
-      obj => obj.course.label === classShortname
+      (obj) => obj.course.label === classShortname
     )[0];
     for (const listObj of matchedCourse.casts) {
       for (const cast of listObj.listings) {
@@ -151,7 +153,8 @@ export const Bruincast = ({
     setCasts(toBeSet);
   };
 
-  // Get notice from backend
+  // Get notice from backend (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveWarning, []);
 
   // Display notice box only when a notice exists
@@ -239,7 +242,7 @@ export const Bruincast = ({
               analytics={
                 analytics
                   ? analytics.filter(
-                      analytic =>
+                      (analytic) =>
                         analytic.course.label === currCourse.course.label
                     )[0].analytics
                   : null

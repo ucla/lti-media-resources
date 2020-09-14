@@ -64,10 +64,10 @@ export const Analytics = ({ analytics, showing, show }) => {
         />
       </View>
       {analytics
-        .filter(analyticOfUser =>
+        .filter((analyticOfUser) =>
           analyticOfUser.name.toLowerCase().includes(searchedName.toLowerCase())
         )
-        .map(analyticOfUser => (
+        .map((analyticOfUser) => (
           <ToggleDetails
             id={`user${analyticOfUser.userid}`}
             key={`user${analyticOfUser.userid}`}
@@ -108,7 +108,7 @@ export const Analytics = ({ analytics, showing, show }) => {
                 </Table.Row>
               </Table.Head>
               <Table.Body>
-                {analyticOfUser.analytics.map(analytic => (
+                {analyticOfUser.analytics.map((analytic) => (
                   <Table.Row key={`title ${analytic.title}`}>
                     <Table.RowHeader>{analytic.title}</Table.RowHeader>
                     <Table.Cell>

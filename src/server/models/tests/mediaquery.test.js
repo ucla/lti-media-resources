@@ -119,7 +119,7 @@ const testData = [
   },
 ];
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
   await client.connect(process.env.DB_URL);
   const db = client.db(process.env.DB_DATABASE);
@@ -130,7 +130,7 @@ beforeAll(async done => {
   done();
 });
 
-test('Test getCastsByCourse', async done => {
+test('Test getCastsByCourse', async (done) => {
   // Expect the returned casts to be bucketed by week
   try {
     const castsFor201CS32 = await getCastsByCourse('20S-COMSCI32-1');
@@ -184,7 +184,7 @@ test('Test getCastsByCourse', async done => {
   }
 });
 
-test('Test getCastCountByCourse', async done => {
+test('Test getCastCountByCourse', async (done) => {
   try {
     const castCountFor201CS32 = await getCastCountByCourse('20S-COMSCI32-1');
     expect(castCountFor201CS32).toEqual(3);
@@ -200,7 +200,7 @@ test('Test getCastCountByCourse', async done => {
   }
 });
 
-test('Test getMediaGroupedByShortname', async done => {
+test('Test getMediaGroupedByShortname', async (done) => {
   try {
     const groupedMedia = await getMediaGroupedByShortname(
       testCollections.get(BRUINCAST)
@@ -353,7 +353,7 @@ test('Test getMediaGroupedByShortname', async done => {
   }
 });
 
-afterAll(async done => {
+afterAll(async (done) => {
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.dropCollection(col[1]);

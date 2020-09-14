@@ -75,7 +75,7 @@ export class MediaPlayer extends Component {
         }
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when uploading playback history...',
@@ -102,7 +102,7 @@ export class MediaPlayer extends Component {
             player.seek(media.playback);
           }
         }}
-        onTime={event => {
+        onTime={(event) => {
           this.state.playbackPos = event.position;
         }}
         onNinetyFivePercent={() => {

@@ -15,7 +15,7 @@ const testCollections = new Map([
   [PLAYBACKS, `${collectionMap.get(PLAYBACKS)}${postfix}`],
 ]);
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   collectionMap.set(BRUINCAST, testCollections.get(BRUINCAST));
   collectionMap.set(CROSSLISTS, testCollections.get(CROSSLISTS));
   collectionMap.set(PLAYBACKS, testCollections.get(PLAYBACKS));
@@ -123,7 +123,7 @@ beforeAll(async done => {
 });
 
 describe('BruincastServices tests', () => {
-  test('Test formatTermCasts()', async done => {
+  test('Test formatTermCasts()', async (done) => {
     const termCasts = [
       {
         _id: {
@@ -333,7 +333,7 @@ describe('BruincastServices tests', () => {
     done();
   });
 
-  test('Test Analytics Generation', async done => {
+  test('Test Analytics Generation', async (done) => {
     const sampleCourse = { label: 'Potions' };
     const sampleMembers = [
       { user_id: '0', name: 'Hermione Granger' },
@@ -462,7 +462,7 @@ describe('BruincastServices tests', () => {
     done();
   });
 
-  test('Test Crosslist Services', async done => {
+  test('Test Crosslist Services', async (done) => {
     const sampleData = [
       ['a', 'b', 'c'],
       ['d', 'e'],
@@ -487,7 +487,7 @@ describe('BruincastServices tests', () => {
   });
 });
 
-afterAll(async done => {
+afterAll(async (done) => {
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.dropCollection(col[1]);

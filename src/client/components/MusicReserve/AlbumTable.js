@@ -32,7 +32,7 @@ export const AlbumTable = ({ allAlbums, handleClick, setError }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {allAlbums.map(album => (
+        {allAlbums.map((album) => (
           <Table.Row key={album._id}>
             <Table.RowHeader>
               <CondensedButton onClick={handleClick}>

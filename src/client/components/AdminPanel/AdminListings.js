@@ -55,17 +55,19 @@ export const AdminListings = ({ mediaType, setError }) => {
       .get(`/api/medias/terms?ltik=${ltik}`, {
         params: { mediaType },
       })
-      .then(res => {
+      .then((res) => {
         setAcademicTerms(res.data);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: `Something went wrong when retrieving academic terms...`,
         });
       });
   };
+  // Loads term listing (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveTerms, []);
 
   // Retrieves all media listings, unfiltered; called once
@@ -77,12 +79,12 @@ export const AdminListings = ({ mediaType, setError }) => {
           constants.mediaTypeMap.get(mediaType).api
         }/alllistings?ltik=${ltik}`
       )
-      .then(res => {
+      .then((res) => {
         setMediaListings(res.data);
         setFilteredMediaListings(res.data);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         const mediaTypeStr = constants.mediaTypeMap.get(mediaType).string;
         setError({
           err,
@@ -90,22 +92,26 @@ export const AdminListings = ({ mediaType, setError }) => {
         });
       });
   };
+  // Loads media listing (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveListings, []);
 
   // React effect to set filteredMediaListings; called if academic term or subject area filter changes
   const filterListings = () => {
     setFilteredMediaListings(
       mediaListings
-        .filter(courseMediaGroup => {
+        .filter((courseMediaGroup) => {
           if (selectedAcademicTerm === '') return courseMediaGroup;
           return courseMediaGroup._id.term === selectedAcademicTerm;
         })
-        .filter(courseMediaGroup => {
+        .filter((courseMediaGroup) => {
           if (selectedSubjectArea === '') return courseMediaGroup;
           return courseMediaGroup.subjectArea === selectedSubjectArea;
         })
     );
   };
+  // Filters media listing
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(filterListings, [selectedAcademicTerm, selectedSubjectArea]);
 
   // Retrieves subject areas for this mediaType and selected academic term; called each term filter updates
@@ -115,17 +121,19 @@ export const AdminListings = ({ mediaType, setError }) => {
       .get(`/api/medias/subjectareas?ltik=${ltik}`, {
         params: { mediaType, term: selectedAcademicTerm },
       })
-      .then(res => {
+      .then((res) => {
         setSubjectAreas(res.data);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving subject areas...',
         });
       });
   };
+  // Loads subject area listing
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveSubjectAreas, [selectedAcademicTerm]);
 
   return (
@@ -142,7 +150,7 @@ export const AdminListings = ({ mediaType, setError }) => {
             <SimpleSelect.Option id="all" value="">
               All
             </SimpleSelect.Option>
-            {academicTerms.map(term => (
+            {academicTerms.map((term) => (
               <SimpleSelect.Option key={term} id={term} value={term}>
                 {term}
               </SimpleSelect.Option>
@@ -161,8 +169,8 @@ export const AdminListings = ({ mediaType, setError }) => {
               All
             </SimpleSelect.Option>
             {subjectAreas
-              .filter(subjArea => subjArea !== null)
-              .map(subjArea => (
+              .filter((subjArea) => subjArea !== null)
+              .map((subjArea) => (
                 <SimpleSelect.Option
                   key={subjArea}
                   id={subjArea}
@@ -176,7 +184,7 @@ export const AdminListings = ({ mediaType, setError }) => {
       </Flex>
       <br />
       <View>
-        {filteredMediaListings.map(course => (
+        {filteredMediaListings.map((course) => (
           <AdminListingsToggle
             key={`${course._id.term}_${course._id.shortname}`}
             shortname={course._id.shortname}

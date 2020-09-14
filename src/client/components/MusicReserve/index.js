@@ -30,17 +30,19 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     const ltik = getLtik();
     axios
       .get(`/api/medias/musicres?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         setAllAlbums(res.data);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving Digital Audio Reserves...',
         });
       });
   };
+  // Loads music reserves (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveMusicRes, []);
 
   // State that indicates a user's selected album and selected track within the album
@@ -48,9 +50,9 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [selectedMusic, setSelectedMusic] = useState(null);
   // Onclick functions that handle album / track selection
-  const handleAlbumClick = event => {
+  const handleAlbumClick = (event) => {
     const clickedAlbum = allAlbums.filter(
-      album => album.title.trim() === event.target.innerText.trim()
+      (album) => album.title.trim() === event.target.innerText.trim()
     )[0];
     const { items } = clickedAlbum;
     if (items.length === 1) {
@@ -78,9 +80,9 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
       setSelectedAlbum(clickedAlbum);
     }
   };
-  const handleTrackClick = event => {
+  const handleTrackClick = (event) => {
     const clickedMusic = selectedAlbum.items.filter(
-      item => item.trackTitle.trim() === event.target.innerText.trim()
+      (item) => item.trackTitle.trim() === event.target.innerText.trim()
     )[0];
     if (!clickedMusic.url) {
       clickedMusic.url = clickedMusic.httpURL;
@@ -117,8 +119,8 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   ) => {
     const albumsToBeSet = allAlbums;
     const itemToBeSet = albumsToBeSet
-      .filter(album => album.title === albumTitle)[0]
-      .items.filter(item => item.httpURL === trackFile)[0];
+      .filter((album) => album.title === albumTitle)[0]
+      .items.filter((item) => item.httpURL === trackFile)[0];
     itemToBeSet.playback = playback;
     itemToBeSet.remaining = remaining;
     if (finished) {
@@ -142,7 +144,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
         .get(`/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES },
         })
-        .then(res => {
+        .then((res) => {
           setAnalytics(res.data);
         });
     }

@@ -48,7 +48,7 @@ router.get('/', (req, res) => {
   VideoresServices.getVideores(
     label,
     parseInt(res.locals.token.user)
-  ).then(list => res.send(list));
+  ).then((list) => res.send(list));
 });
 
 /**
@@ -114,7 +114,7 @@ router.get('/alllistings', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  VideoresServices.getAllVideoReserves().then(vidRes => res.send(vidRes));
+  VideoresServices.getAllVideoReserves().then((vidRes) => res.send(vidRes));
 });
 
 module.exports = router;

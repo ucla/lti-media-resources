@@ -13,7 +13,7 @@ const testCollections = new Map([
   [PLAYBACKS, `${collectionMap.get(PLAYBACKS)}${postfix}`],
 ]);
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   collectionMap.set(VIDEO_RESERVES, testCollections.get(VIDEO_RESERVES));
   collectionMap.set(PLAYBACKS, testCollections.get(PLAYBACKS));
   await client.connect(process.env.DB_URL);
@@ -93,7 +93,7 @@ beforeAll(async done => {
 });
 
 describe('VideoresServices tests', () => {
-  test('Test Analytics Generation', async done => {
+  test('Test Analytics Generation', async (done) => {
     const sampleCourse = { label: 'Charms' };
     const sampleMembers = [
       { user_id: '0', name: 'Luna Lovegood' },
@@ -162,7 +162,7 @@ describe('VideoresServices tests', () => {
   });
 });
 
-afterAll(async done => {
+afterAll(async (done) => {
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.dropCollection(col[1]);

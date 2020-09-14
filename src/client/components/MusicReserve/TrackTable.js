@@ -29,7 +29,7 @@ export const TrackTable = ({ album, handleClick, setError }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {album.items.map(track => (
+        {album.items.map((track) => (
           <Table.Row
             key={`${track.volume}-${track.disc}-${track.side}-${track.trackNumber}`}
           >

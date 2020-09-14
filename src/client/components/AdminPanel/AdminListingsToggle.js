@@ -59,7 +59,7 @@ export const AdminListingsToggle = ({
   return (
     <ToggleDetails id={shortname} summary={shortnameSummary} variant="filled">
       {mediaType === constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES &&
-        listings.map(listing => (
+        listings.map((listing) => (
           <MusicResListingsAlbumToggle key={listing._id} album={listing} />
         ))}
       {mediaType !== constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES && (

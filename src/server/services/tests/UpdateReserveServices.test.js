@@ -16,7 +16,7 @@ const testCollections = new Map([
   [VIDEO_RESERVES, `${collectionMap.get(VIDEO_RESERVES)}${postfix}`],
 ]);
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   collectionMap.set(VIDEO_RESERVES, testCollections.get(VIDEO_RESERVES));
   await dbclient.connect();
   const db = dbclient.db(process.env.DB_DATABASE);
@@ -26,16 +26,16 @@ beforeAll(async done => {
   done();
 });
 
-test('Generate video fields from bad file', done => {
+test('Generate video fields from bad file', (done) => {
   const stream = fs.createReadStream(
     'src/server/services/tests/fixtures/BAD_TEST_MEDIA_LINKS.txt'
   );
-  const warn = jest.fn(warning => warning);
+  const warn = jest.fn((warning) => warning);
   const mockLogger = {
     warn,
   };
   let str = '';
-  stream.on('data', data => {
+  stream.on('data', (data) => {
     str += data.toString();
   });
   stream.on('end', async () => {
@@ -52,16 +52,16 @@ test('Generate video fields from bad file', done => {
   done();
 });
 
-test('Generate video fields from good file', done => {
+test('Generate video fields from good file', (done) => {
   const stream = fs.createReadStream(
     'src/server/services/tests/fixtures/GOOD_TEST_MEDIA_LINKS.txt'
   );
-  const warn = jest.fn(warning => warning);
+  const warn = jest.fn((warning) => warning);
   const mockLogger = {
     warn,
   };
   let str = '';
-  stream.on('data', data => {
+  stream.on('data', (data) => {
     str += data.toString();
   });
   stream.on('end', async () => {
@@ -78,7 +78,7 @@ test('Generate video fields from good file', done => {
   done();
 });
 
-test('Update records for class', async done => {
+test('Update records for class', async (done) => {
   const sampleEntries = [
     {
       term: '99F',
@@ -150,7 +150,7 @@ test('Update records for class', async done => {
   done();
 });
 
-afterAll(async done => {
+afterAll(async (done) => {
   const db = dbclient.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.dropCollection(col[1]);

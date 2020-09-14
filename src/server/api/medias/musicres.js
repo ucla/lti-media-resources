@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
   MusicresServices.getMusicres(
     label,
     parseInt(res.locals.token.user)
-  ).then(list => res.send(list));
+  ).then((list) => res.send(list));
 });
 
 /**
@@ -148,7 +148,7 @@ router.get('/alllistings', (req, res) => {
   if (!CheckRoleServices.isAdmin(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  MusicresServices.getAllMusicReserves().then(vidRes => res.send(vidRes));
+  MusicresServices.getAllMusicReserves().then((vidRes) => res.send(vidRes));
 });
 
 module.exports = router;

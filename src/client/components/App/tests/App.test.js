@@ -9,7 +9,7 @@ jest.mock('../../../services/ltik');
 
 afterEach(cleanup);
 
-test('Axios error handling in App', async done => {
+test('Axios error handling in App', async (done) => {
   axios.get.mockImplementation(() =>
     Promise.reject(
       new Error({
@@ -26,7 +26,7 @@ test('Axios error handling in App', async done => {
   done();
 });
 
-test('App component matches its original snapshot', done => {
+test('App component matches its original snapshot', (done) => {
   const appInstance = shallow(<App />);
   expect(appInstance).toMatchSnapshot();
   done();

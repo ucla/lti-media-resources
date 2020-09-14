@@ -41,7 +41,7 @@ router.get('/counts', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { label } = res.locals.context.context;
-  MediaResourceServices.getCounts(label).then(counts => res.send(counts));
+  MediaResourceServices.getCounts(label).then((counts) => res.send(counts));
 });
 
 /**
@@ -95,7 +95,7 @@ router.post('/playback', (req, res) => {
     time,
     remaining,
     finished
-  ).then(ok => res.send({ ok }));
+  ).then((ok) => res.send({ ok }));
 });
 
 /**
@@ -137,17 +137,17 @@ router.get('/analytics', async (req, res) => {
   const { context } = res.locals.context;
   switch (parseInt(mediaType)) {
     case constants.MEDIA_TYPE.BRUINCAST:
-      BruincastServices.getAnalytics(context, members).then(analytics =>
+      BruincastServices.getAnalytics(context, members).then((analytics) =>
         res.send(analytics)
       );
       break;
     case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-      MusicresServices.getAnalytics(context, members).then(analytics =>
+      MusicresServices.getAnalytics(context, members).then((analytics) =>
         res.send(analytics)
       );
       break;
     case constants.MEDIA_TYPE.VIDEO_RESERVES:
-      VideoresServices.getAnalytics(context, members).then(analytics =>
+      VideoresServices.getAnalytics(context, members).then((analytics) =>
         res.send(analytics)
       );
       break;
@@ -183,7 +183,7 @@ router.get('/terms', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { mediaType } = req.query;
-  MediaResourceServices.getTerms(mediaType).then(terms => res.send(terms));
+  MediaResourceServices.getTerms(mediaType).then((terms) => res.send(terms));
 });
 
 /**
@@ -218,7 +218,7 @@ router.get('/subjectareas', (req, res) => {
   MediaResourceServices.getSubjectAreasForTerm(
     mediaType,
     term
-  ).then(subjAreas => res.send(subjAreas));
+  ).then((subjAreas) => res.send(subjAreas));
 });
 
 /**
@@ -309,7 +309,7 @@ router.get('/url', (req, res) => {
     secret,
     start.toString(),
     end.toString()
-  ).then(url => res.send(url));
+  ).then((url) => res.send(url));
 });
 
 module.exports = router;

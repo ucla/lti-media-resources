@@ -1,5 +1,6 @@
 {
   "root": true,
+  "ignorePatterns": ["dist/*"],
   "extends": [
     "plugin:jsdoc/recommended",
     "wesbos"

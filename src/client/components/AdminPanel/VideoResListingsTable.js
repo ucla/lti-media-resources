@@ -40,7 +40,7 @@ export const VideoResListingsTable = ({ shortname, listings }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {listings.map(listing => (
+        {listings.map((listing) => (
           <Table.Row key={listing.filename}>
             <Table.Cell>{listing.term}</Table.Cell>
             <Table.Cell>{listing.srs}</Table.Cell>

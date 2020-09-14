@@ -6,7 +6,7 @@ const { inRange } = require('range_check');
  * @param {string} ipAddress  IP address that the user is on.
  * @returns {boolean}   Return if user is on an oncampus IP.
  */
-module.exports.isOnCampusIP = function(ipAddress) {
+module.exports.isOnCampusIP = function (ipAddress) {
   // List of acceptable IP addresses belonging to UCLA from https://kb.ucla.edu/articles/list-of-uc-related-ip-addresses
   const acceptableIPv4 = [
     '128.97.0.0/16',

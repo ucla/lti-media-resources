@@ -45,7 +45,7 @@ const App = () => {
     const ltik = getLtik();
     axios
       .get(`/api/context?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
         setUserid(u);
@@ -59,7 +59,7 @@ const App = () => {
         }
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving app context...',
@@ -73,14 +73,14 @@ const App = () => {
     const ltik = getLtik();
     axios
       .get(`/api/medias/counts?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         const { bruincasts, videos, audios } = res.data;
         setBruincastCount(bruincasts);
         setVideoReserveCount(videos);
         setAudioReserveCount(audios);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg:
@@ -102,12 +102,12 @@ const App = () => {
       const ltik = getLtik();
       axios
         .get(`/api/medias/bruincast/notice?ltik=${ltik}`)
-        .then(res => {
+        .then((res) => {
           setWarning(dompurify.sanitize(res.data));
           setRetrievedWarning(true);
           setError(null);
         })
-        .catch(err => {
+        .catch((err) => {
           setError({
             err,
             msg: 'Something went wrong when retrieving bruincast notice',

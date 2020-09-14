@@ -1,13 +1,13 @@
 module.exports = {
   async up(db) {
     const collectionList = await db.listCollections().toArray();
-    if (!collectionList.map(col => col.name).includes('crosslists')) {
+    if (!collectionList.map((col) => col.name).includes('crosslists')) {
       await db.createCollection('crosslists');
     }
-    if (!collectionList.map(col => col.name).includes('bruincastmedia')) {
+    if (!collectionList.map((col) => col.name).includes('bruincastmedia')) {
       await db.createCollection('bruincastmedia');
     }
-    if (!collectionList.map(col => col.name).includes('videoreserves')) {
+    if (!collectionList.map((col) => col.name).includes('videoreserves')) {
       await db.createCollection('videoreserves');
     }
   },

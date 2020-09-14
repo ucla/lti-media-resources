@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Text } from '@instructure/ui-text';
 
-const sanitizeComment = comment =>
+const sanitizeComment = (comment) =>
   dompurify
     .sanitize(comment)
     .replace(/<p>/g, '')

@@ -24,8 +24,9 @@ class LogServices {
       transports: [
         new winston.transports.Console(),
         new winston.transports.File({
-          filename: `logs/${taskName}_${currentTimestamp.getFullYear()}-${currentTimestamp.getMonth() +
-            1}-${currentTimestamp.getDate()}_${currentTimestamp.getHours()}-${currentTimestamp.getMinutes()}.log`,
+          filename: `logs/${taskName}_${currentTimestamp.getFullYear()}-${
+            currentTimestamp.getMonth() + 1
+          }-${currentTimestamp.getDate()}_${currentTimestamp.getHours()}-${currentTimestamp.getMinutes()}.log`,
           level: 'debug',
         }),
       ],

@@ -47,7 +47,7 @@ class VideoresServices {
       }
 
       const matchedPlayback = rawPlaybacks.filter(
-        rawPlayback => rawPlayback.file === doc.filename
+        (rawPlayback) => rawPlayback.file === doc.filename
       );
       if (matchedPlayback.length === 1) {
         doc.playback = matchedPlayback[0].time;
@@ -104,7 +104,7 @@ class VideoresServices {
       // Create a second level object for each media
       for (const media of allMedias) {
         const matchedAnalyticArr = rawAnalytics.filter(
-          a => a.userid === userid && a.file === media.filename
+          (a) => a.userid === userid && a.file === media.filename
         );
         // If user has watched this media before, modify playback history and push to result
         if (matchedAnalyticArr.length >= 1) {

@@ -11,11 +11,11 @@ const getLtikPromise = new Promise((resolve, reject) => {
 
 const ltikPromise = new Promise((resolve, reject) => {
   getLtikPromise
-    .then(res => {
+    .then((res) => {
       sessionStorage.setItem('ltik', res);
       resolve(res);
     })
-    .catch(err => {
+    .catch((err) => {
       reject(err);
     });
 });

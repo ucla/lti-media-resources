@@ -40,23 +40,25 @@ export const VideoReserve = ({
     const ltik = getLtik();
     axios
       .get(`/api/medias/videores?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         setVidReserves(res.data);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving Video Reserves...',
         });
       });
   };
+  // Loads video reserves (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(getVideoRes, []);
 
   // State that indicates user's selected video
   const [selectedMedia, setSelectedMedia] = useState({});
   // Onclick functions to select video
-  const selectMedia = obj => {
+  const selectMedia = (obj) => {
     setSelectedMedia(obj);
   };
   const deselectMedia = () => {
@@ -67,7 +69,7 @@ export const VideoReserve = ({
   // This function is fed to MediaPlayer as a prop
   const hotReloadPlayback = (file, playback, remaining, finished) => {
     const toBeSet = vidReserves;
-    const itemToBeSet = toBeSet.filter(media => media.filename === file)[0];
+    const itemToBeSet = toBeSet.filter((media) => media.filename === file)[0];
     itemToBeSet.playback = playback;
     itemToBeSet.remaining = remaining;
     if (finished) {
@@ -91,7 +93,7 @@ export const VideoReserve = ({
         .get(`/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.VIDEO_RESERVES },
         })
-        .then(res => {
+        .then((res) => {
           setAnalytics(res.data);
         });
     }
@@ -169,7 +171,7 @@ export const VideoReserve = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {vidReserves.map(vid => (
+          {vidReserves.map((vid) => (
             <Table.Row key={vid.videoTitle}>
               <Table.RowHeader>
                 {vid.videoTitle}

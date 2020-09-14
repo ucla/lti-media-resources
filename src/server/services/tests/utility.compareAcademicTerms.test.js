@@ -1,6 +1,6 @@
 const { compareAcademicTerms } = require('../utility');
 
-test('Test sortAcademicTerms', done => {
+test('Test sortAcademicTerms', (done) => {
   const unsortedTerms = [
     '8W',
     '91',

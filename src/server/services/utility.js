@@ -20,8 +20,8 @@ function enumerateAcademicTerm(term) {
   const quarterNumbers = {
     W: 0,
     S: 1,
-    '1': 2,
-    '2': 3,
+    1: 2,
+    2: 3,
     F: 4,
   };
 
@@ -35,7 +35,7 @@ function enumerateAcademicTerm(term) {
  * @param {string} term2 Second academic term to compare
  * @returns {number} -1 if term1 is earlier than term2, 1 if term1 is later, 0 if equal
  */
-module.exports.compareAcademicTerms = function(term1, term2) {
+module.exports.compareAcademicTerms = function (term1, term2) {
   const term1Enum = enumerateAcademicTerm(term1);
   const term2Enum = enumerateAcademicTerm(term2);
 

@@ -16,7 +16,7 @@ const testCollections = new Map([
   [PLAYBACKS, `${collectionMap.get(PLAYBACKS)}${postfix}`],
 ]);
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   collectionMap.set(
     DIGITAL_AUDIO_RESERVES,
     testCollections.get(DIGITAL_AUDIO_RESERVES)
@@ -108,7 +108,7 @@ beforeAll(async done => {
 });
 
 describe('MusicresServices tests', () => {
-  test('Test Analytics Generation', async done => {
+  test('Test Analytics Generation', async (done) => {
     const sampleCourse = { label: 'Herbology' };
     const sampleMembers = [
       { user_id: '0', name: 'Draco Malfoy' },
@@ -204,7 +204,7 @@ describe('MusicresServices tests', () => {
   });
 });
 
-afterAll(async done => {
+afterAll(async (done) => {
   const db = client.db(process.env.DB_DATABASE);
   for (const col of testCollections) {
     await db.dropCollection(col[1]);

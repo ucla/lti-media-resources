@@ -47,7 +47,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
     const ltik = getLtik();
     axios
       .get(`/api/medias/bruincast/crosslists?ltik=${ltik}`)
-      .then(res => {
+      .then((res) => {
         const lists = res.data;
         let crosslistStr = '';
         for (const list of lists) {
@@ -60,19 +60,21 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
         setCurrCrosslist(crosslistStr);
         setError(null);
       })
-      .catch(err => {
+      .catch((err) => {
         setError({
           err,
           msg: 'Something went wrong when retrieving all crosslists...',
         });
       });
   };
+  // Loads all crosslists (only load once)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(retrieveAllCrosslists, []);
 
   // Declare a boolean to indicate whether the text input for crosslist is ever changed or not.
   // If crosslist is never changed, we can save the costly http request of updating crosslists.
   const [crosslistChanged, setCrosslistChanged] = useState(false);
-  const handleCrosslistChange = e => {
+  const handleCrosslistChange = (e) => {
     setCurrCrosslist(e.target.value);
     setCrosslistChanged(true);
   };

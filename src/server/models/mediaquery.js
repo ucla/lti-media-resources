@@ -20,7 +20,7 @@ const { DB_DATABASE } = process.env;
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Return all bruincast contents of a course, aggregated.
  */
-module.exports.getCastsByCourse = async courseLabel => {
+module.exports.getCastsByCourse = async (courseLabel) => {
   /*
    * Aggregation Steps:
    * 1. Match by courseShortname
@@ -76,7 +76,7 @@ module.exports.getCastsByCourse = async courseLabel => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Return all bruincast contents of a course, not aggregated.
  */
-module.exports.getCastsByCourseWithoutAggregation = async courseLabel => {
+module.exports.getCastsByCourseWithoutAggregation = async (courseLabel) => {
   const bcastCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(BRUINCAST));
@@ -93,7 +93,7 @@ module.exports.getCastsByCourseWithoutAggregation = async courseLabel => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {number}   Return the number of bruincast contents of a course.
  */
-module.exports.getCastCountByCourse = async courseLabel => {
+module.exports.getCastCountByCourse = async (courseLabel) => {
   const castCount = await client
     .db(DB_DATABASE)
     .collection(collectionMap.get(BRUINCAST))
@@ -108,7 +108,7 @@ module.exports.getCastCountByCourse = async courseLabel => {
  * @param {string} dbCollection  The database collection to look for the medias, usually indicating media type.
  * @returns {Array}   Return all medias in dbCollection, grouped by course.
  */
-module.exports.getMediaGroupedByShortname = async dbCollection => {
+module.exports.getMediaGroupedByShortname = async (dbCollection) => {
   /*
    * Aggregation Steps:
    * 1. Sort records by date, then title, then videoTitle.
@@ -163,7 +163,7 @@ module.exports.getMediaGroupedByShortname = async dbCollection => {
  * @param {string} dbCollection  The database collection to look for terms, usually indicating media type.
  * @returns {Array}   Return all terms dbCollection has.
  */
-module.exports.getTerms = async dbCollection => {
+module.exports.getTerms = async (dbCollection) => {
   const terms = await client
     .db(DB_DATABASE)
     .collection(dbCollection)
@@ -195,7 +195,7 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Return video reserves of the course.
  */
-module.exports.getVideoResByCourse = async courseLabel => {
+module.exports.getVideoResByCourse = async (courseLabel) => {
   const videoResCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(VIDEO_RESERVES));
@@ -212,7 +212,7 @@ module.exports.getVideoResByCourse = async courseLabel => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {number}   Return the number of video reserves of a course.
  */
-module.exports.getVideoResCountByCourse = async courseLabel => {
+module.exports.getVideoResCountByCourse = async (courseLabel) => {
   const resCount = await client
     .db(DB_DATABASE)
     .collection(collectionMap.get(VIDEO_RESERVES))
@@ -227,7 +227,7 @@ module.exports.getVideoResCountByCourse = async courseLabel => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Return music reserves of the course.
  */
-module.exports.getMusicResByCourse = async courseLabel => {
+module.exports.getMusicResByCourse = async (courseLabel) => {
   const musicResCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(DIGITAL_AUDIO_RESERVES));
@@ -244,7 +244,7 @@ module.exports.getMusicResByCourse = async courseLabel => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {number}   Return the number of music reserves of a course.
  */
-module.exports.getMusicResCountByCourse = async courseLabel => {
+module.exports.getMusicResCountByCourse = async (courseLabel) => {
   const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
   let totalItemCount = 0;
   for (const album of arrayOfMusicRes) {
@@ -279,7 +279,7 @@ module.exports.getNotice = async () => {
  * @param {string} notice  Notice to be set (should be already sanitized).
  * @returns {object}   Returns status of database insertion (success or failure).
  */
-module.exports.setNotice = async notice => {
+module.exports.setNotice = async (notice) => {
   const noticeCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(NOTICE));
@@ -312,14 +312,14 @@ module.exports.getAllCrosslists = async () => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Returns crosslists that contains courseLabel.
  */
-module.exports.getCrosslistByCourse = async courseLabel => {
+module.exports.getCrosslistByCourse = async (courseLabel) => {
   const arrayOfLists = await module.exports.getAllCrosslists(
     collectionMap.get(CROSSLISTS)
   );
   let toBeReturned = [];
   for (const list of arrayOfLists) {
     if (list && Array.isArray(list) && list.includes(courseLabel)) {
-      const toBeAppended = list.filter(label => label !== courseLabel);
+      const toBeAppended = list.filter((label) => label !== courseLabel);
       toBeReturned = [...toBeReturned, ...toBeAppended];
     }
   }
@@ -332,7 +332,7 @@ module.exports.getCrosslistByCourse = async courseLabel => {
  * @param {Array} crosslists  Crosslists to be set.
  * @returns {number}   Returns number of crosslists inserted minus deleted.
  */
-module.exports.setCrosslists = async crosslists => {
+module.exports.setCrosslists = async (crosslists) => {
   const crosslistCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(CROSSLISTS));
@@ -364,7 +364,7 @@ module.exports.setCrosslists = async crosslists => {
  * @param {object} obj  Object that contains all playback fields to be updated.
  * @returns {number}   Returns status of update (success or failure).
  */
-module.exports.updatePlayback = async obj => {
+module.exports.updatePlayback = async (obj) => {
   const playbackCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(PLAYBACKS));

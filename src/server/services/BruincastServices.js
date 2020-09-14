@@ -107,7 +107,7 @@ class BruincastServices {
             for (const media of mediaArray) {
               if (media && media !== '') {
                 const matchedPlayback = rawPlaybacks.filter(
-                  rawPlayback => rawPlayback.file.trim() === media.trim()
+                  (rawPlayback) => rawPlayback.file.trim() === media.trim()
                 );
                 if (matchedPlayback.length === 1) {
                   castPlaybackArr.push({
@@ -231,7 +231,7 @@ class BruincastServices {
             const currTitle = `${cast.title}  ${cast.date}`;
             // Find if the user have watched the bruincast entry
             const matchedAnalyticArr = rawAnalytics.filter(
-              rawAnalytic =>
+              (rawAnalytic) =>
                 rawAnalytic.userid === userid &&
                 currMedia.includes(rawAnalytic.file)
             );

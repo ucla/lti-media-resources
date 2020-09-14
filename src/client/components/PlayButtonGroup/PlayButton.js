@@ -58,7 +58,7 @@ export const PlayButton = ({
             quarter: course.quarter,
           },
         })
-        .then(res => {
+        .then((res) => {
           const mediaToBeSelected = {
             format,
             url: res.data,
@@ -72,7 +72,7 @@ export const PlayButton = ({
           selectMedia(mediaToBeSelected);
           setError(null);
         })
-        .catch(err => {
+        .catch((err) => {
           setError({
             err,
             msg: 'Something went wrong when generating url...',

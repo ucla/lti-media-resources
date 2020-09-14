@@ -48,7 +48,7 @@ export const MusicResListingsTable = ({ items, term, classID, albumTitle }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {items.map(item => (
+        {items.map((item) => (
           <Table.Row key={item.httpURL}>
             <Table.Cell>{term}</Table.Cell>
             <Table.Cell>{classID}</Table.Cell>

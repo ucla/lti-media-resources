@@ -1,4 +1,4 @@
-const ltikPromise = new Promise(resolve => {
+const ltikPromise = new Promise((resolve) => {
   resolve('afakeltik');
 });
 

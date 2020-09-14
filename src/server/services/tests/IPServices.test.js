@@ -1,6 +1,6 @@
 const { isOnCampusIP } = require('../IPServices');
 
-test('Test on-campus IPs', async done => {
+test('Test on-campus IPs', async (done) => {
   expect(isOnCampusIP('128.97.0.1')).toEqual(true);
   expect(isOnCampusIP('131.179.0.1')).toEqual(true);
   expect(isOnCampusIP('149.142.0.1')).toEqual(true);
@@ -15,7 +15,7 @@ test('Test on-campus IPs', async done => {
   done();
 });
 
-test('Test off-campus IPs', async done => {
+test('Test off-campus IPs', async (done) => {
   expect(isOnCampusIP('128.96.0.1')).toEqual(false);
   expect(isOnCampusIP('132.179.0.1')).toEqual(false);
   expect(isOnCampusIP('141.142.0.1')).toEqual(false);

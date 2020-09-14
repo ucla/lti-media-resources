@@ -32,7 +32,7 @@ class MusicresServices {
       doc.notes = combinedNote;
       for (const item of doc.items) {
         const matchedPlayback = rawPlaybacks.filter(
-          rawPlayback => rawPlayback.file.trim() === item.httpURL.trim()
+          (rawPlayback) => rawPlayback.file.trim() === item.httpURL.trim()
         );
         if (matchedPlayback.length === 1) {
           item.playback = matchedPlayback[0].time;
@@ -99,7 +99,7 @@ class MusicresServices {
       // Create a second level object for each track
       for (const track of allTracks) {
         const matchedAnalyticArr = rawAnalytics.filter(
-          a => a.userid === userid && a.file === track.file
+          (a) => a.userid === userid && a.file === track.file
         );
         // If user has watched this track before, modify playback history and push to result
         if (matchedAnalyticArr.length >= 1) {

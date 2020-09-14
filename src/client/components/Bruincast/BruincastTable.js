@@ -27,7 +27,7 @@ export const BruincastTable = ({
 
   // If analytics is undefined or null (when user doesn't have permission to see analytics)
   if (!analytics) {
-    return casts.map(weekCasts => (
+    return casts.map((weekCasts) => (
       <BruincastTableWeekToggle
         id={`toggleWeek${weekCasts._id}`}
         key={`${shortname}_week${weekCasts._id}`}
@@ -56,7 +56,7 @@ export const BruincastTable = ({
   return (
     <>
       <Analytics showing={showingAnalytics} show={showAnalytics} />
-      {casts.map(weekCasts => (
+      {casts.map((weekCasts) => (
         <BruincastTableWeekToggle
           id={`toggleWeek${weekCasts._id}`}
           key={`${shortname}_week${weekCasts._id}`}

@@ -21,14 +21,14 @@ async function main() {
   const srsShortnameMap = [];
 
   const c = new FtpClient();
-  c.on('ready', function() {
-    c.get(process.env.SECRET_VIDEORES_FILEPATH, function(err, stream) {
+  c.on('ready', function () {
+    c.get(process.env.SECRET_VIDEORES_FILEPATH, function (err, stream) {
       if (err) throw err;
-      stream.once('close', function() {
+      stream.once('close', function () {
         c.end();
       });
       let str = '';
-      stream.on('data', data => {
+      stream.on('data', (data) => {
         str += data.toString();
       });
       stream.on('end', async () => {
@@ -36,11 +36,11 @@ async function main() {
       });
     });
   });
-  c.once('end', async function() {
+  c.once('end', async function () {
     // Create an array of courses and get shortname for each course
     for (const media of result) {
       const mappedPair = srsShortnameMap.filter(
-        pair => pair.srs === media.srs && pair.term === media.term
+        (pair) => pair.srs === media.srs && pair.term === media.term
       );
       if (mappedPair && mappedPair.length !== 0) {
         media.classShortname = mappedPair[0].classShortname;
@@ -78,7 +78,7 @@ async function main() {
         srsPair.term,
         srsPair.srs,
         result.filter(
-          media => media.srs === srsPair.srs && media.term === srsPair.term
+          (media) => media.srs === srsPair.srs && media.term === srsPair.term
         ),
         logger
       );

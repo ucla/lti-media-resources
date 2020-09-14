@@ -53,7 +53,7 @@ export const BruincastTableWeekToggle = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {weekCasts.map(cast => (
+          {weekCasts.map((cast) => (
             <Table.Row key={`${cast.date}`}>
               <Table.Cell>{cast.date}</Table.Cell>
               <Table.Cell>
