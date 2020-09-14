@@ -31,7 +31,7 @@ export const MediaView = ({
         renderIcon={IconArrowOpenStartLine}
       >
         Back
-      </Button>    
+      </Button>
       <br />
       <br />
       <MediaPlayer
