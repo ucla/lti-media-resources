@@ -268,10 +268,6 @@ router.get('/url', (req, res) => {
   // When testing during development, replace with your external IP
   const clientIP = requestIp.getClientIp(req);
 
-  // TODO: Remove after debugging
-  // eslint-disable-next-line no-console
-  console.log(`clientIP = ${clientIP}`);
-
   let stream = '';
   const ext = path.extname(filename).substr(1);
 
