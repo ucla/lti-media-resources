@@ -86,7 +86,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "concurrently": "^5.2.0",
     "css-loader": "^4.3.0",
-    "eslint": "^7.8.1",
+    "eslint": "^7.9.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-config-wesbos": "0.0.22",
