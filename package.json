@@ -52,7 +52,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "enzyme-to-json": "^3.5.0",
-    "eslint-plugin-jsdoc": "^30.3.2",
+    "eslint-plugin-jsdoc": "^30.4.2",
     "express": "^4.16.3",
     "ftp": "^0.3.10",
     "immutable": "^4.0.0-rc.12",
