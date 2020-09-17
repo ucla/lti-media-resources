@@ -1,4 +1,5 @@
-name: Lint check
+# From: https://github.com/hallee/eslint-action/issues/23#issuecomment-674761123
+name: Lint
 
 on: push
 
@@ -6,10 +7,37 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: hallee/eslint-action@1.0.3
-        # GITHUB_TOKEN in forked repositories is read-only
-        # https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request
-        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }} 
+      - name: Checkout
+        uses: actions/checkout@v2
+
+        # ~~~ CACHING ~~~
+        # The following is just to do caching of yarn and eslint, it's not necessary to get linting to work
+        # I would recommend first trying without
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache action
+        uses: actions/cache@v2
+        id: yarn-cache
         with:
-          repo-token: ${{secrets.GITHUB_TOKEN}}
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ./.eslintcache
+          key: ${{ runner.os }}-yarn-lint-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-lint-
+
+       # ~~~ END CACHING ~~~
+
+      - name: Setup Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
