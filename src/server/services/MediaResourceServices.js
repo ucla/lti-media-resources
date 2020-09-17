@@ -141,17 +141,12 @@ class MediaResourceServices {
    * @param {string} stream  A URL path that indicate which file to play from server.
    * @param {string} clientIP  Client's IP.
    * @param {string} secret  A very secret secret.
-   * @param {number} start  Start time when the token is valid
    * @param {number} end  End time when the token will not be valid anymore
    * @returns {string}   Return hashed token.
    */
-  static async generateMediaToken(stream, clientIP, secret, start, end) {
+  static async generateMediaToken(stream, clientIP, secret, end) {
     const { TOKEN_NAME } = process.env;
-    const params = [
-      `${TOKEN_NAME}starttime=${start}`,
-      `${TOKEN_NAME}endtime=${end}`,
-      secret,
-    ];
+    const params = [`${TOKEN_NAME}endtime=${end}`, secret];
     if (clientIP) {
       params.push(clientIP);
     }
@@ -172,37 +167,22 @@ class MediaResourceServices {
   /**
    * Generate URL for media
    *
-   * @param {number} mediatype  Media type of the media
    * @param {string} HOST  Server url.
    * @param {string} stream  A url path that indicate which file to play from server.
    * @param {string} clientIP  Client's IP.
    * @param {string} secret  A very secret secret.
-   * @param {number} start  Start time when the token is valid
    * @param {number} end  End time when the token will not be valid anymore
    * @returns {string}   Return generated URL.
    */
-  static async generateMediaURL(
-    mediatype,
-    HOST,
-    stream,
-    clientIP,
-    secret,
-    start,
-    end
-  ) {
+  static async generateMediaURL(HOST, stream, clientIP, secret, end) {
     const { TOKEN_NAME } = process.env;
     const base64Hash = await this.generateMediaToken(
       stream,
       clientIP,
       secret,
-      start,
       end
     );
-    if (parseInt(mediatype) === MEDIA_TYPE.BRUINCAST) {
-      const bcastPlaybackURL = `${HOST}/${stream}?type=m3u8&${TOKEN_NAME}starttime=${start}&${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
-      return bcastPlaybackURL;
-    }
-    const playbackURL = `${HOST}${stream}?${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
+    const playbackURL = `${HOST}/${stream}/playlist.m3u8?${TOKEN_NAME}endtime=${end}&${TOKEN_NAME}hash=${base64Hash}`;
     return playbackURL;
   }
 }

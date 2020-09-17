@@ -289,7 +289,7 @@ router.get('/url', (req, res) => {
     host = BRUINCAST_HOST;
     secret = SECRET_BRUINCAST_TOKEN;
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
-    stream = `${ext}:${filename}/playlist.m3u8`;
+    stream = `${ext}:${filename}`;
 
     host = VIDEORES_HOST;
     secret = SECRET_VIDEORES_TOKEN;
@@ -302,12 +302,10 @@ router.get('/url', (req, res) => {
   const end = start + parseInt(VALIDITY);
 
   MediaResourceServices.generateMediaURL(
-    mediatype,
     host,
     stream,
     clientIP,
     secret,
-    start.toString(),
     end.toString()
   ).then((url) => res.send(url));
 });
