@@ -32,7 +32,7 @@ jobs:
        # ~~~ END CACHING ~~~
 
       - name: Setup Node
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2.1.1
         with:
           node-version: "14"
 
