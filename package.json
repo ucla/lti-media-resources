@@ -116,6 +116,7 @@
     "clearMocks": true
   },
   "resolutions": {
-    "babel-cli/chokidar/anymatch/micromatch/braces": ">=2.3.1"
+    "babel-cli/chokidar/anymatch/micromatch/braces": ">=2.3.1",
+    "node-fetch": "^2.6.1"
   }
 }
