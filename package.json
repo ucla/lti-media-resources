@@ -46,7 +46,7 @@
     "dompurify": "^2.0.17",
     "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.3",
+    "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.5.0",
     "eslint-plugin-jsdoc": "^30.5.1",
     "express": "^4.16.3",
