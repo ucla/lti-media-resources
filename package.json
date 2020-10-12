@@ -34,7 +34,7 @@
     "@instructure/ui-tag": "^7.2.0",
     "@instructure/ui-text": "^7.2.0",
     "@instructure/ui-text-area": "^7.2.0",
-    "@instructure/ui-text-input": "^7.2.0",
+    "@instructure/ui-text-input": "^7.2.4",
     "@instructure/ui-toggle-details": "^7.2.0",
     "@instructure/ui-view": "^7.2.0",
     "@testing-library/react": "^11.0.4",
