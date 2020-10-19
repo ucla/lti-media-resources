@@ -52,7 +52,7 @@
     "express": "^4.16.3",
     "ftp": "^0.3.10",
     "jsdom": "^16.3.0",
-    "ltijs": "^5.4.0",
+    "ltijs": "^5.4.2",
     "migrate-mongo": "^8.1.2",
     "mongodb": "^3.6.2",
     "node-cache": "^5.1.2",
