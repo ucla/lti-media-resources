@@ -37,7 +37,7 @@
     "@instructure/ui-text-input": "^7.2.4",
     "@instructure/ui-toggle-details": "^7.2.4",
     "@instructure/ui-view": "^7.2.4",
-    "@testing-library/react": "^11.0.4",
+    "@testing-library/react": "^11.1.0",
     "axios": "^0.20.0",
     "axios-retry": "^3.1.9",
     "babel-polyfill": "^6.26.0",
