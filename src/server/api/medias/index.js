@@ -2,8 +2,12 @@ const express = require('express');
 const lti = require('ltijs').Provider;
 const path = require('path');
 const requestIp = require('request-ip');
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
 
 const router = express.Router();
+const { window } = new JSDOM('');
+const dompurify = createDOMPurify(window);
 
 const constants = require('../../../../constants');
 const MediaResourceServices = require('../../services/MediaResourceServices');
@@ -257,6 +261,9 @@ router.get('/url', (req, res) => {
   }
 
   const { mediatype, mediaformat, filename, quarter } = req.query;
+  const filenameSanitized = dompurify.sanitize(filename);
+  const mediaformatSanitized = dompurify.sanitize(mediaformat);
+
   const {
     BRUINCAST_HOST,
     VALIDITY,
@@ -269,19 +276,19 @@ router.get('/url', (req, res) => {
   const clientIP = requestIp.getClientIp(req);
 
   let stream = '';
-  const ext = path.extname(filename).substr(1);
+  const ext = path.extname(filenameSanitized).substr(1);
 
   let host = '';
   let secret = '';
 
   if (parseInt(mediatype) === constants.MEDIA_TYPE.BRUINCAST) {
-    if (!quarter || !mediaformat || !filename) {
+    if (!quarter || !mediaformatSanitized || !filenameSanitized) {
       return res.status(500);
     }
 
     if (/^[0-9]{2,3}(f|w|s|a|c)$/i.test(quarter)) {
       const yearqt = quarter.substr(0, 3).toLowerCase();
-      stream = `20${yearqt}-${mediaformat}/${ext}:${filename}`;
+      stream = `20${yearqt}-${mediaformatSanitized}/${ext}:${filenameSanitized}`;
     } else {
       return res.status(400).send(new Error('Incorrect format for quarter'));
     }
@@ -289,7 +296,7 @@ router.get('/url', (req, res) => {
     host = BRUINCAST_HOST;
     secret = SECRET_BRUINCAST_TOKEN;
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
-    stream = `${ext}:${filename}`;
+    stream = `${ext}:${filenameSanitized}`;
 
     host = VIDEORES_HOST;
     secret = SECRET_VIDEORES_TOKEN;
