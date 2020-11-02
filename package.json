@@ -18,7 +18,7 @@
   "license": "BSD-2",
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-    "@instructure/canvas-theme": "^7.2.4",
+    "@instructure/canvas-theme": "^7.3.0",
     "@instructure/ui-alerts": "^7.2.4",
     "@instructure/ui-breadcrumb": "^7.2.4",
     "@instructure/ui-buttons": "^7.2.4",
