@@ -1,6 +1,5 @@
 const axios = require('axios');
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');
 const UpdateMusicResServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
