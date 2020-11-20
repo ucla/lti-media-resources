@@ -13,6 +13,8 @@ async function main() {
   const logger = await LogServices.createLogger('update-videores');
   const dbclient = new MongoClient(process.env.DB_URL, {
     useUnifiedTopology: true,
+    maxPoolSize: process.env.DB_MAX_POOL_SIZE,
+    maxIdleTimeMS: process.env.DB_MAX_IDLE_TIME_MS,
   });
   await dbclient.connect();
   logger.info(`Connected to database`);

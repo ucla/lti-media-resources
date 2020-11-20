@@ -123,6 +123,8 @@ async function main() {
 
   const client = new MongoClient(process.env.DB_URL, {
     useUnifiedTopology: true,
+    maxPoolSize: process.env.DB_MAX_POOL_SIZE,
+    maxIdleTimeMS: process.env.DB_MAX_IDLE_TIME_MS,
   });
 
   try {
