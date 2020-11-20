@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
 module.exports.client = null;
@@ -9,7 +10,11 @@ module.exports.connect = async function (url) {
     return;
   }
   // Create a new connection
-  this.client = new MongoClient(url, { useUnifiedTopology: true });
+  this.client = new MongoClient(url, {
+    useUnifiedTopology: true,
+    maxPoolSize: process.env.DB_MAX_POOL_SIZE,
+    maxIdleTimeMS: process.env.DB_MAX_IDLE_TIME_MS,
+  });
   try {
     await this.client.connect();
     return this.client;

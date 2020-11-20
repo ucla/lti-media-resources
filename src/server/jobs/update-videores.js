@@ -1,20 +1,17 @@
 const FtpClient = require('ftp');
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
 const RegistrarService = require('../services/registrar');
 const UpdateVideoResServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
 const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
+const client = require('../models/db');
 
 /**
  * The main process
  */
 async function main() {
   const logger = await LogServices.createLogger('update-videores');
-  const dbclient = new MongoClient(process.env.DB_URL, {
-    useUnifiedTopology: true,
-  });
-  await dbclient.connect();
+  const dbclient = await client.connect(process.env.DB_URL);
   logger.info(`Connected to database`);
 
   let result = [];
