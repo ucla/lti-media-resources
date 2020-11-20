@@ -1,10 +1,10 @@
 const axios = require('axios');
 const qs = require('qs');
-const { MongoClient } = require('mongodb');
 const registrar = require('../services/registrar');
 const UpdateBruincastServices = require('../services/UpdateReserveServices');
 const LogServices = require('../services/LogServices');
 const { COLLECTION_TYPE, collectionMap } = require('../../../constants');
+const client = require('../models/db');
 
 require('dotenv').config();
 
@@ -120,15 +120,9 @@ async function main() {
   const logger = await LogServices.createLogger('update-bcast');
   // Log in to BruinCast API and store cookie
   await loginBruinCast();
-
-  const client = new MongoClient(process.env.DB_URL, {
-    useUnifiedTopology: true,
-    maxPoolSize: process.env.DB_MAX_POOL_SIZE,
-    maxIdleTimeMS: process.env.DB_MAX_IDLE_TIME_MS,
-  });
+  const dbclient = await client.connect(process.env.DB_URL);
 
   try {
-    await client.connect();
     logger.info(`Connected to database`);
 
     const currentTerm = process.argv[2];
@@ -202,7 +196,7 @@ async function main() {
 
           // Update database records
           await UpdateBruincastServices.updateRecordsForClass(
-            client,
+            dbclient,
             collectionMap.get(COLLECTION_TYPE.BRUINCAST),
             currentTerm,
             currentSRS,
@@ -217,7 +211,7 @@ async function main() {
   } catch (e) {
     logger.error(e.message);
   } finally {
-    await client.close();
+    await dbclient.close();
   }
 }
 
