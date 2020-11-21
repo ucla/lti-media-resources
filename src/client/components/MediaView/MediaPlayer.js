@@ -44,7 +44,7 @@ export class MediaPlayer extends Component {
     const remaining = duration - time;
     const ltik = getLtik();
     axios
-      .post(`/api/medias/playback?ltik=${ltik}`, {
+      .post(`${process.env.LTI_APPROUTE}/api/medias/playback?ltik=${ltik}`, {
         userid,
         file: media.file,
         mediaType,

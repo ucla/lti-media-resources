@@ -39,7 +39,7 @@ export const VideoReserve = ({
   const getVideoRes = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/videores?ltik=${ltik}`)
+      .get(`${process.env.LTI_APPROUTE}/api/medias/videores?ltik=${ltik}`)
       .then((res) => {
         setVidReserves(res.data);
         setError(null);
@@ -90,7 +90,7 @@ export const VideoReserve = ({
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
       axios
-        .get(`/api/medias/analytics?ltik=${ltik}`, {
+        .get(`${process.env.LTI_APPROUTE}/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.VIDEO_RESERVES },
         })
         .then((res) => {

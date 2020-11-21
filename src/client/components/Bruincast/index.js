@@ -43,7 +43,9 @@ export const Bruincast = ({
   const retrieveCasts = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/bruincast/casts?ltik=${ltik}`)
+      .get(
+        `${process.env.LTI_APPROUTE}/api/medias/bruincast/casts?ltik=${ltik}`
+      )
       .then((res) => {
         const tmpCastsByCourses = res.data;
         for (const tmpCourse of tmpCastsByCourses) {
@@ -83,7 +85,7 @@ export const Bruincast = ({
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
       axios
-        .get(`/api/medias/analytics?ltik=${ltik}`, {
+        .get(`${process.env.LTI_APPROUTE}/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.BRUINCAST },
         })
         .then((res) => {

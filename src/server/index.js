@@ -17,6 +17,14 @@ if (process.env.MODE === 'production') {
     cookies: { secure: false },
   };
 }
+
+const approute = process.env.LTI_APPROUTE ? process.env.LTI_APPROUTE : '';
+options.appRoute = approute;
+options.loginRoute = `${approute}/login`;
+options.keysetRoute = `${approute}/keys`;
+options.invalidTokenRoute = `${approute}/invalidtoken`;
+options.sessionTimeoutRoute = `${approute}/sessiontimeout`;
+
 lti.setup(
   process.env.LTI_KEY,
   // Setting up database configurations
@@ -29,20 +37,21 @@ lti.onConnect((token, req, res) => {
   if (process.env.MODE === 'production') {
     return res.sendFile(path.join(__dirname, '../../dist/index.html'));
   }
-  return lti.redirect(res, 'http://localhost:3000');
+  return lti.redirect(res, `http://localhost:${process.env.CLIENTPORT}`);
 });
 
 // Routes
 const apiRouter = require('./api');
 
-lti.app.use('/api', apiRouter);
+lti.app.use(`${process.env.LTI_APPROUTE}/api`, apiRouter);
 
 /**
  * Set up everything
  */
 async function setup() {
   // Deploying provider, connecting to the database and starting express server.
-  await lti.deploy({ port: 8080 });
+  const port = process.env.SERVERPORT ? process.env.SERVERPORT : 8080;
+  await lti.deploy({ port });
 
   // Register platform, if needed.
   await lti.registerPlatform({
