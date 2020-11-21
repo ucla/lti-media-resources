@@ -44,7 +44,7 @@ const App = () => {
   const retrieveContext = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/context?ltik=${ltik}`)
+      .get(`${process.env.LTI_APPROUTE}/api/context?ltik=${ltik}`)
       .then((res) => {
         const { course: c, roles: r, userid: u, onCampus: oc } = res.data;
         setCourse(c);
@@ -72,7 +72,7 @@ const App = () => {
   const retrieveNums = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/counts?ltik=${ltik}`)
+      .get(`${process.env.LTI_APPROUTE}/api/medias/counts?ltik=${ltik}`)
       .then((res) => {
         const { bruincasts, videos, audios } = res.data;
         setBruincastCount(bruincasts);
@@ -101,7 +101,9 @@ const App = () => {
     if (!retrievedWarning) {
       const ltik = getLtik();
       axios
-        .get(`/api/medias/bruincast/notice?ltik=${ltik}`)
+        .get(
+          `${process.env.LTI_APPROUTE}/api/medias/bruincast/notice?ltik=${ltik}`
+        )
         .then((res) => {
           setWarning(dompurify.sanitize(res.data));
           setRetrievedWarning(true);

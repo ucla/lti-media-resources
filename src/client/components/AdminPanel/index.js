@@ -46,7 +46,9 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
   const retrieveAllCrosslists = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/bruincast/crosslists?ltik=${ltik}`)
+      .get(
+        `${process.env.LTI_APPROUTE}/api/medias/bruincast/crosslists?ltik=${ltik}`
+      )
       .then((res) => {
         const lists = res.data;
         let crosslistStr = '';
@@ -87,9 +89,12 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
     const warningToBeSubmitted = dompurify.sanitize(currWarning);
     if (warningToBeSubmitted !== warning) {
       const ltik = getLtik();
-      await axios.post(`/api/medias/bruincast/notice?ltik=${ltik}`, {
-        notice: warningToBeSubmitted,
-      });
+      await axios.post(
+        `${process.env.LTI_APPROUTE}/api/medias/bruincast/notice?ltik=${ltik}`,
+        {
+          notice: warningToBeSubmitted,
+        }
+      );
       setWarning(warningToBeSubmitted);
       return true;
     }
@@ -118,7 +123,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
     }
     const ltik = getLtik();
     const res = await axios.post(
-      `/api/medias/bruincast/crosslists?ltik=${ltik}`,
+      `${process.env.LTI_APPROUTE}/api/medias/bruincast/crosslists?ltik=${ltik}`,
       {
         crosslists: listOfArr,
       }

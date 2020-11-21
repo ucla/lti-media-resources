@@ -29,7 +29,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
   const retrieveMusicRes = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/musicres?ltik=${ltik}`)
+      .get(`${process.env.LTI_APPROUTE}/api/medias/musicres?ltik=${ltik}`)
       .then((res) => {
         setAllAlbums(res.data);
         setError(null);
@@ -141,7 +141,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
     if (isInstructorOrAdmin) {
       const ltik = getLtik();
       axios
-        .get(`/api/medias/analytics?ltik=${ltik}`, {
+        .get(`${process.env.LTI_APPROUTE}/api/medias/analytics?ltik=${ltik}`, {
           params: { mediaType: constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES },
         })
         .then((res) => {

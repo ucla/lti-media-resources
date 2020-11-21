@@ -50,7 +50,7 @@ export const PlayButton = ({
     ) {
       const ltik = getLtik();
       axios
-        .get(`/api/medias/url?ltik=${ltik}`, {
+        .get(`${process.env.LTI_APPROUTE}/api/medias/url?ltik=${ltik}`, {
           params: {
             mediatype: mediaType,
             mediaformat: format.charAt(0),

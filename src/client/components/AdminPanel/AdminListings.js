@@ -52,7 +52,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   const retrieveTerms = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/terms?ltik=${ltik}`, {
+      .get(`${process.env.LTI_APPROUTE}/api/medias/terms?ltik=${ltik}`, {
         params: { mediaType },
       })
       .then((res) => {
@@ -75,7 +75,7 @@ export const AdminListings = ({ mediaType, setError }) => {
     const ltik = getLtik();
     axios
       .get(
-        `/api/medias/${
+        `${process.env.LTI_APPROUTE}/api/medias/${
           constants.mediaTypeMap.get(mediaType).api
         }/alllistings?ltik=${ltik}`
       )
@@ -118,7 +118,7 @@ export const AdminListings = ({ mediaType, setError }) => {
   const retrieveSubjectAreas = () => {
     const ltik = getLtik();
     axios
-      .get(`/api/medias/subjectareas?ltik=${ltik}`, {
+      .get(`${process.env.LTI_APPROUTE}/api/medias/subjectareas?ltik=${ltik}`, {
         params: { mediaType, term: selectedAcademicTerm },
       })
       .then((res) => {
