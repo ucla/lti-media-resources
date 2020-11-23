@@ -5990,10 +5990,10 @@ ip-regex@^2.1.0:
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
   integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
 
-ip6@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/ip6/-/ip6-0.1.8.tgz#f3d4eef8f35c9403d6fcb75097952f82e10cebe0"
-  integrity sha512-m0NbufJowJ8ooCHp8tN9zX+WgWojsY5XvEYkr2Me4cqbMNQVNhFKjqrQkNaI87TGyxQQT1eGN0sFgpEMFSc9mw==
+ip6@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/ip6/-/ip6-0.2.0.tgz#76345fafe360c8c54a9531049f5f8ec1878beed4"
+  integrity sha512-M9DlNxDkiWQSc5rb7ItFqIvKzhN+hdk8jIC3pZNImS8r2xYCSCCEiaz29u5yPYwFhx9M7J1rOX/oGO+oTCLKAw==
 
 ip@^1.1.0, ip@^1.1.5:
   version "1.1.5"
@@ -8673,12 +8673,12 @@ range-parser@^1.2.1, range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-range_check@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/range_check/-/range_check-2.0.3.tgz#6f159d42ad20917cd65ae0a92714c47a155944b7"
-  integrity sha512-l5DxkjLqCYJ5o2adtOet93H5lh/W3xnjzV5qaH6Z1mQWvY/+NXvyZnJ+/P0uWo0GdZ66/jWosihQW88HqxggBw==
+range_check@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/range_check/-/range_check-2.0.4.tgz#6682e9ed16da5e84089a553028ceb5920f1111a5"
+  integrity sha512-aed0ocXXj+SIiNNN9b+mZWA3Ow2GXHtftOGk2xQwshK5GbEZAvUcPWNQBLTx/lPcdFRIUFlFCRtHTQNIFMqynQ==
   dependencies:
-    ip6 "^0.1.8"
+    ip6 "^0.2.0"
     ipaddr.js "^1.9.1"
 
 rasha@^1.2.5:
