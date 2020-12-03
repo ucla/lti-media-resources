@@ -66,7 +66,15 @@ export const Bruincast = ({
           }
         }
         setCasts(tmpCastsByCourses);
-        setError(null);
+        // If empty casts array, display "No media found" alert.
+        if (tmpCastsByCourses.length === 0) {
+          setError({
+            err: '',
+            msg: 'No Bruincast media found.',
+          });
+        } else {
+          setError(null);
+        }
       })
       .catch((err) => {
         setError({

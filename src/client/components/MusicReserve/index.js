@@ -32,7 +32,15 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
       .get(`${process.env.LTI_APPROUTE}/api/medias/musicres?ltik=${ltik}`)
       .then((res) => {
         setAllAlbums(res.data);
-        setError(null);
+        // If empty casts array, display "No media found" alert.
+        if (allAlbums.length === 0) {
+          setError({
+            err: '',
+            msg: 'No Digital Audio Reserves media found.',
+          });
+        } else {
+          setError(null);
+        }
       })
       .catch((err) => {
         setError({
