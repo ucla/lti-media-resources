@@ -42,7 +42,15 @@ export const VideoReserve = ({
       .get(`${process.env.LTI_APPROUTE}/api/medias/videores?ltik=${ltik}`)
       .then((res) => {
         setVidReserves(res.data);
-        setError(null);
+        // If empty casts array, display "No media found" alert.
+        if (vidReserves.length === 0) {
+          setError({
+            err: '',
+            msg: 'No Video Reserves media found.',
+          });
+        } else {
+          setError(null);
+        }
       })
       .catch((err) => {
         setError({
