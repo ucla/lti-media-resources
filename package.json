@@ -29,7 +29,7 @@
     "@instructure/ui-pill": "^7.3.0",
     "@instructure/ui-progress": "^7.3.0",
     "@instructure/ui-simple-select": "^7.3.0",
-    "@instructure/ui-table": "^7.3.0",
+    "@instructure/ui-table": "^7.3.2",
     "@instructure/ui-tabs": "^7.3.0",
     "@instructure/ui-tag": "^7.3.0",
     "@instructure/ui-text": "^7.3.0",
