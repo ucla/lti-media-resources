@@ -7233,10 +7233,10 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-ltijs@^5.4.7:
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/ltijs/-/ltijs-5.4.7.tgz#561506b0a5bfccaad67b0c16842f9de03b9731ca"
-  integrity sha512-Jh38OhLJDE9GJCWzybOOzkVCacetwRamXQH6B1mAQnf+sWfJroQgv8th2yt4bxywruMOkyIbKMfYVxnAVoY2CQ==
+ltijs@^5.5.7:
+  version "5.5.7"
+  resolved "https://registry.yarnpkg.com/ltijs/-/ltijs-5.5.7.tgz#6b5ae1b2c9f403d3580224fed844d9ad881b5f1c"
+  integrity sha512-7rfRgLtDryTkUc1Az/m7UisI0sHbN8okZjYkzpWV1CO4UL9BatT4G/lVUmxP6L7K2zblGcX9Zx0L7QQx4+yctg==
   dependencies:
     "@babel/runtime" "^7.11.1"
     body-parser "^1.19.0"
