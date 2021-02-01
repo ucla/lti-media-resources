@@ -48,7 +48,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
-    "eslint-plugin-jsdoc": "^31.0.6",
+    "eslint-plugin-jsdoc": "^31.6.0",
     "express": "^4.16.3",
     "ftp": "^0.3.10",
     "jsdom": "^16.3.0",
