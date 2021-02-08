@@ -17,7 +17,7 @@
   "author": "UC Regents",
   "license": "BSD-2",
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
+    "@babel/runtime": "^7.12.13",
     "@instructure/canvas-theme": "^7.3.4",
     "@instructure/ui-alerts": "^7.3.4",
     "@instructure/ui-breadcrumb": "^7.3.4",
