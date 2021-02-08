@@ -270,16 +270,19 @@ router.get('/url', (req, res) => {
     SECRET_BRUINCAST_TOKEN,
     VIDEORES_HOST,
     SECRET_VIDEORES_TOKEN,
+    BRUINCAST_HASH_CLIENT_IP,
+    VIDEORES_HASH_CLIENT_IP,
   } = process.env;
 
   // When testing during development, replace with your external IP
-  const clientIP = requestIp.getClientIp(req);
+  let clientIP = requestIp.getClientIp(req);
 
   let stream = '';
   const ext = path.extname(filenameSanitized).substr(1);
 
   let host = '';
   let secret = '';
+  let hashClientIP = false;
 
   if (parseInt(mediatype) === constants.MEDIA_TYPE.BRUINCAST) {
     if (!quarter || !mediaformatSanitized || !filenameSanitized) {
@@ -293,10 +296,18 @@ router.get('/url', (req, res) => {
       return res.status(400).send(new Error('Incorrect format for quarter'));
     }
 
+    if (BRUINCAST_HASH_CLIENT_IP === 'true') {
+      hashClientIP = true;
+    }
+
     host = BRUINCAST_HOST;
     secret = SECRET_BRUINCAST_TOKEN;
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
     stream = `${ext}:${filenameSanitized}`;
+
+    if (VIDEORES_HASH_CLIENT_IP === 'true') {
+      hashClientIP = true;
+    }
 
     host = VIDEORES_HOST;
     secret = SECRET_VIDEORES_TOKEN;
@@ -307,6 +318,7 @@ router.get('/url', (req, res) => {
   const now = new Date();
   const start = Math.round(now.getTime() / 1000);
   const end = start + parseInt(VALIDITY);
+  clientIP = hashClientIP ? clientIP : null;
 
   MediaResourceServices.generateMediaURL(
     host,
