@@ -274,9 +274,6 @@ router.get('/url', (req, res) => {
     VIDEORES_HASH_CLIENT_IP,
   } = process.env;
 
-  // When testing during development, replace with your external IP
-  let clientIP = requestIp.getClientIp(req);
-
   let stream = '';
   const ext = path.extname(filenameSanitized).substr(1);
 
@@ -318,7 +315,8 @@ router.get('/url', (req, res) => {
   const now = new Date();
   const start = Math.round(now.getTime() / 1000);
   const end = start + parseInt(VALIDITY);
-  clientIP = hashClientIP ? clientIP : null;
+  // When testing during development, replace with your external IP
+  const clientIP = hashClientIP ? requestIp.getClientIp(req) : null;
 
   MediaResourceServices.generateMediaURL(
     host,
