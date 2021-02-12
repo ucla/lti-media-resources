@@ -57,8 +57,7 @@ module.exports = {
       favicon: './public/favicon.ico',
     }),
     // Add environmental variables to expose to React frontend.
-    new webpack.EnvironmentPlugin(['LTI_APPROUTE']),
-    new webpack.EnvironmentPlugin(['DEBUG']),
-    new webpack.EnvironmentPlugin(['DISABLE_SPEEDY_STYLESHEET']),
+    new webpack.EnvironmentPlugin(['LTI_APPROUTE', 'DEBUG']),
+    new webpack.EnvironmentPlugin({ DISABLE_SPEEDY_STYLESHEET: '' }),
   ],
 };
