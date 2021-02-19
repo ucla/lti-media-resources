@@ -58,6 +58,9 @@ module.exports = {
     }),
     // Add environmental variables to expose to React frontend.
     new webpack.EnvironmentPlugin(['LTI_APPROUTE', 'DEBUG']),
-    new webpack.EnvironmentPlugin({ DISABLE_SPEEDY_STYLESHEET: '' }),
+    new webpack.EnvironmentPlugin({
+      DISABLE_SPEEDY_STYLESHEET: '',
+      ALWAYS_APPEND_UI_TESTABLE_LOCATORS: '',
+    }),
   ],
 };
