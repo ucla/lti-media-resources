@@ -22,12 +22,20 @@ module.exports = {
         },
       },
       {
+        test: /\.js/,
+        include: /@instructure[\\/](ui-icons|console)[\\/]es/,
+        type: 'javascript/auto',
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000',
+        loader: 'url-loader',
+        options: {
+          limit: 100000,
+        },
       },
     ],
   },
@@ -49,6 +57,10 @@ module.exports = {
       favicon: './public/favicon.ico',
     }),
     // Add environmental variables to expose to React frontend.
-    new webpack.EnvironmentPlugin(['LTI_APPROUTE']),
+    new webpack.EnvironmentPlugin(['LTI_APPROUTE', 'DEBUG']),
+    new webpack.EnvironmentPlugin({
+      DISABLE_SPEEDY_STYLESHEET: '',
+      ALWAYS_APPEND_UI_TESTABLE_LOCATORS: '',
+    }),
   ],
 };
