@@ -31,7 +31,7 @@
     "@instructure/ui-simple-select": "^7.4.0",
     "@instructure/ui-table": "^7.4.0",
     "@instructure/ui-tabs": "^7.4.0",
-    "@instructure/ui-tag": "^7.4.0",
+    "@instructure/ui-tag": "^7.4.4",
     "@instructure/ui-text": "^7.4.0",
     "@instructure/ui-text-area": "^7.4.0",
     "@instructure/ui-text-input": "^7.4.0",
