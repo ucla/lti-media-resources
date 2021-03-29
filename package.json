@@ -51,7 +51,7 @@
     "eslint-plugin-jsdoc": "^32.1.0",
     "express": "^4.16.3",
     "ftp": "^0.3.10",
-    "jsdom": "^16.3.0",
+    "jsdom": "^16.5.2",
     "ltijs": "^5.6.6",
     "migrate-mongo": "^8.1.4",
     "mongodb": "^3.6.4",
