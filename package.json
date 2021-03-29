@@ -20,7 +20,7 @@
     "@babel/runtime": "^7.12.18",
     "@instructure/canvas-theme": "^7.4.0",
     "@instructure/ui-alerts": "^7.4.0",
-    "@instructure/ui-breadcrumb": "^7.4.0",
+    "@instructure/ui-breadcrumb": "^7.5.0",
     "@instructure/ui-buttons": "^7.4.0",
     "@instructure/ui-flex": "^7.4.0",
     "@instructure/ui-heading": "^7.4.0",
