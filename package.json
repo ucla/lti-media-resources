@@ -35,7 +35,7 @@
     "@instructure/ui-text": "^7.4.0",
     "@instructure/ui-text-area": "^7.4.0",
     "@instructure/ui-text-input": "^7.4.0",
-    "@instructure/ui-toggle-details": "^7.4.0",
+    "@instructure/ui-toggle-details": "^8.0.0",
     "@instructure/ui-view": "^7.4.0",
     "@testing-library/react": "^11.2.5",
     "axios": "^0.21.1",
