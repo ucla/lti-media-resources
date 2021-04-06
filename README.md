@@ -208,14 +208,24 @@ Once the task is running, you can now connect it to the CCLE LTI tool.
 
 ### Updating ECS when deploying newer version of app
 
-1. Push the new image to the repository
-2. Click on the task definition
-3. Click on Create new revision
-4. Update the container defintion with the new image
-   - will not need to be changed if the image is tagged the same
-5. Update the task defintion revision
-6. Go to the ECS Cluster
-7. Click on the Service and hit Update
-8. Choose the latest revision for the task defintion
+1. Push the new image to the repository (these can be found under "View push commands" in the AWS ECR repo)
+   1. Retrieve login token - `aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin <AccountId>.dkr.ecr.us-west-2.amazonaws.com`
+   2. Build image - `docker build -t lti-media-resources .`
+   3. Tag image - `docker tag lti-media-resources:latest <AccountId>.dkr.ecr.us-west-2.amazonaws.com/lti-media-resources:latest`
+   4. Push image - `docker push <AccountId>.dkr.ecr.us-west-2.amazonaws.com/lti-media-resources:latest`
+2. Update the cluster service to use the new image - `aws ecs update-service --cluster <Cluster Name> --service <Service Name> --force-new-deployment`
+3. If Auto-Assign IP is on, the Public IP will be changed and need to be updated in the CCLE tool settings
+
+The Cluster will stop the old task once the newer version is up and running.
+
+This can also be done manually in the AWS console if the new image has a different tag.
+
+1. Click on the task definition
+2. Click on Create new revision
+3. Update the container defintion with the new image tag
+4. Update the task defintion revision
+5. Go to the ECS Cluster
+6. Click on the Service and hit Update
+7. Choose the latest revision for the task defintion
 
 The Service will now have the latest image of the app. The previous task will need to be stopped.

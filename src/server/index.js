@@ -24,7 +24,6 @@ options.loginRoute = `${approute}/login`;
 options.keysetRoute = `${approute}/keys`;
 options.invalidTokenRoute = `${approute}/invalidtoken`;
 options.sessionTimeoutRoute = `${approute}/sessiontimeout`;
-options.devMode = true;
 
 lti.setup(
   process.env.LTI_KEY,
