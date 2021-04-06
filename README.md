@@ -139,10 +139,6 @@ To create or modify the mongo migration script, see documentation at https://git
 
 ## Deploying to AWS
 
-### SSL Certificates
-
-The Nginx server and Dockerfile assume that the SSL public and private key are located in the `nginx-conf/certs` directory.
-
 ### Configure AWS CLI
 
 1. Download the CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
@@ -161,12 +157,6 @@ Make sure "Oregon" (us-west-2) is the selected region in the AWS Console before 
 4. Click on the "View push commands" button to view the 4 commands to push images to the repository
 5. After pushing an image to the repo, move on
 
-This will need to be repeated for each service listed in the Docker Compose file (Nodeserver and Nginx).
-
-### Creating Network Load Balancer
-
-To utilize elastic IP with ECS Fargate, we need to use a NLB. Visit https://aws.amazon.com/premiumsupport/knowledge-center/ecs-fargate-static-elastic-ip-address/ for directions.
-
 ### Creating AWS ECS Cluster
 
 1. Go to AWS ECS (Elastic Container Service)
@@ -181,12 +171,10 @@ To utilize elastic IP with ECS Fargate, we need to use a NLB. Visit https://aws.
 3. Choose Fargate
 4. Enter a name, memory, and CPU size
 5. Click on Add Container
-   1. Add the container for the nodeserver (Image URI can be found in the ECR)
-      - Enter port 8080 for the Port Mappings
-   2. Add the container for the nginx server (Image URI can be found in the ECR)
-      - Enter port 80 for the Port Mappings
-      - Enter port 443 (SSL) for the Port Mappings
-6. Create task definition
+6. Enter the information for the correct Docker image created earlier in the ECR
+   - the image name can be found in the repository (Image URI)
+7. Enter port 8080 for the Port mappings
+8. Create task definition
 
 ### Creating ECS Service
 
@@ -200,8 +188,9 @@ Using the new task definition, we can now run the app on our cluster.
 6. Enter a service name
 7. Enter 1 for number of tasks
 8. Choose the first option for Cluster VPC and Subnets
-9. Edit the Security Group to allow traffic over HTTPS
-10. Select the Network Load Balancer
+9. For Security Group, hit the edit button
+   - Add a rule for "All TCP"
+   - This will allow our container to receive traffic over port 8080.
 
 The service should now be running.
 
@@ -213,38 +202,20 @@ Once the task is running, you can now connect it to the CCLE LTI tool.
 2. Under Network, copy and paste the Public IP
 3. Go to the External Tool Configuration on CCLE
 4. Copy and paste the IP with the port for Tool URL, Initiate login URL, and Redirection URI(s)
-   - It will be of the form `http://<Public IP>`
+   - It will be of the form `http://<Public IP>:8080`
 5. To avoid CORS issues, switch Default launch container to New Window
 6. Save changes
 
 ### Updating ECS when deploying newer version of app
 
-1. Push the new image to the repository (these can be found under "View push commands" in the AWS ECR repo)
-   1. Retrieve login token - `aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin <AccountId>.dkr.ecr.us-west-2.amazonaws.com`
-   2. Build image - `docker-compose build`
-   3. Tag and Push Image - `docker-compose push`
-      - This will tag and push from the image field listed in the Docker Compose file
-2. Update the cluster service to use the new image - `aws ecs update-service --cluster <Cluster Name> --service <Service Name> --force-new-deployment`
-3. If Auto-Assign IP is on, the Public IP will be changed and need to be updated in the CCLE tool settings
-
-The Cluster will stop the old task once the newer version is up and running.
-
-This can also be done manually in the AWS console if the new image has a different tag.
-
-1. Click on the task definition
-2. Click on Create new revision
-3. Update the container defintion with the new image tag
-4. Update the task defintion revision
-5. Go to the ECS Cluster
-6. Click on the Service and hit Update
-7. Choose the latest revision for the task defintion
+1. Push the new image to the repository
+2. Click on the task definition
+3. Click on Create new revision
+4. Update the container defintion with the new image
+   - will not need to be changed if the image is tagged the same
+5. Update the task defintion revision
+6. Go to the ECS Cluster
+7. Click on the Service and hit Update
+8. Choose the latest revision for the task defintion
 
 The Service will now have the latest image of the app. The previous task will need to be stopped.
-
-### Deploying to Different Environments
-
-There are AWS ECS enviroments for PROD, STAGE, and TEST.
-
-Use the deploy script `./deploy.sh --id=<AWS_ACCOUNT_ID> --env=<PROD|STAGE|TEST>` to push the latest image to the respective environment.
-
-NOTE: the DB_URL field in the .env must be commented out.
