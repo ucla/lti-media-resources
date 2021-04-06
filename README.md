@@ -136,3 +136,86 @@ To create or modify the mongo migration script, see documentation at https://git
 - Migrate-mongo: https://www.npmjs.com/package/migrate-mongo
 - Jest: https://jestjs.io/
 - UCLA API: https://kb.sait.ucla.edu/display/KB/API+Knowledgebase
+
+## Deploying to AWS
+
+### Configure AWS CLI
+
+1. Download the CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+2. Run `aws configure` in your terminal
+   - Go to "My Security Credentials" for the access and secret key
+   - `us-west-2` as the default region
+   - https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html for more information
+
+### Create a repository on AWS ECR
+
+Make sure "Oregon" (us-west-2) is the selected region in the AWS Console before performing any of the next steps.
+
+1. Go to the Elastic Container Registry in the AWS Console
+2. Create a private repository
+3. After creating the repository, click on the name to view the images (will be empty)
+4. Click on the "View push commands" button to view the 4 commands to push images to the repository
+5. After pushing an image to the repo, move on
+
+### Creating AWS ECS Cluster
+
+1. Go to AWS ECS (Elastic Container Service)
+2. Create a cluster
+3. Select "Networking Only" for the cluster template
+4. Enter a name
+
+### Creating ECS Task Definition
+
+1. Go to Task Defintions on the AWS ECS side menu
+2. Create new tasks definition
+3. Choose Fargate
+4. Enter a name, memory, and CPU size
+5. Click on Add Container
+6. Enter the information for the correct Docker image created earlier in the ECR
+   - the image name can be found in the repository (Image URI)
+7. Enter port 8080 for the Port mappings
+8. Create task definition
+
+### Creating ECS Service
+
+Using the new task definition, we can now run the app on our cluster.
+
+1. Go to Clusters in the AWS ECS side menu
+2. Click on the cluster that was previously created
+3. Click on Create under the Services tab
+4. Under launch type, click Fargate
+5. Under task defintion, select the task that was just created
+6. Enter a service name
+7. Enter 1 for number of tasks
+8. Choose the first option for Cluster VPC and Subnets
+9. For Security Group, hit the edit button
+   - Add a rule for "All TCP"
+   - This will allow our container to receive traffic over port 8080.
+
+The service should now be running.
+
+### Connecting to CCLE
+
+Once the task is running, you can now connect it to the CCLE LTI tool.
+
+1. Under the Task tab for the running service, click on the running task
+2. Under Network, copy and paste the Public IP
+3. Go to the External Tool Configuration on CCLE
+4. Copy and paste the IP with the port for Tool URL, Initiate login URL, and Redirection URI(s)
+   - It will be of the form `http://<Public IP>:8080`
+5. To avoid CORS issues, switch Default launch container to New Window
+6. Save changes
+
+### Updating ECS when deploying newer version of app
+
+1. Push the new image to the repository
+2. Click on the task definition
+3. Click on Create new revision
+4. Update the container defintion with the new image
+   - will not need to be changed if the image is tagged the same
+5. Update the task defintion revision
+6. Go to the ECS Cluster
+7. Click on the Service and hit Update
+8. Choose the latest revision for the task defintion
+
+The Service will now have the latest image of the app. The previous task will need to be stopped.
