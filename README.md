@@ -110,7 +110,7 @@ To create or modify the mongo migration script, see documentation at https://git
 
 ## Start up the app
 
-1. Copy .env-dist to a local .env file. There are some empty secret fields in .env.dist. Ask Rex for the secrets.
+1. Copy .env.dist to a local .env file. There are some empty secret fields in .env.dist. Ask Rex for the secrets.
 2. Set LTI_KEY to any random string, and DB_DATABASE to whatever you'd like
 3. (Optional) Comment out DEBUG if you do not want to see the LTI provider debugging messages
 4. Start app:
