@@ -157,6 +157,8 @@ Make sure "Oregon" (us-west-2) is the selected region in the AWS Console before 
 4. Click on the "View push commands" button to view the 4 commands to push images to the repository
 5. After pushing an image to the repo, move on
 
+This will need to be repeated for each service listed in the Docker Compose file (Nodeserver and Nginx).
+
 ### Creating AWS ECS Cluster
 
 1. Go to AWS ECS (Elastic Container Service)
@@ -171,10 +173,11 @@ Make sure "Oregon" (us-west-2) is the selected region in the AWS Console before 
 3. Choose Fargate
 4. Enter a name, memory, and CPU size
 5. Click on Add Container
-6. Enter the information for the correct Docker image created earlier in the ECR
-   - the image name can be found in the repository (Image URI)
-7. Enter port 8080 for the Port mappings
-8. Create task definition
+   1. Add the container for the nodeserver (Image URI can be found in the ECR)
+      - Enter port 8080 for the Port Mappings
+   2. Add the container for the nginx server (Image URI can be found in the ECR)
+      - Enter port 80 for the Port Mappings
+6. Create task definition
 
 ### Creating ECS Service
 
@@ -188,9 +191,6 @@ Using the new task definition, we can now run the app on our cluster.
 6. Enter a service name
 7. Enter 1 for number of tasks
 8. Choose the first option for Cluster VPC and Subnets
-9. For Security Group, hit the edit button
-   - Add a rule for "All TCP"
-   - This will allow our container to receive traffic over port 8080.
 
 The service should now be running.
 
@@ -202,7 +202,7 @@ Once the task is running, you can now connect it to the CCLE LTI tool.
 2. Under Network, copy and paste the Public IP
 3. Go to the External Tool Configuration on CCLE
 4. Copy and paste the IP with the port for Tool URL, Initiate login URL, and Redirection URI(s)
-   - It will be of the form `http://<Public IP>:8080`
+   - It will be of the form `http://<Public IP>`
 5. To avoid CORS issues, switch Default launch container to New Window
 6. Save changes
 
@@ -210,9 +210,9 @@ Once the task is running, you can now connect it to the CCLE LTI tool.
 
 1. Push the new image to the repository (these can be found under "View push commands" in the AWS ECR repo)
    1. Retrieve login token - `aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin <AccountId>.dkr.ecr.us-west-2.amazonaws.com`
-   2. Build image - `docker build -t lti-media-resources .`
-   3. Tag image - `docker tag lti-media-resources:latest <AccountId>.dkr.ecr.us-west-2.amazonaws.com/lti-media-resources:latest`
-   4. Push image - `docker push <AccountId>.dkr.ecr.us-west-2.amazonaws.com/lti-media-resources:latest`
+   2. Build image - `docker-compose build`
+   3. Tag and Push Image - `docker-compose push`
+      - This will tag and push from the image field listed in the Docker Compose file
 2. Update the cluster service to use the new image - `aws ecs update-service --cluster <Cluster Name> --service <Service Name> --force-new-deployment`
 3. If Auto-Assign IP is on, the Public IP will be changed and need to be updated in the CCLE tool settings
 

@@ -13,4 +13,3 @@ services:
       context: ./nginx-conf
     ports:
       - '80:80'
-      - '443:443'
