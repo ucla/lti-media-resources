@@ -1,0 +1,15 @@
+version: '3'
+services:
+  nodeserver:
+    image: '${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/lti-media-resources:latest'
+    build:
+      context: .
+    ports:
+      - '8080:8080'
+  nginx:
+    restart: always
+    image: '${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/lti-nginx:latest'
+    build:
+      context: ./nginx-conf
+    ports:
+      - '80:80'
