@@ -159,6 +159,10 @@ Make sure "Oregon" (us-west-2) is the selected region in the AWS Console before 
 
 This will need to be repeated for each service listed in the Docker Compose file (Nodeserver and Nginx).
 
+### Creating Network Load Balancer
+
+To utilize elastic IP with ECS Fargate, we need to use a NLB. Visit https://aws.amazon.com/premiumsupport/knowledge-center/ecs-fargate-static-elastic-ip-address/ for directions.
+
 ### Creating AWS ECS Cluster
 
 1. Go to AWS ECS (Elastic Container Service)
@@ -177,6 +181,7 @@ This will need to be repeated for each service listed in the Docker Compose file
       - Enter port 8080 for the Port Mappings
    2. Add the container for the nginx server (Image URI can be found in the ECR)
       - Enter port 80 for the Port Mappings
+      - Enter port 443 (SSL) for the Port Mappings
 6. Create task definition
 
 ### Creating ECS Service
@@ -191,6 +196,8 @@ Using the new task definition, we can now run the app on our cluster.
 6. Enter a service name
 7. Enter 1 for number of tasks
 8. Choose the first option for Cluster VPC and Subnets
+9. Edit the Security Group to allow traffic over HTTPS
+10. Select the Network Load Balancer
 
 The service should now be running.
 
