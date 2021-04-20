@@ -1,6 +1,4 @@
 const axios = require('axios');
-const https = require('https');
-const fs = require('fs');
 const registrarDebug = require('debug')('registrar:api');
 const cache = require('./cache');
 
@@ -15,31 +13,21 @@ let registrar = {};
  */
 async function getToken() {
   registrarDebug('getToken called');
-  const data = 'grant_type=client_credentials';
-  const certFile = process.env.REG_WS_CERT_NAME;
-  const keyFile = process.env.REG_WS_PRIVATE_KEY;
 
-  const httpsAgent = new https.Agent({
-    cert: fs.readFileSync(certFile),
-    key: fs.readFileSync(keyFile),
-  });
+  const authToken = Buffer.from(
+    `${process.env.SECRET_REG_WS_CLIENT_ID}:${process.env.SECRET_REG_WS_PASSWORD}`
+  ).toString('base64');
 
   const tokenConfig = {
     method: 'post',
-    url: `${process.env.REG_WS_API_URL}:4443/oauth2/token`,
+    url: `${process.env.REG_WS_API_URL}/oauth/client_credential/accesstoken?grant_type=client_credentials`,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      Authorization: `Basic ${authToken}`,
     },
-    auth: {
-      username: process.env.SECRET_REG_WS_CLIENT_ID,
-      password: process.env.SECRET_REG_WS_PASSWORD,
-    },
-    data,
-    httpsAgent,
   };
 
   try {
-    const response = await axios(tokenConfig, httpsAgent);
+    const response = await axios(tokenConfig);
     const { access_token: token } = response.data;
     registrarDebug(`getToken returning ${token}`);
     return token;
@@ -94,9 +82,9 @@ async function call(params) {
         : process.env.reg_token;
 
     if (params.headers === undefined) {
-      params.headers = { esmAuthnClientToken: token };
+      params.headers = { Authorization: `Bearer ${token}` };
     } else {
-      params.headers.esmAuthnClientToken = token;
+      params.headers.Authorization = `Bearer ${token}`;
     }
 
     params.baseURL = process.env.REG_WS_API_URL;
@@ -108,7 +96,18 @@ async function call(params) {
     if (error.response.status === 401 || error.response.status === 403) {
       // Token may have expired
       registrarDebug('call: Token may have expired, retrying');
-      params.headers.esmAuthnClientToken = await registrar.refreshToken();
+      params.headers.Authorization = await registrar.refreshToken();
+      const retryResponse = await axios(params);
+      if (retryResponse.status === 200) {
+        registrarDebug(`call returning with ${retryResponse.data}`);
+        return retryResponse.data;
+      }
+    } else if (error.response.status === 429 || error.response.status === 500) {
+      registrarDebug(
+        error.response.status === 429
+          ? 'call: Rate limit reached, retrying'
+          : 'call: Server error, retrying'
+      );
       const retryResponse = await axios(params);
       if (retryResponse.status === 200) {
         registrarDebug(`call returning with ${retryResponse.data}`);
@@ -149,7 +148,7 @@ async function getShortname(offeredTermCode, classSectionID) {
   let term = offeredTermCode;
   try {
     let response = await registrar.call({
-      url: `/sis/api/v1/Dictionary/${offeredTermCode}/${classSectionID}/CourseClassIdentifiers`,
+      url: `/sis/dictionary/${offeredTermCode}/${classSectionID}/courseclassidentifiers/v1`,
     });
     if (response === null) {
       registrarDebug('getShortname: CourseClassIdentifiers is null');
@@ -174,7 +173,7 @@ async function getShortname(offeredTermCode, classSectionID) {
       registrarDebug('getShortname: Handling Summer session');
       // Get session group.
       response = await registrar.call({
-        url: `/sis/api/v1/Classes/${offeredTermCode}`,
+        url: `/sis/classes/${offeredTermCode}/v1`,
         params: {
           subjectAreaCode: subArea,
           courseCatalogNumber: catNum,
@@ -262,7 +261,7 @@ async function getWeekNumber(term, date) {
       }
 
       response = await registrar.call({
-        url: `sis/api/v1/Dictionary/TermSessionsByWeek`,
+        url: `/sis/dictionary/termsessionsbyweek/v1`,
         params: {
           SessionTermCode: termParam,
           SessionCode: sessionCodeParam,
