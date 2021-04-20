@@ -139,6 +139,10 @@ To create or modify the mongo migration script, see documentation at https://git
 
 ## Deploying to AWS
 
+### SSL Certificates
+
+The Nginx server and Dockerfile assume that the SSL public and private key are located in the `nginx-conf/certs` directory.
+
 ### Configure AWS CLI
 
 1. Download the CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
