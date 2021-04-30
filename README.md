@@ -240,3 +240,11 @@ This can also be done manually in the AWS console if the new image has a differe
 7. Choose the latest revision for the task defintion
 
 The Service will now have the latest image of the app. The previous task will need to be stopped.
+
+### Deploying to Different Environments
+
+There are AWS ECS enviroments for PROD, STAGE, and TEST.
+
+Use the deploy script `./deploy.sh --id=<AWS_ACCOUNT_ID> --env=<PROD|STAGE|TEST>` to push the latest image to the respective environment.
+
+NOTE: the DB_URL field in the .env must be commented out.
