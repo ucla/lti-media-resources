@@ -139,10 +139,6 @@ To create or modify the mongo migration script, see documentation at https://git
 
 ## Deploying to AWS
 
-### SSL Certificates
-
-The Nginx server and Dockerfile assume that the SSL public and private key are located in the `nginx-conf/certs` directory.
-
 ### Configure AWS CLI
 
 1. Download the CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
@@ -240,3 +236,15 @@ This can also be done manually in the AWS console if the new image has a differe
 7. Choose the latest revision for the task defintion
 
 The Service will now have the latest image of the app. The previous task will need to be stopped.
+
+### Deploying to Different Environments
+
+There are AWS ECS enviroments for PROD, STAGE, and TEST.
+
+Use the deploy script `./deploy.sh --id=<AWS_ACCOUNT_ID> --env=<PROD|STAGE|TEST>` to push the latest image to the respective environment.
+
+### SSL Certificates
+
+The Nginx server and Dockerfile assume that the SSL public and private keys for the different environments are located in the `nginx-conf/certs/<prod|stage|test>` directory.
+
+The file name for the keys should be `mediaresources-<ENV>.ccle.ucla.edu.cert.cer` and `mediaresources-<ENV>.ccle.ucla.edu.key` respectively.
