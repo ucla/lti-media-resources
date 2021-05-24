@@ -54,7 +54,7 @@
     "jsdom": "^16.5.3",
     "ltijs": "^5.7.3",
     "migrate-mongo": "^8.2.2",
-    "mongodb": "^3.6.6",
+    "mongodb": "^3.6.8",
     "node-cache": "^5.1.2",
     "prop-types": "^15.7.2",
     "qs": "^6.10.1",
