@@ -22,6 +22,9 @@ case $i in
     ;;
 esac
 done
+if [ -z "${AWS_ACCOUNT_ID}" ] || [ -z "${ENV}" ]; then
+  usage
+fi
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com
 docker-compose build
 docker-compose push

@@ -209,7 +209,7 @@ Once the task is running, you can now connect it to the CCLE LTI tool.
 2. Under Network, copy and paste the Public IP
 3. Go to the External Tool Configuration on CCLE
 4. Copy and paste the IP with the port for Tool URL, Initiate login URL, and Redirection URI(s)
-   - It will be of the form `http://<Public IP>`
+   - It will be of the form `https://<Public IP>`
 5. To avoid CORS issues, switch Default launch container to New Window
 6. Save changes
 
