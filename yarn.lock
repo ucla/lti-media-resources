@@ -909,14 +909,7 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.18", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
-  version "7.13.16"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.16.tgz#673e7b84c1f6287d96d483fa65cd3db792d53e22"
-  integrity sha512-7VsWJsI5USRhBLE/3of+VU2DDNWtYHQlq2IHu2iL15+Yx4qVqP8KllR6JMHQlTKWRyDk9Tw6unkqSusaHXt//A==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.9.2":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.18", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
   integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
@@ -6996,10 +6989,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-ltijs@^5.7.3:
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/ltijs/-/ltijs-5.7.3.tgz#7e91a231a376ea1abf1acb327179bea737fe035f"
-  integrity sha512-KEHoV7oN5k4/St5+4ps2xHOnMRAWvL2sBc3mSQrNbHh4uS48ICOowe8Pw+F22fahhAjxqorNu9VC/xeGbNuOBw==
+ltijs@^5.7.9:
+  version "5.7.9"
+  resolved "https://registry.yarnpkg.com/ltijs/-/ltijs-5.7.9.tgz#a1281246588b0f038d861eca86a5d3ed906e5a12"
+  integrity sha512-zitIy8E/ORJOFV6z+xdgTD16x1JZ29GwtLbXYkRdbzXPTUum/3qTzPFos2yfnbzcxyX5GOemtu5lU/4RXu+CjA==
   dependencies:
     "@babel/runtime" "^7.13.10"
     body-parser "^1.19.0"
