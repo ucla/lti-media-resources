@@ -23,7 +23,7 @@ module.exports = {
       },
       {
         test: /\.js/,
-        include: /@instructure[\\/](.*)[\\/]es/,
+        include: /@instructure[\\/](ui-icons|console)[\\/]es/,
         type: 'javascript/auto',
       },
       {
