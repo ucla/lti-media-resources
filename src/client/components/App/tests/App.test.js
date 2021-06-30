@@ -7,9 +7,6 @@ import App from '../index';
 jest.mock('axios');
 jest.mock('../../../services/ltik');
 
-beforeEach(() => {
-  document.documentElement.setAttribute('dir', 'ltr');
-});
 afterEach(cleanup);
 
 test('Axios error handling in App', async (done) => {
