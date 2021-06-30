@@ -1002,14 +1002,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@instructure/canvas-theme@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-7.4.0.tgz#ab24a21ef1d1f60c97a3a48d9f3433411661df11"
-  integrity sha512-4/pcpo7cypVCBIO2kHtAytZ/9CSCnNocnyJ8Y4oCuA82Hhthmd77QyrlyEiFuRFjoOhxOtJWwYyuSt2HqUzd2A==
+"@instructure/canvas-theme@^8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-8.6.0.tgz#9d558c86723fb5347e5913c87f2192f5e05bbedd"
+  integrity sha512-oLsndRFkajbbz6uTuh9y8qtF5CHGomPQzYaIyCXDF0MsxRmU+3JP95DGWApUF4Kz2OYGP64cyWBb4Pp4DwO79Q==
   dependencies:
-    "@babel/runtime" "^7.9.2"
-    "@instructure/ui-theme-tokens" "^7.4.0"
-    "@instructure/ui-themeable" "^7.4.0"
+    "@babel/runtime" "^7.13.10"
+    "@instructure/ui-theme-tokens" "8.6.0"
 
 "@instructure/console@^7.4.0":
   version "7.4.0"
@@ -1640,13 +1639,12 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-theme-tokens@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-theme-tokens/-/ui-theme-tokens-7.4.0.tgz#bc999413d3bbffaa5cd15cbbb8659b74a1c1b4b2"
-  integrity sha512-8fvv+hsYwK20/cDGH/ZuG8DDPtoLnB88tS1U1QKQZchdGw3UFAzUrGsmtH6DVflgAF3/Wy7AN7AIN1iS6hDRhA==
+"@instructure/ui-theme-tokens@8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-theme-tokens/-/ui-theme-tokens-8.6.0.tgz#84740dbc7568d3187946de938c556f9bbcbefd83"
+  integrity sha512-+2yMOlIKINxMz4P/JAS3TeS0sF+t6bzK/kIDpXbmdhZdyFGoFPlqVF795TLGFRg4i6UhaC4B8seSaeBtoEgnVg==
   dependencies:
-    "@babel/runtime" "^7.9.2"
-    "@instructure/ui-themeable" "^7.4.0"
+    "@babel/runtime" "^7.13.10"
 
 "@instructure/ui-themeable@^7.4.0":
   version "7.4.0"
