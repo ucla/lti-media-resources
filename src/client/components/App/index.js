@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from '@instructure/canvas-theme';
+import { EmotionThemeProvider } from '@instructure/emotion'
 import dompurify from 'dompurify';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
@@ -15,7 +16,6 @@ import { getLtik } from '../../services/ltik';
 
 const constants = require('../../../../constants');
 
-theme.use();
 
 axiosRetry(axios);
 
@@ -142,7 +142,7 @@ const App = () => {
 
   // JSX
   return (
-    <>
+    <EmotionThemeProvider theme={theme}>
       {error && <ErrorAlert err={error.err} msg={error.msg} />}
       <Tabs onRequestTabChange={handleTabChange}>
         <Tabs.Panel
@@ -200,7 +200,7 @@ const App = () => {
         </Tabs.Panel>
         {adminPanel}
       </Tabs>
-    </>
+    </EmotionThemeProvider>
   );
 };
 
