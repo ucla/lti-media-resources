@@ -237,6 +237,30 @@ This can also be done manually in the AWS console if the new image has a differe
 
 The Service will now have the latest image of the app. The previous task will need to be stopped.
 
+### AWS Deployment Instructions:
+
+1, Create an AWS account. Please ask Daniel Tran  for it.
+
+2, Configure AWS CLI. https://github.com/ucla/lti-media-resources/blob/master/.env.dist#L11 
+
+3, Update local .env file with AWS_ACCOUNT_ID here. https://github.com/ucla/lti-media-resources/blob/master/.env.dist#L11  You can find the account ID by logging into aws console.
+
+4, Add certs folder under lti-media-resources/nginx-conf.
+
+5, Run deploy.sh under lti-media-resources. Command: ./deploy.sh --id=<AWS_ACCOUNT_ID> --env=<PROD|STAGE|TEST>
+
+6, After a successful deployment, a json file will be produced. Verify it says status:active
+
+7, We can also verify an instance’s status in this way:
+
+  Log in to AWS console. https://aws.amazon.com/console/
+
+  Services > Containers > Elastic Container Service.
+
+  Click on lti-clusters.
+
+We can see the status of all three instances here.
+
 ### Deploying to Different Environments
 
 There are AWS ECS enviroments for PROD, STAGE, and TEST.
