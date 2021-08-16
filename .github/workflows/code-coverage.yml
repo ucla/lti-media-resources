@@ -25,6 +25,6 @@ jobs:
       # Run tests and provide coverage diff
       - name: TestCoverage
         id: testCoverage
-        uses: anuraag016/Jest-Coverage-Diff@V1.1
+        uses: anuraag016/Jest-Coverage-Diff@V1.2
         with:
           fullCoverageDiff: false
