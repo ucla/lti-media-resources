@@ -2884,12 +2884,13 @@ axe-core@^3.5.4:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.5.5.tgz#84315073b53fa3c0c51676c588d59da09a192227"
   integrity sha512-5P0QZ6J5xGikH780pghEdbEKijCTrruK9KxtPZCFWUpef0f6GipO+xEZ5GKCb020mmqgbiNO6TcA55CriL784Q==
 
-axios-retry@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/axios-retry/-/axios-retry-3.1.9.tgz#6c30fc9aeb4519aebaec758b90ef56fa03fe72e8"
-  integrity sha512-NFCoNIHq8lYkJa6ku4m+V1837TP6lCa7n79Iuf8/AqATAHYB0ISaAS1eyIenDOfHOLtym34W65Sjke2xjg2fsA==
+axios-retry@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/axios-retry/-/axios-retry-3.2.3.tgz#c889f2e408f2616ae18e190d1387c93bd4a5b6e2"
+  integrity sha512-JfxUUN6PDyinrDVP/NbCKxmwvwJfMfQ0DLs95o/OEd+mw5+hrBXNGfx1Wq2gskd7ODWc4kcd9CjStCpDv3Us4g==
   dependencies:
-    is-retry-allowed "^1.1.0"
+    "@babel/runtime" "^7.15.4"
+    is-retry-allowed "^2.2.0"
 
 axios@^0.21.1:
   version "0.21.1"
@@ -6190,10 +6191,10 @@ is-regex@^1.1.1:
     call-bind "^1.0.2"
     has-symbols "^1.0.1"
 
-is-retry-allowed@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/is-retry-allowed/-/is-retry-allowed-1.2.0.tgz#d778488bd0a4666a3be8a1482b9f2baafedea8b4"
-  integrity sha512-RUbUeKwvm3XG2VYamhJL1xFktgjvPzL0Hq8C+6yrWIswDy3BIXGqCxhxkc30N9jqK311gVU137K8Ei55/zVJRg==
+is-retry-allowed@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/is-retry-allowed/-/is-retry-allowed-2.2.0.tgz#88f34cbd236e043e71b6932d09b0c65fb7b4d71d"
+  integrity sha512-XVm7LOeLpTW4jV19QSH38vkswxoLud8sQ57YwJVTPWdiaI9I8keEhGFpBlslyVsgdQy4Opg8QOLb8YRgsyZiQg==
 
 is-stream@^1.1.0:
   version "1.1.0"
