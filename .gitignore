@@ -1,6 +1,6 @@
 node_modules
 dist
-*.log
+/logs
 .env
 .DS_Store
 # Server certificates and keys

@@ -1,4 +1,5 @@
 const winston = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
 
 class LogServices {
   /**
@@ -8,9 +9,6 @@ class LogServices {
    * @returns {object}   Return the logger.
    */
   static async createLogger(taskName) {
-    // Global variable for current date and time
-    const currentTimestamp = new Date();
-
     // Global logger that outputs log messages to console and .log file
     const logger = winston.createLogger({
       level: 'info',
@@ -23,11 +21,12 @@ class LogServices {
       ),
       transports: [
         new winston.transports.Console(),
-        new winston.transports.File({
-          filename: `logs/${taskName}_${currentTimestamp.getFullYear()}-${
-            currentTimestamp.getMonth() + 1
-          }-${currentTimestamp.getDate()}_${currentTimestamp.getHours()}-${currentTimestamp.getMinutes()}.log`,
+        new DailyRotateFile({
+          dirname: 'logs',
+          filename: `${taskName}_%DATE%.log`,
+          datePattern: 'YYYY-MM-DD-HH',
           level: 'debug',
+          maxFiles: '7',
         }),
       ],
     });
