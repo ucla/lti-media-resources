@@ -128,8 +128,7 @@ async function call(params) {
  * Converts a given offeredTermCode and classSectionID to the following
  * shortname format:
  *
- *  Strip spaces/ampersands from subject areas.
- *      <3 char term>-<subject area><display course number>-<display section number>
+ *  term-subj_area-crsidx- secidx
  *
  * @param {string} offeredTermCode  Term.
  * @param {string} classSectionID   ClassID aka SRS.
@@ -200,18 +199,8 @@ async function getShortname(offeredTermCode, classSectionID) {
       term += sessionGroup;
     }
 
-    // Format catNum from 0000SSPP to PP . int(0000) . SS.
-    // SS are section letters. PP is C(oncurrent) and/or M(ultilisted).
-    const formattedCatNum =
-      catNum.substr(6, 2).trim() +
-      parseInt(catNum.substr(0, 4)) +
-      catNum.substr(4, 2).trim();
-
-    // Remove spaces and ampersands.
-    const shortname = `${term}-${subArea.replace(
-      /\s|&/g,
-      ''
-    )}${formattedCatNum}-${secNum.replace(/^0+/g, '')}`;
+    // Combine shortname components.
+    const shortname = `${term}-${subArea}-${catNum}-${secNum}`;
 
     registrarDebug(`getShortname: returning { ${shortname}, ${subArea}`);
     returnObject.shortname = shortname;

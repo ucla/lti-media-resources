@@ -22,7 +22,7 @@ it('returns basic shortname', async () => {
   });
 
   const { shortname } = await registrar.getShortname('20S', '318001200');
-  expect(shortname).toEqual('20S-PHYSICS1A-1');
+  expect(shortname).toEqual('20S-PHYSICS-0001A-001');
 });
 
 it('returns complex shortname', async () => {
@@ -45,7 +45,7 @@ it('returns complex shortname', async () => {
   });
 
   const { shortname } = await registrar.getShortname('20S', '370705200');
-  expect(shortname).toEqual('20S-CSBIOM150-1');
+  expect(shortname).toEqual('20S-C&S BIO-0150  M-001');
 });
 
 it('returns summer shortnames', async () => {
@@ -87,7 +87,7 @@ it('returns summer shortnames', async () => {
     '201',
     '187093910'
   );
-  expect(shortnameA).toEqual('201A-COMSCI31-1');
+  expect(shortnameA).toEqual('201A-COM SCI-0031-001');
 
   // Multiple summer sessions.
   registrar.call = jest
@@ -129,5 +129,5 @@ it('returns summer shortnames', async () => {
     '201',
     '252091930'
   );
-  expect(shortnameC).toEqual('201C-LIFESCI30B-2');
+  expect(shortnameC).toEqual('201C-LIFESCI-0030B-002');
 });
