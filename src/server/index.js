@@ -14,7 +14,7 @@ let options = {};
 if (process.env.MODE === 'production') {
   options = {
     staticPath: path.join(__dirname, '../../dist'), // Path to static files
-    cookies: { secure: false },
+    cookies: { secure: true, sameSite: 'None' },
   };
 }
 
