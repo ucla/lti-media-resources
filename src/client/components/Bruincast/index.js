@@ -70,7 +70,7 @@ export const Bruincast = ({
         if (tmpCastsByCourses.length === 0) {
           setError({
             err: '',
-            msg: 'No Bruincast media found.',
+            msg: 'No BruinCast media found.',
           });
         } else {
           setError(null);
@@ -79,7 +79,7 @@ export const Bruincast = ({
       .catch((err) => {
         setError({
           err,
-          msg: 'Something went wrong when retrieving Bruincast contents...',
+          msg: 'Something went wrong when retrieving BruinCast contents...',
         });
       });
   };
@@ -211,7 +211,7 @@ export const Bruincast = ({
   // JSX if not playing a media
   return (
     <>
-      <Heading>{`Bruincast: ${course.title}`}</Heading>
+      <Heading>{`BruinCast: ${course.title}`}</Heading>
       {warningElement}
       <Text>
         Video recordings may take up to 24 hours before they are available. For

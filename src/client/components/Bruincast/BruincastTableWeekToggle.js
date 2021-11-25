@@ -41,7 +41,7 @@ export const BruincastTableWeekToggle = ({
       <Table
         id={`${shortname}_tableWeek${weekNum}`}
         hover
-        caption={`Bruincast Media for Week ${weekNum}`}
+        caption={`BruinCast Media for Week ${weekNum}`}
       >
         <Table.Head>
           <Table.Row>

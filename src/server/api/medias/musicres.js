@@ -59,9 +59,9 @@ router.get('/', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { label } = res.locals.context.context;
+  const { course_offering_sourcedid } = res.locals.context.lis;
   MusicresServices.getMusicres(
-    label,
+    course_offering_sourcedid,
     parseInt(res.locals.token.user)
   ).then((list) => res.send(list));
 });

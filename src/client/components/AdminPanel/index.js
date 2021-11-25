@@ -159,12 +159,12 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
     <Tabs variant="secondary" onRequestTabChange={handleTabChange}>
       <Tabs.Panel
         id="adminPanelSettings"
-        renderTitle="Bruincast Settings"
+        renderTitle="BruinCast Settings"
         isSelected={selectedTabIndex === constants.ADMIN_PANEL_TABS.SETTINGS}
       >
         {alert}
         <View>
-          <Text weight="bold">Bruincast notice</Text>
+          <Text weight="bold">BruinCast notice</Text>
           <ReactQuill
             theme="snow"
             value={currWarning}
@@ -173,7 +173,7 @@ export const AdminPanel = ({ warning, setWarning, retrieveNums, setError }) => {
         </View>
         <View margin="small none" display="block">
           <TextArea
-            label="Bruincast crosslists"
+            label="BruinCast crosslists"
             value={currCrosslist}
             onChange={handleCrosslistChange}
           />

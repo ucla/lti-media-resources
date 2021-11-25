@@ -10,16 +10,16 @@ class VideoresServices {
   /**
    * Retrieve video reserves of a course
    *
-   * @param {string} label  Label of course to query for
+   * @param {string} courseSISID  courseSISID of course to query for
    * @param {number} userid  User that made this query request
    * @returns {Array}   Return video reserves of the course.
    */
-  static async getVideores(label, userid) {
-    const docs = await MediaQuery.getVideoResByCourse(label);
+  static async getVideores(courseSISID, userid) {
+    const docs = await MediaQuery.getVideoResByCourse(courseSISID);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       MEDIA_TYPE.VIDEO_RESERVES,
       userid,
-      label
+      courseSISID
     );
     const now = new Date();
     for (const doc of docs) {
@@ -77,15 +77,15 @@ class VideoresServices {
   /**
    * Retrieve all playback histories of all students
    *
-   * @param {object} course  Course to query for.
+   * @param {object} courseSISID  courseSISID to query for.
    * @param {Array} members  Array of all students.
    * @returns {Array}   Return all playback histories of all students.
    */
-  static async getAnalytics(course, members) {
-    const allMedias = await MediaQuery.getVideoResByCourse(course.label);
+  static async getAnalytics(courseSISID, members) {
+    const allMedias = await MediaQuery.getVideoResByCourse(courseSISID);
     const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
       MEDIA_TYPE.VIDEO_RESERVES,
-      course.label
+      courseSISID
     );
     // Declare an empty array to push in final results
     // The array contains objects organized like this:
