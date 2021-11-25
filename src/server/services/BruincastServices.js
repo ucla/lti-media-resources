@@ -69,13 +69,17 @@ class BruincastServices {
   /**
    * Retrieve all bruincast contents from database
    *
-   * @param {object} course  Course object to query for.
+   * @param {string} courseSISID  courseSISID string to query for.
    * @param {number} userid  User who made this query request.
    * @returns {Array}   Returns all bruincast contents, including all crosslisted courses.
    */
-  static async getCasts(course, userid) {
-    const labelList = await this.getCrosslistByCourse(course.label);
-    const courseList = [course];
+  static async getCasts(courseSISID, userid) {
+    const labelList = await this.getCrosslistByCourse(courseSISID);
+    const courseList = [];
+    courseList.push({
+        courseSISID,
+        quarter: courseSISID.split('-')[0],
+      });
 
     for (const label of labelList) {
       courseList.push({

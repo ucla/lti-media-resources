@@ -120,10 +120,9 @@ router.get('/casts', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { context } = res.locals.context;
-  context.quarter = context.label.substr(0, context.label.indexOf('-'));
+  const { course_offering_sourcedid } = res.locals.context.lis;
   BruincastServices.getCasts(
-    context,
+    course_offering_sourcedid,
     parseInt(res.locals.token.user)
   ).then((casts) => res.send(casts));
 });
