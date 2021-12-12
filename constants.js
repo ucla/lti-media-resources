@@ -23,7 +23,7 @@ module.exports.mediaTypeMap = new Map([
     module.exports.MEDIA_TYPE.BRUINCAST,
     {
       api: 'bruincast',
-      string: 'Bruincast',
+      string: 'BruinCast',
     },
   ],
   [

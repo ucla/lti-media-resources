@@ -44,8 +44,8 @@ router.get('/counts', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { label } = res.locals.context.context;
-  MediaResourceServices.getCounts(label).then((counts) => res.send(counts));
+  const { course_offering_sourcedid } = res.locals.context.lis;
+  MediaResourceServices.getCounts(course_offering_sourcedid).then((counts) => res.send(counts));
 });
 
 /**
@@ -300,7 +300,7 @@ router.get('/url', (req, res) => {
     host = BRUINCAST_HOST;
     secret = SECRET_BRUINCAST_TOKEN;
   } else if (parseInt(mediatype) === constants.MEDIA_TYPE.VIDEO_RESERVES) {
-    stream = `${ext}:${filenameSanitized}`;
+    stream = `IMCS/_definst_/${ext}:${filenameSanitized}`;
 
     if (VIDEORES_HASH_CLIENT_IP === 'true') {
       hashClientIP = true;

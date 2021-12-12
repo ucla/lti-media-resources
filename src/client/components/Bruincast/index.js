@@ -215,7 +215,7 @@ export const Bruincast = ({
       {warningElement}
       <Text>
         Video recordings may take up to 24 hours before they are available. For
-        help regarding Bruincast content, please read our{' '}
+        help regarding BruinCast content, please read our{' '}
         <Link
           href="https://docs.ccle.ucla.edu/index.php?title=BruinCast"
           target="_blank"
