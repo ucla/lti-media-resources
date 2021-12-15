@@ -41,9 +41,9 @@ export const VideoReserve = ({
     axios
       .get(`${process.env.LTI_APPROUTE}/api/medias/videores?ltik=${ltik}`)
       .then((res) => {
-        setVidReserves(res.data);
+         setVidReserves(res.data);
         // If empty casts array, display "No media found" alert.
-        if (vidReserves.length === 0) {
+        if (res.data.length === 0) {
           setError({
             err: '',
             msg: 'No Video Reserves media found.',

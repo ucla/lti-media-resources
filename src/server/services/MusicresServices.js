@@ -9,16 +9,16 @@ class MusicresServices {
   /**
    * Retrieve music reserves of a course
    *
-   * @param {string} label  Label of course to query for
+   * @param {string} courseSISID  courseSISID of course to query for
    * @param {number} userid  User that made this query request
    * @returns {Array}   Return music reserves of the course.
    */
-  static async getMusicres(label, userid) {
-    const docs = await MediaQuery.getMusicResByCourse(label);
+  static async getMusicres(courseSISID, userid) {
+    const docs = await MediaQuery.getMusicResByCourse(courseSISID);
     const rawPlaybacks = await MediaQuery.getPlaybacks(
       MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
       userid,
-      label
+      courseSISID
     );
     for (const doc of docs) {
       let combinedNote = doc.noteOne ? doc.noteOne : '';
@@ -63,12 +63,12 @@ class MusicresServices {
   /**
    * Retrieve all playback histories of all students
    *
-   * @param {object} course  Course to query for.
+   * @param {object} courseSISID  courseSISID to query for.
    * @param {Array} members  Array of all students.
    * @returns {Array}   Return all playback histories of all students.
    */
-  static async getAnalytics(course, members) {
-    const allAlbums = await MediaQuery.getMusicResByCourse(course.label);
+  static async getAnalytics(courseSISID, members) {
+    const allAlbums = await MediaQuery.getMusicResByCourse(courseSISID);
     const allTracks = [];
     for (const album of allAlbums) {
       for (const track of album.items) {
@@ -80,7 +80,7 @@ class MusicresServices {
     }
     const rawAnalytics = await MediaQuery.getAnalyticsByCourse(
       MEDIA_TYPE.DIGITAL_AUDIO_RESERVES,
-      course.label
+      courseSISID
     );
     // Declare an empty array to push in final results
     // The array contains objects organized like this:

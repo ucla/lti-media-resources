@@ -33,7 +33,7 @@ export const MusicReserve = ({ userid, isInstructorOrAdmin, setError }) => {
       .then((res) => {
         setAllAlbums(res.data);
         // If empty casts array, display "No media found" alert.
-        if (allAlbums.length === 0) {
+        if (res.data.length === 0) {
           setError({
             err: '',
             msg: 'No Digital Audio Reserves media found.',

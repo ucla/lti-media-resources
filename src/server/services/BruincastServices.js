@@ -80,7 +80,6 @@ class BruincastServices {
         courseSISID,
         quarter: courseSISID.split('-')[0],
       });
-
     for (const label of labelList) {
       courseList.push({
         label,
@@ -90,7 +89,7 @@ class BruincastServices {
 
     const castsByCourses = [];
     for (const c of courseList) {
-      const courseCasts = await MediaQuery.getCastsByCourse(c.label);
+      const courseCasts = await MediaQuery.getCastsByCourse(c.courseSISID);
 
       if (
         courseCasts &&

@@ -1,4 +1,4 @@
-const FtpClient = require('ftp');
+const sftpClient = require('ssh2-sftp-client');
 require('dotenv').config();
 const RegistrarService = require('../services/registrar');
 const UpdateVideoResServices = require('../services/UpdateReserveServices');
@@ -17,7 +17,8 @@ async function main() {
   let result = [];
   const srsShortnameMap = [];
 
-  const c = new FtpClient();
+// sftp connectivity
+  const c = new sftpClient();
   c.on('ready', function () {
     c.get(process.env.SECRET_VIDEORES_FILEPATH, function (err, stream) {
       if (err) throw err;
@@ -50,10 +51,6 @@ async function main() {
 
         if (!shortname) {
           logger.warn(`${media.term}-${media.srs} does not have shortname`);
-        } else if (!media.filename.includes(shortname)) {
-          logger.warn(
-            `Shortname of file ${media.filename} does not match the shortname ${shortname} (${media.term}|${media.srs})`
-          );
         }
         media.classShortname = shortname;
         media.subjectArea = subjectArea;

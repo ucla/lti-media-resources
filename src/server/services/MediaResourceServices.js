@@ -13,12 +13,12 @@ class MediaResourceServices {
   /**
    * Count how many of each media type the course has
    *
-   * @param {string} courseLabel  Course counting for.
+   * @param {string} courseSISID  Course counting for.
    * @returns {object}   Return the count for each media type.
    */
-  static async getCounts(courseLabel) {
-    let labelList = await MediaQuery.getCrosslistByCourse(courseLabel);
-    labelList = [courseLabel, ...labelList];
+  static async getCounts(courseSISID) {
+    let labelList = await MediaQuery.getCrosslistByCourse(courseSISID);
+    labelList = [courseSISID, ...labelList];
 
     let bruincastCount = 0;
     for (const label of labelList) {
@@ -26,11 +26,11 @@ class MediaResourceServices {
     }
 
     const videoresCount = await MediaQuery.getVideoResCountByCourse(
-      courseLabel
+      courseSISID
     );
 
     const musicresCount = await MediaQuery.getMusicResCountByCourse(
-      courseLabel
+      courseSISID
     );
 
     return {

@@ -93,11 +93,11 @@ module.exports.getCastsByCourseWithoutAggregation = async (courseLabel) => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {number}   Return the number of bruincast contents of a course.
  */
-module.exports.getCastCountByCourse = async (courseLabel) => {
+module.exports.getCastCountByCourse = async (courseSISID) => {
   const castCount = await client
     .db(DB_DATABASE)
     .collection(collectionMap.get(BRUINCAST))
-    .find({ classShortname: courseLabel })
+    .find({ classShortname: courseSISID })
     .count();
   return castCount;
 };
@@ -195,12 +195,12 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {Array}   Return video reserves of the course.
  */
-module.exports.getVideoResByCourse = async (courseLabel) => {
+module.exports.getVideoResByCourse = async (courseSISID) => {
   const videoResCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(VIDEO_RESERVES));
   const toBeReturned = await videoResCollection
-    .find({ classShortname: courseLabel })
+    .find({ classShortname: courseSISID })
     .sort({ videoTitle: 1 })
     .toArray();
   return toBeReturned;
@@ -212,11 +212,11 @@ module.exports.getVideoResByCourse = async (courseLabel) => {
  * @param {string} courseLabel  Label of course to query for.
  * @returns {number}   Return the number of video reserves of a course.
  */
-module.exports.getVideoResCountByCourse = async (courseLabel) => {
+module.exports.getVideoResCountByCourse = async (courseSISID) => {
   const resCount = await client
     .db(DB_DATABASE)
     .collection(collectionMap.get(VIDEO_RESERVES))
-    .find({ classShortname: courseLabel })
+    .find({ classShortname: courseSISID })
     .count();
   return resCount;
 };
@@ -224,15 +224,15 @@ module.exports.getVideoResCountByCourse = async (courseLabel) => {
 /**
  * Retrieve music reserves of a course
  *
- * @param {string} courseLabel  Label of course to query for.
+ * @param {string} courseSISID  courseSISID of course to query for.
  * @returns {Array}   Return music reserves of the course.
  */
-module.exports.getMusicResByCourse = async (courseLabel) => {
+module.exports.getMusicResByCourse = async (courseSISID) => {
   const musicResCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(DIGITAL_AUDIO_RESERVES));
   const toBeReturned = await musicResCollection
-    .find({ classShortname: courseLabel })
+    .find({ classShortname: courseSISID })
     .sort({ title: 1 })
     .toArray();
   return toBeReturned;
@@ -241,11 +241,11 @@ module.exports.getMusicResByCourse = async (courseLabel) => {
 /**
  * Retrieve the number of music reserves of a course
  *
- * @param {string} courseLabel  Label of course to query for.
+ * @param {string} courseSISID  courseSISID of course to query for.
  * @returns {number}   Return the number of music reserves of a course.
  */
-module.exports.getMusicResCountByCourse = async (courseLabel) => {
-  const arrayOfMusicRes = await this.getMusicResByCourse(courseLabel);
+module.exports.getMusicResCountByCourse = async (courseSISID) => {
+  const arrayOfMusicRes = await this.getMusicResByCourse(courseSISID);
   let totalItemCount = 0;
   for (const album of arrayOfMusicRes) {
     if (album.items && Array.isArray(album.items)) {
@@ -403,11 +403,11 @@ module.exports.updatePlayback = async (obj) => {
  * @param {string} courseLabel Label of course to query for.
  * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
  */
-module.exports.getPlaybacks = async (mediaType, userid, courseLabel) => {
+module.exports.getPlaybacks = async (mediaType, userid, courseSISID) => {
   const playbackCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(PLAYBACKS));
-  const query = { mediaType, userid, classShortname: courseLabel };
+  const query = { mediaType, userid, classShortname: courseSISID };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };
@@ -419,11 +419,11 @@ module.exports.getPlaybacks = async (mediaType, userid, courseLabel) => {
  * @param {string} courseLabel Label of course to query for.
  * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
  */
-module.exports.getAnalyticsByCourse = async (mediaType, courseLabel) => {
+module.exports.getAnalyticsByCourse = async (mediaType, courseSISID) => {
   const playbackCollection = client
     .db(DB_DATABASE)
     .collection(collectionMap.get(PLAYBACKS));
-  const query = { mediaType, classShortname: courseLabel };
+  const query = { mediaType, classShortname: courseSISID };
   const toBeReturned = await playbackCollection.find(query).toArray();
   return toBeReturned;
 };
