@@ -20,7 +20,7 @@ async function main() {
   
   const c = new FtpClient();
 // sftp connectivity
-  #const c = new sftpClient();
+  //const c = new sftpClient();
   c.on('ready', function () {
     c.get(process.env.SECRET_VIDEORES_FILEPATH, function (err, stream) {
       if (err) throw err;
