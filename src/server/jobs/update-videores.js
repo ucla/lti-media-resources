@@ -93,10 +93,10 @@ async function main() {
     process.exit(0);
   })
   .catch(err => {
-    console.error(err.message);
+    logger.error(err.message);
     c.end();
   });
-  console.log('at the end  .... ')
+  logger.info('at the end  .... ')
 }
 
 main();
