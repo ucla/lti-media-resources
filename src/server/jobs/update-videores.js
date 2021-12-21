@@ -16,19 +16,19 @@ async function main() {
 
   let result = [];
   const srsShortnameMap = [];
-  
   // SFTP connectivity
   const c = new SftpClient();
-    
   c.connect({
     host: process.env.SECRET_VIDEORES_FTP_HOST,
     user: process.env.SECRET_VIDEORES_FTP_USERNAME,
     password: process.env.SECRET_VIDEORES_FTP_PWD
   }).then(() => {
+    
     logger.info('reading file ....', process.env.SECRET_VIDEORES_FILEPATH);
     return c.get(process.env.SECRET_VIDEORES_FILEPATH);
   })
   .then(async (data) => {
+    
     let str = '';
     str += data.toString();
     result = await UpdateVideoResServices.readStrIntoFields(str, logger);
@@ -36,6 +36,7 @@ async function main() {
     return data;
   })
   .then(async (data) => {
+    
     // Create an array of courses and get shortname for each course
     for (const media of data.results) {
       const mappedPair = srsShortnameMap.filter(
