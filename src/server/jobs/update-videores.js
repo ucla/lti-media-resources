@@ -1,4 +1,4 @@
-const sftpClient = require('ssh2-sftp-client');
+const SftpClient = require('ssh2-sftp-client');
 require('dotenv').config();
 const RegistrarService = require('../services/registrar');
 const UpdateVideoResServices = require('../services/UpdateReserveServices');
@@ -17,8 +17,8 @@ async function main() {
   let result = [];
   const srsShortnameMap = [];
   
-  // sftp connectivity
-  const c = new sftpClient();
+  // SFTP connectivity
+  const c = new SftpClient();
     
   c.connect({
     host: process.env.SECRET_VIDEORES_FTP_HOST,
