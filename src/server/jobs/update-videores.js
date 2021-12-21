@@ -96,7 +96,6 @@ async function main() {
     logger.error(err.message);
     c.end();
   });
-  logger.info('at the end  .... ')
 }
 
 main();
