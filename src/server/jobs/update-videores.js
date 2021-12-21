@@ -12,22 +12,21 @@ const client = require('../models/db');
 async function main() {
   const logger = await LogServices.createLogger('update-videores');
   const dbclient = await client.connect(process.env.DB_URL);
-  logger.info(`***********************`);
   logger.info(`Connected to database`);
 
   let result = [];
   const srsShortnameMap = [];
   
-// sftp connectivity
-  const sftpClient = new sftpClient();
+  // sftp connectivity
+  const c = new sftpClient();
     
-  sftpClient.connect({
+  c.connect({
     host: process.env.SECRET_VIDEORES_FTP_HOST,
     user: process.env.SECRET_VIDEORES_FTP_USERNAME,
     password: process.env.SECRET_VIDEORES_FTP_PWD
   }).then(() => {
-    console.log('reading file ....', process.env.SECRET_VIDEORES_FILEPATH);
-    return sftpClient.get(process.env.SECRET_VIDEORES_FILEPATH);
+    logger.info('reading file ....', process.env.SECRET_VIDEORES_FILEPATH);
+    return c.get(process.env.SECRET_VIDEORES_FILEPATH);
   })
   .then(async (data) => {
     let str = '';
@@ -37,7 +36,7 @@ async function main() {
     return data;
   })
   .then(async (data) => {
-    console.log('processing the results... ')
+    logger.info('processing the results... ')
     // Create an array of courses and get shortname for each course
     for (const media of data.results) {
       const mappedPair = srsShortnameMap.filter(
@@ -68,7 +67,7 @@ async function main() {
 
     // For each course, update its records
     let totalNumDiff = 0;
-    console.log('iterate srsShortnameMap results.... ')
+    logger.info('iterate srsShortnameMap results.... ')
     for (const srsPair of srsShortnameMap) {
       totalNumDiff += UpdateVideoResServices.updateRecordsForClass(
         dbclient,
@@ -81,7 +80,7 @@ async function main() {
         logger
       );
     }
-    console.log('totalNumDiff length .... ', totalNumDiff.length);
+    logger.info('totalNumDiff length .... ', totalNumDiff.length);
     const totalNumEntries = result.length;
     if (totalNumDiff < 0) {
       logger.info(
@@ -98,7 +97,7 @@ async function main() {
   })
   .catch(err => {
     console.error(err.message);
-    sftpClient.end();
+    c.end();
   });
   console.log('at the end  .... ')
 }
