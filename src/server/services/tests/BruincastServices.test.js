@@ -334,7 +334,7 @@ describe('BruincastServices tests', () => {
   });
 
   test('Test Analytics Generation', async (done) => {
-    const sampleCourse = { label: 'Potions' };
+    const sampleCourse = 'Potions';
     const sampleMembers = [
       { user_id: '0', name: 'Hermione Granger' },
       { user_id: '1', name: 'Ronald Weasley' },

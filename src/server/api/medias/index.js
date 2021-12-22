@@ -45,7 +45,9 @@ router.get('/counts', (req, res) => {
     return res.status(403).send(new Error('Unauthorized role'));
   }
   const { course_offering_sourcedid } = res.locals.context.lis;
-  MediaResourceServices.getCounts(course_offering_sourcedid).then((counts) => res.send(counts));
+  MediaResourceServices.getCounts(course_offering_sourcedid).then((counts) =>
+    res.send(counts)
+  );
 });
 
 /**
@@ -138,20 +140,20 @@ router.get('/analytics', async (req, res) => {
     delete member.family_name;
     delete member.email;
   }
-  const { context } = res.locals.context;
+  const { courseSISID } = res.locals.context.lis.course_offering_sourcedid;
   switch (parseInt(mediaType)) {
     case constants.MEDIA_TYPE.BRUINCAST:
-      BruincastServices.getAnalytics(context, members).then((analytics) =>
+      BruincastServices.getAnalytics(courseSISID, members).then((analytics) =>
         res.send(analytics)
       );
       break;
     case constants.MEDIA_TYPE.DIGITAL_AUDIO_RESERVES:
-      MusicresServices.getAnalytics(context, members).then((analytics) =>
+      MusicresServices.getAnalytics(courseSISID, members).then((analytics) =>
         res.send(analytics)
       );
       break;
     case constants.MEDIA_TYPE.VIDEO_RESERVES:
-      VideoresServices.getAnalytics(context, members).then((analytics) =>
+      VideoresServices.getAnalytics(courseSISID, members).then((analytics) =>
         res.send(analytics)
       );
       break;
