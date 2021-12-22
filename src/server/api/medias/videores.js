@@ -44,9 +44,9 @@ router.get('/', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { course_offering_sourcedid } = res.locals.context.lis;
+  const courseSISID = res.locals.context.lis.course_offering_sourcedid;
   VideoresServices.getVideores(
-    course_offering_sourcedid,
+    courseSISID,
     parseInt(res.locals.token.user)
   ).then((list) => res.send(list));
 });

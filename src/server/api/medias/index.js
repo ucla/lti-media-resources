@@ -44,8 +44,8 @@ router.get('/counts', (req, res) => {
   if (!CheckRoleServices.isUser(res.locals.context.roles)) {
     return res.status(403).send(new Error('Unauthorized role'));
   }
-  const { course_offering_sourcedid } = res.locals.context.lis;
-  MediaResourceServices.getCounts(course_offering_sourcedid).then((counts) =>
+  const courseSISID = res.locals.context.lis.course_offering_sourcedid;
+  MediaResourceServices.getCounts(courseSISID).then((counts) =>
     res.send(counts)
   );
 });
@@ -140,7 +140,7 @@ router.get('/analytics', async (req, res) => {
     delete member.family_name;
     delete member.email;
   }
-  const { courseSISID } = res.locals.context.lis.course_offering_sourcedid;
+  const courseSISID = res.locals.context.lis.course_offering_sourcedid;
   switch (parseInt(mediaType)) {
     case constants.MEDIA_TYPE.BRUINCAST:
       BruincastServices.getAnalytics(courseSISID, members).then((analytics) =>
