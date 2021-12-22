@@ -77,9 +77,9 @@ class BruincastServices {
     const labelList = await this.getCrosslistByCourse(courseSISID);
     const courseList = [];
     courseList.push({
-        courseSISID,
-        quarter: courseSISID.split('-')[0],
-      });
+      courseSISID,
+      quarter: courseSISID.split('-')[0],
+    });
     for (const label of labelList) {
       courseList.push({
         label,
@@ -190,13 +190,13 @@ class BruincastServices {
   /**
    * Retrieve all playback histories of all students
    *
-   * @param {object} course  Course to query for.
+   * @param {string} course  Course to query for.
    * @param {Array} members  Array of all students.
    * @returns {Array}   Return all playback histories of all students.
    */
   static async getAnalytics(course, members) {
-    const labelList = await this.getCrosslistByCourse(course.label);
-    const courseList = [course.label, ...labelList];
+    const labelList = await this.getCrosslistByCourse(course);
+    const courseList = [course, ...labelList];
 
     // The following codes format analytics into the following format
     // Top level (Course Level): { course: object, this course's analytics: array of second level }

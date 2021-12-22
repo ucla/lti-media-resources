@@ -220,7 +220,7 @@ exports[`App component matches its original snapshot 1`] = `
       isSelected={true}
       labelledBy={null}
       padding="small"
-      renderTitle="Bruincast (0)"
+      renderTitle="BruinCast (0)"
       textAlign="start"
       variant="default"
     >

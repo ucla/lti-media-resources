@@ -63,7 +63,7 @@ class MusicresServices {
   /**
    * Retrieve all playback histories of all students
    *
-   * @param {object} courseSISID  courseSISID to query for.
+   * @param {string} courseSISID  courseSISID to query for.
    * @param {Array} members  Array of all students.
    * @returns {Array}   Return all playback histories of all students.
    */

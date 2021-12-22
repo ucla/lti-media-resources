@@ -90,7 +90,7 @@ module.exports.getCastsByCourseWithoutAggregation = async (courseLabel) => {
 /**
  * Retrieve the number of bruincast contents of a course
  *
- * @param {string} courseLabel  Label of course to query for.
+ * @param {string} courseSISID  Label of course to query for.
  * @returns {number}   Return the number of bruincast contents of a course.
  */
 module.exports.getCastCountByCourse = async (courseSISID) => {
@@ -192,7 +192,7 @@ module.exports.getSubjectAreasForTerm = async (dbCollection, term) => {
 /**
  * Retrieve video reserves of a course
  *
- * @param {string} courseLabel  Label of course to query for.
+ * @param {string} courseSISID  Label of course to query for.
  * @returns {Array}   Return video reserves of the course.
  */
 module.exports.getVideoResByCourse = async (courseSISID) => {
@@ -209,7 +209,7 @@ module.exports.getVideoResByCourse = async (courseSISID) => {
 /**
  * Retrieve the number of video reserves of a course
  *
- * @param {string} courseLabel  Label of course to query for.
+ * @param {string} courseSISID  Label of course to query for.
  * @returns {number}   Return the number of video reserves of a course.
  */
 module.exports.getVideoResCountByCourse = async (courseSISID) => {
@@ -400,8 +400,8 @@ module.exports.updatePlayback = async (obj) => {
  *
  * @param {number} mediaType  Media type to query for.
  * @param {number} userid  User to query for.
- * @param {string} courseLabel Label of course to query for.
- * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
+ * @param {string} courseSISID Label of course to query for.
+ * @returns {Array}   Returns playbacks of mediaType, userid, and courseSISID.
  */
 module.exports.getPlaybacks = async (mediaType, userid, courseSISID) => {
   const playbackCollection = client
@@ -416,8 +416,8 @@ module.exports.getPlaybacks = async (mediaType, userid, courseSISID) => {
  * Retrieve all playbacks of a specific course and media type for all users
  *
  * @param {number} mediaType  Media type to query for.
- * @param {string} courseLabel Label of course to query for.
- * @returns {Array}   Returns playbacks of mediaType, userid, and courseLabel.
+ * @param {string} courseSISID Label of course to query for.
+ * @returns {Array}   Returns playbacks of mediaType, userid, and courseSISID.
  */
 module.exports.getAnalyticsByCourse = async (mediaType, courseSISID) => {
   const playbackCollection = client

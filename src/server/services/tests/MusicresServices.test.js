@@ -109,7 +109,7 @@ beforeAll(async (done) => {
 
 describe('MusicresServices tests', () => {
   test('Test Analytics Generation', async (done) => {
-    const sampleCourse = { label: 'Herbology' };
+    const sampleCourse = 'Herbology';
     const sampleMembers = [
       { user_id: '0', name: 'Draco Malfoy' },
       { user_id: '1', name: 'Vincent Crabbe' },

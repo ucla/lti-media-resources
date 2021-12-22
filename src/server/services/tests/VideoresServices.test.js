@@ -94,7 +94,7 @@ beforeAll(async (done) => {
 
 describe('VideoresServices tests', () => {
   test('Test Analytics Generation', async (done) => {
-    const sampleCourse = { label: 'Charms' };
+    const sampleCourse = 'Charms';
     const sampleMembers = [
       { user_id: '0', name: 'Luna Lovegood' },
       { user_id: '1', name: 'Cho Chang' },
