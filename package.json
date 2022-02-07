@@ -31,7 +31,7 @@
     "@instructure/ui-pill": "^8.1.0",
     "@instructure/ui-progress": "^8.1.0",
     "@instructure/ui-simple-select": "^8.1.0",
-    "@instructure/ui-table": "^8.1.0",
+    "@instructure/ui-table": "^8.17.0",
     "@instructure/ui-tabs": "^8.1.0",
     "@instructure/ui-tag": "^8.1.0",
     "@instructure/ui-text": "^8.1.0",
