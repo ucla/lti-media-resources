@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
         # ~~~ CACHING ~~~
         # The following is just to do caching of yarn and eslint, it's not necessary to get linting to work
