@@ -1152,13 +1152,22 @@
     "@babel/runtime" "^7.13.10"
     "@instructure/ui-theme-tokens" "8.6.0"
 
-"@instructure/canvas-theme@8.6.0", "@instructure/canvas-theme@^8.1.0":
+"@instructure/canvas-theme@8.6.0":
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-8.6.0.tgz#9d558c86723fb5347e5913c87f2192f5e05bbedd"
   integrity sha512-oLsndRFkajbbz6uTuh9y8qtF5CHGomPQzYaIyCXDF0MsxRmU+3JP95DGWApUF4Kz2OYGP64cyWBb4Pp4DwO79Q==
   dependencies:
     "@babel/runtime" "^7.13.10"
     "@instructure/ui-theme-tokens" "8.6.0"
+
+"@instructure/canvas-theme@^8.23.0":
+  version "8.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-8.23.0.tgz#d03a32e636bb05e56c3914b5fed72d4b550f2e49"
+  integrity sha512-0HsX6qNtBuVQqEia1p6YL5l3oyxmeWAoE97FW3JRa38NRjWa2Pr2PwQcH+qkL48k3YTsAhjwMejiRBG3oERNSg==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@instructure/shared-types" "8.23.0"
+    "@instructure/ui-theme-tokens" "8.23.0"
 
 "@instructure/console@8.6.0":
   version "8.6.0"
@@ -1200,6 +1209,14 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
     "@instructure/ui-theme-tokens" "8.6.0"
+
+"@instructure/shared-types@8.23.0":
+  version "8.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/shared-types/-/shared-types-8.23.0.tgz#4005e91fd744234d531c985aefbc4311cd63a8d8"
+  integrity sha512-oyznq4LMh0j8IFYefO+tBFAgteXqJt/LabUHQkpqJBkBXiVxeAj5aydvLKejdSynn67oSf5Qgwa0WShZF6oUDQ==
+  dependencies:
+    prop-types "^15"
+    react "^17.0.0"
 
 "@instructure/ui-a11y-content@8.6.0":
   version "8.6.0"
@@ -1776,6 +1793,14 @@
     "@instructure/emotion" "8.6.0"
     "@instructure/ui-react-utils" "8.6.0"
     prop-types "^15"
+
+"@instructure/ui-theme-tokens@8.23.0":
+  version "8.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-theme-tokens/-/ui-theme-tokens-8.23.0.tgz#7a761a1c4a735864a0e99555f59b731e18b7dc8a"
+  integrity sha512-aTFylQc9Tom1wf9n8VMUOTxVhxrFIiyqSyseJfR5SG3UVuCgS+YlWYKfqgWYV4H9uOcWwhEUOJyYedK/ZMmJ6Q==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@instructure/shared-types" "8.23.0"
 
 "@instructure/ui-theme-tokens@8.6.0":
   version "8.6.0"
@@ -8606,6 +8631,14 @@ react@^16.14.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
+
+react@^17.0.0:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+  integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
