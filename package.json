@@ -29,7 +29,7 @@
     "@instructure/ui-icons": "^8.1.0",
     "@instructure/ui-link": "^8.1.0",
     "@instructure/ui-pill": "^8.1.0",
-    "@instructure/ui-progress": "^8.1.0",
+    "@instructure/ui-progress": "^8.24.5",
     "@instructure/ui-simple-select": "^8.1.0",
     "@instructure/ui-table": "^8.1.0",
     "@instructure/ui-tabs": "^8.1.0",
