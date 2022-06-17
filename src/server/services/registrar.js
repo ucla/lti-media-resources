@@ -168,17 +168,18 @@ async function getShortname(offeredTermCode, classSectionID) {
     } = response;
 
     // Check if course is summer sessions.
-    if (offeredTermCode.slice(-1) === '1') {
-      registrarDebug('getShortname: Handling Summer session');
-      // Get session group.
-      response = await registrar.call({
-        url: `/sis/classes/${offeredTermCode}/v1`,
-        params: {
-          subjectAreaCode: subArea,
-          courseCatalogNumber: catNum,
-          classNumber: secNum,
-        },
-      });
+    // CANVAS-184 - Commented out to handle summer course to match up with Canvas SIS-ID.
+//    if (offeredTermCode.slice(-1) === '1') {
+//      registrarDebug('getShortname: Handling Summer session');
+//      // Get session group.
+//      response = await registrar.call({
+//        url: `/sis/classes/${offeredTermCode}/v1`,
+//        params: {
+//          subjectAreaCode: subArea,
+//          courseCatalogNumber: catNum,
+//          classNumber: secNum,
+//        },
+//      });
 
       if (response === null) {
         registrarDebug('getShortname: Classes is null');
