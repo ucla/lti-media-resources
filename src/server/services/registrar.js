@@ -180,25 +180,25 @@ async function getShortname(offeredTermCode, classSectionID) {
 //          classNumber: secNum,
 //        },
 //      });
-
-      if (response === null) {
-        registrarDebug('getShortname: Classes is null');
-        return returnObject;
-      }
-
-      // Find the session that matches the class number.
-      let sessionGroup = '';
-      response.classes[0].termSessionGroupCollection.forEach((groupItem) => {
-        groupItem.classCollection.forEach((classItem) => {
-          if (classItem.classNumber === secNum) {
-            sessionGroup = groupItem.termsessionGroupCode;
-          }
-        });
-      });
-
-      registrarDebug(`getShortname: using sessionGroup ${sessionGroup}`);
-      term += sessionGroup;
-    }
+//
+//      if (response === null) {
+//        registrarDebug('getShortname: Classes is null');
+//        return returnObject;
+//      }
+//
+//      // Find the session that matches the class number.
+//      let sessionGroup = '';
+//      response.classes[0].termSessionGroupCollection.forEach((groupItem) => {
+//        groupItem.classCollection.forEach((classItem) => {
+//          if (classItem.classNumber === secNum) {
+//            sessionGroup = groupItem.termsessionGroupCode;
+//          }
+//        });
+//      });
+//
+//      registrarDebug(`getShortname: using sessionGroup ${sessionGroup}`);
+//      term += sessionGroup;
+//    }
 
     // Combine shortname components.
     const shortname = `${term}-${subArea}-${catNum}-${secNum}`;
