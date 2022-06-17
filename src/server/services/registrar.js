@@ -168,36 +168,37 @@ async function getShortname(offeredTermCode, classSectionID) {
     } = response;
 
     // Check if course is summer sessions.
-    if (offeredTermCode.slice(-1) === '1') {
-      registrarDebug('getShortname: Handling Summer session');
-      // Get session group.
-      response = await registrar.call({
-        url: `/sis/classes/${offeredTermCode}/v1`,
-        params: {
-          subjectAreaCode: subArea,
-          courseCatalogNumber: catNum,
-          classNumber: secNum,
-        },
-      });
-
-      if (response === null) {
-        registrarDebug('getShortname: Classes is null');
-        return returnObject;
-      }
-
-      // Find the session that matches the class number.
-      let sessionGroup = '';
-      response.classes[0].termSessionGroupCollection.forEach((groupItem) => {
-        groupItem.classCollection.forEach((classItem) => {
-          if (classItem.classNumber === secNum) {
-            sessionGroup = groupItem.termsessionGroupCode;
-          }
-        });
-      });
-
-      registrarDebug(`getShortname: using sessionGroup ${sessionGroup}`);
-      term += sessionGroup;
-    }
+    // CANVAS-184 - Commented out to handle summer course to match up with Canvas SIS-ID.
+//    if (offeredTermCode.slice(-1) === '1') {
+//      registrarDebug('getShortname: Handling Summer session');
+//      // Get session group.
+//      response = await registrar.call({
+//        url: `/sis/classes/${offeredTermCode}/v1`,
+//        params: {
+//          subjectAreaCode: subArea,
+//          courseCatalogNumber: catNum,
+//          classNumber: secNum,
+//        },
+//      });
+//
+//      if (response === null) {
+//        registrarDebug('getShortname: Classes is null');
+//        return returnObject;
+//      }
+//
+//      // Find the session that matches the class number.
+//      let sessionGroup = '';
+//      response.classes[0].termSessionGroupCollection.forEach((groupItem) => {
+//        groupItem.classCollection.forEach((classItem) => {
+//          if (classItem.classNumber === secNum) {
+//            sessionGroup = groupItem.termsessionGroupCode;
+//          }
+//        });
+//      });
+//
+//      registrarDebug(`getShortname: using sessionGroup ${sessionGroup}`);
+//      term += sessionGroup;
+//    }
 
     // Combine shortname components.
     const shortname = `${term}-${subArea}-${catNum}-${secNum}`;
