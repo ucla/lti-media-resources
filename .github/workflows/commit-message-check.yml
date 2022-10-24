@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Commit Type
-        uses: gsactions/commit-message-checker@v1
+        uses: gsactions/commit-message-checker@v2
         with:
           pattern: '(^Bump[a-zA-Z0-9 ./@_-]+)|(CANVAS-[0-9]+\ -\ .{5,})|(^Revert[a-zA-Z0-9 ./@_-]+)'
           error: 'Commit message needs to match CANVAS-<TICKET NUMBER> - <Description>, where Description is at least 5 characters. Reverts and Dependabot messages that start with "Bump" are ignored.'
