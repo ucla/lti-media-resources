@@ -61,7 +61,7 @@
     "ltijs": "^5.9.0",
     "migrate-mongo": "^8.2.3",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.37",
+    "moment-timezone": "^0.5.40",
     "mongodb": "^3.7.3",
     "mongoose": "^6.6.1",
     "node-cache": "^5.1.2",
