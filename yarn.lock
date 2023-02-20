@@ -955,12 +955,12 @@
     core-js-pure "^3.25.1"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.19.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.19.0.tgz#22b11c037b094d27a8a2504ea4dcff00f50e2259"
-  integrity sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.19.0", "@babel/runtime@^7.20.13", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+  version "7.21.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
+  integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
   dependencies:
-    regenerator-runtime "^0.13.4"
+    regenerator-runtime "^0.13.11"
 
 "@babel/template@^7.18.10", "@babel/template@^7.3.3":
   version "7.18.10"
@@ -1240,7 +1240,7 @@
     "@instructure/theme-registry" "8.28.2"
     "@instructure/ui-theme-tokens" "8.28.2"
 
-"@instructure/canvas-theme@8.28.2", "@instructure/canvas-theme@^8.28.2":
+"@instructure/canvas-theme@8.28.2":
   version "8.28.2"
   resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-8.28.2.tgz#7c95a67eafe122f2d8ca210d0b4a894b27af1db9"
   integrity sha512-DMsP3lCFlkoUwInYl/UXzGbW1FQQHIG9uyBrmPkQ8ELKOBgtGxTBUaf0fIGUz3eK4/RKFCiHCVj938SKPQsOvQ==
@@ -1250,6 +1250,16 @@
     "@instructure/theme-registry" "8.28.2"
     "@instructure/ui-theme-tokens" "8.28.2"
 
+"@instructure/canvas-theme@^8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-8.35.0.tgz#cd9dbde4599315f003479987357f099bcaa22421"
+  integrity sha512-FsHXsbEX2nyRFIH7QASLJ8Wgu9s8cRPF+J+A0G+uU2cIl3yT8SV0jDWWeselTcQsizwtKymBsijQbTTOXwNPmw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@instructure/shared-types" "8.35.0"
+    "@instructure/theme-registry" "8.35.0"
+    "@instructure/ui-theme-tokens" "8.35.0"
+
 "@instructure/console@8.28.2":
   version "8.28.2"
   resolved "https://registry.yarnpkg.com/@instructure/console/-/console-8.28.2.tgz#bd8ed26e266332dc346f9b14989b4405d6ee67c9"
@@ -1258,6 +1268,15 @@
     "@babel/helper-annotate-as-pure" "^7.8.3"
     "@babel/helper-module-imports" "^7.8.3"
     babel-plugin-macros "^3"
+
+"@instructure/console@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/console/-/console-8.35.0.tgz#18a5434a1c358f59440df7a9f9c7ca06b50bfdf2"
+  integrity sha512-XdXIHW8y89abtKBnGzoM3Qgzn5tmIr4cfZWFMt12NvI41Za1Cr14YmJXKru1M9t642kaFu9z23VlUeQ236EYlQ==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.18.6"
+    "@babel/helper-module-imports" "^7.18.6"
+    babel-plugin-macros "^3.1.0"
 
 "@instructure/debounce@8.28.2":
   version "8.28.2"
@@ -1302,6 +1321,13 @@
   dependencies:
     prop-types "^15"
 
+"@instructure/shared-types@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/shared-types/-/shared-types-8.35.0.tgz#b684acd0792c6c4ad26beac5d18ce79ef5e9a2cb"
+  integrity sha512-59x74aW3H/gScypl/C8ZRHQTeuw7jqEXVUodc9CUn6C9CNP1jMzdCaP/HmTCaGKx67ooKO6QKvuHiSiq2XMXgg==
+  dependencies:
+    prop-types "^15.8.1"
+
 "@instructure/theme-registry@8.28.2":
   version "8.28.2"
   resolved "https://registry.yarnpkg.com/@instructure/theme-registry/-/theme-registry-8.28.2.tgz#5a63b636aed7bc2ed8f36ef7cce53553fd3a3351"
@@ -1311,6 +1337,16 @@
     "@instructure/console" "8.28.2"
     "@instructure/shared-types" "8.28.2"
     "@instructure/ui-utils" "8.28.2"
+
+"@instructure/theme-registry@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/theme-registry/-/theme-registry-8.35.0.tgz#aa69f78b346a50364132c78277beb15685fe2de7"
+  integrity sha512-u1LU1Ags9i0GG/1ipHbRBVHX8tI+6DBAxe8cvBt+vXphFeuEDYpvqJnm8RpiDtiobB6702PSxYvLBur1QDtpiQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@instructure/console" "8.35.0"
+    "@instructure/shared-types" "8.35.0"
+    "@instructure/ui-utils" "8.35.0"
 
 "@instructure/ui-a11y-content@8.28.2":
   version "8.28.2"
@@ -1442,6 +1478,15 @@
     "@babel/runtime" "^7.13.10"
     "@instructure/console" "8.28.2"
     "@instructure/shared-types" "8.28.2"
+
+"@instructure/ui-dom-utils@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-dom-utils/-/ui-dom-utils-8.35.0.tgz#f4a161d9469071d697cd774edbff157a2024bea8"
+  integrity sha512-UoZaKtEXj4Nw5XhetUGMhPs9PQUE2VaC3hxhkrXR26ynzT96UrZ8Btjp3HibmIesnl9HxgQ5j8nuPB2iE4EsvQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@instructure/console" "8.35.0"
+    "@instructure/shared-types" "8.35.0"
 
 "@instructure/ui-expandable@8.28.2":
   version "8.28.2"
@@ -1929,6 +1974,14 @@
     "@babel/runtime" "^7.13.10"
     "@instructure/shared-types" "8.28.2"
 
+"@instructure/ui-theme-tokens@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-theme-tokens/-/ui-theme-tokens-8.35.0.tgz#0a2e7338ac57f2345a59bcbf23d0d2bcc1bbdf08"
+  integrity sha512-ZClZzEH3AJUv2uG972slhz/by8/LqNueOWAj9ZYH/qnqMtsiquAaJD3xaj3EhVT4df9+GA2XrSxgx9ChhbIyqg==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@instructure/shared-types" "8.35.0"
+
 "@instructure/ui-themes@8.28.2":
   version "8.28.2"
   resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-8.28.2.tgz#1009ad2a82dad032ff3f1043619d5b8676adc62b"
@@ -2007,6 +2060,19 @@
     fast-deep-equal "^3"
     json-stable-stringify "^1.0.1"
     keycode "^2"
+
+"@instructure/ui-utils@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-utils/-/ui-utils-8.35.0.tgz#0b9c7cc1982f323781ddfbbb53e894c651b77ee7"
+  integrity sha512-ffpn0JwHFMdLzpcTTqL8ak4Y67bk3Zy2+R9JE6DWnTNxnOp9olh6kV6U4jWeHHi5B55FIlukrd2t4UUC2TUmSw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@instructure/console" "8.35.0"
+    "@instructure/ui-dom-utils" "8.35.0"
+    bowser "^1.9.4"
+    fast-deep-equal "^3.1.3"
+    json-stable-stringify "^1.0.2"
+    keycode "^2.2.1"
 
 "@instructure/ui-view@8.28.2", "@instructure/ui-view@^8.28.2":
   version "8.28.2"
@@ -6795,6 +6861,13 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
+json-stable-stringify@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.2.tgz#e06f23128e0bbe342dc996ed5a19e28b57b580e0"
+  integrity sha512-eunSSaEnxV12z+Z73y/j5N37/In40GK4GmsSy+tEHJMxknvqnA7/djeYtAgW0GsWHUfg+847WJjKaEylk2y09g==
+  dependencies:
+    jsonify "^0.0.1"
+
 json5@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
@@ -6815,6 +6888,11 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jsonify@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.1.tgz#2aa3111dae3d34a0f151c63f3a45d995d9420978"
+  integrity sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==
 
 jsonify@~0.0.0:
   version "0.0.0"
@@ -6867,7 +6945,7 @@ kareem@2.4.1:
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.4.1.tgz#7d81ec518204a48c1cb16554af126806c3cd82b0"
   integrity sha512-aJ9opVoXroQUPfovYP5kaj2lM7Jn02Gw13bL0lg9v0V7SaUc0qavPs0Eue7d2DcC3NjqI6QAUElXNsuZSeM+EA==
 
-keycode@^2:
+keycode@^2, keycode@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.1.tgz#09c23b2be0611d26117ea2501c2c391a01f39eff"
   integrity sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==
@@ -8385,6 +8463,11 @@ regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
+
+regenerator-runtime@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.9:
   version "0.13.9"
