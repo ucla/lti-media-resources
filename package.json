@@ -34,7 +34,7 @@
     "@instructure/ui-table": "^8.28.2",
     "@instructure/ui-tabs": "^8.28.2",
     "@instructure/ui-tag": "^8.28.2",
-    "@instructure/ui-text": "^8.28.2",
+    "@instructure/ui-text": "^8.35.1",
     "@instructure/ui-text-area": "^8.28.2",
     "@instructure/ui-text-input": "^8.28.2",
     "@instructure/ui-toggle-details": "^8.28.2",
