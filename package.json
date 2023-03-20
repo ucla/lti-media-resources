@@ -27,7 +27,7 @@
     "@instructure/ui-flex": "^8.28.2",
     "@instructure/ui-heading": "^8.28.2",
     "@instructure/ui-icons": "^8.28.2",
-    "@instructure/ui-link": "^8.28.2",
+    "@instructure/ui-link": "^8.35.1",
     "@instructure/ui-pill": "^8.28.2",
     "@instructure/ui-progress": "^8.28.2",
     "@instructure/ui-simple-select": "^8.28.2",
