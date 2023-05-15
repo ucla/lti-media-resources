@@ -78,7 +78,7 @@
     "regenerator-runtime": "^0.13.9",
     "request-ip": "^2.2.0",
     "ssh2-sftp-client": "^7.2.3",
-    "terser": "^5.15.0",
+    "terser": "^5.17.3",
     "winston": "^3.8.2"
   },
   "devDependencies": {
