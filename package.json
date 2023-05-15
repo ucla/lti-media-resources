@@ -69,7 +69,7 @@
     "nth-check": "^2.1.1",
     "parse-link-header": "^2.0.0",
     "prop-types": "^15.8.1",
-    "qs": "^6.11.0",
+    "qs": "^6.11.2",
     "range_check": "^2.0.4",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
