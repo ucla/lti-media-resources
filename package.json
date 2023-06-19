@@ -22,7 +22,7 @@
     "@instructure/canvas-theme": "^8.28.2",
     "@instructure/emotion": "^8.28.2",
     "@instructure/ui-alerts": "^8.28.2",
-    "@instructure/ui-breadcrumb": "^8.28.2",
+    "@instructure/ui-breadcrumb": "^8.38.1",
     "@instructure/ui-buttons": "^8.28.2",
     "@instructure/ui-flex": "^8.28.2",
     "@instructure/ui-heading": "^8.28.2",
