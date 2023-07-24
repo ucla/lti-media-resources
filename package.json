@@ -23,7 +23,7 @@
     "@instructure/emotion": "^8.28.2",
     "@instructure/ui-alerts": "^8.28.2",
     "@instructure/ui-breadcrumb": "^8.28.2",
-    "@instructure/ui-buttons": "^8.28.2",
+    "@instructure/ui-buttons": "^8.39.0",
     "@instructure/ui-flex": "^8.28.2",
     "@instructure/ui-heading": "^8.28.2",
     "@instructure/ui-icons": "^8.28.2",
