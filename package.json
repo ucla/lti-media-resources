@@ -30,7 +30,7 @@
     "@instructure/ui-link": "^8.28.2",
     "@instructure/ui-pill": "^8.28.2",
     "@instructure/ui-progress": "^8.28.2",
-    "@instructure/ui-simple-select": "^8.28.2",
+    "@instructure/ui-simple-select": "^8.41.1",
     "@instructure/ui-table": "^8.28.2",
     "@instructure/ui-tabs": "^8.28.2",
     "@instructure/ui-tag": "^8.28.2",
